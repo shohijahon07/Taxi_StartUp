@@ -13,6 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "routes")
 public class Route_Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,5 +25,5 @@ public class Route_Driver {
     private Integer price;
     private LocalDateTime localDateTime;
     @ManyToOne
-    private Admin admin;
+    private User user;
 }
