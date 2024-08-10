@@ -1,5 +1,5 @@
 package org.example.backend.entity;
 
 public enum Status {
-    SELECT_PATH
+    NEW, SELECT_LANGUAGE, SELECT_ROLE, DRIVER_PAGE, SELECT_PATH
 }
