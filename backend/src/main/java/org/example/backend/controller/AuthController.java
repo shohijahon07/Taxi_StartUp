@@ -38,4 +38,9 @@ public class AuthController {
     public ResponseEntity<?> checkUserRoles(@RequestHeader(defaultValue = "null") String Authorization){
         return authService.checkUserRole(Authorization);
     }
+
+    @GetMapping("/name")
+    public ResponseEntity<?> checkUserName(@RequestHeader(defaultValue = "null") String Authorization){
+        return authService.checkUserName(Authorization);
+    }
 }

@@ -12,6 +12,8 @@ import java.util.UUID;
 public interface UserRepo extends JpaRepository<User, UUID> {
     Optional<User> findByFullName(String fullName);
 
+    Optional<User> findByPhoneNumber(String fullName);
+    Optional<User> findAllByFullName(String fullName);
 
     List<User> findAllByChatId(Long chatId);
 

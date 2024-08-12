@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+}
+.begin{
+    padding: 0 20px;
+}
+.inputs{
+ 
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items:center
+}
+.inputChild{
+    
+}
+.inputs p{
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.buttonSave{
+
+      display: flex;
+    justify-content: end;
+}
+.saqlash{
+    margin-top: 20px;
+    background-color: #0E5344;
+               border: none;
+               color: #fff;
+               padding: 8px 16px;
+               font-size: '16px';
+               border-radius: 50px;
+               justify-content:end;
+               cursor: pointer;
+               height: 40px;
+               width: 135px;
+
+  
+}

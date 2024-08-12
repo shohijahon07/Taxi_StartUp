@@ -6,6 +6,7 @@ import org.example.backend.entity.User;
 import org.example.backend.repository.RoleRepo;
 import org.example.backend.repository.UserRepo;
 import org.example.backend.service.jwt.JwtService;
+import org.shredzone.acme4j.toolbox.JSON;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,10 +30,10 @@ public class AuthServiceIml implements AuthService{
     @Override
     public HttpEntity<?> loginUser(LoginDto loginDto) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getFullName(),loginDto.getPassword())
+                new UsernamePasswordAuthenticationToken(loginDto.getPhoneNumber(),loginDto.getPassword())
         );
-        User user = userRepo.findByFullName(loginDto.getFullName()).orElseThrow();
-        System.out.println(user);
+        User user = userRepo.findByPhoneNumber(loginDto.getPhoneNumber()).orElseThrow();
+
         Map<String, String> tokens = Map.of("access_token", jwtService.generateJwtToken(user),
                 "refresh_token", jwtService.generateJwtRefreshToken(user),"fullName",user.getFullName());
 
@@ -48,15 +49,20 @@ public class AuthServiceIml implements AuthService{
 
     @Override
     public ResponseEntity<?> checkUserRole(String authorization) {
-        System.out.println(authorization);
             String id = jwtService.extractSubject(authorization);
             User user = userRepo.findById(UUID.fromString(id)).orElseThrow();
-        System.out.println(user);
-//            if (user!=null){
             return ResponseEntity.ok(user.getRoles());
-//        }else {
-//            return null;
-//        }
+
+
+    }
+
+    @Override
+    public ResponseEntity<?> checkUserName(String authorization) {
+        String id = jwtService.extractSubject(authorization);
+        User user = userRepo.findById(UUID.fromString(id)).orElseThrow();
+        Map<String, String> tokens = Map.of("id", String.valueOf(user.getId()),
+                "fullName", user.getFullName());
+        return ResponseEntity.ok(tokens);
 
 
     }

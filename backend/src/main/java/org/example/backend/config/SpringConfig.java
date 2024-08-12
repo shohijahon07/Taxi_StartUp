@@ -32,8 +32,8 @@ public class SpringConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(
                 auth -> auth
-                        .requestMatchers("/**","/login","/index.html","/assets/**","/static/**","/*ico","/*.json","/*.png").permitAll()
-                        .requestMatchers("/api/auth/login").permitAll()
+//                        .requestMatchers("/**","/login","/index.html","/assets/**","/static/**","/*ico","/*.json","/*.png").permitAll()
+                        .requestMatchers("/api/auth/login","/api/auth/name").permitAll()
                         .requestMatchers("/","/index.html","/static/**","/*.ico",
                                 "/*.json","/*.png","/*.svg","/*.mp3","/*.mp4","/*.jpeg","/*.m4a","/*.M4A","/*.webm",
                                 "/*.gif","/*.wav","/*.ogg","/*.jpg","/*.pdf"
@@ -47,10 +47,10 @@ public class SpringConfig {
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> {
-            User user = userRepo.findByFullName(username)
+            User user = userRepo.findByPhoneNumber(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User Not found "));
             return new org.springframework.security.core.userdetails.User(
-                    user.getFullName(),
+                    user.getPhoneNumber(),
                     user.getPassword(),
                     new ArrayList<>()
              );
