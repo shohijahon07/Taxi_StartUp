@@ -22,5 +22,5 @@ public class Route_User {
     @ManyToOne
     private Route_Driver routeDriver;
     @ManyToOne
-    private Admin admin;
+    private User user;
 }

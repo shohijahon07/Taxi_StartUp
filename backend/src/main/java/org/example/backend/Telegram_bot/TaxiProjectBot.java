@@ -1,10 +1,10 @@
 package org.example.backend.Telegram_bot;
 
 import lombok.SneakyThrows;
-import org.example.backend.entity.Route_Driver;
+import org.apache.logging.log4j.ThreadContext;
 import org.example.backend.entity.Status;
 import org.example.backend.entity.User;
-import org.example.backend.repository.Route_DriverRepo;
+import org.example.backend.repository.RouteDriverRepo;
 import org.example.backend.repository.UserRepo;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -19,18 +19,19 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
 public class TaxiProjectBot extends TelegramLongPollingBot {
 
     private final UserRepo userRepo;
-    private final Route_DriverRepo routeDriverRepo;
+  private final RouteDriverRepo routeDriverRepo;
     private String language;
 
-    public TaxiProjectBot(UserRepo userRepo, Route_DriverRepo routeDriverRepo) {
+    public TaxiProjectBot(UserRepo userRepo, RouteDriverRepo routeDriverRepo1) {
         this.userRepo = userRepo;
-        this.routeDriverRepo = routeDriverRepo;
+        this.routeDriverRepo = routeDriverRepo1;
     }
 
     @Override
@@ -80,34 +81,60 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     driver_data[4] = message.getText();
 
                     sendMessage.setText("Soatni kiriting:");
-                    List<Long> userIds = userRepo.findAllUserIdsByChatId(chatId);
-                    System.out.println("User IDs: " + userIds);
+
 
                     execute(sendMessage);
                 } else if (driver_data[5] == null) {
                     driver_data[5] = message.getText();
-                    sendMessage.setText("Muvafaqatli qo'shildi");
+                    sendMessage.setText("Muvaffaqatli qo'shildi");
 
-//                    String fromCity = driver_data[0];
-//                    String toCity = driver_data[1];
+                    List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
+                    System.out.println("User IDs: " + userIds);
 
-//                    // Extract numeric value from seat count string
-//                    String countSideStr = driver_data[2].split(" ")[0];  // Split by space and take the first part
-//                    Integer countSide = Integer.valueOf(countSideStr);
-//
-//                    Integer price = Integer.valueOf(driver_data[3]);
-//                    LocalDate localDate = LocalDate.parse(driver_data[4]);
-//                    Time time = Time.valueOf(driver_data[5]);
+                    String fromCity = driver_data[0];
+                    String toCity = driver_data[1];
 
+// Extract the numeric part of countSide from driver_data[2]
+                    String countSideStr = driver_data[2].split(" ")[0];
+                    Integer countSide = Integer.valueOf(countSideStr);
+                    System.out.println(countSideStr);
 
+                    Integer price = Integer.valueOf(driver_data[3]);
 
+// Mapping of Uzbek month names to their corresponding numbers
+                    Map<String, String> monthMap = new HashMap<>();
+                    monthMap.put("yanvar", "01");
+                    monthMap.put("fevral", "02");
+                    monthMap.put("mart", "03");
+                    monthMap.put("aprel", "04");
+                    monthMap.put("may", "05");
+                    monthMap.put("iyun", "06");
+                    monthMap.put("iyul", "07");
+                    monthMap.put("avgust", "08");
+                    monthMap.put("sentabr", "09");
+                    monthMap.put("oktabr", "10");
+                    monthMap.put("noyabr", "11");
+                    monthMap.put("dekabr", "12");
 
-                    // Create a new Route_Driver instance and save it (uncomment the code if needed)
-                    // Route_Driver routeDriver = new Route_Driver(fromCity, toCity, countSide, price, localDate, time, new User());
-                    // routeDriverRepo.save(routeDriver);
+// Assuming driver_data[4] contains a date in format "dd MMMM" (e.g., "23 iyul")
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM", Locale.forLanguageTag("uz"));
+                    String dateInput = driver_data[4];
+                    String[] dateParts = dateInput.split(" ");
+                    String day = dateParts[0];
+                    String month = monthMap.get(dateParts[1].toLowerCase());
+                    String dateStr = "2024-" + month + "-" + day;
+                    LocalDate localDate = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+// Ensure driver_data[5] is in the format HH:mm:ss, if not, adjust accordingly
+                    Time time = Time.valueOf(driver_data[5] + ":00"); // Assuming driver_data[5] is in format HH:mm
+
+// Uncomment and adjust the following lines based on your specific application
+// Route_Driver routeDriver = new Route_Driver(fromCity, toCity, countSide, price, localDate, time, new User());
+// routeDriverRepo.save(routeDriver);
 
                     execute(sendMessage);
                     driver_data = new String[4];
+
                 }
 
             } else if (message.hasContact()) {

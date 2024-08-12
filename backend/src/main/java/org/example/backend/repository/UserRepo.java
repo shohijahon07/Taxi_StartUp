@@ -16,9 +16,8 @@ public interface UserRepo extends JpaRepository<User, UUID> {
     Optional<User> findAllByFullName(String fullName);
 
     List<User> findAllByChatId(Long chatId);
-
     Optional<User> findByChatId(Long chatId);
     @Query("SELECT u.id FROM users u WHERE u.chatId = :chatId")
-    List<Long> findAllUserIdsByChatId(@Param("chatId") Long chatId);
+    List<UUID> findAllUserIdsByChatId(@Param("chatId") Long chatId);
 
 }
