@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -49,6 +48,10 @@ public class User implements UserDetails {
         this.isDriver = isDriver;
         this.status = status;
         this.roles = roles;
+    }
+
+    public User(UUID id) {
+        this.id = id;
     }
 
 
