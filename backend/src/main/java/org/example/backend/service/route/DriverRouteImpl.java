@@ -2,34 +2,55 @@ package org.example.backend.service.route;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.RouteDriverDto;
+import org.example.backend.entity.Route_Driver;
+import org.example.backend.entity.User;
 import org.example.backend.repository.RouteDriverRepo;
+import org.example.backend.repository.UserRepo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 public class DriverRouteImpl implements DriverRouteService{
 private final RouteDriverRepo routeDriverRepo;
+private final UserRepo userRepo;
+
     @Override
     public ResponseEntity<?> getRoute() {
-
-        return null;
+        List<Route_Driver> drivers = routeDriverRepo.findAll();
+        return ResponseEntity.ok(drivers);
     }
 
     @Override
     public HttpEntity<?> saveRoute(RouteDriverDto routeDriverDto) {
-        return null;
+        Route_Driver routeDriver = new Route_Driver(routeDriverDto.getFromCity(), routeDriverDto.getToCity(), routeDriverDto.getCountSide(), routeDriverDto.getPrice(), routeDriverDto.getDay(), routeDriverDto.getHour(), new User(routeDriverDto.getUserId()));
+        routeDriverRepo.save(routeDriver);
+
+        return ResponseEntity.ok("save succesfull");
     }
 
     @Override
     public HttpEntity<?> EditRoute(UUID id, RouteDriverDto routeDriverDto) {
-        return null;
+        User user = userRepo.findById(id).orElseThrow();
+        Route_Driver routeDriver = routeDriverRepo.findByUser(user);
+
+        routeDriver.setCountSide(routeDriverDto.getCountSide());
+        routeDriver.setDay(routeDriverDto.getDay());
+        routeDriver.setHour(routeDriverDto.getHour());
+        routeDriver.setPrice(routeDriverDto.getPrice());
+        routeDriver.setFromCity(routeDriverDto.getFromCity());
+        routeDriver.setToCity(routeDriverDto.getToCity());
+
+        routeDriverRepo.save(routeDriver);
+        return ResponseEntity.ok("edit Successfull");
     }
 
     @Override
     public HttpEntity<?> DeleteRoute(UUID id) {
-        return null;
+        routeDriverRepo.deleteById(id);
+        return ResponseEntity.ok("edit succesful");
     }
 }

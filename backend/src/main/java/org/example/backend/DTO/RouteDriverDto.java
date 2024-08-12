@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.backend.entity.User;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -16,8 +18,8 @@ public class RouteDriverDto {
     private String toCity;
     private Integer countSide;
     private Integer price;
-    private LocalDateTime day;
-    private LocalDateTime hour;
+    private LocalDate day;
+    private Time hour;
     private String userId;
 
 }

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -37,7 +36,7 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    public User(String fullName, String phoneNumber, String password, String chatID, String carType, String carImg, String driverImg, String cardDocument, Boolean isDriver, Status status, List<Role> roles) {
+    public User(String fullName) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.password = password;
@@ -49,6 +48,10 @@ public class User implements UserDetails {
         this.isDriver = isDriver;
         this.status = status;
         this.roles = roles;
+    }
+
+    public User(UUID id) {
+        this.id = id;
     }
 
     @Override
