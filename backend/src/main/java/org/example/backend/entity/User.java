@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String fullName;
     private String phoneNumber;
     private String password;
-    private String chatID;
+    private Long chatId;
     private String carType;
     private String carImg;
     private String driverImg;
@@ -37,11 +37,11 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    public User(String fullName, String phoneNumber, String password, String chatID, String carType, String carImg, String driverImg, String cardDocument, Boolean isDriver, Status status, List<Role> roles) {
+    public User(String fullName, String phoneNumber, String password, Long chatID, String carType, String carImg, String driverImg, String cardDocument, Boolean isDriver, Status status, List<Role> roles) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.chatID = chatID;
+        this.chatId = chatID;
         this.carType = carType;
         this.carImg = carImg;
         this.driverImg = driverImg;
@@ -51,6 +51,16 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+
+
+    public User( Long chatID, Status status , String phoneNumber) {
+        this.chatId = chatID;
+        this.status = status;
+        this.phoneNumber = phoneNumber;
+    }
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -59,6 +69,14 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return fullName;
+    }
+
+    public void setStatus2(Status status) {
+        this.status = status;
+    }
+
+    public Status getStatus2() {
+        return status;
     }
 
     @Override
