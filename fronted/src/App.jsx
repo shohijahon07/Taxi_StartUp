@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom"
 import Login from "./components/auth/Login"
 import Landing from "./components/user/Landing"
+import DriverLanding from "./components/driver/DriverLanding"
+import DriverHeader from "./components/driver/headerD/DriverHeader"
 
 
 function App() {
@@ -10,6 +12,7 @@ function App() {
     <Routes>
                   <Route path='/login' element={<Login/>} />
                   <Route path='/' element={<Landing/>} />
+                  <Route path='/landing' element={<DriverHeader/>} />
 
 
     </Routes>

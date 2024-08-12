@@ -12,4 +12,6 @@ public interface AuthService {
     HttpEntity<?> refreshTokenFunc(String refreshToken);
 
     ResponseEntity<?> checkUserRole(String authorization);
+
+    ResponseEntity<?> checkUserName(String authorization);
 }
