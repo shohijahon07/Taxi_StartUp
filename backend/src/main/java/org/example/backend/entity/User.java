@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String cardDocument;
     private Boolean isDriver=false;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status=Status.START;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
@@ -62,6 +62,8 @@ public class User implements UserDetails {
         this.phoneNumber = phoneNumber;
     }
 
+    public User(String userId) {
+    }
 
 
     @Override

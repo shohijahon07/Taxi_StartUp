@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -26,17 +24,27 @@ public class Route_Driver {
     private Integer countSide;
     private Integer price;
     private LocalDate day;
-    private Time hour;
+    private String hour;
     @ManyToOne
     private User user;
 
-    public Route_Driver(String fromCity, String toCity, Integer countSide, Integer price, LocalDate day, Time hour, User user) {
+    public Route_Driver(String fromCity, String toCity, String countSide, String price, String day, String hour, User user) {
         this.fromCity = fromCity;
         this.toCity = toCity;
-        this.countSide = countSide;
-        this.price = price;
-        this.day = day;
+        this.countSide = Integer.valueOf(countSide);
+        this.price = Integer.valueOf(price);
+        this.day = LocalDate.parse(day);
         this.hour = hour;
         this.user = user;
+    }
+
+    public Route_Driver(String fromCity, String toCity, Integer countSide, Integer price, LocalDate day, String hour, User user) {
+  this.fromCity=fromCity;
+  this.toCity=toCity;
+  this.countSide=countSide;
+  this.price=price;
+  this.day=day;
+  this.hour=hour;
+  this.user=user;
     }
 }
