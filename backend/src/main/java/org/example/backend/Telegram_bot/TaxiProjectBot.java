@@ -19,6 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -113,33 +114,26 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                     if (byId.isPresent()) {
                         Route_Driver routeDriver = byId.get();
-                        routeDriver.setCountSide(Integer.parseInt(countS));
 
-                        routeDriverRepo.save(routeDriver);
+                        try {
+                            int count = Integer.parseInt(countS);
+                            routeDriver.setCountSide(count);
 
-                        sendMessage.setText("Jo'ylar soni muvafaqatli qo'shildi");
+                            routeDriverRepo.save(routeDriver);
+
+                            sendMessage.setText("Jo'ylar soni muvaffaqiyatli qo'shildi");
+                        } catch (NumberFormatException e) {
+                            sendMessage.setText("Kechirasiz, noto'g'ri qiymat kiritildi. Faqat sonlarni kiriting.");
+                        }
+
                         execute(sendMessage);
                     } else {
-                        sendMessage.setText("Kechirasiz, ushbu marshrut topilmadi.");
+                        sendMessage.setText(" Xatolik .");
                         execute(sendMessage);
                     }
+
                 }else if(foundUser.getStatus().equals(Status.NEW_PRICE)){
-                    System.out.println("kirdi");
-                    String price = message.getText();
-                    Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
 
-                    if (byId.isPresent()) {
-                        Route_Driver routeDriver = byId.get();
-                        routeDriver.setPrice(Integer.parseInt(price));
-
-                        routeDriverRepo.save(routeDriver);
-
-                        sendMessage.setText("Narx  muvafaqatli yangilandi");
-                        execute(sendMessage);
-                    } else {
-                        sendMessage.setText("Kechirasiz, ushbu marshrut topilmadi.");
-                        execute(sendMessage);
-                    }
                 }else if(foundUser.getStatus().equals(Status.NEW_DAY)){
                     System.out.println("kirdi");
                     String day = message.getText();
@@ -172,6 +166,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         sendMessage.setText("Iltimos, sanani va oyni kiriting (masalan, '04-20' kuni uchun):");
                         execute(sendMessage);
                     } catch (NumberFormatException e) {
+                        foundUser.setStatus(Status.SET_GO_MONEY);
+                        userRepo.save(foundUser);
                         sendMessage.setText("Noto'g'ri format. Iltimos, faqat son kiritishingiz kerak.");
                         execute(sendMessage);
                     }
@@ -181,10 +177,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     try {
                         foundUser.setStatus(Status.SET_TIME);
                         userRepo.save(foundUser);
-
                         String input = message.getText();
 
-                        // Check if the input text is null or empty before processing it
                         if (input == null || input.isEmpty()) {
                             sendMessage.setText("Sana kiritilmadi yoki noto'g'ri formatda kiritildi. Iltimos, sanani 'kun-oy' formatida kiriting (masalan, '04-29').");
                             execute(sendMessage);
@@ -203,7 +197,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                 LocalDate inputDate = LocalDate.of(currentYear, month, day);
                                 LocalDate today = LocalDate.now();
 
-                                if (inputDate.isBefore(today.minusDays(1)) || inputDate.isAfter(today.plusDays(2))) {
+                                if (inputDate.isBefore(today) || inputDate.isAfter(today.plusDays(2))) {
                                     throw new DateTimeParseException("Sana oraliqdan tashqarida", input, 0);
                                 }
 
@@ -216,47 +210,82 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         } else {
                             throw new DateTimeParseException("Noto'g'ri format", input, 0);
                         }
-                    } catch (DateTimeParseException e) {
+                    }
+                    catch (DateTimeParseException e)
+                    {
+                        foundUser.setStatus(Status.SET_DAY_MONTH);
+                        userRepo.save(foundUser);
                         sendMessage.setText("Noto'g'ri format. Iltimos, sanani 'kun-oy' formatida kiriting (kun 1-31 gacha, oy 1-12 gacha) va bugungi kundan boshlab yana 2 kun kirita olasiz.");
                         execute(sendMessage);
                     } catch (Exception e) {
+                        foundUser.setStatus(Status.SET_DAY_MONTH);
+                        userRepo.save(foundUser);
                         sendMessage.setText("Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
                         execute(sendMessage);
                     }
                 }
 
                 else if (foundUser.getStatus().equals(Status.SET_TIME)) {
-                    List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
-                    driver_data[5] = message.getText();
-                    if (!userIds.isEmpty()) {
-                        foundUser.setStatus(Status.SET_DIRECTIONS);
-                        userRepo.save(foundUser);
-                        User user = userRepo.findById(userIds.get(0)).orElseThrow(() -> new IllegalStateException("User not found"));
+                    try {
+                        List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
+                        // Extract the time from the message
+                        String timeText = message.getText().trim();
 
-                        String fromCity = driver_data[0];
-                        String toCity = driver_data[1];
+                        if (!timeText.matches("\\d{2}:\\d{2}")) {
+                            throw new IllegalArgumentException("Vaqt formati noto‘g‘ri.  Soat: Minut formatida bo'lishi kerak.");
+                        }
 
-                        String countSideStr = driver_data[2].replaceAll("[^0-9]", "");
-                        Integer countSide = Integer.valueOf(countSideStr);
+                        String[] timeParts = timeText.split(":");
+                        int hour = Integer.parseInt(timeParts[0]);
+                        int minute = Integer.parseInt(timeParts[1]);
 
-                        String priceStr = driver_data[3].replaceAll("[^0-9]", "");
-                        Integer price = Integer.valueOf(priceStr);
+                        if (hour > 23 || minute >= 59) {
+                            throw new IllegalArgumentException("Soat  23 kichik va daqiqa  59 kichik bo'lishi kerak.");
+                        }
+
+                        LocalDate today = LocalDate.now();
+                        LocalTime now = LocalTime.now();
 
                         LocalDate day = LocalDate.parse(driver_data[4]);
-                        String hour = driver_data[5];
-                        System.out.println(hour);
-                        Route_Driver routeDriver = new Route_Driver(fromCity, toCity, countSide, price, day, hour, user);
-                        routeDriverRepo.save(routeDriver);
+                        if (day.equals(today)) {
+                            LocalTime inputTime = LocalTime.of(hour, minute);
+                            if (!inputTime.isAfter(now)) {
+                                throw new IllegalArgumentException("Siz bugunki sanani  kiritgan siz vaqtni hozirgi vaqtda keyingi vaqtni kiritishigiz kerakd.");
+                            }
+                        }
 
-                        System.out.println(fromCity + " " + toCity + " " + countSide + " " + price + " " + day + " " + hour);
-                        sendMessage.setText("Muvafafaqiyatli qo'shildi");
-                        sendMessage.setReplyMarkup(directions());
-                        execute(sendMessage);
-                        driver_data = new String[6];
-                    } else {
-                        sendMessage.setText("User not found for the given chat ID");
+                        driver_data[5] = timeText;
+
+                        if (!userIds.isEmpty()) {
+                            foundUser.setStatus(Status.SET_DIRECTIONS);
+                            userRepo.save(foundUser);
+                            User user = userRepo.findById(userIds.get(0)).orElseThrow(() -> new IllegalStateException("User not found"));
+
+                            String fromCity = driver_data[0];
+                            String toCity = driver_data[1];
+
+                            String countSideStr = driver_data[2].replaceAll("[^0-9]", "");
+                            Integer countSide = Integer.valueOf(countSideStr);
+
+                            String priceStr = driver_data[3].replaceAll("[^0-9]", "");
+                            Integer price = Integer.valueOf(priceStr);
+
+                            Route_Driver routeDriver = new Route_Driver(fromCity, toCity, countSide, price, day, timeText, user);
+                            routeDriverRepo.save(routeDriver);
+
+                            sendMessage.setText("Muvafafaqiyatli qo'shildi");
+                            sendMessage.setReplyMarkup(directions());
+                            execute(sendMessage);
+                            driver_data = new String[6];
+                        } else {
+                            sendMessage.setText("User not found for the given chat ID");
+                            execute(sendMessage);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        sendMessage.setText(e.getMessage());
                         execute(sendMessage);
                     }
+
                 }
             } else if (message.hasContact()) {
                 String phoneNumber = message.getContact().getPhoneNumber();
