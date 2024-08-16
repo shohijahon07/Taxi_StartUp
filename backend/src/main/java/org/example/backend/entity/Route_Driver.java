@@ -37,4 +37,14 @@ public class Route_Driver {
         this.hour = hour;
         this.user = user;
     }
+
+    public Route_Driver(String fromCity, String toCity, Integer countSide, Integer price, LocalDate day, String hour, User user) {
+  this.fromCity=fromCity;
+  this.toCity=toCity;
+  this.countSide=countSide;
+  this.price=price;
+  this.day=day;
+  this.hour=hour;
+  this.user=user;
+    }
 }

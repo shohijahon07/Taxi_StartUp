@@ -13,6 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity(name = "to_city")
 @Builder
+@Entity(name = "toCity")
+
 public class ToCity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

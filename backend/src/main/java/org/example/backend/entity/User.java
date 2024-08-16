@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private String fullName;
     private String phoneNumber;
     private String password;
-    private String chatID;
+    private Long chatId;
     private String carType;
     private String carImg;
     private String driverImg;
@@ -34,7 +34,7 @@ public class User implements UserDetails {
 
     private Boolean isDriver=false;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status=Status.START;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
@@ -42,7 +42,7 @@ public class User implements UserDetails {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.chatID = chatID;
+        this.chatId = chatID;
         this.carType = carType;
         this.carImg = carImg;
         this.driverImg = driverImg;
@@ -56,6 +56,18 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+
+
+    public User( Long chatID, Status status , String phoneNumber) {
+        this.chatId = chatID;
+        this.status = status;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public User(String userId) {
+    }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -64,6 +76,14 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return fullName;
+    }
+
+    public void setStatus2(Status status) {
+        this.status = status;
+    }
+
+    public Status getStatus2() {
+        return status;
     }
 
     @Override
