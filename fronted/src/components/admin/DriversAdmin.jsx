@@ -1,0 +1,64 @@
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDrivers } from '../../redux/slices/DriverSlice';
+import { useNavigate } from 'react-router-dom';
+
+function DriversAdmin() {
+const {drivers} = useSelector((state) => state.driver);
+const dispatch = useDispatch();
+
+const [isDriver, setIsDriver] = useState(true);
+useEffect(() => {
+ dispatch(fetchDrivers(isDriver)) 
+  }, []);
+
+    const navigate=useNavigate()
+  function goAboutDrivers(userName){
+navigate(`bir_haydovchi/${userName}`)
+  }
+  return (
+    <div>
+      <table className='table table-success'>
+        <thead>
+          <tr>
+            <th>N#</th>
+            <th>Ism Familiya</th>
+            <th>Telefon Raqam</th>
+            <th>Mashina Rusumi</th>
+            <th>Mashina Rasmi</th>
+            <th>Haydovchilik Guvohnomasi</th>
+            <th>Mashina Texpasporti</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            drivers.map((item,i)=>{
+              return <tr key={item.id}>
+                <td>{i+1}</td>
+                <td>{item.fullName}</td> 
+                <td>{item.phoneNumber}</td> 
+                <td>{item.carType}</td> 
+                <td>
+                <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                  </td> 
+                <td>
+            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+                  </td> 
+                <td>
+            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
+               </td> 
+               <td>
+                <button className='saqlash1' onClick={()=>goAboutDrivers(item.id)}>Haqida</button>
+                <button className='deleteButton'>O'chirish</button>
+               </td>
+                </tr>
+            })
+          }
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+export default DriversAdmin

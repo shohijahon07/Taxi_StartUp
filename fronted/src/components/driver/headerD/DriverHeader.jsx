@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import "./header.css"
 import axios from 'axios';
-import DriverAbout from './DriverAbout';
 import DriverLanding from '../DriverLanding';
+import DriverAbout from '../DriverAbout';
+import { useNavigate } from 'react-router-dom';
 function DriverHeader() {
+  let navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
 
@@ -12,7 +14,11 @@ function DriverHeader() {
   getDriver()
  
 }, []);
-
+function functionDeleteToken() {
+  navigate("/")
+  localStorage.removeItem("access_token")
+  localStorage.removeItem("refresh_token")
+}
 
     function getDriver(){
       axios({
@@ -34,7 +40,7 @@ function DriverHeader() {
             <li className='list-group-item'onClick={()=>setOpen(true)} >Men Haqimda</li>
             <li className='list-group-item' onClick={()=>setOpen(false)} >Yo'nalish</li>
             <li className='list-group-item'>
-              <button className='logOut'>Log Out</button>
+              <button className='logOut'  onClick={()=>functionDeleteToken()}>Log Out</button>
             </li>
           </ul>
         </div>

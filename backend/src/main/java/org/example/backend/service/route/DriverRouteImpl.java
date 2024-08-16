@@ -10,6 +10,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ private final UserRepo userRepo;
 
     @Override
     public HttpEntity<?> saveRoute(RouteDriverDto routeDriverDto) {
+        System.out.println(routeDriverDto);
         Route_Driver routeDriver = new Route_Driver(routeDriverDto.getFromCity(), routeDriverDto.getToCity(), routeDriverDto.getCountSide(), routeDriverDto.getPrice(), routeDriverDto.getDay(), routeDriverDto.getHour(), new User(routeDriverDto.getUserId()));
         routeDriverRepo.save(routeDriver);
 
@@ -34,13 +37,12 @@ private final UserRepo userRepo;
 
     @Override
     public HttpEntity<?> EditRoute(UUID id, RouteDriverDto routeDriverDto) {
-        User user = userRepo.findById(id).orElseThrow();
-        Route_Driver routeDriver = routeDriverRepo.findByUser(user);
+        Route_Driver routeDriver = routeDriverRepo.findById(id).orElseThrow();
 
-        routeDriver.setCountSide(routeDriverDto.getCountSide());
-        routeDriver.setDay(routeDriverDto.getDay());
-        routeDriver.setHour(routeDriverDto.getHour());
-        routeDriver.setPrice(routeDriverDto.getPrice());
+        routeDriver.setCountSide(Integer.valueOf(routeDriverDto.getCountSide()));
+        routeDriver.setDay(LocalDate.parse(routeDriverDto.getDay()));
+        routeDriver.setHour(String.valueOf(routeDriverDto.getHour()));
+        routeDriver.setPrice(Integer.valueOf(routeDriverDto.getPrice()));
         routeDriver.setFromCity(routeDriverDto.getFromCity());
         routeDriver.setToCity(routeDriverDto.getToCity());
 
@@ -52,5 +54,13 @@ private final UserRepo userRepo;
     public HttpEntity<?> DeleteRoute(UUID id) {
         routeDriverRepo.deleteById(id);
         return ResponseEntity.ok("edit succesful");
+    }
+
+    @Override
+    public ResponseEntity<?> getRouteByDriver(UUID id) {
+        User user = userRepo.findById(id).orElseThrow();
+        List<Route_Driver> drivers = routeDriverRepo.findAllByUser(user);
+
+        return ResponseEntity.ok(drivers);
     }
 }

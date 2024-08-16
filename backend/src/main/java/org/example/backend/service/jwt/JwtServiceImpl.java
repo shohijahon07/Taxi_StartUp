@@ -30,7 +30,7 @@ public class JwtServiceImpl implements JwtService {
     public String generateJwtRefreshToken(User user) {
         return Jwts.builder()
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 50))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 100))
                 .subject(user.getId().toString())
                 .signWith(signWithKey())
                 .compact();
