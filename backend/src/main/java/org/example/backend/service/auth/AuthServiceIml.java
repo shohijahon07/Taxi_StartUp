@@ -2,6 +2,7 @@ package org.example.backend.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.LoginDto;
+import org.example.backend.entity.Role;
 import org.example.backend.entity.User;
 import org.example.backend.repository.RoleRepo;
 import org.example.backend.repository.UserRepo;
@@ -33,9 +34,12 @@ public class AuthServiceIml implements AuthService{
                 new UsernamePasswordAuthenticationToken(loginDto.getPhoneNumber(),loginDto.getPassword())
         );
         User user = userRepo.findByPhoneNumber(loginDto.getPhoneNumber()).orElseThrow();
-
+        Role roles = null;
+        for (Role role : user.getRoles()) {
+            roles=role;
+        }
         Map<String, String> tokens = Map.of("access_token", jwtService.generateJwtToken(user),
-                "refresh_token", jwtService.generateJwtRefreshToken(user),"fullName",user.getFullName());
+                "refresh_token", jwtService.generateJwtRefreshToken(user),"fullName",user.getFullName(),"role", roles.getName());
 
         return ResponseEntity.ok(tokens);
     }

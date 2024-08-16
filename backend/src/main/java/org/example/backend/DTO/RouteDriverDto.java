@@ -16,10 +16,10 @@ import java.util.UUID;
 public class RouteDriverDto {
     private String fromCity;
     private String toCity;
-    private Integer countSide;
-    private Integer price;
-    private LocalDate day;
-    private Time hour;
-    private String userId;
+    private String countSide;
+    private String price;
+    private String day;
+    private String hour;
+    private UUID userId;
 
 }

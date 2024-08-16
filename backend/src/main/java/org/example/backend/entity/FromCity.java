@@ -11,6 +11,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "from_city")
 @Builder
 public class FromCity {
     @Id
@@ -19,5 +20,7 @@ public class FromCity {
     private UUID id;
     private String name;
 
-
+    public FromCity(String name) {
+        this.name = name;
+    }
 }

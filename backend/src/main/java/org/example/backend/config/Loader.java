@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -30,11 +31,12 @@ public class Loader implements CommandLineRunner {
         if (all.isEmpty()){
             List<Role> roles = roleRepo.saveAll(List.of(
 
-                    new Role("ROLE_DRIVER"),
+
                     new Role("ROLE_ADMIN")
 
             ));
-            User user = new User("Bekzod");
+
+            User user = new User("Bekzod","+998900809272",passwordEncoder.encode("1999"),null,null,null,null,null,false,null,roles);
             userRepo.save(user);
         }
     }

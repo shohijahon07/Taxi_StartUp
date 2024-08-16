@@ -14,4 +14,6 @@ public interface DriverRouteService {
     HttpEntity<?> EditRoute(UUID id, RouteDriverDto routeDriverDto);
 
     HttpEntity<?> DeleteRoute(UUID id);
+
+    ResponseEntity<?> getRouteByDriver(UUID id);
 }

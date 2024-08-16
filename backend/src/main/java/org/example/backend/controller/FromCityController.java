@@ -1,8 +1,9 @@
 package org.example.backend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.DTO.FromCityDto;
 import org.example.backend.DTO.RouteDriverDto;
-import org.example.backend.service.route.DriverRouteImpl;
+import org.example.backend.service.fromCity.FromCityService;
 import org.example.backend.service.route.DriverRouteService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -11,28 +12,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/driver")
+@RequestMapping("/api/fromCity")
 @RequiredArgsConstructor
-public class DriverController {
-    private final DriverRouteService driverRouteService;
+public class FromCityController {
+    private final FromCityService fromCityService;
 
     @GetMapping
-    public ResponseEntity<?> checkUserRoles(){
-        return driverRouteService.getRoute();
+    public ResponseEntity<?> getRoute(){
+        return fromCityService.getCity();
     }
     @PostMapping
 //    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
-    public HttpEntity<?> saveRoute( @RequestBody RouteDriverDto routeDriverDto){
-        return driverRouteService.saveRoute(routeDriverDto);
+    public HttpEntity<?> saveCity( @RequestBody FromCityDto fromCityDto){
+
+        return fromCityService.saveCity(fromCityDto);
     }
     @PutMapping
 //    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
-    public HttpEntity<?> EditRoute( @RequestParam UUID id, @RequestBody RouteDriverDto routeDriverDto){
-        return driverRouteService.EditRoute( id,routeDriverDto);
+    public HttpEntity<?> EditCity( @RequestParam UUID id, @RequestBody FromCityDto fromCityDto){
+        return fromCityService.EditCity(id,fromCityDto);
     }
     @DeleteMapping
 //    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
     public HttpEntity<?> DeleteRoute(@RequestParam UUID id){
-        return driverRouteService.DeleteRoute( id);
+        return fromCityService.DeleteRoute( id);
     }
 }

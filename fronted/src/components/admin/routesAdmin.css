@@ -1,0 +1,68 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+}
+
+.leftCity{
+    width: 350px;
+    /* border: 2px solid; */
+
+}
+.rightCity{
+    width: 350px;
+    /* border: 2px solid; */
+}
+.tableCity{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.liFromCity{
+    margin-top: 5px;
+display: flex;
+justify-content: space-between;
+}
+.ulDriversOne{
+    text-shadow: 1px 1px 2px gray;
+    /* margin-top: 50px; */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border:none;
+}
+
+.pTextDriversOne{
+    text-shadow: 1px 1px 2px gray;
+    margin-left: 170px;
+    font-size: 19px;
+}
+.pTextDriversOne1{
+    margin-top: 30px;
+    text-shadow: 1px 1px 2px gray;
+    margin-left: 170px;
+    font-size: 22px;
+}
+.back{
+    width: 90px;
+    height: 45px;
+    font-size: 18px;
+    background-color: gray;
+    color:white;
+    border:none;
+    border-radius: 5px;
+}
+.driverOneHaeder{
+    margin-top: 20px;
+    margin-left: 10px;
+}
+.StaticsText p{
+    margin-left: 130px;
+    margin-top: 50px;
+    font-size: 20px;
+}
+.StaticsText1 p{
+    margin-left: 130px;
+    font-size: 20px;
+}

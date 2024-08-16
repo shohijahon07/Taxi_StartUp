@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.beginAdmin{
+ max-width: 1504px;
+ padding: 0 20px;
+}
+.ul_admin{
+    margin-top: 20px;
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: space-around;
+}
+.ul_admin li{
+    cursor: pointer;
+    font-size: 20px;
+}
+.RoutesAdminInput{
+    display: flex;
+    align-items:center;
+    gap: 10px;
+
+}
+.inputRoute p{
+    margin: 5px 0;
+    padding: 0;
+}
+.inputRoute input{
+    width: 300px;
+}

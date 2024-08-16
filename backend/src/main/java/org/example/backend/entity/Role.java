@@ -1,14 +1,13 @@
 package org.example.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -17,8 +16,9 @@ import org.springframework.security.core.GrantedAuthority;
 @Builder
 public class Role implements GrantedAuthority {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "uuid default gen_random_uuid()")
+    private UUID id;
 
     private String name;
 

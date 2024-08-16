@@ -8,6 +8,7 @@ import PhoneInput from "react-phone-input-2";
 
 function Login() {
     const [user, setUser] = useState({ phoneNumber: '', password: '' });
+    const [role, setRole] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
     const navigate = useNavigate();
@@ -26,10 +27,16 @@ function Login() {
                 .then((res) => {
                     setLoading(false);
                     if (res.data) {
+                        console.log(res.data);
                         localStorage.setItem('access_token', res.data.access_token);
                         localStorage.setItem('refresh_token', res.data.refresh_token);
                         setUser({ phoneNumber: '', password: '' });
-                        navigate("/landing");
+                        if (res.data.role==="ROLE_ADMIN") {
+                            navigate("/bosh_sahifa");
+
+                        }else if(res.data.role==="ROLE_DRIVER"){
+                            navigate("/landing");
+                        }
                     } else {
                         toast.error("Yaroqsiz parol yoki yaroqsiz username.");
                     }

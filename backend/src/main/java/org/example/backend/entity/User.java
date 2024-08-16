@@ -30,13 +30,15 @@ public class User implements UserDetails {
     private String carImg;
     private String driverImg;
     private String cardDocument;
+    private String about;
+
     private Boolean isDriver=false;
     @Enumerated(EnumType.STRING)
     private Status status;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    public User(String fullName) {
+    public User(String fullName, String phoneNumber, String password, String chatID, String carType, String carImg, String driverImg, String cardDocument, Boolean isDriver, Status status, List<Role> roles) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.password = password;
