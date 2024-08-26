@@ -5,6 +5,7 @@ import DriverLanding from "./components/driver/DriverLanding"
 import DriverHeader from "./components/driver/headerD/DriverHeader"
 import AdminHeder from "./components/admin/adminHeader/AdminHeder"
 import AboutDriversOne from "./components/admin/AboutDriversOne"
+import Register from "./components/auth/Register"
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                   <Route path='/landing' element={<DriverHeader/>} />
                   <Route path='/bosh_sahifa' element={<AdminHeder/>} />
                   <Route path='/bosh_sahifa/bir_haydovchi/:userName' element={<AboutDriversOne/>} />
+                  <Route path='/register' element={<Register/>} />
 
 
     </Routes>

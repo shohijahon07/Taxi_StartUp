@@ -3,20 +3,29 @@ package org.example.backend.service.driver;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
+import org.example.backend.DTO.UserDto;
 import org.example.backend.entity.Role;
 import org.example.backend.entity.User;
+import org.example.backend.repository.RoleRepo;
 import org.example.backend.repository.UserRepo;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
+
 @RequiredArgsConstructor
 @Service
 public class UserImpl implements UserService{
     private final UserRepo userRepo;
+    private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
     @Override
     public ResponseEntity<?> getDriverOne(UUID id) {
@@ -34,7 +43,6 @@ public class UserImpl implements UserService{
 
     @Override
     public HttpEntity<?> editDriver(UUID id, DriverDto driverDto) {
-
         User user = userRepo.findById(id).orElseThrow();
         user.setDriverImg(driverDto.getDriverImg());
         user.setAbout(driverDto.getAbout());
@@ -55,11 +63,46 @@ public class UserImpl implements UserService{
 
     @Override
     public HttpEntity<?> editDriverIsDriving(UUID id, IsDriving isDriving) {
-        User user = userRepo.findById(id).orElseThrow();
-        user.setIsDriver(isDriving.getIsDriver());
-        user.setPassword(passwordEncoder.encode(isDriving.getPassword()));
-        userRepo.save(user);
-        return ResponseEntity.ok("edit Successfull");
+        try {
+            User user = userRepo.findById(id).orElseThrow();
+
+            // Parolni encode qilmasdan oldingi original holati
+            String plainPassword = isDriving.getPassword();
+
+            // Parolni encode qilish
+            user.setPassword(passwordEncoder.encode(plainPassword));
+            user.setIsDriver(isDriving.getIsDriver());
+            userRepo.save(user);
+
+            String apiToken = "6995954341:AAFa0pZzNkGS2NJ0VDuMDO0K7Jlqwgs7-jE";
+            String chatId = String.valueOf(user.getChatId());
+            String text = "Sizning parolingiz: " + plainPassword;
+
+            String urlString = "https://api.telegram.org/bot" + apiToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
+
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuilder content = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+
+            in.close();
+            conn.disconnect();
+
+            System.out.println(content.toString());
+
+            return ResponseEntity.ok("edit Successful");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message");
+        }
     }
 
     @Override
@@ -73,4 +116,50 @@ public class UserImpl implements UserService{
         Integer users = userRepo.countAllByRoles(roleDriver);
         return ResponseEntity.ok(users);
     }
+
+    @Override
+    public Map<String, String> getSubmitForData(UUID id) {
+        Optional<User> byId = userRepo.findById(id);
+
+        Map<String, String> result = new HashMap<>();
+
+        if (byId.isPresent()) {
+            User user = byId.get();
+
+            String chatID = String.valueOf(user.getChatId());
+            String password = user.getPassword();
+
+            result.put("chatID", chatID);
+            result.put("password", password);
+        } else {
+            result.put("error", "User not found with id: " + id);
+        }
+
+        return result;
+    }
+    @Override
+    public void saveUser(UserDto userDto) {
+        List<Role> roles = new ArrayList<>();
+        Role driverRole = roleRepo.findByName("ROLE_DRIVER");
+        if (driverRole == null) {
+            driverRole = new Role("ROLE_DRIVER");
+            roleRepo.save(driverRole);
+        }
+        roles.add(driverRole);
+
+        User user = new User(
+                userDto.getFullName(),
+                userDto.getCarType(),
+                userDto.getCarImg(),
+                userDto.getDriverImg(),
+                userDto.getCardDocument(),
+                userDto.getChatId(),
+                roles
+        );
+
+        userRepo.save(user);
+    }
+
+
+
 }

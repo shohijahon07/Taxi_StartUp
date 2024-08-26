@@ -2,13 +2,14 @@ package org.example.backend.Telegram_bot;
 
 import lombok.SneakyThrows;
 import org.example.backend.entity.*;
-import org.example.backend.repository.FromCityRepo;
-import org.example.backend.repository.RouteDriverRepo;
-import org.example.backend.repository.ToCityRepo;
-import org.example.backend.repository.UserRepo;
+import org.example.backend.repository.*;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
@@ -31,13 +32,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     private final RouteDriverRepo routeDriverRepo;
     private final FromCityRepo fromCityRepo;
     private final ToCityRepo toCityRepo;
-
-
     private String language;
     private String id;
 
-
-    public TaxiProjectBot(UserRepo userRepo, RouteDriverRepo routeDriverRepo1, FromCityRepo fromCityRepo, ToCityRepo toCityRepo) {
+    public TaxiProjectBot(UserRepo userRepo,RouteDriverRepo routeDriverRepo1, FromCityRepo fromCityRepo, ToCityRepo toCityRepo) {
         this.userRepo = userRepo;
         this.routeDriverRepo = routeDriverRepo1;
         this.fromCityRepo = fromCityRepo;
@@ -54,7 +52,14 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         return "jonkatoychoq_bot";
     }
     private String[] driver_data = new String[6];
+    private String[] driver_data_path = new String[3];
+    private String[] band_delete_data = new String[2];
     private  String[] status = new String[6];
+    private String name="";
+    private  String fullName="";
+    private String[] dataParts;
+    private Integer count=1;
+    private UUID idPassenger;
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
@@ -71,23 +76,94 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             } else {
                 foundUser.setChatId(chatId);
             }
-
             userRepo.save(foundUser);
-
-
             System.out.println(foundUser);
             if (message.hasText()) {
                 System.out.println("array: " + Arrays.toString(driver_data));
-                User user1 = new User();
+                for (FromCity fromCity : fromCityRepo.findAll()) {
+                    name = fromCity.getName();
+                }
+
                 if (foundUser.getStatus().equals(Status.START)&&message.getText().equalsIgnoreCase("/start")&&foundUser.getIsDriver().equals(false)) {
                     sendMessage.setText("Iltimos tilni tanlang! Пожалуйста, выберите язык!");
                     sendMessage.setReplyMarkup(selectLanguageButtons());
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
+                }else if (foundUser.getStatus().equals(Status.SET_CITY_FROM_SAVE)) {
+                    foundUser.setStatus(Status.GET_PASSENGER_PATH);
+                    userRepo.save(foundUser);
+                    driver_data_path[0] = message.getText();
+                    sendMessage.setText("Qayerga bormoqchisiz?");
+                    sendMessage.setReplyMarkup(toCitysButtonsReply());
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
                 }
+                else if (foundUser.getStatus().equals(Status.GET_PASSENGER_PATH)) {
+                    System.out.println(driver_data_path[0]);
+                    System.out.println(driver_data_path[1]);
+                    driver_data_path[1] = message.getText();
+                    String fromCity = driver_data_path[0];
+                    String toCity = driver_data_path[1];
+
+                    List<Route_Driver> routeDrivers = routeDriverRepo.findAllByFromCityAndToCity(fromCity, toCity);
+                    System.out.println(routeDrivers);
+
+                    if (!routeDrivers.isEmpty()) {
+                        Route_Driver routeDriver = routeDrivers.get(0);
+                        String carImgFileName = routeDriver.getUser().getCarImg();
+                        System.out.println("Car image file name: " + carImgFileName);
+
+                        SendPhoto sendPhoto = new SendPhoto();
+                        sendPhoto.setChatId(chatId);
+                        String basePath = "C:/Users/user/Desktop/Taxi_project/backend/files/";
+                        String fullPath = basePath + carImgFileName.trim();
+                        java.io.File file = new java.io.File(fullPath);
+                        System.out.println("Fayl yo'li: " + fullPath);
+                        System.out.println("Fayl mavjudmi: " + file.exists());
+                        System.out.println("Fayl mavjud bo'lmagan joyni tekshirish: " + file.getAbsolutePath());
+
+                        if (file.exists()) {
+                            sendPhoto.setPhoto(new InputFile(file));
+                            execute(sendPhoto);
+                        } else {
+                            sendMessage.setChatId(chatId);
+                            sendMessage.setText("Rasmni yuk bo'lmadi: noto'g'ri URL yoki fayl manzili");
+                            execute(sendMessage);
+                            return;
+                        }
+
+                        sendMessage.setChatId(chatId);
+                        Long chatId1 = routeDriver.getUser().getChatId();
+                        sendMessage.setText(
+                                "Telefon raqami: " + routeDriver.getUser().getPhoneNumber() + " \n" +
+                                        "Sana: " + routeDriver.getDay() + "\n" +
+                                        "Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
+                                        "Narxi: " + routeDriver.getPrice() + " So'm");
+                        sendMessage.setReplyMarkup(Passsenger(chatId1));
+                        execute(sendMessage);
+                    } else {
+                        foundUser.setStatus(Status.BACK);
+                        userRepo.save(foundUser);
+                        sendMessage.setChatId(chatId);
+                        sendMessage.setText("Bunday yo'lga hozircha haydovchi yo'q");
+                        sendMessage.setReplyMarkup(NotPath());
+                        execute(sendMessage);
+                    }
+                }
+                else if(foundUser.getStatus().equals(Status.BACK)&&message.getText().equals("Orqaga qaytish")){
+                    sendMessage.setText("Qayerdan");
+                    sendMessage.setReplyMarkup(fromCitysButtonsReply());
+
+                    foundUser.setStatus(Status.SET_CITY_FROM_SAVE);
+                    userRepo.save(foundUser);
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                }
+
                 if (foundUser.getStatus().equals(Status.START)&&message.getText().equalsIgnoreCase("/start")&&foundUser.getIsDriver().equals(true)){
-                   foundUser.setStatus(Status.SET_FROM);
-                   userRepo.save(foundUser);
+
+                    foundUser.setStatus(Status.SET_FROM);
+                    userRepo.save(foundUser);
                     sendMessage.setText("Yo'nalishingizni kiriting \n Qayerdan?");
                     sendMessage.setReplyMarkup(fromCitysButtons());
                     execute(sendMessage);
@@ -122,6 +198,18 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             routeDriverRepo.save(routeDriver);
 
                             sendMessage.setText("Jo'ylar soni muvaffaqiyatli qo'shildi");
+                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
+                            for (Route_Driver routeDriver2 : routeDriverRepo.findAll()) {
+                                if (userIds.contains(routeDriver2.getUser().getId())) {
+                                    sendMessage.setText(routeDriver2.getFromCity() + "-" + routeDriver2.getToCity() + "\n" +
+                                            "Bo'sh-jo'ylar soni: " + routeDriver2.getCountSide() + " \n" +
+                                            "Narxi: " + routeDriver2.getPrice() + " so'm \n" +
+                                            routeDriver2.getDay() + " " + routeDriver2.getHour()
+                                    );
+                                    sendMessage.setReplyMarkup(directionData(routeDriver2.getId()));
+                                    execute(sendMessage);
+                                }
+                            }
                         } catch (NumberFormatException e) {
                             sendMessage.setText("Kechirasiz, noto'g'ri qiymat kiritildi. Faqat sonlarni kiriting.");
                         }
@@ -132,31 +220,83 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         execute(sendMessage);
                     }
 
-                }else if(foundUser.getStatus().equals(Status.NEW_PRICE)){
+                }
 
-                }else if(foundUser.getStatus().equals(Status.NEW_DAY)){
-                    System.out.println("kirdi");
-                    String day = message.getText();
-                    Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
+                else if(foundUser.getStatus().equals(Status.NEW_DAY)){
+                    try {
+                        System.out.println("kirdi");
 
-                    if (byId.isPresent()) {
-                        Route_Driver routeDriver = byId.get();
-                        routeDriver.setDay(LocalDate.parse(day));
+                        LocalDate inputDate = validateAndParseDate(message.getText());
 
+                        Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
+                        if (byId.isPresent()) {
+                            Route_Driver routeDriver = byId.get();
+                            routeDriver.setDay(inputDate);
+                            routeDriverRepo.save(routeDriver);
 
-
-
-
-                        routeDriverRepo.save(routeDriver);
-
-                        sendMessage.setText("Sana muvafaqatli yangilandi");
+                            sendMessage.setText("Sana muvafaqatli yangilandi");
+                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
+                            for (Route_Driver routeDriver2 : routeDriverRepo.findAll()) {
+                                if (userIds.contains(routeDriver2.getUser().getId())) {
+                                    sendMessage.setText(routeDriver2.getFromCity() + "-" + routeDriver2.getToCity() + "\n" +
+                                            "Bo'sh-jo'ylar soni: " + routeDriver2.getCountSide() + " \n" +
+                                            "Narxi: " + routeDriver2.getPrice() + " so'm \n" +
+                                            routeDriver2.getDay() + " " + routeDriver2.getHour()
+                                    );
+                                    sendMessage.setReplyMarkup(directionData(routeDriver2.getId()));
+                                    execute(sendMessage);
+                                }
+                            }
+                            execute(sendMessage);
+                        } else {
+                            sendMessage.setText("Xatolik mavjud.");
+                            execute(sendMessage);
+                        }
+                    } catch (DateTimeParseException e) {
+                        sendMessage.setText("Noto'g'ri format. Iltimos, sanani 'kun-oy' formatida kiriting (kun 1-31 gacha, oy 1-12 gacha) va bugungi kundan boshlab yana 2 kun kirita olasiz.");
                         execute(sendMessage);
-                    } else {
-                        sendMessage.setText("Xatolik mavjud.");
+                    } catch (Exception e) {
+                        sendMessage.setText("Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
                         execute(sendMessage);
                     }
                 }
+                else if (foundUser.getStatus().equals(Status.NEW_TIME)) {
+                    System.out.println("kirdi");
+                    System.out.println(id);
+                    String time = message.getText().trim();
+                    Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
+                    try {
+                        Route_Driver routeDriver1 = byId.get();
+                        LocalDate day = routeDriver1.getDay();
+                        validateTime(time, String.valueOf(day));
+                        if (byId.isPresent()) {
+                            Route_Driver routeDriver = byId.get();
+                            routeDriver.setHour(time);
+                            routeDriverRepo.save(routeDriver);
 
+                            sendMessage.setText("Soat muvafaqatli yangilandi");
+                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
+                            for (Route_Driver routeDriver2 : routeDriverRepo.findAll()) {
+                                if (userIds.contains(routeDriver2.getUser().getId())) {
+                                    sendMessage.setText(routeDriver2.getFromCity() + "-" + routeDriver2.getToCity() + "\n" +
+                                            "Bo'sh-jo'ylar soni: " + routeDriver2.getCountSide() + " \n" +
+                                            "Narxi: " + routeDriver2.getPrice() + " so'm \n" +
+                                            routeDriver2.getDay() + " " + routeDriver2.getHour()
+                                    );
+                                    sendMessage.setReplyMarkup(directionData(routeDriver2.getId()));
+                                    execute(sendMessage);
+                                }
+                            }
+                            execute(sendMessage);
+                        } else {
+                            sendMessage.setText("Xatolik mavjud.");
+                            execute(sendMessage);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        sendMessage.setText(e.getMessage());
+                        execute(sendMessage);
+                    }
+                }
                 else if (foundUser.getStatus().equals(Status.SET_GO_MONEY)) {
                     try {
                         foundUser.setStatus(Status.SET_DAY_MONTH);
@@ -177,42 +317,12 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     try {
                         foundUser.setStatus(Status.SET_TIME);
                         userRepo.save(foundUser);
-                        String input = message.getText();
 
-                        if (input == null || input.isEmpty()) {
-                            sendMessage.setText("Sana kiritilmadi yoki noto'g'ri formatda kiritildi. Iltimos, sanani 'kun-oy' formatida kiriting (masalan, '04-29').");
-                            execute(sendMessage);
-                            return;
-                        }
-
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM");
-                        String[] parts = input.split("-");
-
-                        if (parts.length == 2 && parts[0].length() == 2 && parts[1].length() == 2) {
-                            int day = Integer.parseInt(parts[0]);
-                            int month = Integer.parseInt(parts[1]);
-
-                            if (day >= 1 && day <= 31 && month >= 1 && month <= 12) {
-                                int currentYear = LocalDate.now().getYear();
-                                LocalDate inputDate = LocalDate.of(currentYear, month, day);
-                                LocalDate today = LocalDate.now();
-
-                                if (inputDate.isBefore(today) || inputDate.isAfter(today.plusDays(2))) {
-                                    throw new DateTimeParseException("Sana oraliqdan tashqarida", input, 0);
-                                }
-
-                                driver_data[4] = inputDate.toString();
-                                sendMessage.setText("Soatni kiriting (masalan, 01:50)");
-                                execute(sendMessage);
-                            } else {
-                                throw new DateTimeParseException("Noto'g'ri oy yoki kun", input, 0);
-                            }
-                        } else {
-                            throw new DateTimeParseException("Noto'g'ri format", input, 0);
-                        }
-                    }
-                    catch (DateTimeParseException e)
-                    {
+                        LocalDate inputDate = validateAndParseDate(message.getText());
+                        driver_data[4] = inputDate.toString();
+                        sendMessage.setText("Soatni kiriting (masalan, 01:50)");
+                        execute(sendMessage);
+                    } catch (DateTimeParseException e) {
                         foundUser.setStatus(Status.SET_DAY_MONTH);
                         userRepo.save(foundUser);
                         sendMessage.setText("Noto'g'ri format. Iltimos, sanani 'kun-oy' formatida kiriting (kun 1-31 gacha, oy 1-12 gacha) va bugungi kundan boshlab yana 2 kun kirita olasiz.");
@@ -224,35 +334,12 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         execute(sendMessage);
                     }
                 }
-
                 else if (foundUser.getStatus().equals(Status.SET_TIME)) {
                     try {
                         List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
-                        // Extract the time from the message
                         String timeText = message.getText().trim();
 
-                        if (!timeText.matches("\\d{2}:\\d{2}")) {
-                            throw new IllegalArgumentException("Vaqt formati noto‘g‘ri.  Soat: Minut formatida bo'lishi kerak.");
-                        }
-
-                        String[] timeParts = timeText.split(":");
-                        int hour = Integer.parseInt(timeParts[0]);
-                        int minute = Integer.parseInt(timeParts[1]);
-
-                        if (hour > 23 || minute >= 59) {
-                            throw new IllegalArgumentException("Soat  23 kichik va daqiqa  59 kichik bo'lishi kerak.");
-                        }
-
-                        LocalDate today = LocalDate.now();
-                        LocalTime now = LocalTime.now();
-
-                        LocalDate day = LocalDate.parse(driver_data[4]);
-                        if (day.equals(today)) {
-                            LocalTime inputTime = LocalTime.of(hour, minute);
-                            if (!inputTime.isAfter(now)) {
-                                throw new IllegalArgumentException("Siz bugunki sanani  kiritgan siz vaqtni hozirgi vaqtda keyingi vaqtni kiritishigiz kerakd.");
-                            }
-                        }
+                        validateTime(timeText, driver_data[4]);
 
                         driver_data[5] = timeText;
 
@@ -269,6 +356,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                             String priceStr = driver_data[3].replaceAll("[^0-9]", "");
                             Integer price = Integer.valueOf(priceStr);
+
+                            LocalDate day = LocalDate.parse(driver_data[4]);
 
                             Route_Driver routeDriver = new Route_Driver(fromCity, toCity, countSide, price, day, timeText, user);
                             routeDriverRepo.save(routeDriver);
@@ -287,17 +376,27 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     }
 
                 }
-            } else if (message.hasContact()) {
+            }
+            else if (message.hasContact()) {
                 String phoneNumber = message.getContact().getPhoneNumber();
+                String firstName = message.getContact().getFirstName();
+                String lastName = message.getContact().getLastName();
+
+                if (lastName == null || lastName.isEmpty()) {
+                    fullName = firstName;
+                } else {
+                    fullName = firstName + " " + lastName;
+                }
+                foundUser.setStatus(Status.DIRECTIONS);
+                userRepo.save(foundUser);
                 User admin = selectUser(chatId, phoneNumber);
                 if ("uz".equals(language)) {
-
                     sendMessage.setText("Assalom eleykum botimizga xush kelibsiz! " +
                             "Pastdagi knopkalardan birini tanlang. Siz haydovchimi yoki yo'lovchi?");
                 } else if ("ru".equals(language)) {
                     sendMessage.setText("Добро пожаловать в наш бот! Выберите одну из кнопок ниже. Вы водитель или пассажир?");
                 }
-                sendMessage.setReplyMarkup(selectInlineRoleButtons());
+                sendMessage.setReplyMarkup(selectInlineRoleButtons( chatId));
                 execute(sendMessage);
             }
         }
@@ -321,14 +420,21 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 sendMessage.setText("Iltimos telefon raqamingizni yuboring:");
                 sendMessage.setReplyMarkup(genContactButtons(language));
                 execute(sendMessage);
-                return;
             } else if (data.equals("ru") && !user.getIsDriver()) {
                 language = "ru";
                 sendMessage.setText("Пожалуйста, отправьте ваш номер телефона!");
                 sendMessage.setReplyMarkup(genContactButtons(language));
                 execute(sendMessage);
-                return;
+            }else if (data.equals("Passengers")) {
+                user.setStatus(Status.SET_CITY_FROM_SAVE);
+                user.setFullName(fullName);
+                userRepo.save(user);
+                sendMessage.setText("Qayerdan");
+                sendMessage.setReplyMarkup(fromCitysButtonsReply());
+                sendMessage.setChatId(chatId);
+                execute(sendMessage);
             }
+
 
             boolean cityFound = false;
 
@@ -360,7 +466,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                     execute(sendMessage);
                 }
-            }else if(data.startsWith("money")){
+            }
+            else if(data.startsWith("money")){
                 String[] dataParts = data.split(":");
                 System.out.println("money kirdi");
                 sendMessage.setText("Narxni yangi qiymatini kiriting:");
@@ -374,7 +481,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                     execute(sendMessage);
                 }
-            }else if(data.startsWith("day")){
+            }
+            else if(data.startsWith("day")){
                 String[] dataParts = data.split(":");
                 System.out.println("day kirdi");
                 sendMessage.setText("Sanani yangi qiymatini kiriting:");
@@ -389,6 +497,165 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     execute(sendMessage);
                 }
             }
+            else if(data.startsWith("time")){
+                String[] dataParts = data.split(":");
+                System.out.println("time kirdi");
+                sendMessage.setText("Soatni  yangi qiymatini kiriting:");
+                if (dataParts.length > 1) {
+                    id = String.valueOf(UUID.fromString(dataParts[1]));
+                    System.out.println(id);
+                    user.setStatus(Status.NEW_TIME);
+                    userRepo.save(user);
+                    sendMessage.setChatId(chatId.toString());
+                    sendMessage.setReplyMarkup(new ForceReplyKeyboard());
+                    execute(sendMessage);
+                }
+            }
+            else if (data.startsWith("next")) {
+                String fromCity = driver_data_path[0];
+                String toCity = driver_data_path[1];
+                List<Route_Driver> routeDrivers = routeDriverRepo.findAllByFromCityAndToCity(fromCity, toCity);
+                System.out.println(routeDrivers);
+
+                if (routeDrivers.isEmpty()) {
+                    sendMessage.setChatId(chatId);
+                    sendMessage.setText("Yo'nalishlar topilmadi.");
+                    execute(sendMessage);
+                    return;
+                }
+
+                if (count >= routeDrivers.size()) {
+                    sendMessage.setChatId(chatId);
+                    sendMessage.setText("Bu yo'nalishga tegishlilar tugadi.");
+                    count=0;
+                    execute(sendMessage);
+                } else {
+
+                    Route_Driver routeDriver = routeDrivers.get(count);
+                    count++;
+
+                    String carImgFileName = routeDriver.getUser().getCarImg();
+                    String basePath = "C:/Users/user/Desktop/Taxi_project/backend/files/";
+                    String fullPath = basePath + carImgFileName.trim();
+                    java.io.File file = new java.io.File(fullPath);
+
+                    if (file.exists()) {
+                        SendPhoto sendPhoto = new SendPhoto();
+                        sendPhoto.setChatId(chatId);
+                        sendPhoto.setPhoto(new InputFile(file));
+                        execute(sendPhoto);
+                    } else {
+                        sendMessage.setChatId(chatId);
+                        sendMessage.setText("Rasmni yuklashda xatolik yuz berdi: noto'g'ri URL yoki fayl manzili.");
+                        execute(sendMessage);
+                        return;
+                    }
+
+                    sendMessage.setChatId(chatId);
+                    Long chatId1 = routeDriver.getUser().getChatId();
+                    sendMessage.setText(
+                            "Telefon raqami: " + routeDriver.getUser().getPhoneNumber() + " \n" +
+                                    "Sana: " + routeDriver.getDay() + "\n" +
+                                    "Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
+                                    "Narxi: " + routeDriver.getPrice() + " So'm");
+                    sendMessage.setReplyMarkup(Passsenger(chatId1));
+                    execute(sendMessage);
+                }
+            }
+            else if(data.startsWith("band")){
+                Optional<User> allByChatId = userRepo.findByChatId(chatId);
+                User user1 = allByChatId.get();
+                idPassenger= user1.getId();
+                dataParts = data.split(":");
+                if(dataParts.length > 1){
+                    sendMessage.setText("Siz " + user1.getFullName() + " yo'lovchini qabul qilasizmi \n" + "Telefon raqami: " + user1.getPhoneNumber());
+                    sendMessage.setReplyMarkup(sendBusy());
+                    sendMessage.setChatId(dataParts[1]);
+                    Message sentMessage = execute(sendMessage);
+                    band_delete_data[1]= String.valueOf(sentMessage.getMessageId());
+                }
+            }
+
+            else if(data.startsWith("comment")){
+                String[] driverId = data.split(":");
+
+                // Foydalanuvchini ID orqali topish
+                Optional<User> byChatId = userRepo.findByChatId(chatId);
+                User user2 = byChatId.get();
+                UUID passengerId = user2.getId();
+
+                if (driverId.length > 1) { // driverId[1] mavjudligiga ishonch hosil qilish
+                    Optional<User> driverIdData = userRepo.findByChatId(Long.valueOf(driverId[1])); // driverId[0] o'rniga driverId[1]
+                    if (driverIdData.isPresent()) {
+                        Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(driverIdData.get()));
+
+                        if (byUser.getPassenger().equals(passengerId)) {
+                            sendMessage.setText("salonm");
+                            execute(sendMessage);
+                        } else {
+                            sendMessage.setText("siz ni oldin haydovchi ruxsat berish kerak");
+                            execute(sendMessage);
+                        }
+                    } else {
+                        sendMessage.setText("Haydovchi topilmadi.");
+                        execute(sendMessage);
+                    }
+                } else {
+                    sendMessage.setText("Xato: noto'g'ri format.");
+                    execute(sendMessage);
+                }
+            }
+
+            else if(data.equals("ha")) {
+                Optional<User> userOptional1 = userRepo.findByChatId(chatId);
+
+                if (userOptional1.isPresent()) {
+                    User user1 = userOptional1.get();
+                    Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(user1));
+
+                    if (byUser != null) {
+                        List<UUID> currentPassengers = byUser.getPassenger();
+
+                        if (currentPassengers == null) {
+                            currentPassengers = new ArrayList<>();
+                        }
+
+                        currentPassengers.add(idPassenger);
+
+                        byUser.setPassenger(currentPassengers);
+                        Integer countSide = byUser.getCountSide();
+                        byUser.setCountSide(countSide - 1);
+                        routeDriverRepo.save(byUser);
+                        idPassenger=null;
+                        List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
+                        for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
+                            if (userIds.contains(routeDriver.getUser().getId())) {
+                                sendMessage.setText(routeDriver.getFromCity() + "-" + routeDriver.getToCity() + "\n" +
+                                        "Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "Narxi: " + routeDriver.getPrice() + " so'm \n" +
+                                        routeDriver.getDay() + " " + routeDriver.getHour()
+                                );
+                                sendMessage.setChatId(chatId);
+                                sendMessage.setReplyMarkup(directionData(routeDriver.getId()));
+                                execute(sendMessage);
+                            }
+                        }
+                    }
+                }
+            }
+
+            else if (data.equals("yo'q")) {
+                sendMessage.setChatId(chatId);
+                sendMessage.setText("Siz yo'lovchini o'chirdiz");
+                execute(sendMessage);
+                DeleteMessage deleteMessage = new DeleteMessage();
+                deleteMessage.setChatId(chatId);
+                System.out.println(band_delete_data[1]);
+                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+                band_delete_data[1]="";
+                execute(deleteMessage);
+            }
+
             if (user.getStatus().equals(Status.SET_TO)) {
                 for (ToCity city : allToCities) {
                     if (city.getName().equals(data)) {
@@ -403,7 +670,19 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     }
                 }
             }
+            else if(data.startsWith("del")){
+                String[] dataParts = data.split(":");
 
+                id = String.valueOf(UUID.fromString(dataParts[1]));
+                Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
+                Route_Driver routeDriver = byId.get();
+                UUID id1 = routeDriver.getId();
+                routeDriverRepo.deleteById(id1);
+                sendMessage.setText("Ma'lumot muvaqafaqatli o'chirildi");
+                sendMessage.setChatId(chatId.toString());
+                sendMessage.setReplyMarkup(new ForceReplyKeyboard());
+                execute(sendMessage);
+            }
             if (user.getStatus().equals(Status.SET_COUNT_SIDE)) {
                 switch (data) {
                     case "1 ta":
@@ -425,6 +704,231 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         }
     }
+    private ReplyKeyboardMarkup NotPath(){
+        List<KeyboardRow> rows = new ArrayList<>();
+        KeyboardRow row1 = new KeyboardRow();
+        KeyboardButton button1 = new KeyboardButton();
+        button1.setText("Orqaga qaytish");
+        row1.add(button1);
+
+
+        rows.add(row1);
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(rows);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+
+        return replyKeyboardMarkup;
+    }
+    private InlineKeyboardMarkup sendBusy() {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+
+        List<InlineKeyboardButton> firstRow = new ArrayList<>();
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        button1.setText("Ha:");
+        button1.setCallbackData("ha");
+        firstRow.add(button1);
+        rows.add(firstRow);
+
+        List<InlineKeyboardButton> secondRow = new ArrayList<>();
+        InlineKeyboardButton button2 = new InlineKeyboardButton();
+        button2.setText("Yo'q");
+        button2.setCallbackData("yo'q");
+        secondRow.add(button2);
+        rows.add(secondRow);
+
+//        List<InlineKeyboardButton> secondRow3 = new ArrayList<>();
+//        InlineKeyboardButton button3 = new InlineKeyboardButton();
+//        button3.setText("Sana o'zgartirish ");
+//        button3.setCallbackData("day:" + id);
+//        secondRow3.add(button3);
+//        rows.add(secondRow3);
+
+//        List<InlineKeyboardButton> secondRow4 = new ArrayList<>();
+//        InlineKeyboardButton button4 = new InlineKeyboardButton();
+//        button4.setText("Soatni o'zgartirish ");
+//        button4.setCallbackData("time:" + id);
+//        secondRow4.add(button4);
+//        rows.add(secondRow4);
+
+//        List<InlineKeyboardButton> secondRow5 = new ArrayList<>();
+//        InlineKeyboardButton button5 = new InlineKeyboardButton();
+//        button5.setText("O'chirish");
+//        button5.setCallbackData("del:" + id);
+//        secondRow5.add(button5);
+//        rows.add(secondRow5);
+        return new InlineKeyboardMarkup(rows);
+    }
+
+    private InlineKeyboardMarkup Passsenger(Long id) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+
+        List<InlineKeyboardButton> firstRow = new ArrayList<>();
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        button1.setText("Band qilish");
+        button1.setCallbackData("band:"+id);
+        firstRow.add(button1);
+        rows.add(firstRow);
+
+        List<InlineKeyboardButton> secondRow = new ArrayList<>();
+        InlineKeyboardButton button2 = new InlineKeyboardButton();
+        button2.setText("Keyingisi");
+        button2.setCallbackData("next:" + id);
+        secondRow.add(button2);
+        rows.add(secondRow);
+
+        List<InlineKeyboardButton> secondRow3 = new ArrayList<>();
+        InlineKeyboardButton button3 = new InlineKeyboardButton();
+        button3.setText("Izohlar");
+        button3.setCallbackData("comment:" + id);
+        secondRow3.add(button3);
+        rows.add(secondRow3);
+
+//        List<InlineKeyboardButton> secondRow3 = new ArrayList<>();
+//        InlineKeyboardButton button3 = new InlineKeyboardButton();
+//        button3.setText("Sana o'zgartirish ");
+//        button3.setCallbackData("day:" + id);
+//        secondRow3.add(button3);
+//        rows.add(secondRow3);
+
+//        List<InlineKeyboardButton> secondRow4 = new ArrayList<>();
+//        InlineKeyboardButton button4 = new InlineKeyboardButton();
+//        button4.setText("Soatni o'zgartirish ");
+//        button4.setCallbackData("time:" + id);
+//        secondRow4.add(button4);
+//        rows.add(secondRow4);
+
+//        List<InlineKeyboardButton> secondRow5 = new ArrayList<>();
+//        InlineKeyboardButton button5 = new InlineKeyboardButton();
+//        button5.setText("O'chirish");
+//        button5.setCallbackData("del:" + id);
+//        secondRow5.add(button5);
+//        rows.add(secondRow5);
+        return new InlineKeyboardMarkup(rows);
+    }
+
+    private ReplyKeyboardMarkup toCitysButtonsReply() {
+        List<ToCity> all = toCityRepo.findAll();
+        List<KeyboardRow> rows = new ArrayList<>();
+        KeyboardRow currentRow = new KeyboardRow();
+
+        for (ToCity toCity : all) {
+            KeyboardButton button = new KeyboardButton();
+            button.setText(toCity.getName());
+
+            currentRow.add(button);
+
+            if (currentRow.size() == 2) {
+                rows.add(new KeyboardRow(currentRow));
+                currentRow.clear();
+            }
+        }
+
+        if (!currentRow.isEmpty()) {
+            rows.add(currentRow);
+        }
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setKeyboard(rows);
+        replyKeyboardMarkup.setResizeKeyboard(true); // Optional: Resizes the keyboard to fit the screen
+        replyKeyboardMarkup.setOneTimeKeyboard(true); // Optional: Hides the keyboard after use
+
+        return replyKeyboardMarkup;
+    }
+
+    private ReplyKeyboardMarkup fromCitysButtonsReply() {
+        List<FromCity> fromCities = fromCityRepo.findAll();
+        List<KeyboardRow> rows = new ArrayList<>();
+        KeyboardRow currentRow = new KeyboardRow();
+
+        for (FromCity fromCity : fromCities) {
+            KeyboardButton button = new KeyboardButton();
+            button.setText(fromCity.getName());
+
+            currentRow.add(button);
+
+            if (currentRow.size() == 2) {
+                rows.add(currentRow);
+                currentRow = new KeyboardRow();
+            }
+        }
+
+        if (!currentRow.isEmpty()) {
+            rows.add(currentRow);
+        }
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setKeyboard(rows);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
+        return replyKeyboardMarkup;
+    }
+
+    private void validateTime(String timeText, String driverDataDay) {
+        if (!timeText.matches("\\d{2}:\\d{2}")) {
+            throw new IllegalArgumentException("Vaqt formati noto‘g‘ri. Soat: Minut formatida bo'lishi kerak.");
+        }
+
+        if (driverDataDay == null || driverDataDay.isEmpty()) {
+            throw new IllegalArgumentException("Sana ma'lumotlari mavjud emas.");
+        }
+
+        String[] timeParts = timeText.split(":");
+        int hour = Integer.parseInt(timeParts[0]);
+        int minute = Integer.parseInt(timeParts[1]);
+
+        if (hour > 23 || minute > 59) {
+            throw new IllegalArgumentException("Soat 23 dan kichik va daqiqa 59 dan kichik bo'lishi kerak.");
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+
+        LocalDate day;
+        try {
+            day = LocalDate.parse(driverDataDay);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Sana noto‘g‘ri formatda kiritilgan.");
+        }
+
+        if (day.equals(today)) {
+            LocalTime inputTime = LocalTime.of(hour, minute);
+            if (!inputTime.isAfter(now)) {
+                throw new IllegalArgumentException("Bugungi sanani kiritganingizda, vaqt hozirgi vaqtdan keyingi bo'lishi kerak.");
+            }
+        }
+    }
+
+    public LocalDate validateAndParseDate(String dateInput) throws DateTimeParseException {
+        if (dateInput == null || dateInput.isEmpty()) {
+            throw new DateTimeParseException("Sana kiritilmadi yoki noto'g'ri formatda kiritildi", dateInput, 0);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM");
+        String[] parts = dateInput.split("-");
+
+        if (parts.length == 2 && parts[0].length() == 2 && parts[1].length() == 2) {
+            int day = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+
+            if (day >= 1 && day <= 31 && month >= 1 && month <= 12) {
+                int currentYear = LocalDate.now().getYear();
+                LocalDate inputDate = LocalDate.of(currentYear, month, day);
+                LocalDate today = LocalDate.now();
+
+                if (inputDate.isBefore(today) || inputDate.isAfter(today.plusDays(2))) {
+                    throw new DateTimeParseException("Sana oraliqdan tashqarida", dateInput, 0);
+                }
+
+                return inputDate;
+            } else {
+                throw new DateTimeParseException("Noto'g'ri oy yoki kun", dateInput, 0);
+            }
+        } else {
+            throw new DateTimeParseException("Noto'g'ri format", dateInput, 0);
+        }
+    }
+
     private InlineKeyboardMarkup directionData(UUID id) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
@@ -444,10 +948,24 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         List<InlineKeyboardButton> secondRow3 = new ArrayList<>();
         InlineKeyboardButton button3 = new InlineKeyboardButton();
-        button3.setText("Sana o'zgartish ");
+        button3.setText("Sana o'zgartirish ");
         button3.setCallbackData("day:" + id);
         secondRow3.add(button3);
         rows.add(secondRow3);
+
+        List<InlineKeyboardButton> secondRow4 = new ArrayList<>();
+        InlineKeyboardButton button4 = new InlineKeyboardButton();
+        button4.setText("Soatni o'zgartirish ");
+        button4.setCallbackData("time:" + id);
+        secondRow4.add(button4);
+        rows.add(secondRow4);
+
+        List<InlineKeyboardButton> secondRow5 = new ArrayList<>();
+        InlineKeyboardButton button5 = new InlineKeyboardButton();
+        button5.setText("O'chirish");
+        button5.setCallbackData("del:" + id);
+        secondRow5.add(button5);
+        rows.add(secondRow5);
         return new InlineKeyboardMarkup(rows);
     }
 
@@ -491,6 +1009,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
+
     private InlineKeyboardMarkup toCitysButtons() {
         List<ToCity> all = toCityRepo.findAll();
 
@@ -593,17 +1112,19 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         return replyKeyboardMarkup;
     }
 
-    private InlineKeyboardMarkup selectInlineRoleButtons() {
+    private InlineKeyboardMarkup selectInlineRoleButtons(Long chatId) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
+        // First button for Drivers
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if ("uz".equals(language)) {
             button1.setText("Haydovchilar");
+            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId);
         } else {
             button1.setText("Драйверы");
         }
-        button1.setUrl("https://16.170.202.181:8080/");
+        button1.setCallbackData("Drivers");
         row1.add(button1);
 
         List<InlineKeyboardButton> row2 = new ArrayList<>();
@@ -613,12 +1134,15 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         } else {
             button2.setText("Пассажиры");
         }
-        button2.setCallbackData("PASSENGER"); // Callback data ni o'rnatish
+        // Add callback data
+        button2.setCallbackData("Passengers");
         row2.add(button2);
 
+        // Add rows to the keyboard
         rows.add(row1);
         rows.add(row2);
 
+        // Create InlineKeyboardMarkup object
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rows);
 
@@ -671,17 +1195,29 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         return new InlineKeyboardMarkup(rows);
     }
 
-
     private User selectUser(Long chatId, String phoneNumber) {
         List<User> admins = userRepo.findAllByChatId(chatId);
 
-        if (!admins.isEmpty()) {
-            return admins.get(0);
+        for (User user : admins) {
+            if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(phoneNumber)) {
+                return user;
+            }
         }
 
-        User newAdmin = new User(chatId, Status.SELECT_PATH, phoneNumber);
-        return userRepo.save(newAdmin);
+        if (!admins.isEmpty()) {
+            User user = admins.get(0);
+            if (user.getPhoneNumber() == null) {
+                user.setPhoneNumber(phoneNumber);
+                userRepo.save(user);
+            }
+            return user;
+        }
+
+        return null;
     }
+
+
+
 
 }
 
