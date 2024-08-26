@@ -1115,7 +1115,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     private InlineKeyboardMarkup selectInlineRoleButtons(Long chatId) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
-        // First button for Drivers
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if ("uz".equals(language)) {
