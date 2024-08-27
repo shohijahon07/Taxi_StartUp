@@ -576,20 +576,21 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 }
             }
 
-            else if(data.startsWith("comment")){
+            else if (data.startsWith("comment")) {
                 String[] driverId = data.split(":");
 
-                // Foydalanuvchini ID orqali topish
                 Optional<User> byChatId = userRepo.findByChatId(chatId);
                 User user2 = byChatId.get();
-                UUID passengerId = user2.getId();
+                List<UUID> passengerId = Collections.singletonList(user2.getId());
+                System.out.println(passengerId);
+                System.out.println(driverId[1]);
 
-                if (driverId.length > 1) { // driverId[1] mavjudligiga ishonch hosil qilish
-                    Optional<User> driverIdData = userRepo.findByChatId(Long.valueOf(driverId[1])); // driverId[0] o'rniga driverId[1]
+                if (driverId.length > 1) {
+                    Optional<User> driverIdData = userRepo.findByChatId(Long.valueOf(driverId[1]));
                     if (driverIdData.isPresent()) {
                         Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(driverIdData.get()));
 
-                        if (byUser.getPassenger().equals(passengerId)) {
+                        if (byUser != null && byUser.getPassenger() != null && byUser.getPassenger().equals(passengerId)) {
                             sendMessage.setText("salonm");
                             execute(sendMessage);
                         } else {
@@ -605,6 +606,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     execute(sendMessage);
                 }
             }
+
 
             else if(data.equals("ha")) {
                 Optional<User> userOptional1 = userRepo.findByChatId(chatId);

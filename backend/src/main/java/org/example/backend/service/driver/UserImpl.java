@@ -139,6 +139,9 @@ public class UserImpl implements UserService{
     }
     @Override
     public void saveUser(UserDto userDto) {
+        System.out.println(userDto);
+        System.out.println(userDto.getCardDocument());
+
         List<Role> roles = new ArrayList<>();
         Role driverRole = roleRepo.findByName("ROLE_DRIVER");
         if (driverRole == null) {
@@ -147,17 +150,34 @@ public class UserImpl implements UserService{
         }
         roles.add(driverRole);
 
-        User user = new User(
-                userDto.getFullName(),
-                userDto.getCarType(),
-                userDto.getCarImg(),
-                userDto.getDriverImg(),
-                userDto.getCardDocument(),
-                userDto.getChatId(),
-                roles
-        );
+        Optional<User> byChatId = userRepo.findByChatId(userDto.getChatId());
 
-        userRepo.save(user);
+        if (byChatId.isPresent()) {
+            User user1 = byChatId.get();
+            user1.setFullName(userDto.getFullName());
+            user1.setCarType(userDto.getCarType());
+            user1.setCarImg(userDto.getCarImg());
+            user1.setDriverImg(userDto.getDriverImg());
+            user1.setCardDocument(userDto.getCardDocument());
+            user1.setAbout(userDto.getAbout());
+            user1.setChatId(userDto.getChatId());
+            user1.setRoles(roles);
+
+            userRepo.save(user1);
+        } else {
+            User newUser = new User();
+            newUser.setFullName(userDto.getFullName());
+            newUser.setPhoneNumber(userDto.getPhoneNumber());
+            newUser.setCarType(userDto.getCarType());
+            newUser.setCarImg(userDto.getCarImg());
+            newUser.setDriverImg(userDto.getDriverImg());
+            newUser.setCardDocument(userDto.getCardDocument());
+            newUser.setAbout(userDto.getAbout());
+            newUser.setChatId(userDto.getChatId());
+            newUser.setRoles(roles);
+
+            userRepo.save(newUser);
+        }
     }
 
 

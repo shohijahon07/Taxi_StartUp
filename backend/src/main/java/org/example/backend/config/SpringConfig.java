@@ -33,7 +33,7 @@ public class SpringConfig {
         httpSecurity.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(
                 auth -> auth
 //                        .requestMatchers("/**","/login","/index.html","/assets/**","/static/**","/*ico","/*.json","/*.png").permitAll()
-                        .requestMatchers("/api/auth/login","/api/auth/name","/api/driver","/api/driver/bydriver","/api/user","/api/toCity","/api/fromCity","/api/user/drivers","/api/user/isDrive").permitAll()
+                        .requestMatchers("/api/auth/login","/api/user/save/**","/api/auth/name","/api/driver","/api/driver/bydriver","/api/user","/api/toCity","/api/fromCity","/api/user/drivers","/api/user/isDrive").permitAll()
                         .requestMatchers("/api/fileController","/api/fileController/photo","/api/user/countD","/api/user/countU").permitAll()
                         .requestMatchers("/","/index.html","/static/**","/*.ico",
                                 "/*.json","/*.png","/*.svg","/*.mp3","/*.mp4","/*.jpeg","/*.m4a","/*.M4A","/*.webm",
