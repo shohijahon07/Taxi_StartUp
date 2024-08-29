@@ -138,6 +138,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         sendMessage.setText(
                                 "Telefon raqami: " + routeDriver.getUser().getPhoneNumber() + " \n" +
                                         "Sana: " + routeDriver.getDay() + "\n" +
+                                        "Soati:"+routeDriver.getHour() + "\n"+
                                         "Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
                                         "Narxi: " + routeDriver.getPrice() + " So'm");
                         sendMessage.setReplyMarkup(Passsenger(chatId1));
@@ -562,6 +563,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 if (routeDrivers.isEmpty()) {
                     sendMessage.setChatId(chatId);
                     sendMessage.setText("Yo'nalishlar topilmadi.");
+                    user.setStatus(Status.BACK);
+                    userRepo.save(user);
                     execute(sendMessage);
                     return;
                 }
@@ -570,6 +573,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     sendMessage.setChatId(chatId);
                     sendMessage.setText("Bu yo'nalishga tegishlilar tugadi.");
                     count=0;
+                    user.setStatus(Status.BACK);
+                    userRepo.save(user);
                     execute(sendMessage);
                 } else {
 
@@ -607,8 +612,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             else if(data.startsWith("band")){
                 Optional<User> allByChatId = userRepo.findByChatId(chatId);
                 User user1 = allByChatId.get();
-                idPassenger= user1.getId();
                 dataParts = data.split(":");
+
+                idPassenger= user1.getId();
                 if(dataParts.length > 1){
                     sendMessage.setText("Siz " + user1.getFullName() + " yo'lovchini qabul qilasizmi \n" + "Telefon raqami: " + user1.getPhoneNumber());
                     sendMessage.setReplyMarkup(sendBusy());
@@ -699,32 +705,42 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 if (byChatId.isPresent()) {
                     Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
 
-                    // Check if passenger exists in the list
-                    if (byUser.getPassenger().contains(idPassenger)) {
-                        byUser.getPassenger().remove(idPassenger);
-                        routeDriverRepo.save(byUser);
-                        sendMessage.setChatId(chatId);
-                        sendMessage.setText("Siz yo'lovchini o'chirdiz");
-                        execute(sendMessage);
+                    if (byUser != null) { // Ensure byUser is not null
+                        if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger)) {
+                            byUser.getPassenger().remove(idPassenger);
+                            Integer countSide = byUser.getCountSide();
+                            byUser.setCountSide(countSide+1);
+                            routeDriverRepo.save(byUser);
 
-                        // Delete the message
-                        DeleteMessage deleteMessage = new DeleteMessage();
-                        deleteMessage.setChatId(chatId);
-                        deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-                        band_delete_data[1] = "";
-                        execute(deleteMessage);
+                            sendMessage.setChatId(chatId);
+                            sendMessage.setText("Siz yo'lovchini o'chirdiz");
+                            execute(sendMessage);
+
+                            DeleteMessage deleteMessage = new DeleteMessage();
+                            deleteMessage.setChatId(chatId);
+                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+                            band_delete_data[1] = "";
+                            execute(deleteMessage);
+                        } else {
+                            sendMessage.setChatId(chatId);
+                            sendMessage.setText("Siz yo'lovchini o'chirdiz.");
+                            execute(sendMessage);
+
+                            // Only delete message if it was previously set
+                            if (!band_delete_data[1].isEmpty()) {
+                                DeleteMessage deleteMessage = new DeleteMessage();
+                                deleteMessage.setChatId(chatId);
+                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+                                band_delete_data[1] = "";
+                                execute(deleteMessage);
+                            }
+                        }
                     } else {
-                        sendMessage.setText("Siz yo'lovchini o'chirdiz");
+                        sendMessage.setChatId(chatId);
+                        sendMessage.setText("Haydovchi topilmadi.");
                         execute(sendMessage);
-
-                        DeleteMessage deleteMessage = new DeleteMessage();
-                        deleteMessage.setChatId(chatId);
-                        deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-                        band_delete_data[1] = "";
-                        execute(deleteMessage);
                     }
                 } else {
-                    // User not found, handle accordingly
                     sendMessage.setChatId(chatId);
                     sendMessage.setText("Foydalanuvchi topilmadi.");
                     execute(sendMessage);
@@ -862,8 +878,16 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         button1.setText("Band qilish");
         button1.setCallbackData("band:"+id);
+
         firstRow.add(button1);
         rows.add(firstRow);
+
+        List<InlineKeyboardButton> firstRow2 = new ArrayList<>();
+        InlineKeyboardButton buttonp = new InlineKeyboardButton();
+        buttonp.setText("Haydovchini lichkasiga o'tish");
+        buttonp.setUrl("tg://user?id=" + id);
+        firstRow2.add(buttonp);
+        rows.add(firstRow2);
 
         List<InlineKeyboardButton> secondRow = new ArrayList<>();
         InlineKeyboardButton button2 = new InlineKeyboardButton();
