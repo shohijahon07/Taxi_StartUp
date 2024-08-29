@@ -5,6 +5,7 @@ import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
 import org.example.backend.DTO.UserDto;
 import org.example.backend.entity.Role;
+import org.example.backend.entity.Status;
 import org.example.backend.entity.User;
 import org.example.backend.repository.RoleRepo;
 import org.example.backend.repository.UserRepo;
@@ -72,6 +73,8 @@ public class UserImpl implements UserService{
             // Parolni encode qilish
             user.setPassword(passwordEncoder.encode(plainPassword));
             user.setIsDriver(isDriving.getIsDriver());
+            user.setStatus(Status.START);
+
             userRepo.save(user);
 
             String apiToken = "6995954341:AAFa0pZzNkGS2NJ0VDuMDO0K7Jlqwgs7-jE";
