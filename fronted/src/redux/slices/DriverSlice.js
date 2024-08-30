@@ -67,11 +67,39 @@ export const editDriver = createAsyncThunk('DriverSlice/editDriver', async ({ Ed
     const response = await apicall(`/user?id=${EditButtonId}`, "PUT", updatedCourse);
     return { id: EditButtonId, ...updatedCourse };
   });
-export const editDriverIsDriving = createAsyncThunk('DriverSlice/editDriverIsDriving', async ({ id, driverIsdriving,randomNum}) => {
-  console.log(driverIsdriving);
-    const response = await apicall(`/user/isDrive?id=${id}`, "PUT", {...driverIsdriving,password:randomNum});
-    return {  id, ...driverIsdriving };
+  export const editDriverIsDriving = createAsyncThunk('DriverSlice/editDriverIsDriving', async ({ id, driverIsdriving, randomNum }) => {
+    console.log(driverIsdriving);
+  
+    try {
+      const response = await apicall(`/user/isDrive?id=${id}`, "PUT", { ...driverIsdriving, password: randomNum });
+      
+      // if (response.data) {
+      //   const response2 = await apicall(`user/submit?id=${id}`, "GET");
+        
+      //   if (response2.data && response2.data.length > 0) {
+      //     let chatId = response2.data[0];
+      //     let password = response2.data[0];
+          
+      //     const apiToken = "123456789:ABCdefGhIJKlmNoPQRstuVWXyz";
+      //     const text = `Sizning yangi parolingiz: ${password}`;
+  
+      //     const urlString = `https://api.telegram.org/bot${apiToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+  
+      //     const res = await fetch(urlString, { method: 'GET' });
+  
+      //     if (!res.ok) {
+      //       throw new Error('Network response was not ok');
+      //     }
+  
+      //     const data = await res.json();
+      //     console.log(data);
+      //   }
+      // }
+    } catch (error) {
+      console.error('Error during the process:', error);
+    }
   });
+  
   
 export const deleteDriver = createAsyncThunk('DriverSlice/deleteDriver', async ({ id }) => {
   console.log(id);

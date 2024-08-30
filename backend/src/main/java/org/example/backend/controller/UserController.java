@@ -3,6 +3,7 @@ package org.example.backend.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
+import org.example.backend.DTO.UserDto;
 import org.example.backend.entity.Role;
 import org.example.backend.repository.RoleRepo;
 import org.example.backend.service.driver.UserService;
@@ -10,7 +11,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -29,6 +32,15 @@ public class UserController {
         System.out.println(id);
         return userService.deleteUser(id);
     }
+    private final UserService userService;
+    private final RoleRepo roleRepo;
+
+   @PostMapping("/save")
+   public ResponseEntity<?>save(@RequestBody UserDto userDto){
+       System.out.println(userDto);
+       userService.saveUser(userDto);
+       return ResponseEntity.ok("Muvafaqatli saqlandi");
+}
     @GetMapping("/drivers")
     public ResponseEntity<?> getDriverAll(@RequestParam Boolean isDriver){
         List<Role> roleDriver = roleRepo.findAllByName("ROLE_DRIVER");
@@ -57,9 +69,9 @@ public class UserController {
     }
 
     @PutMapping("/isDrive")
-    public HttpEntity<?> EditIsDriver(@RequestParam UUID id, @RequestBody IsDriving isDriving){
+    public HttpEntity<?> EditIsDriver(@RequestParam UUID id, @RequestBody IsDriving isDriving) throws IOException {
         System.out.println(id);
         System.out.println(isDriving);
-        return userService.editDriverIsDriving(id,isDriving);
+        return userService.editDriverIsDriving(id, isDriving);
     }
 }

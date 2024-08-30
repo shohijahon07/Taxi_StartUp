@@ -38,11 +38,11 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    public User(String fullName, String phoneNumber, String password, Long chatID, String carType, String carImg, String driverImg, String cardDocument, Boolean isDriver, Status status, List<Role> roles) {
+    public User(String fullName, String phoneNumber, String password, String chatId, String carType, String carImg, String driverImg, String cardDocument, Boolean isDriver, Status status, List<Role> roles) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.chatId = chatID;
+        this.chatId = Long.valueOf(chatId);
         this.carType = carType;
         this.carImg = carImg;
         this.driverImg = driverImg;
@@ -51,6 +51,7 @@ public class User implements UserDetails {
         this.status = status;
         this.roles = roles;
     }
+
 
     public User(UUID id) {
         this.id = id;
@@ -64,8 +65,25 @@ public class User implements UserDetails {
         this.phoneNumber = phoneNumber;
     }
 
-    public User(String userId) {
+    public User( Long chatId,String password) {
+        this.chatId = chatId;
+        this.password = password;
     }
+
+    public User(String fullName, String carType, String carImg, String driverImg, String cardDocument,Long chatId, List<Role> roles) {
+        this.fullName = fullName;
+        this.carType = carType;
+        this.carImg = carImg;
+        this.driverImg = driverImg;
+        this.cardDocument = cardDocument;
+        this.chatId=chatId;
+        this.roles = roles;
+    }
+
+    public User(Long chatId) {
+        this.chatId = chatId;
+    }
+
 
 
     @Override

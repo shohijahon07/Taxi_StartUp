@@ -2,11 +2,14 @@ package org.example.backend.service.driver;
 
 import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
+import org.example.backend.DTO.UserDto;
 import org.example.backend.entity.Role;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface UserService {
@@ -18,11 +21,15 @@ public interface UserService {
 
     ResponseEntity<?> getDriversAll(List<Role> roleDriver, Boolean isDriver);
 
-    HttpEntity<?> editDriverIsDriving(UUID id, IsDriving isDriving);
+    HttpEntity<?> editDriverIsDriving(UUID id, IsDriving isDriving) throws IOException;
 
     ResponseEntity<?> countDriver(List<Role> roleDriver);
 
     ResponseEntity<?> CountUserAll(List<Role> roleDriver);
+
+    Map<String, String> getSubmitForData(UUID id);
+
+    void saveUser(UserDto userDto);
 
     ResponseEntity<?> deleteUser(UUID id);
 }

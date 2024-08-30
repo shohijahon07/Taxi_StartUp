@@ -45,12 +45,12 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
+        return "6995954341:AAFa0pZzNkGS2NJ0VDuMDO0K7Jlqwgs7-jE";
     }
 
     @Override
     public String getBotUsername() {
-        return "shox_now_bot";
+        return "jonkatoychoq_bot";
     }
     private String[] driver_data = new String[6];
     private  String[] status = new String[6];

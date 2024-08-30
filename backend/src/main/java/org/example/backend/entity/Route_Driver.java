@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -19,7 +20,9 @@ public class Route_Driver {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID id;
+    @Column(name = "from_city")
     private String fromCity;
+    @Column(name = "to_city")
     private String toCity;
     private Integer countSide;
     private Integer price;
@@ -27,6 +30,8 @@ public class Route_Driver {
     private String hour;
     @ManyToOne
     private User user;
+    private List<UUID> passenger;
+
 
     public Route_Driver(String fromCity, String toCity, String countSide, String price, String day, String hour, User user) {
         this.fromCity = fromCity;

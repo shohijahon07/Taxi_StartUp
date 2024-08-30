@@ -35,7 +35,6 @@ public class Loader implements CommandLineRunner {
                     new Role("ROLE_ADMIN")
 
             ));
-
             User user = new User("Bekzod","+998900809272",passwordEncoder.encode("1999"),null,null,null,null,null,false,null,roles);
             userRepo.save(user);
         }

@@ -5,6 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: true, // Expose the server to the network
+    port: 5174, // Optional: Specify the port if needed
     hmr: {
       overlay: false, // Disable the error overlay
     },

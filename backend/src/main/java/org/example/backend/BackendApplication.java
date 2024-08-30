@@ -1,10 +1,7 @@
 package org.example.backend;
 
 import org.example.backend.Telegram_bot.TaxiProjectBot;
-import org.example.backend.repository.FromCityRepo;
-import org.example.backend.repository.RouteDriverRepo;
-import org.example.backend.repository.ToCityRepo;
-import org.example.backend.repository.UserRepo;
+import org.example.backend.repository.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext; // Import ApplicationContext
@@ -21,9 +18,10 @@ public class BackendApplication {
         RouteDriverRepo routeDriverRepo = context.getBean(RouteDriverRepo.class);
         FromCityRepo fromCityRepo = context.getBean(FromCityRepo.class);
         ToCityRepo toCityRepo = context.getBean(ToCityRepo.class);
+        CommentRepo commentRepo= context.getBean(CommentRepo.class);
 
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        TaxiProjectBot taxiProjectBot = new TaxiProjectBot(userRepo,routeDriverRepo,fromCityRepo,toCityRepo);
+        TaxiProjectBot taxiProjectBot = new TaxiProjectBot(userRepo,routeDriverRepo,fromCityRepo,toCityRepo,commentRepo);
         telegramBotsApi.registerBot(taxiProjectBot);
     }
 }
