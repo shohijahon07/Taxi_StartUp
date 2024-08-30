@@ -1,0 +1,911 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.imageBacground{
+    padding: 0;
+    background-image: url("../../pictures/all.svg");
+    padding: 0 20px;
+}
+.routUser{
+    max-width: 1920px;
+    margin: 0 auto;
+    background-color:white;
+    border-radius:0px, 0px, 5px, 5px;
+}
+.fatherNavbar{
+
+    background-color:#E1E5F1;
+}
+.navbar{
+   padding: 0 20px;
+    border-bottom: 1px solid #000000;
+    max-width: 1920px;
+    height: 108px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logoImg{
+ object-fit: contain;
+ width: 100%;
+ height: 100%;
+}
+.middleUserHeader{
+    display: flex;
+   width: 650px;
+   /* border:1px solid; */
+   align-items:center;
+   justify-content: space-between;
+}
+.navbarUl{
+   width: 100%;
+   display: flex;
+   align-items:center;
+   justify-content: space-between;
+}
+.navbarUl li{
+    
+    position: relative;
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 38.73px;
+}
+.navbarUl li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px; /* 2px pastroq */
+    width: 0;
+    height: 3px;
+    
+    background-color: #303383;
+    transition: width 1s ease-in-out;
+}
+
+.navbarUl li:hover::after {
+    width: 100%;
+    
+}
+.rightUserHeader{
+width: 252px;
+display: flex;
+align-items:center;
+justify-content: space-between;
+}
+.imgTelegram{
+    width: 40px;
+    height: 40px;
+}
+.rightUserHeader select{
+    border:none;
+        width: 145px;
+        height: 49px;
+        background-color:transparent;
+        font-weight: 500;
+        font-size: 29.54;
+        /* line-height: 35.75; */
+        color:#303383;
+}
+
+.userButtons{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    /* border:1px solid black; */
+    gap: 20px;
+}
+.saqlash3{
+    width: 90px;
+    font-size: 12px;
+    height: 50px;
+    border: none;
+    background-color: rgba(30, 110, 110, 0.884);
+    color: white;
+    border-radius: 5px;
+}
+.btnCity{
+    display: flex;
+    width: 350px;
+    justify-content: space-between;
+    align-items:center;
+    border-radius: 15px;
+    background-color: #fff;
+    height: 70px;
+    padding: 7px 20px 10px 30px;
+    color: #00000061;
+    font-size: 30.62px;
+    line-height: 40px;
+    font-family: 600;
+    border: 1px solid #CFDEE6;
+
+}
+.btnCity:hover{
+    background-color:rgba(224, 236, 236, 0.884)
+}
+.imgCalendar{
+    width: 28px;
+    height: 30px;
+    /* margin-top: 2px; */
+}
+.qidirish{
+    width: 250px;
+    border:none;
+    height: 70px;
+    background-color:#303383;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    color:#FFFFFF99;
+    font-weight: 600;
+    font-size: 25px;
+    border-radius:10px
+}
+.oneDriver{
+    padding: 0 20px;
+}
+.date-input-container {
+    position: relative;
+}
+
+.date-input-container .form-control {
+    padding-right: 30px; /* Add space for the icon */
+}
+
+.calendar-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.h1RouterUser{
+    padding-top: 25px;
+    margin-left: 40px;  
+    color:white;
+}
+.h1RouterUser h1{
+    font-weight: 700;
+    font-size: 62px;
+    line-height: 75px;
+
+}
+.inputChild{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+.inputs{
+    margin: 0 auto;
+    margin-bottom: 126px;
+    margin-top: 74px;
+    max-width: 1701px;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+}
+.ketish{
+    width: 25%;
+      padding: 10px;
+      border:2px solid #cfdee6;
+      border-bottom-left-radius: 15px;
+      border-top-left-radius: 15px;
+
+}
+.routes12{
+    width: 25%;
+      padding: 10px;
+      border-top: 2px solid #cfdee6;
+      border-bottom: 2px solid #cfdee6;
+      border-right: 2px solid #cfdee6;
+
+}
+.joylar{
+    width: 25%;
+      padding: 10px;
+      border-top: 2px solid #cfdee6;
+      border-bottom: 2px solid #cfdee6;
+      border-right: 2px solid #cfdee6;
+
+}
+.userButtons{
+    width: 25%;
+      padding: 10px;
+      border-top: 2px solid #cfdee6;
+      border-bottom: 2px solid #cfdee6;
+      border-right: 2px solid #cfdee6;
+      border-bottom-right-radius: 15px;
+      border-top-right-radius: 15px;
+
+}
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    height: 100vh; /* Ekran balandligini qamrab olish */
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-image {
+    width: 300px; /* O'lchamini sozlash */
+    height: 300px; /* O'lchamini sozlash */
+    animation: spin 1s linear infinite, moveRightLeft 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes moveRightLeft {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(100px); }
+    100% { transform: translateX(0); }
+}
+.leftUserHeader{
+    margin-left: 30px;
+    width: 220px;
+    height: 39px;
+    cursor: pointer;
+}
+
+@media only screen and (min-width: 673px) and (max-width: 720px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 20px;
+         max-width: 720px;
+         height: 80px;
+     }
+     .leftUserHeader{
+        margin-left:15px;
+        width: 120px;
+        height: 30px;
+        cursor: pointer;
+    }
+    .middleUserHeader{
+        display: flex;
+       width: 350px;
+       /* border:1px solid; */
+       align-items:center;
+       justify-content: space-between;
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 18px;
+         font-weight: 500;
+         line-height: 25.73px;
+     }
+     .rightUserHeader{
+        width: 120px;
+        }
+        .imgTelegram{
+            width: 30px;
+            height: 30px;
+        }
+        .rightUserHeader select{
+            border:none;
+                width: 100px;
+                height: 35px;
+                color:#303383;
+        }
+        .imageBacground{
+            padding: 0;
+            background-image: url("../../pictures/b6.svg");
+            background-size: cover; /* Rasmni butun ekran bo'ylab to'g'ri kelishini ta'minlaydi */
+            background-position: center; /* Rasmni markazda joylashtiradi */
+            background-repeat: no-repeat; /* Rasmni takrorlamaslik uchun */
+            max-width: 720px;/* Ekran kengligini egallaydi */
+            /* height: 100vw;  */
+            padding: 0 20px;
+        }
+        .h1RouterUser{
+            padding-top: 20px;
+            margin-left: 0px;  
+        }
+        .h1RouterUser h1{
+            text-align: center;
+            font-size: 30px;
+            line-height:50px;
+        
+        }
+        .inputs{    
+            margin-bottom: 50px;
+            margin-top: 50px;
+            max-width: 720px;
+            flex-wrap: wrap;
+        }
+        .inputChild{
+            margin-bottom: 40px;
+            width: 100%;
+            display: flex;
+            align-items:center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btnCity{
+            width: 100%;
+            background-color: #fff;
+            height: 80px;
+        }
+        .qidirish{
+            width: 100%;
+            height: 80px;
+            color:white;
+        }
+}
+@media only screen and (min-width: 602px) and (max-width: 672px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 20px;
+         max-width: 672px;
+         height: 70px;
+     }
+     .leftUserHeader{
+        margin-left:15px;
+        width: 100px;
+        height: 30px;
+        cursor: pointer;
+    }
+    .middleUserHeader{
+       width: 300px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 17px;
+         font-weight: 500;
+         line-height: 20.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 120px;
+        }
+        .imgTelegram{
+            width: 30px;
+            height: 30px;
+        }
+        .rightUserHeader select{
+            font-size: 13px;
+            border:none;
+                width: 90px;
+                height: 35px;
+                color:#303383;
+        }
+        .imageBacground{
+            padding: 0;
+            background-image: url("../../pictures/b6.svg");
+            background-size: cover; /* Rasmni butun ekran bo'ylab to'g'ri kelishini ta'minlaydi */
+            background-position: center; /* Rasmni markazda joylashtiradi */
+            background-repeat: no-repeat; /* Rasmni takrorlamaslik uchun */
+            max-width: 720px;/* Ekran kengligini egallaydi */
+            /* height: 100vw;  */
+            padding: 0 20px;
+        }
+        .h1RouterUser{
+            padding-top: 20px;
+            margin-left: 0px;  
+        }
+        .h1RouterUser h1{
+            text-align: center;
+            font-size: 27px;
+            line-height:50px;
+        
+        }
+        .inputs{    
+            margin-bottom: 50px;
+            margin-top: 50px;
+            max-width: 720px;
+            flex-wrap: wrap;
+        }
+        .inputChild{
+            margin-bottom: 40px;
+            width: 100%;
+            display: flex;
+            align-items:center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btnCity{
+            width: 100%;
+            background-color: #fff;
+            height: 80px;
+        }
+        .qidirish{
+            width: 100%;
+            height: 80px;
+            color:white;
+        }
+        
+}
+@media only screen and (min-width: 567px) and (max-width: 601px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 20px;
+         max-width: 601px;
+         height: 65px;
+     }
+     .leftUserHeader{
+        margin-left:10px;
+        width: 90px;
+        height: 30px;
+        cursor: pointer;
+    }
+    .middleUserHeader{
+       width: 280px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 16px;
+         font-weight: 500;
+         line-height: 18.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 120px;
+        }
+        .imgTelegram{
+            width: 30px;
+            height: 30px;
+        }
+        .rightUserHeader select{
+            margin: 0;
+            padding: 0 5px;
+            font-size: 13px;
+            border:none;
+                width: 80px;
+                height: 35px;
+                color:#303383;
+        }
+        .imageBacground{
+            padding: 0;
+            background-image: url("../../pictures/b6.svg");
+            background-size: cover; /* Rasmni butun ekran bo'ylab to'g'ri kelishini ta'minlaydi */
+            background-position: center; /* Rasmni markazda joylashtiradi */
+            background-repeat: no-repeat; /* Rasmni takrorlamaslik uchun */
+            max-width: 601px;/* Ekran kengligini egallaydi */
+            /* height: 100vw;  */
+            padding: 0 20px;
+        }
+        .h1RouterUser{
+            padding-top: 20px;
+            margin-left: 0px;  
+        }
+        .h1RouterUser h1{
+            text-align: center;
+            font-size: 27px;
+            line-height:30px;
+        
+        }
+        .inputs{    
+            margin-bottom: 30px;
+            margin-top: 30px;
+            max-width: 601px;
+            flex-wrap: wrap;
+        }
+        .inputChild{
+            margin-bottom: 40px;
+            width: 100%;
+            display: flex;
+            align-items:center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btnCity{
+            width: 100%;
+            background-color: #fff;
+            height: 70px;
+            font-size: 25px;
+        }
+        .qidirish{
+            width: 100%;
+            height: 80px;
+            font-size: 25px;
+            color:white;
+        }
+        
+}
+@media only screen and (min-width: 528px) and (max-width: 566px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 15px;
+         max-width: 601px;
+         height: 65px;
+     }
+     .leftUserHeader{
+        margin-left:5px;
+        width: 90px;
+        height: 30px;
+        cursor: pointer;
+    }
+    .middleUserHeader{
+       width: 280px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 16px;
+         font-weight: 500;
+         line-height: 18.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 95px;
+        margin-top: 5px;
+        }
+        .imgTelegram{
+            width: 25px;
+            height: 25px;
+        }
+        .rightUserHeader select{
+            margin: 0;
+            padding: 0 5px;
+            font-size: 11px;
+            border:none;
+                width: 70px;
+                height: 35px;
+                color:#303383;
+        }
+        .imageBacground{
+            padding: 0;
+            background-image: url("../../pictures/b6.svg");
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            max-width: 601px;
+            /* height: 100vw;  */
+            padding: 0 20px;
+        }
+        .h1RouterUser{
+            padding-top: 20px;
+            margin-left: 0px;  
+        }
+        .h1RouterUser h1{
+            text-align: center;
+            font-size: 25px;
+            line-height:30px;
+        
+        }
+        .inputs{    
+            margin-bottom: 30px;
+            margin-top: 30px;
+            max-width: 601px;
+            flex-wrap: wrap;
+        }
+        .inputChild{
+            margin-bottom: 40px;
+            width: 100%;
+            display: flex;
+            align-items:center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btnCity{
+            width: 100%;
+            background-color: #fff;
+            height: 70px;
+            font-size: 25px;
+        }
+        .qidirish{
+            width: 100%;
+            height: 80px;
+            font-size: 25px;
+            color:white;
+        }
+        
+}
+@media only screen and (min-width: 467px) and (max-width: 527px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 15px;
+         max-width: 527px;
+         height: 60px;
+     }
+     .leftUserHeader{
+        margin-left:0px;
+        width: 80px;
+        height: 25px;
+    }
+    .middleUserHeader{
+       width: 245px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 14px;
+         font-weight: 500;
+         line-height: 18.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 85px;
+        margin-top: 5px;
+        }
+        .imgTelegram{
+            width: 25px;
+            height: 25px;
+        }
+        .rightUserHeader select{
+            border-radius:2px;
+            margin: 0; 
+            padding: 0 2px;
+            font-size: 10px;
+            border:none;
+                width: 60px;
+                height: 30px;
+                color:#303383;
+        }
+        
+}
+@media only screen and (min-width: 412px) and (max-width: 466px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 10px;
+         max-width: 466px;
+         height: 55px;
+     }
+     .leftUserHeader{
+       margin-bottom: 5px;
+        margin-left:0px;
+        width: 70px;
+        height: 25px;
+    }
+    .middleUserHeader{
+       width: 220px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 12.5px;
+         font-weight: 500;
+         line-height: 15.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 75px;
+        margin-top: 5px;
+        }
+        .imgTelegram{
+            width: 20px;
+            height: 20px;
+        }
+        .rightUserHeader select{
+            border-radius:2px;
+            gap: 2px;
+            margin: 0; 
+            padding: 0 1px;
+            font-size: 9px;
+            border:none;
+                width: 55px;
+                height: 30px;
+                color:#303383;
+        }
+        
+}
+@media only screen and (min-width: 397px) and (max-width: 411px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 10px;
+         max-width: 411px;
+         height: 55px;
+     }
+     .leftUserHeader{
+       margin-bottom: 5px;
+        margin-left:0px;
+        width: 65px;
+        height: 25px;
+    }
+    .middleUserHeader{
+       width: 210px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 12px;
+         font-weight: 500;
+         line-height: 15.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 75px;
+        margin-top: 5px;
+        }
+        .imgTelegram{
+            width: 20px;
+            height: 20px;
+        }
+        .rightUserHeader select{
+            border-radius:2px;
+            gap: 2px;
+            margin: 0; 
+            padding: 0 1px;
+            font-size: 9px;
+            border:none;
+                width: 55px;
+                height: 30px;
+                color:#303383;
+        }
+        
+}
+@media only screen and (min-width: 353px) and (max-width: 396px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 5px;
+         max-width: 396px;
+         height: 55px;
+     }
+     .leftUserHeader{
+       margin-bottom: 5px;
+        margin-left:0px;
+        width: 55px;
+        height: 25px;
+    }
+    .middleUserHeader{
+       width: 190px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 11px;
+         font-weight: 500;
+         line-height: 15.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 70px;
+        margin-top: 5px;
+        }
+        .imgTelegram{
+            width: 17px;
+            height: 17px;
+        }
+        .rightUserHeader select{
+            border-radius:2px;
+            gap: 2px;
+            margin: 0; 
+            padding: 0 1px;
+            font-size: 8px;
+            border:none;
+                width: 52px;
+                height: 30px;
+                color:#303383;
+        }
+        
+}
+@media only screen and (min-width: 328px) and (max-width: 352px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 5px;
+         max-width: 352px;
+         height: 50px;
+     }
+     .leftUserHeader{
+       margin-bottom: 5px;
+        margin-left:0px;
+        width: 50px;
+        height: 25px;
+    }
+    .middleUserHeader{
+       width: 175px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 10px;
+         font-weight: 500;
+         line-height: 12.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 65px;
+        margin-top: 5px;
+        }
+        .imgTelegram{
+            width: 15px;
+            height: 15px;
+        }
+        .rightUserHeader select{
+            border-radius:2px;
+            gap: 2px;
+            margin: 0; 
+            padding: 0 1px;
+            font-size: 7px;
+            border:none;
+                width: 50px;
+                height: 30px;
+                color:#303383;
+        }
+        
+}
+@media(max-width: 327px) {
+    .navbar{
+        gap: 5px;
+        padding: 0 5px;
+         max-width: 327px;
+         height: 50px;
+     }
+     .leftUserHeader{
+       margin-bottom: 5px;
+        margin-left:0px;
+        width: 40px;
+        height: 20px;
+    }
+    .middleUserHeader{
+       width: 160px;
+       /* border:1px solid; */
+    }
+  .navbarUl{
+    padding: 0;
+  }
+     .navbarUl li{
+         font-size: 9px;
+         font-weight: 500;
+         line-height: 12.73px;
+     }
+     .rightUserHeader{
+       /* border:1px solid; */
+        width: 50px;
+        margin-top: 5px;
+        }
+        .imgTelegram{
+           display: none;
+        }
+        .rightUserHeader select{
+            border-radius:2px;
+            gap: 2px;
+            margin: 0; 
+            padding: 0 1px;
+            font-size: 7px;
+            border:none;
+                width: 50px;
+                height: 30px;
+                color:#303383;
+        }
+        
+}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

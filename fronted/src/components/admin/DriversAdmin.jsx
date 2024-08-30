@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDrivers } from '../../redux/slices/DriverSlice';
+import { deleteDriver, fetchDrivers } from '../../redux/slices/DriverSlice';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function DriversAdmin() {
 const {drivers} = useSelector((state) => state.driver);
 const dispatch = useDispatch();
-
 const [isDriver, setIsDriver] = useState(true);
 useEffect(() => {
  dispatch(fetchDrivers(isDriver)) 
@@ -14,7 +14,17 @@ useEffect(() => {
 
     const navigate=useNavigate()
   function goAboutDrivers(userName){
-navigate(`bir_haydovchi/${userName}`)
+navigate(`/bir_haydovchi/${userName}`)
+  }
+
+  function deleteDrive(id){
+    dispatch(deleteDriver({ id}))
+    .unwrap()
+    .then(() => {
+      toast.success("Malumot muvaffaqiyatli o'chirildi!");
+      dispatch(fetchDrivers(isDriver)) 
+    })
+    .catch((err) =>console.log(err));
   }
   return (
     <div>
@@ -50,13 +60,17 @@ navigate(`bir_haydovchi/${userName}`)
                </td> 
                <td>
                 <button className='saqlash1' onClick={()=>goAboutDrivers(item.id)}>Haqida</button>
-                <button className='deleteButton'>O'chirish</button>
+                <button className='deleteButton' onClick={()=>deleteDrive(item.id)}>O'chirish</button>
                </td>
                 </tr>
             })
           }
         </tbody>
       </table>
+      <ToastContainer toastStyle={{
+          backgroundColor: 'white',
+          color: 'black',
+        }} autoClose={1000} />
     </div>
   )
 }

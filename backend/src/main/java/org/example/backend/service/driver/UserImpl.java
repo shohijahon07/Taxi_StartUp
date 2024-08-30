@@ -1,5 +1,6 @@
 package org.example.backend.service.driver;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
@@ -8,6 +9,7 @@ import org.example.backend.entity.Role;
 import org.example.backend.entity.Status;
 import org.example.backend.entity.User;
 import org.example.backend.repository.RoleRepo;
+import org.example.backend.repository.RouteDriverRepo;
 import org.example.backend.repository.UserRepo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,8 @@ public class UserImpl implements UserService{
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
+    private final RouteDriverRepo routeDriverRepo;
+
     @Override
     public ResponseEntity<?> getDriverOne(UUID id) {
         List<User> users = userRepo.findAllById(id);
@@ -44,6 +48,7 @@ public class UserImpl implements UserService{
 
     @Override
     public HttpEntity<?> editDriver(UUID id, DriverDto driverDto) {
+
         User user = userRepo.findById(id).orElseThrow();
         user.setDriverImg(driverDto.getDriverImg());
         user.setAbout(driverDto.getAbout());
@@ -121,25 +126,15 @@ public class UserImpl implements UserService{
     }
 
     @Override
-    public Map<String, String> getSubmitForData(UUID id) {
-        Optional<User> byId = userRepo.findById(id);
+    @Transactional
+    public ResponseEntity<?> deleteUser(UUID id) {
+        routeDriverRepo.deleteByUserId(id);
 
-        Map<String, String> result = new HashMap<>();
+        userRepo.deleteById(id);
 
-        if (byId.isPresent()) {
-            User user = byId.get();
-
-            String chatID = String.valueOf(user.getChatId());
-            String password = user.getPassword();
-
-            result.put("chatID", chatID);
-            result.put("password", password);
-        } else {
-            result.put("error", "User not found with id: " + id);
-        }
-
-        return result;
+        return ResponseEntity.ok("delete successfull");
     }
+
     @Override
     public void saveUser(UserDto userDto) {
         System.out.println(userDto);
@@ -183,6 +178,10 @@ public class UserImpl implements UserService{
         }
     }
 
-
-
 }
+
+
+
+
+
+

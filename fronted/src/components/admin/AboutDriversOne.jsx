@@ -6,7 +6,7 @@ import "./routesAdmin.css"
 import { fetchRoutesByDriver } from '../../redux/slices/routeDriver';
 function AboutDriversOne() {
     const {driverOne} = useSelector((state) => state.driver);
-    const {driverRoutes} = useSelector((state) => state.routes);
+    const {allRoutes} = useSelector((state) => state.routes);
 const dispatch = useDispatch();
 const navigate=useNavigate()
 let { userName } = useParams();    
@@ -14,6 +14,7 @@ let { userName } = useParams();
 useEffect(() => {
  dispatch(fetchDriverOne(userName)) 
  dispatch(fetchRoutesByDriver(userName)) 
+ console.log(driverOne);
   }, [userName]);
 
   function BackPage(){
@@ -37,7 +38,7 @@ useEffect(() => {
                 })
         }
         {
-            driverRoutes.map((item)=>{
+            allRoutes.map((item)=>{
                 return <div >
                     <p className='pTextDriversOne'>Yo'nalish nomi:{item.fromCity}-{item.toCity}</p>
                 </div>
@@ -47,6 +48,7 @@ useEffect(() => {
       <div>
         <p className='pTextDriversOne1'>Mijozlar Fikri</p>
       </div>
+      
     </div>
   )
 }

@@ -1,0 +1,35 @@
+import React, { useEffect, useState } from 'react';
+import './optionModal.css';
+
+const OptionModal = ({ options, onSelect, onClose }) => {
+    const [active, setActive] = useState(false);
+
+    useEffect(() => {
+        setActive(true);
+    }, []);
+
+    const handleClose = () => {
+        setActive(false);
+        setTimeout(onClose, 1000); // 1 sekund kutish animatsiya tugashi uchun
+    };
+
+    return (
+        <div className={`option-modal-overlay ${active ? 'active' : ''}`} onClick={handleClose}>
+            <div className="option-modal" onClick={(e) => e.stopPropagation()}>
+                <div className="btnCloseIcon">
+
+                <button className="btn btn-close btn12" onClick={handleClose}></button>
+                </div>
+                <ul style={{ marginTop: "15px",display:"flex",flexWrap:"wrap" }} className="option-list">
+                    {options.map((option) => (
+                        <li className='fromCityLi' key={option.name} onClick={() => onSelect(option.name)}>
+                            {option.name}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+};
+
+export default OptionModal;

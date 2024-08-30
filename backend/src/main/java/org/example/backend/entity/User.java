@@ -51,7 +51,7 @@ public class User implements UserDetails {
         this.status = status;
         this.roles = roles;
     }
-    
+
 
     public User(UUID id) {
         this.id = id;

@@ -20,8 +20,19 @@ import java.util.UUID;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
-    private final RoleRepo roleRepo;
+        private final UserService userService;
+        private final RoleRepo roleRepo;
+    @GetMapping
+    public ResponseEntity<?> getDriverOne(@RequestParam UUID id){
+        return userService.getDriverOne(id);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> DeleteUser(@RequestParam UUID id){
+        System.out.println(id);
+        return userService.deleteUser(id);
+    }
+
 
    @PostMapping("/save")
    public ResponseEntity<?>save(@RequestBody UserDto userDto){
@@ -44,6 +55,7 @@ public class UserController {
         List<Role> roleUser = roleRepo.findAllByName("ROLE_USER");
         return userService.CountUserAll(roleUser);
     }
+
     @PostMapping
 //    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
     public HttpEntity<?> saveAboutDriverAbout(@RequestParam UUID id, @RequestParam String text){
@@ -54,6 +66,7 @@ public class UserController {
     public HttpEntity<?> EditAboutDriver(@RequestParam UUID id, @RequestBody DriverDto driverDto){
         return userService.editDriver(id,driverDto);
     }
+
     @PutMapping("/isDrive")
     public HttpEntity<?> EditIsDriver(@RequestParam UUID id, @RequestBody IsDriving isDriving) throws IOException {
         System.out.println(id);

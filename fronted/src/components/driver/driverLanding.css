@@ -101,11 +101,14 @@
   .list-group{
 max-width: 800px;
 margin: 0 auto;
-
   }
   .list-group-item{
-  justify-content: space-between;
+  /* justify-content: space-between; */
     display: flex;
+    /* border: 1px solid #CFDEE6;
+      /* padding: 10px; */
+      margin-top: 20px;   
+
 
   }
   .list-group-item input{

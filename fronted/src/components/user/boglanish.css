@@ -1,0 +1,399 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+}
+/* .bizhaqimizda{
+    background:transparent;
+    margin: 20px;
+    border-radius: 12px 
+} */
+.boglanishHeader{
+    padding: 20px 20px;
+    margin-top: 20px;
+    background-color:white;
+    margin: 20px;
+    border-radius: 12px;
+}
+.footer{
+    padding: 20px 20px;
+    margin-top: 20px;
+    background-color:white;
+    margin: 20px;
+    border-radius: 12px;
+}
+.boglanishh1{
+    text-align: center;
+    font-size: 26px;
+}
+.boglanishCard{
+    margin: 0 auto;
+    background-color:transparent;
+   padding-bottom: 107px;
+  max-width: 1701px;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+}
+.card{
+    padding-top: 17px;
+    padding:0 50px;
+    margin: 0;
+    width: 450px;
+    height: 342px;
+ 
+    border: 12.98px solid #FFFFFF
+   
+}
+
+.card-header{
+    margin-bottom: 14px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    background-color:transparent;
+    /* border:1px solid; */
+    width: 100%;
+    height: 140px;
+    border:none;
+}
+.imgboglanish{
+    width: 140px;
+   height: 100%;
+}
+
+.card-footer{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    border:none;
+    background-color:transparent;
+}
+.card-footer h4{
+    margin-bottom: 21px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 27px;
+    color:#676770;
+    letter-spacing: 6.01px;
+}
+.card-footer p{
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 21.46px;
+    color:#6A859C;;
+}
+.savollarH1{
+    text-align: center;
+    font-size: 28px;
+}
+.savollarp{
+    color:#6E7191;
+    font-size: 20px;
+    text-align: center;
+}
+.phone{
+    margin: 0 auto;
+    width: 400px;
+    /* border:1px solid ; */
+    display: flex;
+    align-items:center;
+    justify-content: space-around;
+}
+.phoneIng{
+    width: 100px;
+    height: 100px;
+}
+.textPhone p{
+margin: 0;
+padding: 0;
+}
+.line1{
+    margin: 20px;
+    border: 1px solid #00B2FF
+}
+.yozmaSavollarH4{
+   font-weight: 500;
+   font-size: 20px;
+   line-height: 38px;
+    text-align: center;
+   color:#211F54;
+   margin-bottom: 22px;
+}
+
+.inpgroup{
+    display: flex;
+    align-items:center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.inpgroup input{
+    font-size: 15px;
+    font-weight: 400;
+    color:#333333;
+    width: 389px;
+    line-height: 18px;
+    height: 50px;
+    border:none;
+    border-radius:0;
+    border-bottom:2px solid #333333CC;
+}
+.yonalish{
+  margin-top: 20px;
+    height: 46px;
+    width: 389px;
+    border-radius:11.65px;
+    background-color:#303383;
+    border:none;
+    color:#EFEEE8;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 19px;
+}
+.yonalish:hover{
+    background-color:#333333CC;
+}
+
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-body {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 570px;
+    width: 570px;
+    position: relative;
+  }
+  .exitBtn{
+    position: absolute;
+    font-size: 20px;
+    top: 20px;
+    right: 28px;
+    
+  }
+  .modal-close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .modal-header-section {
+   text-align: center;
+   margin-top: 30px;
+  }
+  
+  .modal-heading {
+   font-weight: 700;
+   font-size: 29px;
+   line-height: 38px;
+   color:#211F54;
+   margin-bottom: 45px;
+  }
+  
+  .modal-subheading {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 20px;
+    margin-left: 15px;
+    margin-bottom: 38px;
+  }
+  
+  .contact-info-section {
+   width: 368px;
+   display: flex;
+   margin: 0 auto;
+   align-items:center;
+   /* border:1px solid; */
+  }
+  
+  .contact-image-container {
+    margin: 0;
+    padding: 0;
+   width: 48px;
+   height: 48px;
+  }
+  
+  
+  
+  .contact-text {
+    margin-top: 5px;
+    margin-left: 18.47px;
+  }
+  
+  .contact-label {
+    font-weight: 400;
+    font-size: 11px;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1.06px;
+    line-height: 12px;
+    color:#6E7191;
+  }
+  
+  .contact-number {
+    font-weight: 700;
+    font-size: 18.58px;
+    line-height: 23.89px;
+    color:#211F54;
+  }
+  
+  .horizontal-divider {
+   width: 410.82px;
+   border: 1.46px solid #00B2FF;
+   margin: 0 auto;
+   margin-top: 25px;
+   margin-bottom: 15px;
+  }
+  
+  .form-section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-heading {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  .form-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .floating-label-input {
+    margin-bottom: 10px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .submit-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  @media only screen and (min-width: 673px) and (max-width: 720px) {
+    .boglanishCard{
+     padding-bottom: 70px;
+    max-width: 720px;
+     flex-wrap: wrap;
+  }
+  .card{
+    padding-top: 17px;
+    padding:0 50px;
+    margin: 0;
+    width: 100%;
+    height: 370px;
+    border: 10.98px solid #FFFFFF
+   
+}
+.card-header{
+  margin-bottom: 14px;
+ 
+  width: 100%;
+  height: 200px;
+  border:none;
+}
+.imgboglanish{
+  width: 200px;
+ height: 100%;
+}
+.card-footer h4{
+  font-size: 30px;
+}
+.card-footer p{
+  font-size: 25px;
+  line-height: 28.46px;
+}
+  }
+  @media only screen and (min-width: 602px) and (max-width: 672px) {
+    .boglanishCard{
+      padding-bottom: 50px;
+     max-width: 672px;
+      flex-wrap: wrap;
+   }
+   .card{
+     padding-top: 17px;
+     padding:0 50px;
+     margin: 0;
+     width: 100%;
+     height: 370px;
+     border: 10.98px solid #FFFFFF
+    
+ }
+ .card-header{
+   margin-bottom: 14px;
+   width: 100%;
+   height: 180px;
+   border:none;
+ }
+ .imgboglanish{
+   width: 180px;
+  height: 100%;
+ }
+ .card-footer h4{
+   font-size: 28px;
+ }
+ .card-footer p{
+   font-size: 22px;
+   line-height: 25.46px;
+ }
+  }
+  @media only screen and (min-width: 567px) and (max-width: 601px) {
+    .boglanishCard{
+      padding-bottom: 50px;
+     max-width: 672px;
+      flex-wrap: wrap;
+   }
+   .card{
+     padding-top: 17px;
+     padding:0 50px;
+     margin: 0;
+     width: 100%;
+     height: 370px;
+     border: 10.98px solid #FFFFFF
+    
+ }
+ .card-header{
+   margin-bottom: 14px;
+   width: 100%;
+   height: 180px;
+   border:none;
+ }
+ .imgboglanish{
+   width: 180px;
+  height: 100%;
+ }
+ .card-footer h4{
+   font-size: 28px;
+ }
+ .card-footer p{
+   font-size: 22px;
+   line-height: 25.46px;
+ }
+  }
+  
