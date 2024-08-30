@@ -27,7 +27,7 @@ public interface UserService {
 
     ResponseEntity<?> CountUserAll(List<Role> roleDriver);
 
-    Map<String, String> getSubmitForData(UUID id);
+
 
     void saveUser(UserDto userDto);
 

@@ -32,8 +32,7 @@ public class UserController {
         System.out.println(id);
         return userService.deleteUser(id);
     }
-    private final UserService userService;
-    private final RoleRepo roleRepo;
+
 
    @PostMapping("/save")
    public ResponseEntity<?>save(@RequestBody UserDto userDto){
