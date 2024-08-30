@@ -8,6 +8,7 @@ export const fetchDrivers = createAsyncThunk('DriverSlice/fetchRoutes', async (i
 });
 export const countDriversAll = createAsyncThunk('DriverSlice/countDriversAll', async () => {
   const response = await apicall1(`/user/countD`, "GET");
+ 
   return response.data;
 });
 export const countUsersAll = createAsyncThunk('DriverSlice/countUsersAll', async () => {
@@ -17,6 +18,7 @@ export const countUsersAll = createAsyncThunk('DriverSlice/countUsersAll', async
 
 export const fetchDriverOne = createAsyncThunk('DriverSlice/fetchDriverOne', async (userName) => {
   const response = await apicall1(`/user?id=${userName}`, "GET");
+  console.log(response.data);
   return response.data;
 });
 
@@ -72,6 +74,7 @@ export const editDriverIsDriving = createAsyncThunk('DriverSlice/editDriverIsDri
   });
   
 export const deleteDriver = createAsyncThunk('DriverSlice/deleteDriver', async ({ id }) => {
+  console.log(id);
   await apicall(`/user?id=${id}`, "DELETE", null);
   return id;
 });

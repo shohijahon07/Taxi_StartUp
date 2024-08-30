@@ -23,4 +23,6 @@ public interface UserService {
     ResponseEntity<?> countDriver(List<Role> roleDriver);
 
     ResponseEntity<?> CountUserAll(List<Role> roleDriver);
+
+    ResponseEntity<?> deleteUser(UUID id);
 }

@@ -16,4 +16,6 @@ public interface DriverRouteService {
     HttpEntity<?> DeleteRoute(UUID id);
 
     ResponseEntity<?> getRouteByDriver(UUID id);
+
+    ResponseEntity<?> getRouteByDate(RouteDriverDto day);
 }

@@ -1,10 +1,12 @@
 package org.example.backend.service.driver;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
 import org.example.backend.entity.Role;
 import org.example.backend.entity.User;
+import org.example.backend.repository.RouteDriverRepo;
 import org.example.backend.repository.UserRepo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class UserImpl implements UserService{
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final RouteDriverRepo routeDriverRepo;
     @Override
     public ResponseEntity<?> getDriverOne(UUID id) {
         List<User> users = userRepo.findAllById(id);
@@ -72,5 +75,15 @@ public class UserImpl implements UserService{
     public ResponseEntity<?> CountUserAll(List<Role> roleDriver) {
         Integer users = userRepo.countAllByRoles(roleDriver);
         return ResponseEntity.ok(users);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> deleteUser(UUID id) {
+        routeDriverRepo.deleteByUserId(id);
+
+        userRepo.deleteById(id);
+
+        return ResponseEntity.ok("delete successfull");
     }
 }

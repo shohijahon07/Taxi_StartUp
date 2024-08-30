@@ -28,7 +28,7 @@ function DriverLanding() {
     setMinDate(formatDate(today));
     setMaxDate(formatDate(dayAfterTomorrow));
     getDriver()
-    
+      console.log(driverRoutes);
     dispatch(fetchRoutesByDriver(userName));
   }, [userName,dispatch]);
 
@@ -166,7 +166,7 @@ function DriverLanding() {
           </tr>
         </thead>
         <tbody>
-          {
+          {driverRoutes==null?[]:
             driverRoutes.map((item,index)=>{
               return <tr key={item.id}>
                 <td>{index+1}</td>

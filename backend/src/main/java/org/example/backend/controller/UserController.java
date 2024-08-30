@@ -23,6 +23,12 @@ public class UserController {
     public ResponseEntity<?> getDriverOne(@RequestParam UUID id){
         return userService.getDriverOne(id);
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> DeleteUser(@RequestParam UUID id){
+        System.out.println(id);
+        return userService.deleteUser(id);
+    }
     @GetMapping("/drivers")
     public ResponseEntity<?> getDriverAll(@RequestParam Boolean isDriver){
         List<Role> roleDriver = roleRepo.findAllByName("ROLE_DRIVER");

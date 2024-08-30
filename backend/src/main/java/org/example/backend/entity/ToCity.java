@@ -11,7 +11,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "to_city")
 @Builder
 @Entity(name = "toCity")
 

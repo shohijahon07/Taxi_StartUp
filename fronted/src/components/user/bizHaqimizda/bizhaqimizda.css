@@ -1,0 +1,93 @@
+/* Overlay orqa fon */
+.bizhaqimizda-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    
+  }
+  
+  /* Modal qutisi */
+  .bizhaqimizda-modal-content {
+    background-color: #fff;
+    width: 100%;
+    max-width: 1202px;
+    padding-top: 20px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    height: 600px;
+  }
+  
+  /* Modal ichidagi logo va sarlavha */
+  .bizhaqimizda-modal-header {
+    margin-bottom: 22px;
+    margin-left: 37px;
+    margin-right: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .bizhaqimizda-modal-logo {
+    margin-left: 37px;
+    width: 174px;
+    height: 31px;
+  }
+  .bizhaqimizda-h2{
+    margin-right: 100px;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 39px;
+    color:black
+  }
+
+  
+  /* Modal ichidagi ma'lumotlar */
+  .bizhaqimizda-modal-body {
+    max-width: 900px;
+    margin: 0 auto;
+   
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items:center
+  }
+  
+ 
+  
+  .bizhaqimizda-info-item {
+    width: 400px;
+    height: 250px;
+    /* border:2px solid; */
+  }
+  
+  .bizhaqimizda-info-item img {
+    width: 110px;
+    height: 110px;
+   
+  }
+  .bizhaqimizda-info-item h5{
+    margin-top: 11px;
+    font-weight: 600;
+    font-size: 14.43px;
+    line-height: 13.13px;
+    color:#11002D;
+  }
+  .bizhaqimizda-info-item p{
+    text-align: center;
+    font-weight: 400;
+    font-size: 11.54px;
+  }
+  
+ 
+
+  

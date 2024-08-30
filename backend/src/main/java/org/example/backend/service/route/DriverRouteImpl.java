@@ -10,7 +10,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -62,5 +61,11 @@ private final UserRepo userRepo;
         List<Route_Driver> drivers = routeDriverRepo.findAllByUser(user);
 
         return ResponseEntity.ok(drivers);
+    }
+
+    @Override
+    public ResponseEntity<?> getRouteByDate(RouteDriverDto day) {
+        List<Route_Driver> city = routeDriverRepo.findAllByDayAndFromCityAndToCity(LocalDate.parse(day.getDay()), day.getFromCity(), day.getToCity());
+        return ResponseEntity.ok(city);
     }
 }

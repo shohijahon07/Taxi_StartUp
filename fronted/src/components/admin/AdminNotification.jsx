@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { editDriverIsDriving, fetchDrivers, setDriverIsDriver } from '../../redux/slices/DriverSlice';
+import { deleteDriver, editDriverIsDriving, fetchDrivers, setDriverIsDriver } from '../../redux/slices/DriverSlice';
 import { useNavigate } from 'react-router-dom';
 import { FaCheck } from "react-icons/fa6";
 import { ToastContainer, toast } from 'react-toastify';
@@ -32,6 +32,15 @@ useEffect(() => {
 
     
    }
+   function deleteDrive(id){
+    dispatch(deleteDriver({ id}))
+    .unwrap()
+    .then(() => {
+      toast.success("Malumot muvaffaqiyatli o'chirildi!");
+      dispatch(fetchDrivers(isDriver)) 
+    })
+    .catch((err) =>console.log(err));
+  }
   return (
     <div>
        <table className='table table-success'>
@@ -66,7 +75,7 @@ useEffect(() => {
                 <td>{item.carType}</td> 
                <td>
                 <button className='saqlash1' onClick={()=>changeIsDriving(item.id)} > <FaCheck style={{border:"none"}} size={"25px"}/></button>
-                <button className='deleteButton'>O'chirish</button>
+                <button className='deleteButton' onClick={()=>deleteDrive(item.id)} >O'chirish</button>
                </td>
                 </tr>
             })
