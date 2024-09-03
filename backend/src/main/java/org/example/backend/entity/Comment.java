@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -20,15 +18,15 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID id;
-    private String name;
-    private List<UUID> passenger;
+    private String text;
+    private String  name;
     @ManyToOne
     private User user;
 
 
-    public Comment(String name, UUID idPassenger, User user) {
-        this.name=name;
-        this.passenger= Collections.singletonList(idPassenger);
-        this.user=user;
+    public Comment(String text, String name, User user) {
+        this.text = text;
+        this.name = name;
+        this.user = user;
     }
 }

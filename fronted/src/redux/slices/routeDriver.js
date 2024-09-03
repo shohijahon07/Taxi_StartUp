@@ -19,6 +19,11 @@ export const fetchRoutesByDriver = createAsyncThunk('RouteDriverSlice/fetchRoute
   console.log(response.data);
   return response.data;
 });
+export const fetchRoutesByDay = createAsyncThunk('RouteDriverSlice/fetchRoutesByDay', async (day) => {
+  const response = await apicall1(`/driver/byDay?day=${day}`, "GET");
+  console.log(response.data);
+  return response.data;
+});
 
 export const addRoute = createAsyncThunk('RouteDriverSlice/addRoute', async ({ driverRout, userName }) => {
   const response = await apicall1(`/driver`, "POST", { ...driverRout, userId: userName });
@@ -68,6 +73,9 @@ const RouteDriverSlice = createSlice({
       .addCase(fetchRoutesByDriver.pending, (state) => {
         state.status = 'loading';
       })
+      .addCase(fetchRoutesByDay.pending, (state) => {
+        state.status = 'loading';
+      })
    
       .addCase(fetchRoutes.pending, (state) => {
         state.status = 'loading';
@@ -77,6 +85,11 @@ const RouteDriverSlice = createSlice({
         state.status = 'succeeded';
         state.driverRoutes = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
       })
+      .addCase(fetchRoutesByDay.fulfilled, (state, action) => {
+       
+        state.status = 'succeeded';
+        state.allRoutes = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+      })
       .addCase(fetchRoutesByDate.fulfilled, (state, action) => {
         state.allRoutes = action.payload; 
       })
@@ -85,6 +98,10 @@ const RouteDriverSlice = createSlice({
         state.allRoutes = action.payload; 
       })
       .addCase(fetchRoutesByDate.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(fetchRoutesByDay.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })
