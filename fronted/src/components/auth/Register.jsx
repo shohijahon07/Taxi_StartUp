@@ -112,6 +112,7 @@ function Register() {
           onChange={(e) => setSelectFile3(e.target.files[0])}
         />
         <button className='btn btn-success' onClick={save}>Saqlash</button>
+
       </div>
     </div>
   );

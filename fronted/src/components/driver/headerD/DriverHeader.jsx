@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./header.css"
 import axios from 'axios';
+import { LanguageContext } from '../../language/LanguageContext';
 import DriverLanding from '../DriverLanding';
 import DriverAbout from '../DriverAbout';
+import telegram from "../../../pictures/telegram.svg";
 import { useNavigate } from 'react-router-dom';
+import group from "../../../pictures/Group (1).svg"
 function DriverHeader() {
+  const { language, changeLanguage } = useContext(LanguageContext);
   let navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -33,14 +37,23 @@ function functionDeleteToken() {
     <div className="begin1">
        <div className='haederDriver'>
         <div className="headerLeft">
-          <h2 className='headerText'>Hurmatli <p className='text-primary'>{userName.fullName}! </p> </h2>
+          <img src={group} className='img_dr_logo' />
         </div>
         <div className="headerRight">
           <ul className='listUl'>
-            <li className='list-group-item'onClick={()=>setOpen(true)} >Men Haqimda</li>
-            <li className='list-group-item' onClick={()=>setOpen(false)} >Yo'nalish</li>
-            <li className='list-group-item'>
-              <button className='logOut'  onClick={()=>functionDeleteToken()}>Log Out</button>
+          <li className='list-group-item1' onClick={()=>setOpen(false)} >Yo'nalish</li>
+            
+            <li className='list-group-item2'onClick={()=>setOpen(true)} >Men haqimda</li>
+
+            <li className='list-group-item3'>
+            <select className='language_dr' value={language} onChange={(e) => changeLanguage(e.target.value)}>
+                    <option className='option_dr' value="1">O'zbek</option>
+                    <option className='option_dr' value="2">Rus</option>
+                </select>
+            </li>
+            <li className='list-group-item2'>
+            <img src={telegram}className='imgTelegram' alt="" />
+
             </li>
           </ul>
         </div>

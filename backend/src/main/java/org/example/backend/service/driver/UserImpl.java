@@ -82,9 +82,9 @@ public class UserImpl implements UserService{
 
             userRepo.save(user);
 
-            String apiToken = "6995954341:AAFa0pZzNkGS2NJ0VDuMDO0K7Jlqwgs7-jE";
+            String apiToken ="7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
             String chatId = String.valueOf(user.getChatId());
-            String text = "Sizning parolingiz: " + plainPassword;
+            String text = "Tabriklaymiz siz muvaffaqiyatli tastiqlandingiz Sizning parolingiz: " + plainPassword + "va username: " +user.getPhoneNumber();
 
             String urlString = "https://api.telegram.org/bot" + apiToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
 
@@ -134,7 +134,6 @@ public class UserImpl implements UserService{
 
         return ResponseEntity.ok("delete successfull");
     }
-
     @Override
     public void saveUser(UserDto userDto) {
         System.out.println(userDto);
@@ -153,6 +152,8 @@ public class UserImpl implements UserService{
         if (byChatId.isPresent()) {
             User user1 = byChatId.get();
             user1.setFullName(userDto.getFullName());
+            user1.setPhoneNumber(userDto.getPhoneNumber());
+
             user1.setCarType(userDto.getCarType());
             user1.setCarImg(userDto.getCarImg());
             user1.setDriverImg(userDto.getDriverImg());

@@ -38,11 +38,11 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    public User(String fullName, String phoneNumber, String password, String chatId, String carType, String carImg, String driverImg, String cardDocument, Boolean isDriver, Status status, List<Role> roles) {
+    public User(String fullName, String phoneNumber, String password, Long chatId, String carType, String carImg, String driverImg, String cardDocument, Boolean isDriver, Status status, List<Role> roles) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.chatId = Long.valueOf(chatId);
+        this.chatId = chatId;
         this.carType = carType;
         this.carImg = carImg;
         this.driverImg = driverImg;

@@ -8,6 +8,7 @@ import AboutDriversOne from "./components/admin/AboutDriversOne"
 import RoutesUser from "./components/user/RoutesUser"
 import UserDiverOne from "./components/user/UserDiverOne"
 import { LanguageProvider } from "./components/language/LanguageContext"
+import Register from  "./components/auth/Register"
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                   <Route path='/bosh_sahifa' element={<AdminHeder/>} />
                   <Route path='/bir_haydovchi/:userName' element={<AboutDriversOne/>} />
                   <Route path="/id_haydovchi/:userName" element={<UserDiverOne/>} />
+                  <Route path="/register" element={<Register/>} />
 
     </Routes>
     </LanguageProvider>
