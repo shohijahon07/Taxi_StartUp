@@ -19,9 +19,10 @@ public class BackendApplication {
         FromCityRepo fromCityRepo = context.getBean(FromCityRepo.class);
         ToCityRepo toCityRepo = context.getBean(ToCityRepo.class);
         CommentRepo commentRepo= context.getBean(CommentRepo.class);
+        RoleRepo roleRepo= context.getBean(RoleRepo.class);
 
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        TaxiProjectBot taxiProjectBot = new TaxiProjectBot(userRepo,routeDriverRepo,fromCityRepo,toCityRepo,commentRepo);
+        TaxiProjectBot taxiProjectBot = new TaxiProjectBot(userRepo,routeDriverRepo,fromCityRepo,toCityRepo,commentRepo,roleRepo);
         telegramBotsApi.registerBot(taxiProjectBot);
     }
 }

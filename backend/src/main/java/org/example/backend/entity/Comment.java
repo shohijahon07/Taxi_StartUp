@@ -20,15 +20,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID id;
-    private String name;
-    private List<UUID> passenger;
+    private String text;
+    private String passenger;
     @ManyToOne
     private User user;
 
-
-    public Comment(String name, UUID idPassenger, User user) {
-        this.name=name;
-        this.passenger= Collections.singletonList(idPassenger);
-        this.user=user;
+    public Comment(String name, String passenger, User user) {
+        this.text = name;
+        this.passenger = passenger;
+        this.user = user;
     }
 }
