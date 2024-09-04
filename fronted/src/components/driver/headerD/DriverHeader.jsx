@@ -46,7 +46,7 @@ function functionDeleteToken() {
             <li className='list-group-item2'onClick={()=>setOpen(true)} >Men haqimda</li>
 
             <li className='list-group-item3'>
-            <select className='language_dr' value={language} onChange={(e) => changeLanguage(e.target.value)}>
+            <select className='form-control language_dr' value={language} onChange={(e) => changeLanguage(e.target.value)}>
                     <option className='option_dr' value="1">O'zbek</option>
                     <option className='option_dr' value="2">Rus</option>
                 </select>

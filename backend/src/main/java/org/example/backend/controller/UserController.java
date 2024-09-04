@@ -34,11 +34,12 @@ public class UserController {
     }
 
 
+
    @PostMapping("/save")
    public ResponseEntity<?>save(@RequestBody UserDto userDto){
        System.out.println(userDto);
-       userService.saveUser(userDto);
-       return ResponseEntity.ok("Muvafaqatli saqlandi");
+       ResponseEntity<?> responseEntity = userService.saveUser(userDto);
+       return ResponseEntity.ok(responseEntity);
 }
     @GetMapping("/drivers")
     public ResponseEntity<?> getDriverAll(@RequestParam Boolean isDriver){

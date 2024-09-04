@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private String driverImg;
     private String cardDocument;
     private String about;
-
+    private boolean count;
     private Boolean isDriver=false;
     @Enumerated(EnumType.STRING)
     private Status status=Status.START;
