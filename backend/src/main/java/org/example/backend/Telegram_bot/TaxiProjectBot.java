@@ -1196,7 +1196,6 @@ phoneNumber=message.getContact().getPhoneNumber();
             }
 
             if (user.getStatus().equals(Status.SET_COUNT_SIDE)) {
-
                 if (user.isCount()) {
                     switch (data) {
                         case "1 ta":
@@ -1205,6 +1204,12 @@ phoneNumber=message.getContact().getPhoneNumber();
                         case "4 ta":
                         case "5 ta":
                         case "6 ta":
+                        case "1 место":
+                        case "2 места":
+                        case "3 места":
+                        case "4 места":
+                        case "5 мест":
+                        case "6 мест":
                             driver_data[2] = data;
                             user.setStatus(Status.SET_GO_MONEY);
                             if (language.equals("uz")) {
@@ -1212,7 +1217,6 @@ phoneNumber=message.getContact().getPhoneNumber();
                             } else if (language.equals("ru")) {
                                 sendMessage.setText("💵 Сколько вы возьмете?");
                             }
-
                             userRepo.save(user);
                             execute(sendMessage);
                             return;
@@ -1233,6 +1237,18 @@ phoneNumber=message.getContact().getPhoneNumber();
                         case "10 ta":
                         case "11 ta":
                         case "12 ta":
+                        case "1 место":
+                        case "2 места":
+                        case "3 места":
+                        case "4 места":
+                        case "5 мест":
+                        case "6 мест":
+                        case "7 мест":
+                        case "8 мест":
+                        case "9 мест":
+                        case "10 мест":
+                        case "11 мест":
+                        case "12 мест":
                             driver_data[2] = data;
                             user.setStatus(Status.SET_GO_MONEY);
                             if (language.equals("uz")) {
@@ -1240,7 +1256,6 @@ phoneNumber=message.getContact().getPhoneNumber();
                             } else if (language.equals("ru")) {
                                 sendMessage.setText("💵 Сколько вы возьмете?");
                             }
-
                             userRepo.save(user);
                             execute(sendMessage);
                             return;
@@ -1248,59 +1263,8 @@ phoneNumber=message.getContact().getPhoneNumber();
                             break;
                     }
                 }
-                if (user.isCount()) {
-                    switch (data) {
-                        case "1 ta":
-                        case "2 ta":
-                        case "3 ta":
-                        case "4 ta":
-                        case "5 ta":
-                        case "6 ta":
-                            driver_data[2] = data;
-                            user.setStatus(Status.SET_GO_MONEY);
-                            if (language.equals("uz")) {
-                                sendMessage.setText("💵 Necha pulga olib ketasiz?");
-                            } else if (language.equals("ru")) {
-                                sendMessage.setText("💵 Сколько вы возьмете?");
-                            }
-
-                            userRepo.save(user);
-                            execute(sendMessage);
-                            return;
-                        default:
-                            break;
-                    }
-                } else {
-                    switch (data) {
-                        case "1 ta":
-                        case "2 ta":
-                        case "3 ta":
-                        case "4 ta":
-                        case "5 ta":
-                        case "6 ta":
-                        case "7 ta":
-                        case "8 ta":
-                        case "9 ta":
-                        case "10 ta":
-                        case "11 ta":
-                        case "12 ta":
-                            driver_data[2] = data;
-                            user.setStatus(Status.SET_GO_MONEY);
-                            if (language.equals("uz")) {
-                                sendMessage.setText("💵 Necha pulga olib ketasiz?");
-                            } else if (language.equals("ru")) {
-                                sendMessage.setText("💵 Сколько вы возьмете?");
-                            }
-
-                            userRepo.save(user);
-                            execute(sendMessage);
-                            return;
-                        default:
-                            break;
-                    }
-                }
-
             }
+
 
         }
     }
@@ -1803,26 +1767,38 @@ phoneNumber=message.getContact().getPhoneNumber();
         InlineKeyboardButton button12 = new InlineKeyboardButton();
 
         if (language.equals("uz")) {
-            button1.setText("1 ta");
-            button2.setText("2 ta");
-            button3.setText("3 ta");
-            button4.setText("4 ta");
-            button5.setText("5 ta");
-            button6.setText("6 ta");
-            button1.setCallbackData("1 ta");
-            button2.setCallbackData("2 ta");
-            button3.setCallbackData("3 ta");
-            button4.setCallbackData("4 ta");
-            button5.setCallbackData("5 ta");
-            button6.setCallbackData("6 ta");
 
-            if (!count) {
+                button1.setText("1 ta");
+                button2.setText("2 ta");
+                button3.setText("3 ta");
+                button4.setText("4 ta");
+                button5.setText("5 ta");
+                button6.setText("6 ta");
+                button1.setCallbackData("1 ta");
+                button2.setCallbackData("2 ta");
+                button3.setCallbackData("3 ta");
+                button4.setCallbackData("4 ta");
+                button5.setCallbackData("5 ta");
+                button6.setCallbackData("6 ta");
+           if (!count) {
+                button7.setText("1 ta");
+                button7.setText("2 ta");
+                button7.setText("3 ta");
+                button7.setText("4 ta");
+                button7.setText("5 ta");
+                button7.setText("6 ta");
                 button7.setText("7 ta");
                 button8.setText("8 ta");
                 button9.setText("9 ta");
                 button10.setText("10 ta");
                 button11.setText("11 ta");
                 button12.setText("12 ta");
+                button7.setCallbackData("1 ta");
+                button7.setCallbackData("2 ta");
+                button7.setCallbackData("3 ta");
+                button7.setCallbackData("4 ta");
+                button7.setCallbackData("5 ta");
+                button7.setCallbackData("6 ta");
                 button7.setCallbackData("7 ta");
                 button8.setCallbackData("8 ta");
                 button9.setCallbackData("9 ta");
@@ -1831,26 +1807,38 @@ phoneNumber=message.getContact().getPhoneNumber();
                 button12.setCallbackData("12 ta");
             }
         } else if (language.equals("ru")) {
-            button1.setText("1 место");
-            button2.setText("2 места");
-            button3.setText("3 места");
-            button4.setText("4 места");
-            button5.setText("5 мест");
-            button6.setText("6 мест");
-            button1.setCallbackData("1 место");
-            button2.setCallbackData("2 места");
-            button3.setCallbackData("3 места");
-            button4.setCallbackData("4 места");
-            button5.setCallbackData("5 мест");
-            button6.setCallbackData("6 мест");
+                button1.setText("1 место");
+                button2.setText("2 места");
+                button3.setText("3 места");
+                button4.setText("4 места");
+                button5.setText("5 мест");
+                button6.setText("6 мест");
+                button1.setCallbackData("1 место");
+                button2.setCallbackData("2 места");
+                button3.setCallbackData("3 места");
+                button4.setCallbackData("4 места");
+                button5.setCallbackData("5 мест");
+                button6.setCallbackData("6 мест");
 
-            if (!count) {
+             if (!count) {
+                button7.setText("1 мест");
+                button7.setText("2 мест");
+                button7.setText("3 мест");
+                button7.setText("4 мест");
+                button7.setText("5 мест");
+                button7.setText("6 мест");
                 button7.setText("7 мест");
                 button8.setText("8 мест");
                 button9.setText("9 мест");
                 button10.setText("10 мест");
                 button11.setText("11 мест");
                 button12.setText("12 мест");
+                button7.setCallbackData("1 мест");
+                button7.setCallbackData("2 мест");
+                button7.setCallbackData("3 мест");
+                button7.setCallbackData("4 мест");
+                button7.setCallbackData("5 мест");
+                button7.setCallbackData("6 мест");
                 button7.setCallbackData("7 мест");
                 button8.setCallbackData("8 мест");
                 button9.setCallbackData("9 мест");
