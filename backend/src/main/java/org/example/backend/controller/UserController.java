@@ -43,8 +43,7 @@ public class UserController {
    @PostMapping("/save")
    public ResponseEntity<?>save(@RequestBody UserDto userDto){
        System.out.println(userDto);
-       ResponseEntity<?> responseEntity = userService.saveUser(userDto);
-       return ResponseEntity.ok(responseEntity);
+       return ResponseEntity.ok(userService.saveUser(userDto));
 }
     @GetMapping("/drivers")
     public ResponseEntity<?> getDriverAll(@RequestParam Boolean isDriver){

@@ -50,12 +50,12 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
+        return "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
     }
 
     @Override
     public String getBotUsername() {
-        return "shift_proejct_taxi_bot";
+        return "shox_now_bot.";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -1063,7 +1063,146 @@ phoneNumber=message.getContact().getPhoneNumber();
                     }
                 }
             }
+            else if(data.startsWith("accept_")) {
+                String[] parts = data.split("_");
+                User byUser2=null;
+                UUID idPassenger1=null;
+                if (parts.length == 3) {
+                    String action = parts[0]; // "accept" or "decline"
+                    idPassenger1 = UUID.fromString(parts[1]);
+                    Long driverChatId = Long.parseLong(parts[2]);
+                    byUser2 = userRepo.findByChatId(driverChatId).orElseThrow();
+                    // Process the action based on userId and driverChatId
+                    System.out.println(idPassenger1);
+                    System.out.println(driverChatId);
+                }
+                Route_Driver byUser1 = routeDriverRepo.findByUser(Optional.ofNullable(byUser2));
+                if(byUser1.getCountSide()>0){
+                    if (byUser1 != null) {
+                        List<UUID> currentPassengers = byUser1.getPassenger();
 
+                        if (currentPassengers == null) {
+                            currentPassengers = new ArrayList<>();
+                        }
+
+                        currentPassengers.add(idPassenger1);
+
+                        byUser1.setPassenger(currentPassengers);
+                        Integer countSide = byUser1.getCountSide();
+                        byUser1.setCountSide(countSide - 1);
+                        routeDriverRepo.save(byUser1);
+                        List<UUID> userIds = userRepo.findAllUserIdsByChatId(byUser2.getChatId());
+                        for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
+                            if (userIds.contains(routeDriver.getUser().getId())) {
+                                if(language.equals("uz")){
+                                sendMessage.setText(
+                                        routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
+                                                "🛋 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + "\n" +
+                                                "💰 Narxi: " + routeDriver.getPrice() + " so'm\n" +
+                                                "📅  Sana" + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                );
+                                }else if(language.equals("ru")){
+                                    sendMessage.setText(
+                                            routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
+                                                    "🛋 Количество вакансий: " + routeDriver.getCountSide() + "\n" +
+                                                    "💰 Цена: " + routeDriver.getPrice() + " so'm\n" +
+                                                    "📅  Дата" + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                    );
+                                }
+
+
+                                sendMessage.setChatId(chatId);
+                                sendMessage.setReplyMarkup(directionData(routeDriver.getId()));
+                                execute(sendMessage);
+                            }
+                        }
+                    }
+                }else {
+                    if(language.equals("uz")){
+                        sendMessage.setText(
+                                "🚫 Sizda jo'ylar soni tugadi. " +
+                                        "📅 Siz yo'lishga borgandan so'ng qayta yo'naltirish qo'shish uchun /start bosing."
+                        );
+                    }else if(language.equals("ru")){
+                        sendMessage.setText(
+                                "🚫У вас закончились места. " +
+                                        "📅 Как только вы доберетесь до пути, нажмите /start, чтобы добавить перенаправление."
+                        );
+                    }
+
+
+                    user.setStatus(Status.START);
+                    routeDriverRepo.deleteById(byUser1.getId());
+                    execute(sendMessage);
+                }
+
+            }
+            else if (data.startsWith("decline_")) {
+                String[] parts = data.split("_");
+                Optional<User> byChatId= null;
+                UUID idPassenger1=null;
+                if (parts.length == 3) {
+                    String action = parts[0]; // "accept" or "decline"
+                    idPassenger1 = UUID.fromString(parts[1]);
+                    Long driverChatId = Long.parseLong(parts[2]);
+                    byChatId = userRepo.findByChatId(driverChatId);
+                    // Process the action based on userId and driverChatId
+                    System.out.println(idPassenger1);
+                    System.out.println(driverChatId);
+                }
+                if (byChatId.isPresent()) {
+                    Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
+
+                    if (byUser != null) { // Ensure byUser is not null
+                        if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger1)) {
+                            byUser.getPassenger().remove(idPassenger1);
+                            Integer countSide = byUser.getCountSide();
+                            byUser.setCountSide(countSide+1);
+                            routeDriverRepo.save(byUser);
+
+                            sendMessage.setChatId(byChatId.get().getChatId());
+                            if(language.equals("uz")){
+                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
+                            }else if(language.equals("ru")){
+                                sendMessage.setText("✅ Вы удалили пассажира");
+
+                            }
+
+                            execute(sendMessage);
+
+
+                        } else {
+                            sendMessage.setChatId(byChatId.get().getChatId());
+                            if(language.equals("uz")){
+                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
+                            }else if(language.equals("ru")){
+                                sendMessage.setText("✅ Вы удалили пассажира");
+
+                            }
+                            execute(sendMessage);
+
+                            // Only delete message if it was previously set
+//                            if (!band_delete_data[1].isEmpty()) {
+//                                DeleteMessage deleteMessage = new DeleteMessage();
+//                                deleteMessage.setChatId(byChatId.get().getChatId());
+//                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+//                                band_delete_data[1] = "";
+//                                execute(deleteMessage);
+//                            }
+                        }
+                    }
+                } else {
+                    sendMessage.setChatId(byChatId.get().getChatId());
+                    if(language.equals("uz")){
+                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
+
+                    }else if(language.equals("ru")){
+                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
+
+                    }
+                    execute(sendMessage);
+                }
+            }
             else if (data.equals("yo'q")) {
                 Optional<User> byChatId = userRepo.findByChatId(chatId);
                 if (byChatId.isPresent()) {
@@ -1938,10 +2077,10 @@ phoneNumber=message.getContact().getPhoneNumber();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if ("uz".equals(language)) {
             button1.setText("🚖 Haydovchilar");
-            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId);
+            button1.setUrl("http://192.168.0.203:5174/register?chatId=" + chatId);
         } else {
             button1.setText("🚖 Драйверы");
-            button1.setUrl("http://192.168.0.81:51744/register?chatId=" + chatId);
+            button1.setUrl("http://192.168.0.203:51744/register?chatId=" + chatId);
         }
         button1.setCallbackData("Drivers");
         row1.add(button1);
