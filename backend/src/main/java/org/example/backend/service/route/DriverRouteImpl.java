@@ -7,17 +7,22 @@ import org.example.backend.entity.User;
 import org.example.backend.repository.RouteDriverRepo;
 import org.example.backend.repository.UserRepo;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 @RequiredArgsConstructor
 @Service
-public class DriverRouteImpl implements DriverRouteService{
-private final RouteDriverRepo routeDriverRepo;
-private final UserRepo userRepo;
+public class DriverRouteImpl implements DriverRouteService {
+    private final RouteDriverRepo routeDriverRepo;
+    private final UserRepo userRepo;
+    private String from;
+    private String to;
+    private LocalDate needDay;
 
     @Override
     public ResponseEntity<?> getRoute() {
@@ -65,7 +70,58 @@ private final UserRepo userRepo;
 
     @Override
     public ResponseEntity<?> getRouteByDate(RouteDriverDto day) {
+        from = day.getFromCity();
+        to = day.getToCity();
+        needDay = LocalDate.parse(day.getDay());
         List<Route_Driver> city = routeDriverRepo.findAllByDayAndFromCityAndToCity(LocalDate.parse(day.getDay()), day.getFromCity(), day.getToCity());
         return ResponseEntity.ok(city);
     }
+
+    @Override
+    public ResponseEntity<?> getRouteByDay(Integer day) {
+        List<Route_Driver> city;
+        LocalDate today = LocalDate.now();
+        LocalDate targetDate;
+
+
+        try {
+            if (needDay.equals(today)) {
+                targetDate = switch (day) {
+                    case 1 -> needDay;
+                    case 2 -> needDay.plusDays(1);
+                    case 3 -> needDay.plusDays(2);
+                    default -> throw new IllegalArgumentException("Invalid day parameter");
+                };
+            } else if (needDay.equals(today.plusDays(1))) {
+                targetDate = switch (day) {
+                    case 1 -> needDay.minusDays(1);
+                    case 2 -> needDay;
+                    case 3 -> needDay.plusDays(1);
+                    default -> throw new IllegalArgumentException("Invalid day parameter");
+                };
+            } else if (needDay.equals(today.plusDays(2))) {
+                targetDate = switch (day) {
+                    case 1 -> needDay.minusDays(2);
+                    case 2 -> needDay.minusDays(1);
+                    case 3 -> needDay;
+                    default -> throw new IllegalArgumentException("Invalid day parameter");
+                };
+            } else {
+                return ResponseEntity.badRequest().body("Invalid needDay parameter");
+            }
+
+            city = routeDriverRepo.findAllByDayAndFromCityAndToCity(targetDate, from, to);
+
+
+            return ResponseEntity.ok(city);
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            // Logging unexpected exceptions
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
+    }
+
 }

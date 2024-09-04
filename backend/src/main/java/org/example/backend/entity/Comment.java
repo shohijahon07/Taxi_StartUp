@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,13 +19,14 @@ public class Comment {
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID id;
     private String text;
-    private String passenger;
+    private String  name;
     @ManyToOne
     private User user;
 
-    public Comment(String name, String passenger, User user) {
-        this.text = name;
-        this.passenger = passenger;
+
+    public Comment(String text, String name, User user) {
+        this.text = text;
+        this.name = name;
         this.user = user;
     }
 }

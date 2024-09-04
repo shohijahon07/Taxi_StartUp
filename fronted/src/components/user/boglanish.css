@@ -219,7 +219,6 @@ padding: 0;
    display: flex;
    margin: 0 auto;
    align-items:center;
-   /* border:1px solid; */
   }
   
   .contact-image-container {
@@ -329,6 +328,73 @@ padding: 0;
   font-size: 25px;
   line-height: 28.46px;
 }
+.modal-body {
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 720px;
+  width: 100%;
+}
+.modal-heading {
+  font-size: 36px;
+  line-height: 40px;
+  margin-bottom: 35px;
+ }
+ .modal-subheading {
+  font-size: 25px;
+  line-height: 28px;
+  margin-left: 10px;
+  margin-bottom: 30px;
+}
+.contact-info-section {
+  width: 500px;
+ }
+ .contact-image-container {
+ width: 100px;
+ height: 100px;
+}
+.contact-label {
+  margin-top: 0;
+  font-size: 20px;
+  margin-bottom: 5px;
+  line-height: 25px;
+
+}
+.contact-number {
+  font-weight: 700;
+  font-size: 25.58px;
+  line-height: 28.89px;
+}
+.horizontal-divider {
+  width: 500.82px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+ }
+ .yozmaSavollarH4{
+  font-size: 25px;
+  line-height: 38px;
+  margin-bottom: 20px;
+}
+
+.inpgroup input{
+  font-size: 20px;
+  font-weight: 400;
+  color:#333333;
+  width: 450px;
+  line-height: 18px;
+  height: 60px;
+}
+.yonalish{
+  margin-top: 50px;
+    height: 50px;
+    width: 450px;
+    border-radius:11.65px;
+    background-color:#303383;
+    border:none;
+    color:#EFEEE8;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 19px;
+}
   }
   @media only screen and (min-width: 602px) and (max-width: 672px) {
     .boglanishCard{
@@ -362,9 +428,78 @@ padding: 0;
    font-size: 22px;
    line-height: 25.46px;
  }
+   .modal-body {
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 672px;
+    width: 100%;
   }
-  @media only screen and (min-width: 567px) and (max-width: 601px) {
+  .modal-heading {
+    font-size: 33px;
+    line-height: 40px;
+    margin-bottom: 30px;
+   }
+   .modal-subheading {
+    font-size: 21px;
+    line-height: 28px;
+    margin-left: 10px;
+    margin-bottom: 25px;
+  }
+  .contact-info-section {
+    width: 450px;
+   }
+   .contact-image-container {
+   width: 90px;
+   height: 90px;
+  }
+  .contact-label {
+    margin-top: 0;
+    font-size: 19px;
+    margin-bottom: 5px;
+    line-height: 25px;
+  
+  }
+  .contact-number {
+    font-weight: 700;
+    font-size: 22.58px;
+    line-height: 28.89px;
+  }
+  .horizontal-divider {
+    width: 450.82px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+   }
+   .yozmaSavollarH4{
+    font-size: 22px;
+    line-height: 38px;
+    margin-bottom: 20px;
+  }
+  
+  .inpgroup input{
+    font-size: 20px;
+    font-weight: 400;
+    color:#333333;
+    width: 420px;
+    line-height: 18px;
+    height: 60px;
+  }
+  .yonalish{
+    margin-top: 50px;
+      height: 50px;
+      width: 420px;
+      border-radius:11.65px;
+      background-color:#303383;
+      border:none;
+      color:#EFEEE8;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 19px;
+  }
+ }
+  
+  @media only screen and (min-width: 500px) and (max-width: 601px) {
     .boglanishCard{
+      padding: 0 15px;
       padding-bottom: 50px;
      max-width: 672px;
       flex-wrap: wrap;
@@ -395,5 +530,389 @@ padding: 0;
    font-size: 22px;
    line-height: 25.46px;
  }
+
+ .modal-body {
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 601px;
+  width: 100%;
+  margin-bottom: 20px;
+
+}
+.modal-heading {
+  font-size: 27px;
+  line-height: 35px;
+  margin-bottom: 25px;
+ }
+ .modal-subheading {
+  font-size: 17px;
+  line-height: 28px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+.contact-info-section {
+  width: 400px;
+ }
+ .contact-image-container {
+ width: 90px;
+ height: 90px;
+}
+.contact-label {
+  margin-top: 0;
+  font-size: 19px;
+  margin-bottom: 5px;
+  line-height: 25px;
+
+}
+.contact-number {
+  font-weight: 700;
+  font-size: 22.58px;
+  line-height: 28.89px;
+}
+.horizontal-divider {
+  width: 400.82px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+ }
+ .yozmaSavollarH4{
+  font-size: 21px;
+  line-height: 38px;
+  margin-bottom: 20px;
+}
+
+.inpgroup input{
+  font-size: 20px;
+  font-weight: 400;
+  color:#333333;
+  width: 400px;
+  line-height: 18px;
+  height: 60px;
+}
+.yonalish{
+  margin-top: 50px;
+    height: 50px;
+    width: 400px;
+    border-radius:11.65px;
+    background-color:#303383;
+    border:none;
+    color:#EFEEE8;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 19px;
+}
+
+  }
+  @media only screen and (min-width: 400px) and (max-width: 499px) {
+    .boglanishCard{
+      padding: 0 15px;
+      padding-bottom: 50px;
+     max-width: 499px;
+      flex-wrap: wrap;
+   }
+   .card{
+     padding-top: 17px;
+     padding:0 20px;
+     margin: 0;
+     width: 100%;
+     height: 300px;
+     border: 10.98px solid #FFFFFF
+    
+ }
+ .card-header{
+   margin-bottom: 10px;
+   width: 100%;
+   height: 140px;
+   border:none;
+ }
+ .imgboglanish{
+   width: 140px;
+  height: 100%;
+ }
+ .card-footer h4{
+   font-size: 25px;
+   margin-bottom: 10px;
+ }
+ .card-footer p{
+   font-size: 19px;
+   line-height: 22.46px;
+ }
+ .modal-body {
+  padding: 15px;
+  border-radius: 20px;
+  max-width: 499px;
+  width: 100%;
+}
+.modal-heading {
+  font-size: 22px;
+  line-height: 27px;
+  margin-bottom: 20px;
+ }
+ .modal-subheading {
+  font-size: 13.5px;
+  line-height: 28px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+.contact-info-section {
+  width: 320px;
+ }
+ .contact-image-container {
+ width: 70px;
+ height: 70px;
+}
+.contact-label {
+  margin-top: 0;
+  font-size: 16px;
+  margin-bottom: 5px;
+  line-height: 20px;
+
+}
+.contact-number {
+  font-weight: 700;
+  font-size: 19.58px;
+  line-height: 23.89px;
+}
+.horizontal-divider {
+  width: 320.82px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+ }
+ .yozmaSavollarH4{
+  font-size: 17px;
+  line-height: 25px;
+  margin-bottom: 15px;
+}
+
+.inpgroup input{
+  font-size: 20px;
+  font-weight: 400;
+  color:#333333;
+  width: 320px;
+  line-height: 18px;
+  height: 50px;
+}
+.yonalish{
+  margin-top: 50px;
+    height: 50px;
+    width: 320px;
+    border-radius:11.65px;
+    background-color:#303383;
+    border:none;
+    color:#EFEEE8;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 19px;
+}
+  }
+  @media only screen and (min-width: 322px) and (max-width: 399px) {
+    .boglanishCard{
+      padding: 0 15px;
+      padding-bottom: 20px;
+     max-width: 399px;
+      flex-wrap: wrap;
+   }
+   .card{
+     padding-top: 10px;
+     padding:0 10px;
+     margin: 0;
+     width: 100%;
+     height: 300px;
+     border: 10.98px solid #FFFFFF
+    
+ }
+ .card-header{
+   margin-bottom: 10px;
+   width: 100%;
+   height: 100px;
+   border:none;
+ }
+ .imgboglanish{
+   width: 100px;
+  height: 100%;
+ }
+ .card-footer h4{
+   font-size: 22px;
+   margin-bottom: 10px;
+ }
+ .card-footer p{
+   font-size: 16px;
+   line-height: 22.46px;
+ }
+ .modal-body {
+  padding: 10px;
+  border-radius: 20px;
+  max-width: 499px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.modal-heading {
+  font-size: 15px;
+  line-height: 18px;
+  margin-bottom: 10px;
+ }
+ .modal-subheading {
+  margin-top: 0;
+  font-size: 10px;
+  line-height: 15px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+.contact-info-section {
+  width: 240px;
+ }
+ .contact-image-container {
+ width: 50px;
+ height: 50px;
+}
+.contact-label {
+  margin-top: 0;
+  font-size: 12px;
+  margin-bottom: 5px;
+  line-height: 15px;
+
+}
+.contact-number {
+  font-weight: 700;
+  font-size: 14.58px;
+  line-height: 23.89px;
+}
+.horizontal-divider {
+  width: 210.82px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+ }
+ .yozmaSavollarH4{
+  font-size: 12px;
+  line-height: 25px;
+  margin-bottom: 15px;
+}
+
+.inpgroup input{
+  font-size: 20px;
+  font-weight: 400;
+  color:#333333;
+  width: 210px;
+  line-height: 18px;
+  height: 40px;
+}
+.yonalish{
+  margin-top: 20px;
+    height: 40px;
+    width: 210px;
+    border-radius:11.65px;
+    background-color:#303383;
+    border:none;
+    color:#EFEEE8;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 19px;
+}
+  }
+  @media (max-width: 321px) {
+    .boglanishCard{
+      padding: 0 15px;
+      padding-bottom: 20px;
+     max-width: 321px;
+      flex-wrap: wrap;
+   }
+   .card{
+     padding-top: 10px;
+     padding:0 10px;
+     margin: 0;
+     width: 100%;
+     height: 250px;
+     border: 10.98px solid #FFFFFF
+    
+ }
+ .card-header{
+   margin-bottom: 10px;
+   width: 100%;
+   height: 80px;
+   border:none;
+ }
+ .imgboglanish{
+   width: 80px;
+  height: 100%;
+ }
+ .card-footer h4{
+   font-size: 17px;
+   margin-bottom: 10px;
+ }
+ .card-footer p{
+   font-size: 13px;
+   line-height: 18.46px;
+ }
+ .modal-body {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 321px;
+  width: 100%;
+}
+.modal-heading {
+  font-size: 13px;
+  line-height: 18px;
+  margin-bottom: 10px;
+ }
+ .modal-subheading {
+  margin-top: 0;
+  font-size: 9px;
+  line-height: 15px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+.contact-info-section {
+  width: 200px;
+ }
+ .contact-image-container {
+ width: 40px;
+ height: 40px;
+}
+.contact-label {
+  margin-top: 0;
+  font-size: 10px;
+  margin-bottom: 5px;
+  line-height: 15px;
+
+}
+.contact-number {
+  font-weight: 700;
+  font-size: 12.58px;
+  line-height: 23.89px;
+}
+.horizontal-divider {
+  width: 190.82px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+ }
+ .yozmaSavollarH4{
+  font-size: 11px;
+  line-height: 25px;
+  margin-bottom: 15px;
+}
+
+.inpgroup input{
+  font-size: 20px;
+  font-weight: 400;
+  color:#333333;
+  width: 190px;
+  line-height: 18px;
+  height: 40px;
+}
+.inpgroup label{
+  font-size: 12.5px;
+}
+.yonalish{
+  margin-top: 20px;
+    height: 40px;
+    width: 190px;
+    border-radius:11.65px;
+    background-color:#303383;
+    border:none;
+    color:#EFEEE8;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 19px;
+}
   }
   

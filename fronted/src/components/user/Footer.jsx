@@ -15,7 +15,7 @@ function Footer() {
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum <br /> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum <br /> tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros <br /> elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in <br /> eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius <br /> enim in eros elementum tristique.</p>
           </div>
             <div className="footerYer">
-                <img src={rasm} alt="" style={{objectFit:"cover",width:"100%",height:"100%"}} />
+                <img src={rasm} alt="" style={{objectFit:"contain",width:"100%",height:"100%"}} />
             </div>
         </div>
     

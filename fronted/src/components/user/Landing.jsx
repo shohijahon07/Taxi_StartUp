@@ -22,7 +22,11 @@ function Landing() {
     const openModal1 = () => setIsModalOpen1(true);
     const closeModal1 = () => setIsModalOpen1(false);
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = () =>{
+    setIsModalOpen(true);
+    const specificGroupArea = document.getElementById('specificGroupArea');
+    specificGroupArea.scrollIntoView({ behavior: 'smooth' });
+  } 
   const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => { 

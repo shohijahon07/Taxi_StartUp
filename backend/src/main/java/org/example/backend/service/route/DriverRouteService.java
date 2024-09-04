@@ -18,4 +18,6 @@ public interface DriverRouteService {
     ResponseEntity<?> getRouteByDriver(UUID id);
 
     ResponseEntity<?> getRouteByDate(RouteDriverDto day);
+
+    ResponseEntity<?> getRouteByDay(Integer day);
 }

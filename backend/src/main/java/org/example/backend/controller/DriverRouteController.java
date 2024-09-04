@@ -19,6 +19,11 @@ public class DriverRouteController {
     public ResponseEntity<?> getRoute(){
         return driverRouteService.getRoute();
     }
+
+    @GetMapping("/byDay")
+    public ResponseEntity<?> getRouteByDay(@RequestParam Integer day){
+        return driverRouteService.getRouteByDay(day);
+    }
     @PutMapping("/byDate")
     public ResponseEntity<?> getRouteByDate(@RequestBody RouteDriverDto routeDriverDto){
         System.out.println(routeDriverDto);

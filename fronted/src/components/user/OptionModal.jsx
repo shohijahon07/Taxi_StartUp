@@ -20,6 +20,10 @@ const OptionModal = ({ options, onSelect, onClose }) => {
 
                 <button className="btn btn-close btn12" onClick={handleClose}></button>
                 </div>
+                <div className="CityH1">
+
+                <p>Hududni tanlang!</p>
+                </div>
                 <ul style={{ marginTop: "15px",display:"flex",flexWrap:"wrap" }} className="option-list">
                     {options.map((option) => (
                         <li className='fromCityLi' key={option.name} onClick={() => onSelect(option.name)}>

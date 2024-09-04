@@ -3,7 +3,7 @@ import Landing from './Landing';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchToCity } from '../../redux/slices/toCity';
 import { fetchFromCity } from '../../redux/slices/fromCity';
-import { fetchRoutes, fetchRoutesByDate, setKoranCourse } from '../../redux/slices/routeDriver';
+import { fetchRoutes, fetchRoutesByDate, fetchRoutesByDay, setKoranCourse } from '../../redux/slices/routeDriver';
 import "./user.css";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,7 +15,13 @@ import logo from "../../pictures/Group (1).svg";
 import Boglanish from './Boglanish';
 import BizHaqimizda from './BizHaqimizda';
 import Footer from './Footer';
-
+import b7 from "../../pictures/b7.svg";
+import b8 from "../../pictures/b8.svg";
+import b9 from "../../pictures/b9.svg";
+import b11 from "../../pictures/b11.svg";
+import Boglanish2 from './Boglanish2';
+import BizHaqimizda2 from './bizHaqimizda/BizHaqimizda2';
+import Izohlar from './izohlar/Izohlar';
 
 function RoutesUser() {
     const navigate = useNavigate();
@@ -33,7 +39,11 @@ function RoutesUser() {
     const [showDateModal, setShowDateModal] = useState(false); // Ensure this state is defined
     const [selectedDate, setSelectedDate] = useState('');
     const [currentOptionType, setCurrentOptionType] = useState('');
+    const [needDay, setNeedDay] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [id, setId] = useState("");
+
     const cityTranslations = {
         'Uzbekistan': {
             'Toshkent': 'Ташкент',
@@ -83,6 +93,12 @@ function RoutesUser() {
         }
         return cityName;
     };
+    const translateCity1 = (cityName) => {
+        if (language === '2') {
+            return cityTranslations['Russia'][cityName] || cityName;
+        }
+        return cityName;
+    };
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = date.getDate();
@@ -99,32 +115,32 @@ function RoutesUser() {
         setShowDateModal(false); // Close the date modal
         dispatch(setKoranCourse({ ...driverRout, day: formattedDate }));
     };
+    const updateNeedDay = () => {
+        if (allRoutes.length > 0) {
+            const firstDayString = allRoutes[0].day;
+            const dateObject = new Date(firstDayString);
+            setNeedDay(dateObject);
+        }
+    };
     
 
     const handleOptionSelect = (option) => {
+        console.log(translateCity1(option));
         if (currentOptionType === 'from') {
-            dispatch(setKoranCourse({ ...driverRout, fromCity: option }));
+            dispatch(setKoranCourse({ ...driverRout, fromCity: translateCity1(option) }));
             setShowFromCityModal(false);
         } else if (currentOptionType === 'to') {
-            dispatch(setKoranCourse({ ...driverRout, toCity: option }));
+            dispatch(setKoranCourse({ ...driverRout, toCity: translateCity1(option) }));
             setShowToCityModal(false);
         }
     };
 
     useEffect(() => {
+        dispatch(fetchRoutes());
         dispatch(fetchToCity());
         dispatch(fetchFromCity());
-        setLoading(true); // Ma'lumotlar yuklanishini boshlash
-    
-        // dispatch(fetchRoutes())
-        //     .unwrap()
-        //     .then(() => {
-        //         setLoading(false); // Ma'lumotlar yuklandi
-        //     })
-        //     .catch((err) => {
-        //         setLoading(false); // Xato bo'lsa ham
-        //         console.log(err);
-        //     });
+        setLoading(true); 
+        
     
         const today = new Date();
         const dayAfterTomorrow = new Date(today);
@@ -136,6 +152,8 @@ function RoutesUser() {
     
 
     useEffect(() => {
+        dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
+      
         setTranslatedFromCities(fromCities.map(city => ({
             ...city,
             name: translateCity(city.name)
@@ -164,29 +182,57 @@ function RoutesUser() {
                 toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             })
             .finally(() => {
-                setLoading(false); // Loading holatini to'xtatish
+                setLoading(false); 
             });
-    
-        // Clear the form fields
+        updateNeedDay()
+        setSelectedDate("")
         dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
     }
+    function getRoutesByDay(day1) {
+        let day = parseInt(day1);
+        dispatch(fetchRoutesByDay(day))
+            .unwrap()
+            .then(() => {
+                toast.success('Malumot muvaffaqiyatli tahrirlandi!');
+                day = null; 
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
+            });
+            updateNeedDay()
+    }
     
-
+    const today = new Date();
+    const nextDay1 = new Date(today);
+    const nextDay2 = new Date(today);
+    nextDay1.setDate(today.getDate() + 1);
+    nextDay2.setDate(today.getDate() + 2);
+  
+    
     function goDriverOne(userName) {
         navigate(`/id_haydovchi/${userName}`);
     }
+    const { fromCity, toCity, day } = driverRout;
+    const isFormValid = fromCity && toCity && day;
+
+    function openIzohlar(id){
+            setIsModalOpen(true)
+            setId(id)
+    }
+    const closeModal = () => setIsModalOpen(false);
 
     return (
         <div>
-            <Landing />
+            {/* <Landing /> */}
             <div className="routUser">
                 <div className="imageBacground">
                 <div className="h1RouterUser">
-                <h1 className=''>Har kuni O’zbekiston bo’ylab qatnovlar</h1>
+                <h1 className=''>{language==="1"?"Har kuni O’zbekiston bo’ylab qatnovlar":"Ежедневные поездки по Узбекистану"}</h1>
 
                 </div>
                  <div className="inputs" >
-                <div className="inputChild">
+                 <div className="inputChild">
                     <button 
                         type="button"
                         className="btnCity"
@@ -195,38 +241,90 @@ function RoutesUser() {
                             setShowFromCityModal(true);
                         }}
                     >
-                        {driverRout.fromCity || (language === "1" ? "Qayerdan" : "Откуда")}
+                        {driverRout.fromCity ? (
+                            <span style={{ color: '#303383',fontWeight:"600",letterSpacing:"1.5px" }}>{translateCity(driverRout.fromCity)}</span>
+                        ) : (
+                            <span style={{ fontWeight: 'normal' }}>
+                                {language === "1" ? "Qayerdan  " : "Откуда"}
+                            </span>
+                        )} 
+                        <img src={b7} className='locationImg' alt="" />
                     </button>
-                </div>
-                <div className="inputChild">
-                    <button 
-                        type="button"
-                        className="btnCity"
-                        onClick={() => {
-                            setCurrentOptionType('to');
-                            setShowToCityModal(true);
-                        }}
-                    > 
-                        {driverRout.toCity || (language === "1" ? "Qayerga" : "Куда")}
-                    </button>
-                </div>
+                            </div>
+
+                            <div className="inputChild">
+                            <button 
+                                type="button"
+                                className="btnCity"
+                                onClick={() => {
+                                    setCurrentOptionType('to');
+                                    setShowToCityModal(true);
+                                }}
+                                disabled={!driverRout.fromCity} 
+                                style={{
+                                    opacity: !driverRout.fromCity ? 0.5 : 1, 
+                                    cursor: !driverRout.fromCity ? 'not-allowed' : 'pointer' 
+                                }}
+                            > 
+                             {driverRout.toCity ? (
+                            <span style={{ color: '#303383',fontWeight:"600",letterSpacing:"1.5px" }}>{translateCity(driverRout.toCity)}</span>
+                        ) : (
+                            <span style={{ fontWeight: 'normal' }}>
+                                { language === "1" ? "Qayerga" : "Куда"}
+                            </span>
+                        )} 
+
+                        <img src={b7} className='locationImg' alt="" />
+                            </button>
+                        </div>
+
                 <div className="inputChild">
                     <button
                         type="button"
                         className="btnCity"
+                        value={formatDate(driverRout.day)}
                         onClick={() => setShowDateModal(true)} // Ensure this triggers the modal
                     >
-                        {selectedDate || (language === "1" ? "Qachon" : "Когда")}
-                        
+
+                    {selectedDate? (
+                            <span style={{ color: '#303383',fontWeight:"600",letterSpacing:"1.5px" }}>{selectedDate}</span>
+                        ) : (
+                            <span style={{ fontWeight: 'normal' }}>
+                                { language === "1" ? "Qachon" : "Когда"}
+                            </span>
+                        )} 
                         <img src={calendar} className='imgCalendar' alt="" />
                     </button>
                 </div>
                 <div className="inputChild">
-                    <p style={{ height: "20px" }}></p>
-                    <button className='qidirish' onClick={getRouteOne}>{language==="1"?"Qidirish":"Поиск"}</button>
+                <button
+                            className='qidirish'
+                            onClick={getRouteOne}
+                            disabled={!isFormValid} // Agar barcha maydonlar to'ldirilmagan bo'lsa, button disabled bo'ladi
+                            style={{
+                                opacity: !isFormValid ? 0.5 : 1,
+                                cursor: !isFormValid ? 'not-allowed' : 'pointer'
+                            }}
+                        >
+                            {language === "1" ? "Qidirish" : "Поиск"}
+                        </button>
                 </div>
             </div>
             <div className="allRoutes" >
+            <div className="getRoutes">
+                         <div className="topRoutesUser">
+                            <h2>{language==="1"?"Yo’nalish bo’yicha qatnovlar":"Маршруты"}</h2>
+                        </div>
+                        <div className="days">
+                        <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(needDay) === formatDate(today) ? "#303383" : ""),color:(formatDate(needDay) === formatDate(today) ? "white" : "")}}>
+                        {formatDate(today)}
+                        </button>
+
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('2')} style={{backgroundColor: (formatDate(needDay) === formatDate(nextDay1) ? "#303383" : ""),color:(formatDate(needDay) === formatDate(nextDay1) ? "white" : "")}}>{formatDate(nextDay1)}</button>
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('3')} style={{backgroundColor: (formatDate(needDay) === formatDate(nextDay2) ? "#303383" : ""),color:(formatDate(needDay) === formatDate(nextDay2) ? "white" : "")}}>{formatDate(nextDay2)}</button>
+                        </div>
+                       </div>
+               
                 {
                 // loading ? (
                 //     <div className="loading-container">
@@ -234,29 +332,52 @@ function RoutesUser() {
                 //     </div>
                 // ) : (
                 allRoutes.map((item, index) => (
-                    <li className='list-group-item' key={index}>
-                        <div className="ketish">
-                            <span>{language==="1"?"Ketish:":"Отправление:"}</span>
-                            <p>{formatDate(item.day)} {item.hour}</p>
-                        </div>
-                        <div className="routes12">
-                            <span>{language==="1"?"Yo'nalish nomi:":"Название маршрута:"}</span>
-                            <p>{translateCity(item.fromCity)} - {translateCity(item.toCity)}</p>
-                        </div>
-                        <div className="joylar">
-                            <span>{language==="1"?"Joylar Soni:":"Количество мест:"}</span>
-                            <p>{item.countSide}</p>
-                        </div>
-                        <div className="userButtons">
-                            <button className='saqlash3'>{language==="1"?"Band Qilish":"Бронирование"}</button>
-                            <button className='saqlash3' onClick={() => goDriverOne(item.user.id)}>{language==="1"?"Haydovchi Haqida":"О водителе"}</button>
-                        </div>
-                    </li>
+                   <div className="mapRoutes">
+                    <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateCity(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
+                    <li className="list-group-item li2">
+                                <div className="l2Child1">
+                                    {Array.from({ length: Math.min(item.countSide, 6) }).map((_, index) => (
+                                    <img key={index} src={b9} alt="" />
+                                    ))}
+                                </div>
+                                <div className="li2Child2">
+                                    <p>{language==="1"?" Bo'sh O'rindiqlar soni:":"Количество свободных мест:"}</p>
+                                    <h6>{item.countSide}</h6>
+                                </div>
+                                <div className="li2Child3">
+                                    <h6>{language==="1"?"Mashina rusumi":"Модель автомобиля"}</h6>
+                                    <p>{item.user.carType}</p>
+                                </div>
+                                </li>
+
+
+                    <li className='list-group-item li3'><div className="l3Child1"><h3>{item.user.fullName}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button>{language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
+                   </div> 
+                    // <li className='list-group-item' key={index}>
+                    //     <div className="ketish">
+                    //         <span>{language==="1"?"Ketish:":"Отправление:"}</span>
+                    //         <p>{formatDate(item.day)} {item.hour}</p>
+                    //     </div>
+                    //     <div className="routes12">
+                    //         <span>{language==="1"?"Yo'nalish nomi:":"Название маршрута:"}</span>
+                    //         <p>{translateCity(item.fromCity)} - {translateCity(item.toCity)}</p>
+                    //     </div>
+                    //     <div className="joylar">
+                    //         <span>{language==="1"?"Joylar Soni:":"Количество мест:"}</span>
+                    //         <p>{item.countSide}</p>
+                    //     </div>
+                    //     <div className="userButtons">
+                    //         <button className='saqlash3'>{language==="1"?"Band Qilish":"Бронирование"}</button>
+                    //         <button className='saqlash3' onClick={() => goDriverOne(item.user.id)}>{language==="1"?"Haydovchi Haqida":"О водителе"}</button>
+                    //     </div>
+                    // </li>
                 // )
                 ))}
-                <BizHaqimizda/>
             </div>
-
+            <div className="boglanish2">
+            <Boglanish2 />
+            </div>
+                {/* <BizHaqimizda/>          */}
                 </div>
             {showFromCityModal && (
                 <OptionModal
@@ -282,10 +403,14 @@ function RoutesUser() {
             )}
             <ToastContainer toastStyle={{ backgroundColor: 'white', color: 'black' }} autoClose={1000} />
             <Boglanish/>
-            {/* <Footer/> */}
             </div>
+          
+            <div className="boglanish2">
             
-           
+            <BizHaqimizda2/>
+            </div>
+            {/* <Footer/> */}
+            <Izohlar  isOpen={isModalOpen} onClose={closeModal} userName={id}/>
         </div>
     );
 }
