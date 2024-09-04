@@ -93,16 +93,19 @@ function DriverLanding() {
   };
   return (
     <div style={{padding:"0 20px"}}>
+      <h1 className='header_dr' >Har kuni O’zbekiston bo’ylab qatnovlar</h1>
+
       <div className="begin" >
         <div className="inputs">
         <div className="inputChild">
-          <p>Qayerdan</p>
+        
           <select onChange={e=>dispatch(setKoranCourse({...driverRout,fromCity:e.target.value}))} value={driverRout.fromCity}>
             <option value="" disabled>Joyni tanlang...</option>
            {
             fromCities.map((item)=>{
               return <option value={item.name}>{item.name}</option>
             })
+            
            }
           </select>
         </div>

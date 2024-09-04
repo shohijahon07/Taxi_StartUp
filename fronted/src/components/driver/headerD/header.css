@@ -121,15 +121,15 @@ height: 38px ;
 .language_dr{
     background-color:#E1E5F1;
 border:none;
-font-size: 29px !important;
-    font-weight: 500;
+font-size: 19px !important;
+    font-weight: 300;
     line-height: 35px;
     color: #303383 !important;
     padding: 5px;
 }
 .language_dr .option_dr{
-    font-size: 29px !important;
-    font-weight: 500;
+    font-size: 19px !important;
+    font-weight: 400;
     line-height: 35px;
     color: #303383 !important;
 

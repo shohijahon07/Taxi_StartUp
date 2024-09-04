@@ -67,10 +67,10 @@ function getDriver(){
     dispatch(setAbout(""));
   };
   return (
-    <div style={{ padding: "0 20px" }}>
+    <div className='container_dr_about'>
     {
       driverOne.map((item) => {
-        return <ul className='list-group' key={item.id}>
+        return  <ul className='list-group' key={item.id}>
           <li className='list-group-item'><h5>Ism Familiya:</h5> <h6>{item.fullName}</h6>
             <input type="text" className='from-control' value={driverObject.fullName}
               onChange={(e) => dispatch(setDriver({ ...driverObject, fullName: e.target.value }))}
