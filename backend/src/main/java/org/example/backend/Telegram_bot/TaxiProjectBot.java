@@ -271,19 +271,12 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
 
 
                 if (foundUser.getStatus().equals(Status.START) && message.getText().equalsIgnoreCase("/start") && foundUser.getIsDriver().equals(true)) {
-
-                    foundUser.setStatus(Status.SET_FROM);
-                    userRepo.save(foundUser);
-                    if(language.equals("uz")){
-                        sendMessage.setText("🗺️ Yo'nalishingizni kiriting \n 📍 Qayerdan?"); // "🗺️" for route or map and "📍" for location
-
-                    }else if(language.equals("ru")){
-                        sendMessage.setText("🗺️ Введите пункт назначения\n" +
-                                " \uD83D\uDCCDОткуда?"); // "🗺️" for route or map and "📍" for location
-                    }
-
-                    sendMessage.setReplyMarkup(fromCitysButtons());
+                    sendMessage.setText("Iltimos tilni tanlang! Пожалуйста, выберите язык!");
+                    sendMessage.setReplyMarkup(selectLanguageButtons());
+                    sendMessage.setChatId(chatId);
                     execute(sendMessage);
+
+
                 }
                 else if (foundUser.getStatus().equals(Status.SET_DIRECTIONS)) {
                     List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
@@ -687,13 +680,32 @@ phoneNumber=message.getContact().getPhoneNumber();
                 // Send the message with the contact button and store the message ID for later deletion
                 Message executedMessage = execute(sendMessage);
                 band_delete_data[1] = String.valueOf(executedMessage.getMessageId());
-            }
-            else if (data.equals("ru") && !user.getIsDriver()) {
+            } else if (data.equals("ru") && !user.getIsDriver()) {
                 language = "ru";
                 sendMessage.setText("☎\uFE0FОтправьте свой контакт");
                 sendMessage.setReplyMarkup(genContactButtons(language));
                 execute(sendMessage);
-            }else if (data.equals("Passengers")) {
+            }else if(data.equals("uz")&user.getIsDriver()){
+                language="uz";
+                System.out.println(language);
+                                    user.setStatus(Status.SET_FROM);
+                    userRepo.save(user);
+                        sendMessage.setText("🗺️ Yo'nalishingizni kiriting \n 📍 Qayerdan?"); // "🗺️" for route or map and "📍" for location
+                    sendMessage.setReplyMarkup(fromCitysButtons());
+                    execute(sendMessage);
+            }else if(data.equals("ru")&user.getIsDriver()){
+                language="ru";
+                System.out.println(language);
+
+
+                user.setStatus(Status.SET_FROM);
+                    userRepo.save(user);
+                        sendMessage.setText("🗺️ Введите пункт назначения\n" +
+                                " \uD83D\uDCCDОткуда?");
+                    sendMessage.setReplyMarkup(fromCitysButtons());
+                    execute(sendMessage);
+            }
+            else if (data.equals("Passengers")) {
                 user.setStatus(Status.SET_CITY_FROM_SAVE);
                 user.setFullName(fullName);
                 user.setPhoneNumber(phoneNumber);
@@ -705,8 +717,6 @@ phoneNumber=message.getContact().getPhoneNumber();
                 }
                 roles.add(driverRole);
                 user.setRoles(roles);
-
-// Save the user to the repository
                 userRepo.save(user);
 
                 userRepo.save(user);
@@ -1138,7 +1148,7 @@ phoneNumber=message.getContact().getPhoneNumber();
                             sendMessage.setText("🔢 Есть несколько мест?");
 
                         }
-                        sendMessage.setReplyMarkup(countseatButtons());
+                        sendMessage.setReplyMarkup(countseatButtons(user.isCount()));
                         userRepo.save(user);
                         execute(sendMessage);
                         return;
@@ -1186,29 +1196,110 @@ phoneNumber=message.getContact().getPhoneNumber();
             }
 
             if (user.getStatus().equals(Status.SET_COUNT_SIDE)) {
-                switch (data) {
-                    case "1 ta":
-                    case "2 ta":
-                    case "3 ta":
-                    case "4 ta":
-                    case "5 ta":
-                    case "6 ta":
-                        driver_data[2] = data;
-                        user.setStatus(Status.SET_GO_MONEY);
-                        if(language.equals("uz")){
-                            sendMessage.setText("💵 Necha pulga olib ketasiz?");
 
-                        }else if(language.equals("ru")){
-                            sendMessage.setText("💵 Сколько вы возьмете?");
+                if (user.isCount()) {
+                    switch (data) {
+                        case "1 ta":
+                        case "2 ta":
+                        case "3 ta":
+                        case "4 ta":
+                        case "5 ta":
+                        case "6 ta":
+                            driver_data[2] = data;
+                            user.setStatus(Status.SET_GO_MONEY);
+                            if (language.equals("uz")) {
+                                sendMessage.setText("💵 Necha pulga olib ketasiz?");
+                            } else if (language.equals("ru")) {
+                                sendMessage.setText("💵 Сколько вы возьмете?");
+                            }
 
-                        }
+                            userRepo.save(user);
+                            execute(sendMessage);
+                            return;
+                        default:
+                            break;
+                    }
+                } else {
+                    switch (data) {
+                        case "1 ta":
+                        case "2 ta":
+                        case "3 ta":
+                        case "4 ta":
+                        case "5 ta":
+                        case "6 ta":
+                        case "7 ta":
+                        case "8 ta":
+                        case "9 ta":
+                        case "10 ta":
+                        case "11 ta":
+                        case "12 ta":
+                            driver_data[2] = data;
+                            user.setStatus(Status.SET_GO_MONEY);
+                            if (language.equals("uz")) {
+                                sendMessage.setText("💵 Necha pulga olib ketasiz?");
+                            } else if (language.equals("ru")) {
+                                sendMessage.setText("💵 Сколько вы возьмете?");
+                            }
 
-                        userRepo.save(user);
-                        execute(sendMessage);
-                        return;
-                    default:
-                        break;
+                            userRepo.save(user);
+                            execute(sendMessage);
+                            return;
+                        default:
+                            break;
+                    }
                 }
+                if (user.isCount()) {
+                    switch (data) {
+                        case "1 ta":
+                        case "2 ta":
+                        case "3 ta":
+                        case "4 ta":
+                        case "5 ta":
+                        case "6 ta":
+                            driver_data[2] = data;
+                            user.setStatus(Status.SET_GO_MONEY);
+                            if (language.equals("uz")) {
+                                sendMessage.setText("💵 Necha pulga olib ketasiz?");
+                            } else if (language.equals("ru")) {
+                                sendMessage.setText("💵 Сколько вы возьмете?");
+                            }
+
+                            userRepo.save(user);
+                            execute(sendMessage);
+                            return;
+                        default:
+                            break;
+                    }
+                } else {
+                    switch (data) {
+                        case "1 ta":
+                        case "2 ta":
+                        case "3 ta":
+                        case "4 ta":
+                        case "5 ta":
+                        case "6 ta":
+                        case "7 ta":
+                        case "8 ta":
+                        case "9 ta":
+                        case "10 ta":
+                        case "11 ta":
+                        case "12 ta":
+                            driver_data[2] = data;
+                            user.setStatus(Status.SET_GO_MONEY);
+                            if (language.equals("uz")) {
+                                sendMessage.setText("💵 Necha pulga olib ketasiz?");
+                            } else if (language.equals("ru")) {
+                                sendMessage.setText("💵 Сколько вы возьмете?");
+                            }
+
+                            userRepo.save(user);
+                            execute(sendMessage);
+                            return;
+                        default:
+                            break;
+                    }
+                }
+
             }
 
         }
@@ -1691,7 +1782,7 @@ phoneNumber=message.getContact().getPhoneNumber();
     }
 
 
-    private InlineKeyboardMarkup countseatButtons() {
+    private InlineKeyboardMarkup countseatButtons(boolean count) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
         List<InlineKeyboardButton> row1 = new ArrayList<>();
@@ -1704,42 +1795,107 @@ phoneNumber=message.getContact().getPhoneNumber();
         InlineKeyboardButton button4 = new InlineKeyboardButton();
         InlineKeyboardButton button5 = new InlineKeyboardButton();
         InlineKeyboardButton button6 = new InlineKeyboardButton();
+        InlineKeyboardButton button7 = new InlineKeyboardButton();
+        InlineKeyboardButton button8 = new InlineKeyboardButton();
+        InlineKeyboardButton button9 = new InlineKeyboardButton();
+        InlineKeyboardButton button10 = new InlineKeyboardButton();
+        InlineKeyboardButton button11 = new InlineKeyboardButton();
+        InlineKeyboardButton button12 = new InlineKeyboardButton();
 
         if (language.equals("uz")) {
-            button1.setText("1 ta"); // Uzbek for "1 seat"
-            button2.setText("2 ta"); // Uzbek for "2 seats"
-            button3.setText("3 ta"); // Uzbek for "3 seats"
-            button4.setText("4 ta"); // Uzbek for "4 seats"
-            button5.setText("5 ta"); // Uzbek for "5 seats"
-            button6.setText("6 ta"); // Uzbek for "6 seats"
-        } else if (language.equals("ru")) {
-            button1.setText("1 место"); // Russian for "1 seat"
-            button2.setText("2 места"); // Russian for "2 seats"
-            button3.setText("3 места"); // Russian for "3 seats"
-            button4.setText("4 места"); // Russian for "4 seats"
-            button5.setText("5 мест"); // Russian for "5 seats"
-            button6.setText("6 мест"); // Russian for "6 seats"
-        }
+            button1.setText("1 ta");
+            button2.setText("2 ta");
+            button3.setText("3 ta");
+            button4.setText("4 ta");
+            button5.setText("5 ta");
+            button6.setText("6 ta");
+            button1.setCallbackData("1 ta");
+            button2.setCallbackData("2 ta");
+            button3.setCallbackData("3 ta");
+            button4.setCallbackData("4 ta");
+            button5.setCallbackData("5 ta");
+            button6.setCallbackData("6 ta");
 
-        button1.setCallbackData("1 ta");
-        button2.setCallbackData("2 ta");
-        button3.setCallbackData("3 ta");
-        button4.setCallbackData("4 ta");
-        button5.setCallbackData("5 ta");
-        button6.setCallbackData("6 ta");
+            if (!count) {
+                button7.setText("7 ta");
+                button8.setText("8 ta");
+                button9.setText("9 ta");
+                button10.setText("10 ta");
+                button11.setText("11 ta");
+                button12.setText("12 ta");
+                button7.setCallbackData("7 ta");
+                button8.setCallbackData("8 ta");
+                button9.setCallbackData("9 ta");
+                button10.setCallbackData("10 ta");
+                button11.setCallbackData("11 ta");
+                button12.setCallbackData("12 ta");
+            }
+        } else if (language.equals("ru")) {
+            button1.setText("1 место");
+            button2.setText("2 места");
+            button3.setText("3 места");
+            button4.setText("4 места");
+            button5.setText("5 мест");
+            button6.setText("6 мест");
+            button1.setCallbackData("1 место");
+            button2.setCallbackData("2 места");
+            button3.setCallbackData("3 места");
+            button4.setCallbackData("4 места");
+            button5.setCallbackData("5 мест");
+            button6.setCallbackData("6 мест");
+
+            if (!count) {
+                button7.setText("7 мест");
+                button8.setText("8 мест");
+                button9.setText("9 мест");
+                button10.setText("10 мест");
+                button11.setText("11 мест");
+                button12.setText("12 мест");
+                button7.setCallbackData("7 мест");
+                button8.setCallbackData("8 мест");
+                button9.setCallbackData("9 мест");
+                button10.setCallbackData("10 мест");
+                button11.setCallbackData("11 мест");
+                button12.setCallbackData("12 мест");
+            }
+        }
 
         row1.add(button1);
         row1.add(button2);
-
         row2.add(button3);
         row2.add(button4);
-
         row3.add(button5);
         row3.add(button6);
 
         rows.add(row1);
         rows.add(row2);
         rows.add(row3);
+
+        // Adding extra rows if count is false
+        if (!count) {
+            List<InlineKeyboardButton> row4 = new ArrayList<>();
+            List<InlineKeyboardButton> row5 = new ArrayList<>();
+
+            row4.add(button7);
+            row4.add(button8);
+            row5.add(button9);
+            row5.add(button10);
+
+            rows.add(row4);
+            rows.add(row5);
+
+            if (language.equals("uz")) {
+                List<InlineKeyboardButton> row6 = new ArrayList<>();
+                row6.add(button11);
+                row6.add(button12);
+                rows.add(row6);
+            } else if (language.equals("ru")) {
+                List<InlineKeyboardButton> row6 = new ArrayList<>();
+                row6.add(button11);
+                row6.add(button12);
+                rows.add(row6);
+            }
+        }
 
         return new InlineKeyboardMarkup(rows);
     }
@@ -1784,9 +1940,8 @@ phoneNumber=message.getContact().getPhoneNumber();
             button1.setText("🚖 Haydovchilar");
             button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId);
         } else {
-            button1.setText("🚖 Драйверы"); // "🚖" Taxi icon for Drivers
-            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId);
-
+            button1.setText("🚖 Драйверы");
+            button1.setUrl("http://192.168.0.81:51744/register?chatId=" + chatId);
         }
         button1.setCallbackData("Drivers");
         row1.add(button1);

@@ -30,7 +30,7 @@ public interface UserService {
 
 
 
-    void saveUser(UserDto userDto);
+    ResponseEntity<?> saveUser(UserDto userDto);
 
     ResponseEntity<?> deleteUser(UUID id);
 

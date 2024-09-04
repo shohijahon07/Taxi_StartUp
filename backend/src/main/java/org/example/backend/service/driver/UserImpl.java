@@ -89,7 +89,8 @@ public class UserImpl implements UserService{
 
             String apiToken ="7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
             String chatId = String.valueOf(user.getChatId());
-            String text = "Tabriklaymiz siz muvaffaqiyatli tastiqlandingiz Sizning parolingiz: " + plainPassword + "va username: " +user.getPhoneNumber();
+            String text = "  Tabriklaymiz siz muvaffaqiyatli tastiqlandingiz. Boshlash uchun /start buyrug'ini bering  username: " +user.getPhoneNumber() +  "  parol: " + plainPassword  +" ";
+
 
             String urlString = "https://api.telegram.org/bot" + apiToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
 
@@ -116,6 +117,7 @@ public class UserImpl implements UserService{
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message");
         }
+
     }
 
     @Override
@@ -187,7 +189,7 @@ public class UserImpl implements UserService{
     }
 
     @Override
-    public void saveUser(UserDto userDto) {
+    public ResponseEntity<?> saveUser(UserDto userDto) {
         System.out.println(userDto);
         System.out.println(userDto.getCardDocument());
 
@@ -212,22 +214,13 @@ public class UserImpl implements UserService{
             user1.setCardDocument(userDto.getCardDocument());
             user1.setAbout(userDto.getAbout());
             user1.setChatId(userDto.getChatId());
+            user1.setCount(userDto.isCount());
             user1.setRoles(roles);
 
             userRepo.save(user1);
+            return ResponseEntity.ok("ok");
         } else {
-            User newUser = new User();
-            newUser.setFullName(userDto.getFullName());
-            newUser.setPhoneNumber(userDto.getPhoneNumber());
-            newUser.setCarType(userDto.getCarType());
-            newUser.setCarImg(userDto.getCarImg());
-            newUser.setDriverImg(userDto.getDriverImg());
-            newUser.setCardDocument(userDto.getCardDocument());
-            newUser.setAbout(userDto.getAbout());
-            newUser.setChatId(userDto.getChatId());
-            newUser.setRoles(roles);
-
-            userRepo.save(newUser);
+return ResponseEntity.ok("Siz oldin botdan ro'yxatdan o'tishingiz kerak");
         }
     }
 
