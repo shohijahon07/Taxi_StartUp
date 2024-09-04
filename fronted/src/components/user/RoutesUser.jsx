@@ -22,6 +22,7 @@ import b11 from "../../pictures/b11.svg";
 import Boglanish2 from './Boglanish2';
 import BizHaqimizda2 from './bizHaqimizda/BizHaqimizda2';
 import Izohlar from './izohlar/Izohlar';
+import Band_qilish from './bandQilish/Band_qilish';
 
 function RoutesUser() {
     const navigate = useNavigate();
@@ -43,6 +44,8 @@ function RoutesUser() {
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [id, setId] = useState("");
+    const [chatId, setChatId] = useState("");
+    const [isModalOpen1, setIsModalOpen1] = useState(false);
 
     const cityTranslations = {
         'Uzbekistan': {
@@ -222,9 +225,15 @@ function RoutesUser() {
     }
     const closeModal = () => setIsModalOpen(false);
 
+    const openModal1 = (chatId) =>{
+           
+            setChatId(chatId)
+        setIsModalOpen1(true);
+    } 
+    const closeModal1 = () => setIsModalOpen1(false);
     return (
         <div>
-            {/* <Landing /> */}
+            <Landing />
             <div className="routUser">
                 <div className="imageBacground">
                 <div className="h1RouterUser">
@@ -351,33 +360,14 @@ function RoutesUser() {
                                 </li>
 
 
-                    <li className='list-group-item li3'><div className="l3Child1"><h3>{item.user.fullName}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button>{language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
+                    <li className='list-group-item li3'><div className="l3Child1"><h3>{item.user.fullName}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={()=>openModal1(item.user.chatId)}>  {language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
                    </div> 
-                    // <li className='list-group-item' key={index}>
-                    //     <div className="ketish">
-                    //         <span>{language==="1"?"Ketish:":"Отправление:"}</span>
-                    //         <p>{formatDate(item.day)} {item.hour}</p>
-                    //     </div>
-                    //     <div className="routes12">
-                    //         <span>{language==="1"?"Yo'nalish nomi:":"Название маршрута:"}</span>
-                    //         <p>{translateCity(item.fromCity)} - {translateCity(item.toCity)}</p>
-                    //     </div>
-                    //     <div className="joylar">
-                    //         <span>{language==="1"?"Joylar Soni:":"Количество мест:"}</span>
-                    //         <p>{item.countSide}</p>
-                    //     </div>
-                    //     <div className="userButtons">
-                    //         <button className='saqlash3'>{language==="1"?"Band Qilish":"Бронирование"}</button>
-                    //         <button className='saqlash3' onClick={() => goDriverOne(item.user.id)}>{language==="1"?"Haydovchi Haqida":"О водителе"}</button>
-                    //     </div>
-                    // </li>
-                // )
                 ))}
             </div>
             <div className="boglanish2">
             <Boglanish2 />
             </div>
-                {/* <BizHaqimizda/>          */}
+                <BizHaqimizda/>         
                 </div>
             {showFromCityModal && (
                 <OptionModal
@@ -410,6 +400,8 @@ function RoutesUser() {
             <BizHaqimizda2/>
             </div>
             {/* <Footer/> */}
+             <Band_qilish isOpen={isModalOpen1} onClose={closeModal1} chatId={chatId} />
+
             <Izohlar  isOpen={isModalOpen} onClose={closeModal} userName={id}/>
         </div>
     );

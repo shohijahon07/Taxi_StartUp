@@ -1,9 +1,11 @@
 package org.example.backend.service.driver;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
+import org.example.backend.DTO.PessengerDto;
 import org.example.backend.DTO.UserDto;
 import org.example.backend.entity.Role;
 import org.example.backend.entity.Status;
@@ -16,12 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -136,6 +141,53 @@ public class UserImpl implements UserService{
 
         return ResponseEntity.ok("delete successfull");
     }
+
+    @Override
+    public HttpEntity<?> savePessenger(PessengerDto pessengerDto) throws IOException {
+        System.out.println(pessengerDto);
+
+        List<Role> roles = new ArrayList<>();
+        Role driverRole = roleRepo.findByName("ROLE_USER");
+        if (driverRole == null) {
+            driverRole = new Role("ROLE_USER");
+            roleRepo.save(driverRole);
+        }
+        roles.add(driverRole);
+
+        User user = new User(pessengerDto.getName(), pessengerDto.getPhoneNumber(), roles);
+        userRepo.save(user);
+
+        String apiToken = "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
+        String chatId = String.valueOf(pessengerDto.getDriverChatId());
+        String text = "👤 Siz " + user.getFullName() + " yo'lovchini qabul qilasizmi? " +
+                "📞 Telefon raqami: " + user.getPhoneNumber();
+
+        InlineKeyboardMarkup markup = sendBusy(user.getId(), Long.valueOf(pessengerDto.getDriverChatId()));
+        ObjectMapper objectMapper = new ObjectMapper();
+        String inlineKeyboardJson = objectMapper.writeValueAsString(markup);
+
+        // Send message with inline buttons
+        String urlString = "https://api.telegram.org/bot" + apiToken + "/sendMessage?chat_id=" + chatId +
+                "&text=" + URLEncoder.encode(text, "UTF-8") +
+                "&reply_markup=" + URLEncoder.encode(inlineKeyboardJson, "UTF-8");
+
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+
+        in.close();
+        conn.disconnect();
+        return ResponseEntity.ok(user);
+    }
+
     @Override
     public ResponseEntity<?> saveUser(UserDto userDto) {
         System.out.println(userDto);
@@ -170,6 +222,29 @@ public class UserImpl implements UserService{
         } else {
 return ResponseEntity.ok("Siz oldin botdan ro'yxatdan o'tishingiz kerak");
         }
+    }
+
+
+    private InlineKeyboardMarkup sendBusy(UUID userId, Long driverChatId) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+
+        // First button: Accept
+        List<InlineKeyboardButton> firstRow = new ArrayList<>();
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        button1.setText("✅ Ha:");
+        button1.setCallbackData("accept_" + userId.toString() + "_" + driverChatId);  // Include userId and driverChatId in callback data
+        firstRow.add(button1);
+        rows.add(firstRow);
+
+        // Second button: Decline
+        List<InlineKeyboardButton> secondRow = new ArrayList<>();
+        InlineKeyboardButton button2 = new InlineKeyboardButton();
+        button2.setText("❌ Yo'q");
+        button2.setCallbackData("decline_" + userId.toString() + "_" + driverChatId);  // Include userId and driverChatId in callback data
+        secondRow.add(button2);
+        rows.add(secondRow);
+
+        return new InlineKeyboardMarkup(rows);
     }
 
 }

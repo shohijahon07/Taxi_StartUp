@@ -84,7 +84,11 @@ public class User implements UserDetails {
         this.chatId = chatId;
     }
 
-
+    public User(String fullName, String phoneNumber,List<Role> roles) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

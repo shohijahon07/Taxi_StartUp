@@ -15,7 +15,6 @@
     border-radius:0px, 0px, 5px, 5px;
 }
 .fatherNavbar{
-
     background-color:#E1E5F1;
 }
 .navbar{
@@ -86,7 +85,7 @@ justify-content: space-between;
         height: 49px;
         background-color:transparent;
         font-weight: 500;
-        font-size: 29.54;
+        font-size: 25px;
         /* line-height: 35.75; */
         color:#303383;
 }
@@ -687,6 +686,53 @@ p{
     }
 }
 @media only screen and (min-width: 1100px) and (max-width: 1270px) {
+    .navbar{
+         max-width: 1270px;
+         height: 100px;
+     }
+
+     .middleUserHeader{
+         display: flex;
+        width: 570px;
+        /* border:1px solid; */
+     }
+     .navbarUl{
+        padding: 0;
+     }
+     .navbarUl li{
+         font-size: 30px;
+         font-weight: 500;
+         line-height: 38.73px;
+     }
+     .rightUserHeader{
+        /* border:1px solid; */
+
+        width: 240px;
+        display: flex;
+        align-items:center;
+        justify-content: space-around;
+        }
+        .imgTelegram{
+            width: 40px;
+            height: 40px;
+        }
+        .rightUserHeader select{
+            border:none;
+                width: 145px;
+                height: 49px;
+                background-color:transparent;
+                font-weight: 500;
+                font-size: 25px;
+                /* line-height: 35.75; */
+                color:#303383;
+        }
+        .leftUserHeader{
+            margin-left: 20px;
+            width: 200px;
+            height: 39px;
+            cursor: pointer;
+        }
+
     .imageBacground{
         padding: 0;
         background-image: url("../../pictures/all.svg");
@@ -917,6 +963,53 @@ p{
     }
 }
 @media only screen and (min-width: 920px) and (max-width: 1100px) {
+    .navbar{
+        max-width: 1100px;
+        height: 85px;
+    }
+
+    .middleUserHeader{
+        display: flex;
+       width: 500px;
+       /* border:1px solid; */
+    }
+    .navbarUl{
+       padding: 0;
+    }
+    .navbarUl li{
+        font-size: 27px;
+        font-weight: 500;
+        line-height: 32.73px;
+    }
+    .rightUserHeader{
+       /* border:1px solid; */
+
+       width: 160px;
+       display: flex;
+       align-items:center;
+       justify-content: space-around;
+       }
+       .imgTelegram{
+           width: 40px;
+           height: 40px;
+       }
+       .rightUserHeader select{
+           border:none;
+               width: 130px;
+               height: 49px;
+               background-color:transparent;
+               font-weight: 500;
+               font-size: 23px;
+               /* line-height: 35.75; */
+               color:#303383;
+       }
+       .leftUserHeader{
+        margin-right: 5px;
+        margin-left: 20px;
+        width: 175px;
+        height: 39px;
+    }
+
     .imageBacground{
         padding: 0;
         background-image: url("../../pictures/all.svg");
@@ -1147,6 +1240,53 @@ p{
     }
 }
 @media only screen and (min-width: 800px) and (max-width: 920px) {
+    .navbar{
+        max-width: 920px;
+        height: 70px;
+    }
+
+    .middleUserHeader{
+        display: flex;
+       width: 430px;
+       /* border:1px solid; */
+    }
+    .navbarUl{
+       padding: 0;
+    }
+    .navbarUl li{
+        font-size: 23px;
+        font-weight: 500;
+        line-height: 25.73px;
+    }
+    .rightUserHeader{
+       /* border:1px solid; */
+
+       width: 150px;
+       display: flex;
+       align-items:center;
+       justify-content: space-around;
+       }
+       .imgTelegram{
+           width: 35px;
+           height: 35px;
+       }
+       .rightUserHeader select{
+           border:none;
+               width: 110px;
+               height: 49px;
+               background-color:transparent;
+               font-weight: 500;
+               font-size: 20px;
+               /* line-height: 35.75; */
+               color:#303383;
+       }
+       .leftUserHeader{
+        margin-right: 5px;
+        margin-left: 20px;
+        width: 150px;
+        height: 39px;
+    }
+
     .imageBacground{
         padding: 0;
         background-image: url("../../pictures/all.svg");
@@ -1378,6 +1518,56 @@ p{
     }
 }
 @media only screen and (min-width: 720px) and (max-width: 800px) {
+    .navbar{
+        max-width: 800px;
+        height: 60px;
+    }
+
+    .middleUserHeader{
+        display: flex;
+       width: 370px;
+       /* border:1px solid; */
+       margin-bottom: 10px;
+    }
+    .navbarUl{
+       padding: 0;
+      margin: 0;
+    }
+    .navbarUl li{
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 25.73px;
+    }
+    .rightUserHeader{
+       /* border:1px solid; */
+            margin-top: 10px;
+       width: 140px;
+       display: flex;
+       align-items:center;
+       justify-content: space-around;
+       }
+       .imgTelegram{
+           width: 30px;
+           height: 30px;
+       }
+       .rightUserHeader select{
+           border:none;
+               width: 110px;
+               height: 35px;
+               background-color:transparent;
+               font-weight: 500;
+               font-size: 18px;
+               /* line-height: 35.75; */
+               color:#303383;
+       }
+       .leftUserHeader{
+        margin-top: 5px;
+        margin-right: 5px;
+        margin-left: 20px;
+        width: 120px;
+        height: 30px;
+    }
+
     .imageBacground{
         padding: 0;
         background-image: url("../../pictures/all.svg");
@@ -1613,7 +1803,7 @@ p{
         gap: 5px;
         padding: 0 20px;
          max-width: 720px;
-         height: 80px;
+         height: 70px;
      }
      .leftUserHeader{
         margin-left:15px;
@@ -1629,6 +1819,7 @@ p{
        justify-content: space-between;
     }
   .navbarUl{
+    margin-top: 10px;
     padding: 0;
   }
      .navbarUl li{
@@ -1647,6 +1838,7 @@ p{
             border:none;
                 width: 100px;
                 height: 35px;
+                font-size: 16px;
                 color:#303383;
         }
         .imageBacground{
@@ -1932,7 +2124,7 @@ p{
         gap: 5px;
         padding: 0 20px;
          max-width: 672px;
-         height: 70px;
+         height: 60px;
      }
      .leftUserHeader{
         margin-left:15px;
@@ -1946,6 +2138,7 @@ p{
     }
   .navbarUl{
     padding: 0;
+    margin-top: 8px;
   }
      .navbarUl li{
          font-size: 17px;
@@ -2242,7 +2435,7 @@ p{
         gap: 5px;
         padding: 0 20px;
          max-width: 601px;
-         height: 65px;
+         height: 55px;
      }
      .leftUserHeader{
         margin-left:10px;
@@ -2256,6 +2449,7 @@ p{
     }
   .navbarUl{
     padding: 0;
+    margin-top: 10px;
   }
      .navbarUl li{
          font-size: 16px;
@@ -2559,7 +2753,7 @@ p{
         gap: 5px;
         padding: 0 15px;
          max-width: 601px;
-         height: 65px;
+         height: 60px;
      }
      .leftUserHeader{
         margin-left:5px;
@@ -2573,6 +2767,7 @@ p{
     }
   .navbarUl{
     padding: 0;
+    margin-top: 10px;
   }
      .navbarUl li{
          font-size: 16px;
@@ -2890,6 +3085,7 @@ p{
     }
   .navbarUl{
     padding: 0;
+    margin-top: 10px;
   }
      .navbarUl li{
          font-size: 14px;
@@ -3214,6 +3410,7 @@ p{
        /* border:1px solid; */
     }
   .navbarUl{
+    margin-top: 10px;
     padding: 0;
   }
      .navbarUl li{
@@ -3530,7 +3727,7 @@ p{
         gap: 5px;
         padding: 0 10px;
          max-width: 411px;
-         height: 55px;
+         height: 50px;
      }
      .leftUserHeader{
        margin-bottom: 5px;
@@ -3544,6 +3741,7 @@ p{
     }
   .navbarUl{
     padding: 0;
+    margin-top: 8px;
   }
      .navbarUl li{
          font-size: 12px;
@@ -3553,7 +3751,7 @@ p{
      .rightUserHeader{
        /* border:1px solid; */
         width: 75px;
-        margin-top: 5px;
+        margin-top: 2px;
         }
         .imgTelegram{
             width: 20px;
@@ -3860,7 +4058,7 @@ p{
         gap: 5px;
         padding: 0 5px;
          max-width: 396px;
-         height: 55px;
+         height: 50px;
      }
      .leftUserHeader{
        margin-bottom: 5px;
@@ -3873,6 +4071,7 @@ p{
        /* border:1px solid; */
     }
   .navbarUl{
+    margin-top: 5px;
     padding: 0;
   }
      .navbarUl li{
@@ -3883,7 +4082,7 @@ p{
      .rightUserHeader{
        /* border:1px solid; */
         width: 70px;
-        margin-top: 5px;
+        margin-top: 0px;
         }
         .imgTelegram{
             width: 17px;
@@ -4211,6 +4410,7 @@ p{
     }
   .navbarUl{
     padding: 0;
+    margin-top: 5px;
   }
      .navbarUl li{
          font-size: 10px;
@@ -4220,7 +4420,7 @@ p{
      .rightUserHeader{
        /* border:1px solid; */
         width: 65px;
-        margin-top: 5px;
+        margin-top: 0px;
         }
         .imgTelegram{
             width: 15px;
@@ -4546,6 +4746,7 @@ p{
     }
   .navbarUl{
     padding: 0;
+    margin-top: 8px;
   }
      .navbarUl li{
          font-size: 9px;
@@ -4555,7 +4756,7 @@ p{
      .rightUserHeader{
        /* border:1px solid; */
         width: 50px;
-        margin-top: 5px;
+        margin-top: 0px;
         }
         .imgTelegram{
            display: none;

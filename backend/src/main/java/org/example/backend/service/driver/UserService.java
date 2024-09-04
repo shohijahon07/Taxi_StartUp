@@ -2,6 +2,7 @@ package org.example.backend.service.driver;
 
 import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
+import org.example.backend.DTO.PessengerDto;
 import org.example.backend.DTO.UserDto;
 import org.example.backend.entity.Role;
 import org.springframework.http.HttpEntity;
@@ -32,4 +33,6 @@ public interface UserService {
     ResponseEntity<?> saveUser(UserDto userDto);
 
     ResponseEntity<?> deleteUser(UUID id);
+
+    HttpEntity<?> savePessenger(PessengerDto pessengerDto) throws IOException;
 }

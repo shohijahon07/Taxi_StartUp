@@ -15,13 +15,13 @@ function Landing() {
     function goLanding() {
         navigate("/");
     }
-    const [isModalOpen, setIsModalOpen] = useState(false);
     
     const [isModalOpen1, setIsModalOpen1] = useState(false);
-
+    
     const openModal1 = () => setIsModalOpen1(true);
     const closeModal1 = () => setIsModalOpen1(false);
-
+    
+    const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () =>{
     setIsModalOpen(true);
     const specificGroupArea = document.getElementById('specificGroupArea');

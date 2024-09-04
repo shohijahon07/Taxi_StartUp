@@ -4,6 +4,7 @@ import driverReducer from './slices/DriverSlice'
 import toCityReducer from './slices/toCity'
 import fromCityReducer from './slices/fromCity'
 import commentReducer from './slices/CommentSlice'
+import pessengerReducer from './slices/userSlice'
 const store = configureStore({
     reducer: {
        
@@ -12,6 +13,7 @@ const store = configureStore({
         toCity: toCityReducer,
         fromCity: fromCityReducer,
         comment: commentReducer,
+        pessenger: pessengerReducer,
 
     },
     middleware: (getDefaultMiddleware) =>

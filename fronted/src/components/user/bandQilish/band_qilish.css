@@ -1,0 +1,63 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box
+}
+.band_modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.band_content{
+    background-color: #fff;
+   width: 500px;
+    padding-top: 20px;
+    border-radius: 10px;
+    position: relative;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+    text-align: center;
+    height: 330px;
+}
+.band_header{
+    margin-bottom: 20px;
+}
+.footer_band{
+    text-align: start;
+    padding: 0 30px;
+}
+.inputs_band label{
+ font-size: 18px;
+}
+.footer_band input{
+    margin-top: 10px;
+}
+.footer_band .form-control{
+    margin-top: 10px;
+    height: 50px;
+    font-size: 18px;
+}
+.jonatishBtn{
+    display: flex;
+    align-items:center;
+    justify-content: end;
+}
+.jonatishBtn button{
+    margin-top: 20px;
+    width: 145.48px;
+    height: 36px ;
+    border-radius:7.5px;
+    border: 0.45px solid #2B3187;
+    background-color:#2B3187;
+    color:white;
+}
+.footer_band p{
+    font-size: 22px;
+    font-weight: 500;
+}

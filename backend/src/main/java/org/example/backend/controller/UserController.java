@@ -3,6 +3,7 @@ package org.example.backend.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.DriverDto;
 import org.example.backend.DTO.IsDriving;
+import org.example.backend.DTO.PessengerDto;
 import org.example.backend.DTO.UserDto;
 import org.example.backend.entity.Role;
 import org.example.backend.repository.RoleRepo;
@@ -33,13 +34,16 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-
-
+    @PostMapping("/pessenger")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
+    public HttpEntity<?> saveUser(@RequestBody PessengerDto pessengerDto) throws IOException {
+        System.out.println(pessengerDto);
+        return userService.savePessenger(pessengerDto);
+    }
    @PostMapping("/save")
    public ResponseEntity<?>save(@RequestBody UserDto userDto){
        System.out.println(userDto);
-       ResponseEntity<?> responseEntity = userService.saveUser(userDto);
-       return ResponseEntity.ok(responseEntity);
+       return ResponseEntity.ok(userService.saveUser(userDto));
 }
     @GetMapping("/drivers")
     public ResponseEntity<?> getDriverAll(@RequestParam Boolean isDriver){
