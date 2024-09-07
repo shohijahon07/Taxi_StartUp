@@ -45,6 +45,7 @@ const RouteDriverSlice = createSlice({
   initialState: {
     driverRoutes: [],
     allRoutes: [],
+    routesByDriver:[],
     driverRoutesByDate: [],
     status: 'idle',
     error: null,
@@ -83,7 +84,7 @@ const RouteDriverSlice = createSlice({
       .addCase(fetchRoutesByDriver.fulfilled, (state, action) => {
         console.log(action.payload);
         state.status = 'succeeded';
-        state.driverRoutes = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+        state.routesByDriver = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
       })
       .addCase(fetchRoutesByDay.fulfilled, (state, action) => {
        

@@ -231,6 +231,50 @@ function RoutesUser() {
         setIsModalOpen1(true);
     } 
     const closeModal1 = () => setIsModalOpen1(false);
+
+
+    const latinToCyrillic = (text) => {
+        const map = {
+            'Ch': 'Ч', 'ch': 'ч',
+            'Sh': 'Ш', 'sh': 'ш',
+            'A': 'А', 'B': 'Б', 'C': 'С', 'D': 'Д', 'E': 'Е', 'F': 'Ф', 'G': 'Г',
+            'H': 'Ҳ', 'I': 'И', 'J': 'Ж', 'K': 'К', 'L': 'Л', 'M': 'М', 'N': 'Н',
+            'O': 'О', 'P': 'П', 'Q': 'Қ', 'R': 'Р', 'S': 'С', 'T': 'Т', 'U': 'У',
+            'V': 'В', 'X': 'Х', 'Y': 'Й', 'Z': 'З',
+            'a': 'а', 'b': 'б', 'c': 'с', 'd': 'д', 'e': 'е', 'f': 'ф', 'g': 'г',
+            'h': 'ҳ', 'i': 'и', 'j': 'ж', 'k': 'к', 'l': 'л', 'm': 'м', 'n': 'н',
+            'o': 'о', 'p': 'п', 'q': 'қ', 'r': 'р', 's': 'с', 't': 'т', 'u': 'у',
+            'v': 'в', 'x': 'х', 'y': 'й', 'z': 'з'
+        };
+    
+        // Avval 'Ch', 'ch', 'Sh', 'sh' kabi kombinatsiyalarni o'zgartiramiz
+        let result = text;
+        for (const [key, value] of Object.entries(map)) {
+            if (key.length > 1) {
+                // Katta yoki kichik harf kombinatsiyalarni almashtiramiz
+                const regex = new RegExp(key, 'g');
+                result = result.replace(regex, value);
+            }
+        }
+    
+        for (const [key, value] of Object.entries(map)) {
+            if (key.length === 1) {
+                const regex = new RegExp(key, 'g');
+                result = result.replace(regex, value);
+            }
+        }
+    
+        return result;
+    };
+  
+    
+    const translateFullName = (fullName) => {
+        if (language === '2') {
+            return latinToCyrillic(fullName);
+        }
+        return fullName;
+    };
+    
     return (
         <div>
             <Landing />
@@ -342,7 +386,7 @@ function RoutesUser() {
                 // ) : (
                 allRoutes.map((item, index) => (
                    <div className="mapRoutes">
-                    <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateCity(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
+                    <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateFullName(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
                     <li className="list-group-item li2">
                                 <div className="l2Child1">
                                     {Array.from({ length: Math.min(item.countSide, 6) }).map((_, index) => (
@@ -355,12 +399,12 @@ function RoutesUser() {
                                 </div>
                                 <div className="li2Child3">
                                     <h6>{language==="1"?"Mashina rusumi":"Модель автомобиля"}</h6>
-                                    <p>{item.user.carType}</p>
+                                    <p>{translateFullName(item.user.carType)}</p>
                                 </div>
                                 </li>
 
 
-                    <li className='list-group-item li3'><div className="l3Child1"><h3>{item.user.fullName}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={()=>openModal1(item.user.chatId)}>  {language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
+                    <li className='list-group-item li3'><div className="l3Child1"><h3>{translateFullName(item.user.fullName)}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={()=>openModal1(item.user.chatId)}>  {language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
                    </div> 
                 ))}
             </div>
@@ -399,7 +443,7 @@ function RoutesUser() {
             
             <BizHaqimizda2/>
             </div>
-            {/* <Footer/> */}
+            <Footer/>
              <Band_qilish isOpen={isModalOpen1} onClose={closeModal1} chatId={chatId} />
 
             <Izohlar  isOpen={isModalOpen} onClose={closeModal} userName={id}/>

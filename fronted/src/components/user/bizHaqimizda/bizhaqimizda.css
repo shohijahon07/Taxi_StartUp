@@ -1,4 +1,7 @@
-/* Overlay orqa fon */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;300;400;600;700&display=swap');
+
 .bizhaqimizda-modal-overlay {
     position: fixed;
     top: 0;
@@ -13,7 +16,6 @@
     
   }
   
-  /* Modal qutisi */
   .bizhaqimizda-modal-content {
     background-color: #fff;
     width: 100%;
@@ -26,7 +28,6 @@
     height: 600px;
   }
   
-  /* Modal ichidagi logo va sarlavha */
   .bizhaqimizda-modal-header {
     margin-bottom: 22px;
     margin-left: 37px;
@@ -36,22 +37,23 @@
     justify-content: space-between;
     margin-bottom: 20px;
   }
-  
   .bizhaqimizda-modal-logo {
     margin-left: 37px;
     width: 174px;
     height: 31px;
   }
   .bizhaqimizda-h2{
-    margin-right: 100px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    margin-right: 300px;
     font-weight: 500;
     font-size: 32px;
     line-height: 39px;
     color:black
-  }
 
+  }
   
-  /* Modal ichidagi ma'lumotlar */
   .bizhaqimizda-modal-body {
     max-width: 900px;
     margin: 0 auto;
@@ -61,21 +63,18 @@
     justify-content: space-around;
     align-items:center
   }
-  
- 
-  
   .bizhaqimizda-info-item {
     width: 400px;
     height: 250px;
     /* border:2px solid; */
   }
-  
   .bizhaqimizda-info-item img {
     width: 110px;
     height: 110px;
    
   }
   .bizhaqimizda-info-item h5{
+    font-family: 'Inter', sans-serif;
     margin-top: 11px;
     font-weight: 600;
     font-size: 14.43px;
@@ -83,9 +82,163 @@
     color:#11002D;
   }
   .bizhaqimizda-info-item p{
+    font-family: 'Inter', sans-serif;
     text-align: center;
     font-weight: 400;
     font-size: 11.54px;
+  }
+  @media only screen and (min-width: 1100px) and (max-width: 1400px) {
+    .bizhaqimizda-modal-content {
+      max-width: 1002px;
+      padding-top: 20px;
+      border-radius: 10px;
+      height: 600px;
+    }
+    
+    .bizhaqimizda-modal-header {
+      margin-bottom: 22px;
+      margin-left: 37px;
+      margin-right: 29px;
+      margin-bottom: 20px;
+    }
+    .bizhaqimizda-modal-logo {
+      margin-left: 37px;
+      width: 174px;
+      height: 31px;
+    }
+    .bizhaqimizda-h2{
+      margin-right: 300px;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 39px;
+    }
+    .bizhaqimizda-modal-body {
+      max-width: 800px;
+      /* border:2px solid; */
+
+    }
+    .bizhaqimizda-info-item {
+      width: 370px;
+      height: 220px;
+      /* border:2px solid; */
+    }
+    .bizhaqimizda-info-item img {
+      width: 110px;
+      height: 110px;
+     
+    }
+    .bizhaqimizda-info-item h5{
+      margin-top: 11px;
+      font-weight: 600;
+      font-size: 14.43px;
+      line-height: 13.13px;
+    }
+    .bizhaqimizda-info-item p{
+      font-weight: 400;
+      font-size: 11.54px;
+    }
+  }
+  @media only screen and (min-width: 900px) and (max-width: 1100px) {
+    .bizhaqimizda-modal-content {
+      max-width: 850px;
+      padding-top: 20px;
+      border-radius: 10px;
+      height: 550px;
+    }
+    
+    .bizhaqimizda-modal-header {
+      margin-bottom: 22px;
+      margin-left: 37px;
+      margin-right: 29px;
+      margin-bottom: 20px;
+    }
+    .bizhaqimizda-modal-logo {
+      margin-left: 30px;
+      width: 150px;
+      height: 28px;
+    }
+    .bizhaqimizda-h2{
+      margin-right: 250px;
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 39px;
+    }
+    .bizhaqimizda-modal-body {
+      max-width: 800px;
+      /* border:2px solid; */
+
+    }
+    .bizhaqimizda-info-item {
+      width: 370px;
+      height: 220px;
+      /* border:2px solid; */
+    }
+    .bizhaqimizda-info-item img {
+      width: 110px;
+      height: 110px;
+     
+    }
+    .bizhaqimizda-info-item h5{
+      margin-top: 11px;
+      font-weight: 600;
+      font-size: 14.43px;
+      line-height: 13.13px;
+    }
+    .bizhaqimizda-info-item p{
+      font-weight: 400;
+      font-size: 11.54px;
+    }
+  }
+  @media only screen and (min-width: 720px) and (max-width: 900px) {
+    .bizhaqimizda-modal-content {
+      max-width: 650px;
+      padding-top: 20px;
+      border-radius: 10px;
+      height: 450px;
+    }
+    
+    .bizhaqimizda-modal-header {
+      margin-bottom: 20px;
+      margin-left: 30px;
+      margin-right: 20px;
+      margin-bottom: 15px;
+    }
+    .bizhaqimizda-modal-logo {
+      margin-left: 20px;
+      width: 130px;
+      height: 25px;
+    }
+    .bizhaqimizda-h2{
+      margin-right: 150px;
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 30px;
+    }
+    .bizhaqimizda-modal-body {
+      max-width: 600px;
+      /* border:2px solid; */
+
+    }
+    .bizhaqimizda-info-item {
+      width: 250px;
+      height: 180px;
+      /* border:2px solid; */
+    }
+    .bizhaqimizda-info-item img {
+      width: 80px;
+      height: 80px;
+     
+    }
+    .bizhaqimizda-info-item h5{
+      margin-top: 8px;
+      font-weight: 600;
+      font-size: 12.43px;
+      line-height: 12.13px;
+    }
+    .bizhaqimizda-info-item p{
+      font-weight: 400;
+      font-size: 10.54px;
+    }
   }
   @media only screen and (min-width: 600px) and (max-width: 720px) {
     .bizhaqimizda-modal-content{

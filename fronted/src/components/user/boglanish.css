@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing:border-box;
+    font-family: 'Inter', sans-serif;
+}
+body {
 }
 /* .bizhaqimizda{
     background:transparent;
@@ -174,7 +179,9 @@ padding: 0;
     border-radius: 20px;
     max-width: 570px;
     width: 570px;
+    height: 600px;
     position: relative;
+    margin-bottom: 20px;
   }
   .exitBtn{
     position: absolute;
@@ -203,7 +210,7 @@ padding: 0;
    font-size: 29px;
    line-height: 38px;
    color:#211F54;
-   margin-bottom: 45px;
+   margin-bottom: 20px;
   }
   
   .modal-subheading {
@@ -211,7 +218,7 @@ padding: 0;
     font-size: 20px;
     line-height: 20px;
     margin-left: 15px;
-    margin-bottom: 38px;
+    margin-bottom: 20px;
   }
   
   .contact-info-section {
@@ -227,9 +234,6 @@ padding: 0;
    width: 48px;
    height: 48px;
   }
-  
-  
-  
   .contact-text {
     margin-top: 5px;
     margin-left: 18.47px;
@@ -294,7 +298,694 @@ padding: 0;
     border-radius: 5px;
     cursor: pointer;
   }
+  @media only screen and (min-width: 1250px) and (max-width: 1400px) {
+    .boglanishCard{
+     padding-bottom:95px;
+    max-width: 1400px;
 
+  }
+  .card{
+      padding-top: 17px;
+      padding:0 50px;
+      margin: 0;
+      width: 380px;
+      height: 355px;
+   
+      border: 12.98px solid #FFFFFF
+     
+  }
+  
+  .card-header{
+      margin-bottom: 14px;
+      height: 140px;
+  }
+  .imgboglanish{
+      width: 140px;
+     height: 100%;
+  }
+
+  .card-footer h4{
+      margin-bottom: 21px;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 27px;
+      letter-spacing: 6.01px;
+  }
+  .card-footer p{
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 21.46px;
+  }
+  }
+  @media only screen and (min-width: 1100px) and (max-width: 1250px) {
+    .boglanishCard{
+     padding-bottom:95px;
+    max-width: 1100px;
+
+  }
+  .card{
+      padding-top: 17px;
+      padding:0 40px;
+      margin: 0;
+      width: 350px;
+      height: 350px;
+   
+      border: 12.98px solid #FFFFFF
+     
+  }
+  
+  .card-header{
+      margin-bottom: 14px;
+      height: 140px;
+  }
+  .imgboglanish{
+      width: 140px;
+     height: 100%;
+  }
+
+  .card-footer h4{
+      margin-bottom: 21px;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 27px;
+      letter-spacing: 6.01px;
+  }
+  .card-footer p{
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 23.46px;
+  }
+  }
+  @media only screen and (min-width: 1000px) and (max-width: 1100px) {
+    .boglanishCard{
+     padding-bottom:80px;
+    max-width: 1100px;
+
+  }
+  .card{
+      padding-top: 17px;
+      padding:0 30px;
+      margin: 0;
+      width:310px;
+      height: 300px;
+     
+  }
+  
+  .card-header{
+      margin-bottom: 14px;
+      height: 100px;
+  }
+  .imgboglanish{
+      width: 100px;
+     height: 100%;
+  }
+
+  .card-footer h4{
+      margin-bottom: 15px;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 22px;
+      letter-spacing: 4.01px;
+  }
+  .card-footer p{
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 21.46px;
+  }
+  .modal-body {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 450px;
+    height: 550px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .exitBtn{
+    position: absolute;
+    font-size: 20px;
+    top: 20px;
+    right: 28px;
+    
+  }
+  .modal-close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .modal-header-section {
+   text-align: center;
+   margin-top: 30px;
+  }
+  .yozmaSavollarH4{
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 30px;
+    margin-bottom: 15px;
+ }
+  .modal-heading {
+   font-weight: 700;
+   font-size: 24px;
+   line-height: 30px;
+   color:#211F54;
+   margin-bottom: 20px;
+  }
+  
+  .modal-subheading {
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .contact-info-section {
+   width: 328px;
+   display: flex;
+   margin: 0 auto;
+   align-items:center;
+   /* border:1px solid */
+  }
+  
+  .contact-image-container {
+    margin: 0;
+    padding: 0;
+   width: 48px;
+   height: 48px;
+  }
+  .contact-text {
+    margin-top: 5px;
+    margin-left: 18.47px;
+  }
+  
+  .contact-label {
+    font-weight: 400;
+    font-size: 11px;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1.06px;
+    line-height: 12px;
+    color:#6E7191;
+  }
+  
+  .contact-number {
+    font-weight: 700;
+    font-size: 18.58px;
+    line-height: 23.89px;
+    color:#211F54;
+  }
+  
+  .horizontal-divider {
+   width: 410.82px;
+   border: 1.46px solid #00B2FF;
+   margin: 0 auto;
+   margin-top: 25px;
+   margin-bottom: 15px;
+  }
+  
+  .form-section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-heading {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  .form-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .floating-label-input {
+    margin-bottom: 10px;
+  }
+  }
+  @media only screen and (min-width: 900px) and (max-width: 1000px) {
+    .boglanishCard{
+     padding-bottom:70px;
+    max-width: 1000px;
+
+  }
+  .card{
+      padding-top: 17px;
+      padding:0 30px;
+      margin: 0;
+      width:280px;
+      height: 275px;
+     
+  }
+  
+  .card-header{
+      margin-bottom: 10px;
+      height: 100px;
+  }
+  .imgboglanish{
+      width: 100px;
+     height: 100%;
+  }
+
+  .card-footer h4{
+      margin-bottom: 10px;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+      letter-spacing: 4.01px;
+  }
+  .card-footer p{
+      font-weight: 400;
+      font-size: 15.5px;
+      line-height: 19.46px;
+  }
+  .modal-body {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 450px;
+    height: 550px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .exitBtn{
+    position: absolute;
+    font-size: 20px;
+    top: 20px;
+    right: 28px;
+    
+  }
+  .modal-close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .modal-header-section {
+   text-align: center;
+   margin-top: 30px;
+  }
+  .yozmaSavollarH4{
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 30px;
+    margin-bottom: 15px;
+ }
+  .modal-heading {
+   font-weight: 700;
+   font-size: 24px;
+   line-height: 30px;
+   color:#211F54;
+   margin-bottom: 20px;
+  }
+  
+  .modal-subheading {
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .contact-info-section {
+   width: 328px;
+   display: flex;
+   margin: 0 auto;
+   align-items:center;
+   /* border:1px solid */
+  }
+  
+  .contact-image-container {
+    margin: 0;
+    padding: 0;
+   width: 48px;
+   height: 48px;
+  }
+  .contact-text {
+    margin-top: 5px;
+    margin-left: 18.47px;
+  }
+  
+  .contact-label {
+    font-weight: 400;
+    font-size: 11px;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1.06px;
+    line-height: 12px;
+    color:#6E7191;
+  }
+  
+  .contact-number {
+    font-weight: 700;
+    font-size: 18.58px;
+    line-height: 23.89px;
+    color:#211F54;
+  }
+  
+  .horizontal-divider {
+   width: 410.82px;
+   border: 1.46px solid #00B2FF;
+   margin: 0 auto;
+   margin-top: 25px;
+   margin-bottom: 15px;
+  }
+  
+  .form-section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-heading {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  .form-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .floating-label-input {
+    margin-bottom: 10px;
+  }
+  }
+  @media only screen and (min-width: 800px) and (max-width: 900px) {
+    .boglanishCard{
+     padding-bottom:60px;
+    max-width: 900px;
+
+  }
+  .card{
+      padding-top: 10px;
+      padding:0 30px;
+      margin: 0;
+      width:245px;
+      height: 240px;
+     
+  }
+  
+  .card-header{
+      margin-bottom: 10px;
+      height: 80px;
+  }
+  .imgboglanish{
+      width: 80px;
+     height: 100%;
+  }
+
+  .card-footer h4{
+      margin-bottom: 5px;
+      font-size: 16px;
+      line-height: 22px;
+      letter-spacing: 3.01px;
+  }
+  .card-footer p{
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 16.46px;
+  }
+  .modal-body {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 450px;
+    height: 550px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .exitBtn{
+    position: absolute;
+    font-size: 20px;
+    top: 20px;
+    right: 28px;
+    
+  }
+  .modal-close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .modal-header-section {
+   text-align: center;
+   margin-top: 30px;
+  }
+  .yozmaSavollarH4{
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 30px;
+    margin-bottom: 15px;
+ }
+  .modal-heading {
+   font-weight: 700;
+   font-size: 24px;
+   line-height: 30px;
+   color:#211F54;
+   margin-bottom: 20px;
+  }
+  
+  .modal-subheading {
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .contact-info-section {
+   width: 328px;
+   display: flex;
+   margin: 0 auto;
+   align-items:center;
+   /* border:1px solid */
+  }
+  
+  .contact-image-container {
+    margin: 0;
+    padding: 0;
+   width: 48px;
+   height: 48px;
+  }
+  .contact-text {
+    margin-top: 5px;
+    margin-left: 18.47px;
+  }
+  
+  .contact-label {
+    font-weight: 400;
+    font-size: 11px;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1.06px;
+    line-height: 12px;
+    color:#6E7191;
+  }
+  
+  .contact-number {
+    font-weight: 700;
+    font-size: 18.58px;
+    line-height: 23.89px;
+    color:#211F54;
+  }
+  
+  .horizontal-divider {
+   width: 410.82px;
+   border: 1.46px solid #00B2FF;
+   margin: 0 auto;
+   margin-top: 25px;
+   margin-bottom: 15px;
+  }
+  
+  .form-section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-heading {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  .form-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .floating-label-input {
+    margin-bottom: 10px;
+  }
+  }
+  @media only screen and (min-width: 720px) and (max-width: 800px) {
+    .boglanishCard{
+     padding-bottom:40px;
+    max-width: 800px;
+
+  }
+  .card{
+      padding-top: 10px;
+      padding:0 20px;
+      margin: 0;
+      width:220px;
+      height: 200px;
+     
+  }
+  
+  .card-header{
+      margin-bottom: 5px;
+      height: 70px;
+  }
+  .imgboglanish{
+      width: 70px;
+     height: 100%;
+  }
+
+  .card-footer h4{
+      margin-bottom: 5px;
+      font-size: 16px;
+      line-height: 22px;
+      letter-spacing: 3.01px;
+  }
+  .card-footer p{
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16.46px;
+  }
+  .modal-body {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 450px;
+    height: 550px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .exitBtn{
+    position: absolute;
+    font-size: 20px;
+    top: 20px;
+    right: 28px;
+    
+  }
+  .modal-close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .modal-header-section {
+   text-align: center;
+   margin-top: 30px;
+  }
+  .yozmaSavollarH4{
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 30px;
+    margin-bottom: 15px;
+ }
+  .modal-heading {
+   font-weight: 700;
+   font-size: 24px;
+   line-height: 30px;
+   color:#211F54;
+   margin-bottom: 20px;
+  }
+  
+  .modal-subheading {
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .contact-info-section {
+   width: 328px;
+   display: flex;
+   margin: 0 auto;
+   align-items:center;
+   /* border:1px solid */
+  }
+  
+  .contact-image-container {
+    margin: 0;
+    padding: 0;
+   width: 48px;
+   height: 48px;
+  }
+  .contact-text {
+    margin-top: 5px;
+    margin-left: 18.47px;
+  }
+  
+  .contact-label {
+    font-weight: 400;
+    font-size: 11px;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1.06px;
+    line-height: 12px;
+    color:#6E7191;
+  }
+  
+  .contact-number {
+    font-weight: 700;
+    font-size: 18.58px;
+    line-height: 23.89px;
+    color:#211F54;
+  }
+  
+  .horizontal-divider {
+   width: 410.82px;
+   border: 1.46px solid #00B2FF;
+   margin: 0 auto;
+   margin-top: 25px;
+   margin-bottom: 15px;
+  }
+  
+  .form-section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-heading {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  .form-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .floating-label-input {
+    margin-bottom: 10px;
+  }
+  }
   @media only screen and (min-width: 673px) and (max-width: 720px) {
     .boglanishCard{
      padding-bottom: 70px;
@@ -433,6 +1124,7 @@ padding: 0;
     border-radius: 20px;
     max-width: 672px;
     width: 100%;
+    height: 650px;
   }
   .modal-heading {
     font-size: 33px;
@@ -537,7 +1229,7 @@ padding: 0;
   max-width: 601px;
   width: 100%;
   margin-bottom: 20px;
-
+  height: 700px;
 }
 .modal-heading {
   font-size: 27px;
@@ -641,6 +1333,7 @@ padding: 0;
   border-radius: 20px;
   max-width: 499px;
   width: 100%;
+  height: 650px;
 }
 .modal-heading {
   font-size: 22px;
@@ -743,6 +1436,7 @@ padding: 0;
   border-radius: 20px;
   max-width: 499px;
   width: 100%;
+  height: 500px;
   margin-bottom: 20px;
 }
 .modal-heading {
@@ -848,6 +1542,7 @@ padding: 0;
   border-radius: 10px;
   max-width: 321px;
   width: 100%;
+  height: 500px;
 }
 .modal-heading {
   font-size: 13px;

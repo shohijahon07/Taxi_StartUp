@@ -28,14 +28,14 @@
 .izohlar-modal-child {
     padding: 0 20px;
     background-color: #fff;
-    width: 700px;
-    max-width: 1202px;
+    width: 400px;
+    max-width: 450px;
     padding-top: 20px;
     border-radius: 10px;
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
-    height: 500px;
+    height: 400px;
     transform: scale(0.5);
     transition: transform 1s ease-in-out;
 }
@@ -50,9 +50,114 @@
 
 .text li {
     font-weight: 400;
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 15px;
+    line-height: 18px;
     color: #000000;
     text-align: start;
     gap: 5px;
+}
+@media only screen and (min-width: 720px) and (max-width: 900px) {
+    .izohlar-modal-child {
+        padding: 0 20px;
+        background-color: #fff;
+        width: 300px;
+        max-width:350px;
+        padding-top: 20px;
+        border-radius: 10px;
+        position: relative;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        height: 350px;
+        transform: scale(0.5);
+        transition: transform 1s ease-in-out;
+    }
+    
+    .izohlar-modal-child.active {
+        transform: scale(1);
+    }
+    
+    .text {
+        margin-top: 30px;
+    }
+    
+    .text li {
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 17px;
+        color: #000000;
+        text-align: start;
+        gap: 5px;
+    }
+}
+@media only screen and (min-width: 500px) and (max-width:720px) {
+    .izohlar-modal-child {
+        padding: 0 20px;
+        background-color: #fff;
+        width: 300px;
+        max-width:350px;
+        padding-top: 20px;
+        border-radius: 10px;
+        position: relative;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        height: 350px;
+        transform: scale(0.5);
+        transition: transform 1s ease-in-out;
+    }
+    
+    .izohlar-modal-child.active {
+        transform: scale(1);
+    }
+    
+    .text {
+        margin-top: 30px;
+    }
+    
+    .text li {
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 17px;
+        color: #000000;
+        text-align: start;
+        gap: 5px;
+    }
+}
+@media  (max-width:500px) {
+    .exitBtn {
+        position: absolute;
+        font-size: 15px;
+        top: 10px;
+        right: 15px;
+    }
+    .izohlar-modal-child {
+        padding: 0 20px;
+        background-color: #fff;
+        width: 250px;
+        max-width:300px;
+        padding-top: 20px;
+        border-radius: 10px;
+        position: relative;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        height: 300px;
+        transform: scale(0.5);
+        transition: transform 1s ease-in-out;
+    }
+    
+    .izohlar-modal-child.active {
+        transform: scale(1);
+    }
+    
+    .text {
+        margin-top: 20px;
+    }
+    
+    .text li {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 17px;
+        color: #000000;
+        text-align: start;
+        gap: 5px;
+    }
 }

@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./bizhaqimizda.css";
 import b1 from "../../../pictures/b1.svg";
 import b2 from "../../../pictures/b2.svg";
 import b3 from "../../../pictures/b3.svg";
 import b4 from "../../../pictures/b4.svg";
 import logo from "../../../pictures/Group (1).svg";
+import { LanguageContext } from "../../language/LanguageContext";
 
 const BizHaqimizda2 = () => {
+  const { language } = useContext(LanguageContext);
  
   return (
       <div className="bizhaqimizda-modal-content">
         <div className="bizhaqimizda-modal-header">
           <img src={logo} alt="Logo" className="bizhaqimizda-modal-logo" />
-          <h2 className="bizhaqimizda-h2">Biz haqimizda</h2>
+          <h2 className="bizhaqimizda-h2">{language==="1"?"Biz Haqimizda":"О нас"}</h2>
   
         </div>
         <div className="bizhaqimizda-modal-body">
