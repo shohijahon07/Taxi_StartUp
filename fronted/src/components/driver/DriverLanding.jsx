@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchToCity } from '../../redux/slices/toCity';
 import { fetchFromCity } from '../../redux/slices/fromCity';
+import b7 from "../../pictures/b7.svg";
+
 function DriverLanding() {
   const [minDate, setMinDate] = useState('');
   const dispatch = useDispatch();
@@ -15,6 +17,7 @@ function DriverLanding() {
   const { EditButtonId, driverRout,driverRoutes} = useSelector((state) => state.routes);
   const { toCities} = useSelector((state) => state.toCity);
   const { fromCities} = useSelector((state) => state.fromCity);
+  const { language } = useContext(LanguageContext);
 
   useEffect(() => {
     dispatch(fetchToCity())
@@ -95,6 +98,13 @@ function DriverLanding() {
     <div style={{padding:"0 20px"}}>
       <h1 className='header_dr' >Har kuni O’zbekiston bo’ylab qatnovlar</h1>
 
+     
+
+
+
+
+
+
       <div className="begin" >
         <div className="inputs">
         <div className="inputChild">
@@ -107,6 +117,7 @@ function DriverLanding() {
             })
             
            }
+
           </select>
         </div>
         <div className="inputChild">

@@ -10,9 +10,7 @@ import group from "../../../pictures/Group (1).svg"
 function DriverHeader() {
   const { language, changeLanguage } = useContext(LanguageContext);
   let navigate = useNavigate();
-
   const [open, setOpen] = useState(false);
-
   const [userName, setUserName] = useState("");
   useEffect(() => {
   getDriver()
@@ -33,19 +31,31 @@ function functionDeleteToken() {
       setUserName(res.data)
     })
     }
+    function navigatePath(){
+navigate("/yo'nalish")
+    }
+    function navigateMyselft(){
+      navigate("/o'zim_haqqimda")
+          }
   return (
+
     <div className="begin1">
        <div className='haederDriver'>
         <div className="headerLeft">
           <img src={group} className='img_dr_logo' />
         </div>
-        <div className="headerRight">
+        <div className="center">
           <ul className='listUl'>
-          <li className='list-group-item1' onClick={()=>setOpen(false)} >Yo'nalish</li>
+          <li className='list-group-item1' onClick={navigatePath} >Yo'nalish</li>
             
-            <li className='list-group-item2'onClick={()=>setOpen(true)} >Men haqimda</li>
+            <li className='list-group-item2'onClick={navigateMyselft} >Men haqimda</li>
 
-            <li className='list-group-item3'>
+            
+          </ul>
+
+        </div>
+        <ul className='listUl2'>
+<li className='list-group-item3'>
             <select className='form-control language_dr' value={language} onChange={(e) => changeLanguage(e.target.value)}>
                     <option className='option_dr' value="1">O'zbek</option>
                     <option className='option_dr' value="2">Rus</option>
@@ -53,14 +63,14 @@ function functionDeleteToken() {
             </li>
             <li className='list-group-item2'>
             <img src={telegram}className='imgTelegram' alt="" />
-
             </li>
-          </ul>
-        </div>
+</ul>
+
+
     </div>
-    {
+    {/* {
       open?<DriverAbout/>:<DriverLanding/>
-    }
+    } */}
     </div>
    
   )

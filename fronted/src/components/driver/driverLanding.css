@@ -3,18 +3,23 @@
     padding: 0;
     box-sizing:border-box;
 }
+.container_dr{
+  width:100%;
+  max-width: 14450px;
+
+}
 .header_dr{
   color:#fff;
   font-size: 59px;
   font-weight: 700;
 }
 .container_dr_about{
-  background-image: url("../../pictures/all.svg");
+  /* background-image: url("../../pictures/all.svg"); */
 
 }
 .begin1{
   background-color: #fff;
-  background-image: url("../../pictures/all.svg");
+  /* background-image: url("../../pictures/all.svg"); */
 
 }
 .inputs{

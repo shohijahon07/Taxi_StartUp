@@ -74,7 +74,8 @@ function getDriver(){
           <li className='list-group-item'><h5>Ism Familiya:</h5> <h6>{item.fullName}</h6>
             <input type="text" className='from-control' value={driverObject.fullName}
               onChange={(e) => dispatch(setDriver({ ...driverObject, fullName: e.target.value }))}
-            /></li>
+            />
+            </li>
           <li className='list-group-item'><h5>Telefon raqam:</h5><h6>{item.phoneNumber}</h6>
             <input type="text" className='from-control' value={driverObject.phoneNumber}
               onChange={(e) => dispatch(setDriver({ ...driverObject, phoneNumber: e.target.value }))}
@@ -87,7 +88,6 @@ function getDriver(){
             <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
            <div className="imputFile">
            <p>Rasm tanlang</p>
-            <input type="file" className='from-control' accept="image/*"  ref={fileInputRef1} onChange={(e) => dispatch(setSelectedFile(e.target.files[0]))} />
            </div>
             
           </li>
@@ -102,7 +102,6 @@ function getDriver(){
             <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
             <div className="imputFile">
             <p>Rasm tanlang</p>
-            <input type="file" className='from-control' accept="image/*"  ref={fileInputRef3} onChange={(e) => dispatch(setSelectedFile2(e.target.files[0]))} />
 
             </div>
            
