@@ -6,7 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 .register_con{
   width: 100%;
-  background-color: #E1E5F1;
+  /* background-color: #E1E5F1; */
   max-width: 500px;
   margin-top: 40px;
   border-radius: 15px;
