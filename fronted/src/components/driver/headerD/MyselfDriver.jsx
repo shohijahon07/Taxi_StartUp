@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import DriverHeader from './DriverHeader';
 import "../headerD/Myselft.css";
 import uzbekistan from "../../../pictures/uzbekistan.svg";
@@ -6,6 +6,7 @@ import { addDriverAbout, editDriver, fetchDriverOne, setAbout, setDriver, setEdi
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { LanguageContext } from '../../language/LanguageContext';
 import { toast } from 'react-toastify';
 import DriverFooter from './DriverFooter';
 import fileicon from "../../../pictures/fileicon.jpg";
@@ -14,6 +15,7 @@ import edit from "../../../pictures/edit.svg"
 function MyselfDriver() {
   const [userName, setUserName] = useState("");
   const [isEditing, setIsEditing] = useState(false); // Track editing mode
+  const { language, changeLanguage } = useContext(LanguageContext);
 
   useEffect(() => {
     getDriver();
@@ -37,6 +39,14 @@ function MyselfDriver() {
   }
 
   const saveDepartment = () => {
+    console.log(EditButtonId);
+    console.log(driverObject);
+    console.log(img);
+    console.log(img1);
+    console.log(img2);
+    console.log(selectedFile1);
+    console.log(selectedFile2);
+    console.log(selectedFile);
     dispatch(editDriver({ EditButtonId, driverObject, img, img1, img2, selectedFile, selectedFile1, selectedFile2 }))
       .unwrap()
       .then(() => {
@@ -75,7 +85,7 @@ function MyselfDriver() {
       <div className="container_myself">
         {driverOne.map((item, i) => (
           <div key={i} className="body_myself_img">
-            <h1 className='about_text'>O'zim haqimda</h1>
+            <h1 className='about_text'> {language==="1"?"O'zim haqimda":"О себе"}  </h1>
             <div className='about_div'>
               {EditButtonId ?
                 <input type="text" className='form-control w-100 h-100' value={driverObject.about}
@@ -83,7 +93,7 @@ function MyselfDriver() {
                 /> :
                 <div className={"editFather"}>
  <h1>{item.about}</h1>
- <img src={edit} className='btnedit' alt="" />
+ <img src={edit} className='btnedit' onClick={() => EditItem(item)} alt="" />
                 </div>
                
               }
@@ -98,7 +108,7 @@ function MyselfDriver() {
                     <div className="editFather">
                     <h1>{item.fullName} </h1>
 
-                    <img src={edit} className='btnedit' alt="" />
+                    <img src={edit} className='btnedit' onClick={() => EditItem(item)} alt="" />
 
                     </div>
                   }
@@ -111,7 +121,7 @@ function MyselfDriver() {
                     <h1>{item.phoneNumber}</h1>
 
 
-                    <img src={edit} className='btnedit' alt="" />
+                    <img src={edit} className='btnedit' onClick={() => EditItem(item)} alt="" />
 
                     </div>
                     
@@ -125,31 +135,37 @@ function MyselfDriver() {
                     <h1>{item.carType}</h1>
 
 
-                    <img src={edit} className='btnedit' alt="" />
+                    <img src={edit} className='btnedit' onClick={() => EditItem(item)} alt="" />
 
                     </div>
                     
                   }
                 </div>
               </div>
+              {/* com ucun rasm yuklash */}
               <div className="body3">
                 <div className='box_body'>
                   {EditButtonId ?
                      <div className="custom-file-upload2">
                      <input
                        type="file"
-                       id="file3" accept="image/*"  ref={fileInputRef1} onChange={(e) => dispatch(setSelectedFile(e.target.files[0]))} 
+                       id="file1" accept="image/*"  ref={fileInputRef1} onChange={(e) => dispatch(setSelectedFile(e.target.files[0]))} 
                      />
-                     <label htmlFor="file3">
+                     <label htmlFor="file1">
                        <img src={fileicon} alt="Upload Icon" className="upload-icon2"  />
-                       Mashinani rasmini yuklash
-           
+                       
+           {language==="1"?"Mashinani rasmini yuklash":"Загрузите фотографию автомобиля"}
                      </label>
                    </div>
                     :
-                    <div >
+                    <div  >
                       
-                           <h1>Mashinani rasmi</h1>
+                           <h1>
+                            {language==="1"?"Mashinani rasmi":
+                            "Загрузите фотографию автомобиля"}
+                            
+
+                           </h1>
                            <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
 
                     </div>
@@ -160,16 +176,21 @@ function MyselfDriver() {
                    <div className="custom-file-upload2">
                    <input
                      type="file"
-                     id="file3" accept="image/*" ref={fileInputRef2} onChange={(e) => dispatch(setSelectedFile1(e.target.files[0]))} 
+                     id="file2" accept="image/*" ref={fileInputRef2} onChange={(e) => dispatch(setSelectedFile1(e.target.files[0]))} 
                    />
-                   <label htmlFor="file3">
+                   <label htmlFor="file2">
                      <img src={fileicon} alt="Upload Icon" className="upload-icon2"  />
-                     Haydovchilik guvohnomasi yuklash
+                     {language==="1"?"Haydovchilik guvohnomasi yuklash":"Скачать водительское удостоверение"}
+
+                     
          
                    </label>
                  </div>
                  
-                 : <div> <h1>Haydovchilik guvohnomasi</h1>
+                 : <div> <h1>
+
+{language==="1"?"Haydovchilik guvohnomasi":"Водительское удостоверение"}
+                 </h1>
                  <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
                </div>
                }
@@ -185,13 +206,17 @@ function MyselfDriver() {
                   />
                   <label htmlFor="file3">
                     <img src={fileicon} alt="Upload Icon" className="upload-icon2"  />
-                    Texxpasport rasmi
+                    {language==="1"?"Texxpasport rasmi":"Фотография паспорта Техаса"}
+                    
         
                   </label>
                 </div>
 
                     : <div>
-                  <h1>Texxpasport rasmi</h1>
+                  <h1>
+                  {language==="1"?"Texxpasport rasmi":"Фотография паспорта Техаса"}
+                    
+                    </h1>
                   <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
 
                     </div>
@@ -207,55 +232,59 @@ function MyselfDriver() {
                 </div>
               </div>
 {/* telefon ucun rasmni inputi */}
-<div className="imginput">
-                <div className='box-body'>
+ <div className="body2_center">
+                <div className='inp_one'>
                   {EditButtonId ?
                      <div className="custom-file-upload2">
                      <input
                        type="file"
-                       id="file3" accept="image/*"  ref={fileInputRef1} onChange={(e) => dispatch(setSelectedFile(e.target.files[0]))} 
+                       id="file1" accept="image/*"  ref={fileInputRef1} onChange={(e) => dispatch(setSelectedFile(e.target.files[0]))} 
                      />
-                     <label htmlFor="file3">
+                     <label htmlFor="file1">
                        <img src={fileicon} alt="Upload Icon" className="upload-icon2"  />
-                       Mashinani rasmini yuklash
-           
+                    
+           {language==="1" ? "Mashinani rasmini yuklash":"Загрузите фотографию автомобиля"}
                      </label>
                    </div>
                     :
                     <div className={"inp_child"} >
                            <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
           
-                           <h1>Mashinani rasmi</h1>
+                           <h1>
+                            {language==="1"?"Mashinani rasmi":"Изображение автомобиля"}
+                           </h1>
                            
-                           <img src={edit} className='btnedit' alt="" />
+                           <img src={edit} className='btnedit2' onClick={() => EditItem(item)} alt="" />
 
                     </div>
                   }
                 </div>
-                <div className='box_body'>
+                <div className='inp_one'>
                   {EditButtonId ?
                    <div className="custom-file-upload2">
                    <input
                      type="file"
-                     id="file3" accept="image/*" ref={fileInputRef2} onChange={(e) => dispatch(setSelectedFile1(e.target.files[0]))} 
+                     id="file2" accept="image/*" ref={fileInputRef2} onChange={(e) => dispatch(setSelectedFile1(e.target.files[0]))} 
                    />
-                   <label htmlFor="file3">
+                   <label htmlFor="file2">
                      <img src={fileicon} alt="Upload Icon" className="upload-icon2"  />
-                     Haydovchilik guvohnomasi yuklash
-         
+                     
+         {language==="1"?"Haydovchilik guvohnomasi yuklash":"Скачать водительское удостоверение"}
                    </label>
                  </div>
                  
-                 : <div className='inp_child'>
+                 : <div className='inp_child'> 
                  <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
-                  
-                   <h1>Haydovchilik guvohnomasi</h1>
-                 <img src={edit} className='btnedit' alt="" />
+                 
+                 <h1>
+                  {language==="1"?"Haydovchilik guvohnomasi":"Водительское удостоверение"}
+                 </h1>
+                 <img src={edit} className='btnedit2' onClick={() => EditItem(item)} alt="" />
 
 </div>
                }
                 </div>
-                <div className='box_body' >
+                <div className='inp_one' >
                   {EditButtonId ?
                   
                   <div className="custom-file-upload2">
@@ -266,7 +295,8 @@ function MyselfDriver() {
                   />
                   <label htmlFor="file3">
                     <img src={fileicon} alt="Upload Icon" className="upload-icon2"  />
-                    Texxpasport rasmi
+                    
+                    {language==="1"?"Texxpasport rasmi":"Фотография паспорта Техаса"}
         
                   </label>
                 </div>
@@ -274,8 +304,11 @@ function MyselfDriver() {
                     : <div className='inp_child'>
                   <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
 
-                  <h1>Texxpasport rasmi</h1>
-                  <img src={edit} className='btnedit' alt="" />
+                  <h1>
+                  {language==="1"?"Texxpasport rasmi":"Фотография паспорта Техаса"}
+
+                  </h1>
+                  <img src={edit} className='btnedit2' onClick={() => EditItem(item)} alt="" />
 
                     </div>
                     
@@ -288,20 +321,27 @@ function MyselfDriver() {
                     <button onClick={() => EditItem(item)}>Tahrirlash</button>
                   }
                 </div>
-              </div>
+             </div> 
 
               {/* pastga ishlaydigan button  */}
               <div className="box_btn2">  
                   {isEditing ?
-                     <button onClick={saveDepartment}>Saqlash</button> :
-                    <button onClick={() => EditItem(item)}>Tahrirlash</button>
+                     <button onClick={saveDepartment}>{language==="1"?"Saqlash":"Сохранять"}</button> :
+                    <button onClick={() => EditItem(item)}>{language==="1"?"Tahrirlash":"Редактирование"}</button>
                   }
+                </div>
+                {/* edit telefon */}
+                <div className="box_btn3">  
+                  {/* {isEditing ? */}
+                     <button onClick={saveDepartment}>{language==="1"?"Saqlash":"Сохранять"}</button> :
+                    {/* <button onClick={() => EditItem(item)}>Tahrirlash</button>
+                   } */}
                 </div>
             </div>
           </div>
         ))}
       </div>
-      {/* <DriverFooter/> */}
+      <DriverFooter/>
     </div>
   );
 }
