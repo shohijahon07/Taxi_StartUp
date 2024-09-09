@@ -40,7 +40,7 @@ public class AuthServiceIml implements AuthService{
         }
         Map<String, String> tokens = Map.of("access_token", jwtService.generateJwtToken(user),
                 "refresh_token", jwtService.generateJwtRefreshToken(user),"fullName",user.getFullName(),"role", roles.getName());
-
+        System.out.println(tokens);
         return ResponseEntity.ok(tokens);
     }
 
@@ -65,7 +65,7 @@ public class AuthServiceIml implements AuthService{
         String id = jwtService.extractSubject(authorization);
         User user = userRepo.findById(UUID.fromString(id)).orElseThrow();
         Map<String, String> tokens = Map.of("id", String.valueOf(user.getId()),
-                "fullName", user.getFullName());
+            "fullName", user.getFullName(),"count", String.valueOf(user.isCount()));
         return ResponseEntity.ok(tokens);
 
 

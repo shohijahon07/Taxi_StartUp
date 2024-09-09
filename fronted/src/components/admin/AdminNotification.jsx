@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { FaCheck } from "react-icons/fa6";
 import { ToastContainer, toast } from 'react-toastify';
 function AdminNotification() {
-    const {drivers} = useSelector((state) => state.driver);
-const dispatch = useDispatch();
-const { driverIsdriving} = useSelector((state) => state.driver);
-
+  const dispatch = useDispatch();
+  const { driverIsdriving} = useSelector((state) => state.driver);
+  
+  const {drivers} = useSelector((state) => state.driver);
 const [isDriver, setIsDriver] = useState(false);
 useEffect(() => {
  dispatch(fetchDrivers(isDriver)) 

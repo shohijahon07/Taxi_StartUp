@@ -3,7 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import "./login.scss";
+import "./login.css";
 import PhoneInput from "react-phone-input-2";
 
 function Login() {
@@ -35,7 +35,7 @@ function Login() {
                             navigate("/bosh_sahifa");
 
                         }else if(res.data.role==="ROLE_DRIVER"){
-                            navigate("/landing");
+                            navigate("/yo'nalish");
                         }
                     } else {
                         toast.error("Yaroqsiz parol yoki yaroqsiz username.");
@@ -52,10 +52,10 @@ function Login() {
 
     return (
         <div className={"big_mean"} >
-            <div className="card">
+            <div className="card1">
                 <ToastContainer toastStyle={{ backgroundColor: 'white', color: 'black' }} autoClose={1000} />
 
-                <h1 style={{ textAlign: "center", fontSize: "40px", marginBottom: "10px" }}>Login</h1>
+                <h1 >Login</h1>
                 <div className="input-field">
                     <PhoneInput
                         inputClass={"input-field"}

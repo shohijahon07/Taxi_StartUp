@@ -4,7 +4,7 @@
     max-width: 1920px;
     width: 100%;
     height: 650px;
-    background-image: url('../../../pictures/all.svg') !important;
+    background-image: url('../../../pictures/all.svg') ;
     margin:0 auto;
 
 }
@@ -102,3 +102,369 @@ background-color:rgba(224, 236, 236, 0.884)
     /* margin-top:30px !important; */
     margin:0 auto;
 }  
+.btnCity1{
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    width: 180px;
+    justify-content: space-between;
+    align-items:center;
+    border-radius: 12px;
+    background-color: #fff;
+    height: 55px;
+    padding: 7px 10px 10px 10px;
+    color: #00000061;
+    font-size: 19.62px;
+    line-height: 30px;
+    font-family: 600;
+    border: 1px solid #CFDEE6;
+
+}
+.qidirish1{
+ 
+        font-family: 'Inter', sans-serif;
+        width: 200px;
+        border:none;
+        height: 55px;
+        background-color:#303383;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        color:white;
+        font-weight: 600;
+        font-size: 20px;
+        border-radius:10px
+    
+}
+.icons{
+    width: 28px;
+    height: 28px;
+}
+.inputs11 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns layout by default */
+    gap: 10px;
+  }
+  
+  @media only screen and (min-width: 1000px) and (max-width: 1300px) {
+    .inputs11 {
+        grid-template-columns: repeat(3, 1fr); /* Three columns layout for screens between 1000px and 1300px */
+      }
+    
+      /* Ensure the first three items are in the first row */
+      .inputs11 > .inputChild:nth-child(1),
+      .inputs11 > .inputChild:nth-child(2),
+      .inputs11 > .inputChild:nth-child(3) {
+        grid-column: span 1; /* Each of the first three items takes up one column */
+      }
+    
+      /* Ensure the next four items are in the second row */
+      .inputs11 > .inputChild:nth-child(4),
+      .inputs11 > .inputChild:nth-child(5),
+      .inputs11 > .inputChild:nth-child(6),
+      .inputs11 > .inputChild:nth-child(7) {
+        grid-column: span 1; /* Each of the next four items takes up one column */
+      }
+    
+      /* Adjust the 7th item to span multiple columns if necessary */
+      .inputs11 > .inputChild:nth-child(7) {
+        grid-column: 3 / 4; /* Place the 7th item in the 3rd column, making it align to the right */
+      }
+  
+  
+    .btnCity1{
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        width: 300px;
+        justify-content: space-between;
+        align-items:center;
+        border-radius: 12px;
+        background-color: #fff;
+        height: 70px;
+        padding: 7px 10px 10px 10px;
+        color: #00000061;
+        font-size: 25.62px;
+        line-height: 30px;
+        font-family: 600;
+        border: 1px solid #CFDEE6;
+    
+    }
+    .qidirish1{
+      
+        font-family: 'Inter', sans-serif;
+        width: 300px;
+        border:none;
+        height: 70px;
+        background-color:#303383;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        color:white;
+        font-weight: 600;
+        font-size: 20px;
+        border-radius:10px;
+    
+}
+  }
+  @media only screen and (min-width: 800px) and (max-width: 1000px) {
+    .inputs11 {
+        grid-template-columns: repeat(3, 1fr); /* Three columns layout for screens between 1000px and 1300px */
+      }
+    
+      /* Ensure the first three items are in the first row */
+      .inputs11 > .inputChild:nth-child(1),
+      .inputs11 > .inputChild:nth-child(2),
+      .inputs11 > .inputChild:nth-child(3) {
+        grid-column: span 1; /* Each of the first three items takes up one column */
+      }
+    
+      /* Ensure the next four items are in the second row */
+      .inputs11 > .inputChild:nth-child(4),
+      .inputs11 > .inputChild:nth-child(5),
+      .inputs11 > .inputChild:nth-child(6),
+      .inputs11 > .inputChild:nth-child(7) {
+        grid-column: span 1; /* Each of the next four items takes up one column */
+      }
+    
+      /* Adjust the 7th item to span multiple columns if necessary */
+      .inputs11 > .inputChild:nth-child(7) {
+        grid-column: 3 / 4; /* Place the 7th item in the 3rd column, making it align to the right */
+      }
+  
+  
+    .btnCity1{
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        width: 250px;
+        justify-content: space-between;
+        align-items:center;
+        border-radius: 12px;
+        background-color: #fff;
+        height: 60px;
+        padding: 7px 10px 10px 10px;
+        color: #00000061;
+        font-size: 22.62px;
+        line-height: 30px;
+        font-family: 600;
+        border: 1px solid #CFDEE6;
+    
+    }
+    .qidirish1{
+      
+        font-family: 'Inter', sans-serif;
+        width: 250px;
+        border:none;
+        height: 60px;
+        background-color:#303383;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        color:white;
+        font-weight: 600;
+        font-size: 20px;
+        border-radius:10px;
+    
+}
+  }
+  @media only screen and (min-width: 720px) and (max-width: 800px) {
+    .inputs11 {
+        grid-template-columns: repeat(3, 1fr); /* Three columns layout for screens between 1000px and 1300px */
+      }
+    
+      /* Ensure the first three items are in the first row */
+      .inputs11 > .inputChild:nth-child(1),
+      .inputs11 > .inputChild:nth-child(2),
+      .inputs11 > .inputChild:nth-child(3) {
+        grid-column: span 1; /* Each of the first three items takes up one column */
+      }
+    
+      /* Ensure the next four items are in the second row */
+      .inputs11 > .inputChild:nth-child(4),
+      .inputs11 > .inputChild:nth-child(5),
+      .inputs11 > .inputChild:nth-child(6),
+      .inputs11 > .inputChild:nth-child(7) {
+        grid-column: span 1; /* Each of the next four items takes up one column */
+      }
+    
+      /* Adjust the 7th item to span multiple columns if necessary */
+      .inputs11 > .inputChild:nth-child(7) {
+        grid-column: 3 / 4; /* Place the 7th item in the 3rd column, making it align to the right */
+      }
+  
+  
+    .btnCity1{
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        width: 220px;
+        justify-content: space-between;
+        align-items:center;
+        border-radius: 12px;
+        background-color: #fff;
+        height: 50px;
+        padding: 7px 10px 10px 10px;
+        color: #00000061;
+        font-size: 22.62px;
+        line-height: 30px;
+        font-family: 600;
+        border: 1px solid #CFDEE6;
+    
+    }
+    .qidirish1{
+      
+        font-family: 'Inter', sans-serif;
+        width: 220px;
+        border:none;
+        height: 50px;
+        background-color:#303383;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        color:white;
+        font-weight: 600;
+        font-size: 20px;
+        border-radius:10px;
+    
+}
+.icons{
+    width: 25px;
+    height: 25px;
+}
+  }
+  @media only screen and (min-width: 600px) and (max-width: 720px) {
+    .btnCity1{
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        width: 80%;
+        justify-content: space-between;
+        align-items:center;
+        border-radius: 12px;
+        background-color: #fff;
+        height: 80px;
+        padding: 7px 10px 10px 10px;
+        color: #00000061;
+        font-size: 28.62px;
+        line-height: 30px;
+        font-family: 600;
+        border: 1px solid #CFDEE6;
+    
+    }
+    .path_dr_con{
+        max-width: 1920px;
+        width: 100%;
+        height: auto;
+        background-image: url("../../../pictures/b6.svg");
+        margin:0 auto;
+    
+    }
+    .qidirish1{
+        font-family: 'Inter', sans-serif;
+        width: 80%;
+        border:none;
+        height: 80px;
+        background-color:#303383;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        color:white;
+        font-weight: 600;
+        font-size: 30px;
+        border-radius:10px;
+    
+}
+.icons{
+    width: 40px;
+    height: 40px;
+}
+  }
+  @media only screen and (min-width: 400px) and (max-width: 600px) {
+    .btnCity1{
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        width: 80%;
+        justify-content: space-between;
+        align-items:center;
+        border-radius: 12px;
+        background-color: #fff;
+        height: 60px;
+        padding: 7px 10px 10px 10px;
+        color: #00000061;
+        font-size: 25.62px;
+        line-height: 30px;
+        font-family: 600;
+        border: 1px solid #CFDEE6;
+    
+    }
+    .path_dr_con{
+       
+        width: 100%;
+        height: auto;
+        background-image: url("../../../pictures/b6.svg");
+        margin:0 auto;
+    
+    }
+    .qidirish1{
+        font-family: 'Inter', sans-serif;
+        width: 80%;
+        border:none;
+        height: 60px;
+        background-color:#303383;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        color:white;
+        font-weight: 600;
+        font-size: 25px;
+        border-radius:10px;
+    
+}
+.icons{
+    width: 30px;
+    height: 30px;
+}
+  }
+  @media (max-width: 400px) {
+    .btnCity1{
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        width: 80%;
+        justify-content: space-between;
+        align-items:center;
+        border-radius: 12px;
+        background-color: #fff;
+        height: 50px;
+        padding: 7px 10px 10px 10px;
+        color: #00000061;
+        font-size: 20.62px;
+        line-height: 30px;
+        font-family: 600;
+        border: 1px solid #CFDEE6;
+    
+    }
+    .path_dr_con{
+       
+        width: 100%;
+        height: auto;
+        background-image: url("../../../pictures/b6.svg");
+        margin:0 auto;
+    
+    }
+    .qidirish1{
+        font-family: 'Inter', sans-serif;
+        width: 80%;
+        border:none;
+        height: 50px;
+        background-color:#303383;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        color:white;
+        font-weight: 600;
+        font-size: 20px;
+        border-radius:10px;
+    
+}
+.icons{
+    width: 25px;
+    height: 25px;
+}
+  }
+  

@@ -1,18 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apicall1 from "../../apicall/apicall1";
 import apicall from "../../apicall/apicall";
+import { toast } from 'react-toastify';
 
 export const fetchRoutes = createAsyncThunk('RouteDriverSlice/fetchRoutes', async () => {
   const response = await apicall1(`/driver`, "GET");
   return response.data;
 });
 
-export const fetchRoutesByDate = createAsyncThunk('RouteDriverSlice/fetchRoutesByDate', async (driverRout) => {
-  console.log(driverRout);
-  const response = await apicall1(`/driver/byDate`, "PUT",driverRout);
-  console.log(response.data);
+export const fetchRoutesByDate = createAsyncThunk('RouteDriverSlice/fetchRoutesByDate', async (driverRout, { getState }) => {
+  const response = await apicall1(`/driver/byDate`, "PUT", driverRout);
+  
+  const { routes: { allRoutes } } = getState(); 
+  
+  if (!response.data || response.data.length === 0) {
+    toast.error("Bundat yo'nalishda qatnovlar mavjud emas!");
+  } else {
+    toast.success("Bunday yo'nalishda qatnovlar mavjud!");
+  }
+  
   return response.data;
 });
+
 
 export const fetchRoutesByDriver = createAsyncThunk('RouteDriverSlice/fetchRoutesByDriver', async (userName) => {
   const response = await apicall1(`/driver/bydriver?id=${userName}`, "GET");
@@ -21,18 +30,25 @@ export const fetchRoutesByDriver = createAsyncThunk('RouteDriverSlice/fetchRoute
 });
 export const fetchRoutesByDay = createAsyncThunk('RouteDriverSlice/fetchRoutesByDay', async (day) => {
   const response = await apicall1(`/driver/byDay?day=${day}`, "GET");
-  console.log(response.data);
-  return response.data;
+  
+  if (!response.data || response.data.length === 0) {
+    toast.error("Ushbu kunda yo'nalishlar mavjud emas!");
+  } else {
+    toast.success("Yo'nalishlar muvaffaqiyatli topildi!");
+  }
+
+  return response.data; 
 });
+
 
 export const addRoute = createAsyncThunk('RouteDriverSlice/addRoute', async ({ driverRout, userName }) => {
   const response = await apicall1(`/driver`, "POST", { ...driverRout, userId: userName });
-  return response.data;  // Kerakli ma'lumotni qaytaramiz
+  return response.data;  
 });
 
 export const editRoute = createAsyncThunk('RouteDriverSlice/editRoute', async ({ EditButtonId, driverRout }) => {
   const response = await apicall(`/driver?id=${EditButtonId}`, "PUT", driverRout);
-  return { id: EditButtonId, ...driverRout };  // ID va yangi qiymatlarni qaytaramiz
+  return { id: EditButtonId, ...driverRout };  
 });
 
 export const deleteRoutes = createAsyncThunk('RouteDriverSlice/deleteRoutes', async ({ id }) => {
@@ -84,12 +100,12 @@ const RouteDriverSlice = createSlice({
       .addCase(fetchRoutesByDriver.fulfilled, (state, action) => {
         console.log(action.payload);
         state.status = 'succeeded';
-        state.routesByDriver = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+        state.routesByDriver = action.payload;  
       })
       .addCase(fetchRoutesByDay.fulfilled, (state, action) => {
        
         state.status = 'succeeded';
-        state.allRoutes = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+        state.allRoutes = action.payload; 
       })
       .addCase(fetchRoutesByDate.fulfilled, (state, action) => {
         state.allRoutes = action.payload; 

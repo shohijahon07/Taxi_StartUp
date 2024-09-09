@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteDriver, fetchDrivers } from '../../redux/slices/DriverSlice';
+import { deleteDriver, fetchDrivers, fetchDrivers1 } from '../../redux/slices/DriverSlice';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 function DriversAdmin() {
-const {drivers} = useSelector((state) => state.driver);
+const {drivers1} = useSelector((state) => state.driver);
 const dispatch = useDispatch();
 const [isDriver, setIsDriver] = useState(true);
 useEffect(() => {
- dispatch(fetchDrivers(isDriver)) 
+ dispatch(fetchDrivers1(isDriver)) 
   }, []);
 
     const navigate=useNavigate()
@@ -43,7 +43,7 @@ navigate(`/bir_haydovchi/${userName}`)
         </thead>
         <tbody>
           {
-            drivers.map((item,i)=>{
+            drivers1.map((item,i)=>{
               return <tr key={item.id}>
                 <td>{i+1}</td>
                 <td>{item.fullName}</td> 

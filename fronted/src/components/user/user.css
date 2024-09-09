@@ -1084,7 +1084,7 @@ p{
         height: 60px;
         padding: 7px 20px 10px 30px;
         color: #00000061;
-        font-size: 26.62px;
+        font-size: 22.62px;
         line-height: 30px;
         font-family: 600;
         border: 1px solid #CFDEE6;
@@ -1139,7 +1139,7 @@ p{
         border:none;
         background: #3033834F;
         color:#000000;
-        font-size: 20px;
+        font-size: 18px;
         text-align: center;
     }
     .mapRoutes{
@@ -1361,7 +1361,7 @@ p{
         height: 50px;
         padding: 7px 10px 10px 20px;
         color: #00000061;
-        font-size: 22.62px;
+        font-size: 19px;
         line-height: 25px;
         font-family: 600;
         border: 1px solid #CFDEE6;
@@ -1416,7 +1416,7 @@ p{
         border:none;
         background: #3033834F;
         color:#000000;
-        font-size: 20px;
+        font-size: 16px;
         text-align: center;
     }
     .mapRoutes{
@@ -1642,7 +1642,7 @@ p{
         height: 40px;
         padding: 7px 10px 10px 10px;
         color: #00000061;
-        font-size: 19.62px;
+        font-size: 16.62px;
         line-height: 25px;
         font-family: 600;
         border: 1px solid #CFDEE6;
@@ -1697,7 +1697,7 @@ p{
         border:none;
         background: #3033834F;
         color:#000000;
-        font-size: 17px;
+        font-size: 14.5px;
         text-align: center;
     }
     .mapRoutes{
@@ -1885,6 +1885,7 @@ p{
             /* height: 100vw;  */
             padding: 0 20px;
             padding-bottom: 30px;
+            
         }
         .h1RouterUser{
             padding-top: 20px;
@@ -2597,7 +2598,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 22px;
+            font-size: 21px;
             text-align: center;
         }
         .mapRoutes{
@@ -2916,7 +2917,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 21px;
+            font-size: 20px;
             text-align: center;
         }
         .mapRoutes{
@@ -3568,7 +3569,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 18px;
+            font-size: 15px;
             text-align: center;
         }
         .mapRoutes{

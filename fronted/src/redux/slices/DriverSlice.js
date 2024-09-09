@@ -2,7 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apicall1 from "../../apicall/apicall1";
 import apicall from "../../apicall/apicall";
 
-export const fetchDrivers = createAsyncThunk('DriverSlice/fetchRoutes', async (isDriver) => {
+export const fetchDrivers = createAsyncThunk('DriverSlice/fetchDrivers', async (isDriver) => {
+  const response = await apicall1(`/user/drivers?isDriver=${isDriver}`, "GET");
+  return response.data;
+});
+export const fetchDrivers1 = createAsyncThunk('DriverSlice/fetchDrivers1', async (isDriver) => {
   const response = await apicall1(`/user/drivers?isDriver=${isDriver}`, "GET");
   return response.data;
 });
@@ -67,12 +71,12 @@ export const editDriver = createAsyncThunk('DriverSlice/editDriver', async ({ Ed
     return { id: EditButtonId, ...updatedCourse };
   });
   export const editDriverIsDriving = createAsyncThunk('DriverSlice/editDriverIsDriving', async ({ id, driverIsdriving, randomNum }) => {
-    console.log(driverIsdriving);
-  
     try {
       const response = await apicall(`/user/isDrive?id=${id}`, "PUT", { ...driverIsdriving, password: randomNum });
+      return { id, ...response.data }; // Return id along with response data
     } catch (error) {
       console.error('Error during the process:', error);
+      throw error;
     }
   });
   
@@ -86,6 +90,7 @@ export const deleteDriver = createAsyncThunk('DriverSlice/deleteDriver', async (
 const DriverSlice = createSlice({
   name: 'driver',
   initialState: {
+    drivers1: [],
     drivers: [],
     driverOne: [],
     status: 'idle',
@@ -144,6 +149,9 @@ const DriverSlice = createSlice({
       .addCase(fetchDrivers.pending, (state) => {
         state.status = 'loading';
       })
+      .addCase(fetchDrivers1.pending, (state) => {
+        state.status = 'loading';
+      })
       .addCase(fetchDriverOne.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.driverOne = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
@@ -151,6 +159,10 @@ const DriverSlice = createSlice({
       .addCase(fetchDrivers.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.drivers = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+      })
+      .addCase(fetchDrivers1.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.drivers1 = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
       })
       .addCase(countDriversAll.fulfilled, (state, action) => {
         state.status = 'succeeded';
@@ -168,6 +180,10 @@ const DriverSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
+      .addCase(fetchDrivers1.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
       .addCase(addDriver.fulfilled, (state, action) => {
         state.drivers.push(action.payload);  // Yangi yo'nalishni ro'yxatga qo'shamiz
       })
@@ -181,9 +197,10 @@ const DriverSlice = createSlice({
         }
       })
       .addCase(editDriverIsDriving.fulfilled, (state, action) => {
-        const index = state.drivers.findIndex(driver => driver.id === action.payload.id);
+        const { id, ...updatedDriverData } = action.payload;
+        const index = state.drivers.findIndex(driver => driver.id === id);
         if (index !== -1) {
-          state.drivers[index] = action.payload;  // Tahrirlangan yo'nalishni yangilaymiz
+          state.drivers[index] = { ...state.drivers[index], ...updatedDriverData };
         }
       })
       .addCase(addDriverAbout.fulfilled, (state, action) => {

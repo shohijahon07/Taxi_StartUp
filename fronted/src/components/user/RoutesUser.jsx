@@ -62,6 +62,13 @@ function RoutesUser() {
             'Qashqadaryo': 'Кашкадарья',
             'Sirdaryo': 'Сырдарья',
             'Navoiy': 'Навои',
+            'Nukus': 'Нукус',
+            'Urganch': 'Урганч',
+            'Termiz': 'Термиз',
+            'Denov': 'Денов',
+            'Xiva': 'Хива',
+            'Qarshi': 'Қарши',
+            "Qo'qon": 'Қўқон',
         },
         'Russia': {
             'Ташкент': 'Toshkent',
@@ -77,6 +84,14 @@ function RoutesUser() {
             'Сырдарья': 'Sirdaryo',
             'Навои': 'Navoiy',
             'Сурхандарьинская': 'Surxondaryo',
+            'Нукус': 'Nukus',
+            'Урганч': 'Urganch',
+            'Термиз': 'Termiz',
+            'Денов': 'Denov',
+            'Хива': 'Xiva',
+            "Қўқон": "Qo'qon",
+            'Қарши': 'Qarshi',
+
         }
     };
 
@@ -139,7 +154,7 @@ function RoutesUser() {
     };
 
     useEffect(() => {
-        dispatch(fetchRoutes());
+        // dispatch(fetchRoutes());
         dispatch(fetchToCity());
         dispatch(fetchFromCity());
         setLoading(true); 
@@ -178,7 +193,8 @@ function RoutesUser() {
         dispatch(fetchRoutesByDate(driverRout))
             .unwrap()
             .then(() => {
-                toast.success('Malumot muvaffaqiyatli tahrirlandi!');
+               
+                  
             })
             .catch((err) => {
                 console.log(err);
@@ -196,7 +212,7 @@ function RoutesUser() {
         dispatch(fetchRoutesByDay(day))
             .unwrap()
             .then(() => {
-                toast.success('Malumot muvaffaqiyatli tahrirlandi!');
+               
                 day = null; 
             })
             .catch((err) => {
@@ -247,7 +263,7 @@ function RoutesUser() {
             'v': 'в', 'x': 'х', 'y': 'й', 'z': 'з'
         };
     
-        // Avval 'Ch', 'ch', 'Sh', 'sh' kabi kombinatsiyalarni o'zgartiramiz
+       
         let result = text;
         for (const [key, value] of Object.entries(map)) {
             if (key.length > 1) {
@@ -340,7 +356,7 @@ function RoutesUser() {
                     >
 
                     {selectedDate? (
-                            <span style={{ color: '#303383',fontWeight:"600",letterSpacing:"1.5px" }}>{selectedDate}</span>
+                            <span style={{ color: '#303383',fontWeight:"600",letterSpacing:"1.5px" }}>{formatDate(selectedDate)}</span>
                         ) : (
                             <span style={{ fontWeight: 'normal' }}>
                                 { language === "1" ? "Qachon" : "Когда"}
@@ -363,7 +379,7 @@ function RoutesUser() {
                         </button>
                 </div>
             </div>
-            <div className="allRoutes" >
+           {allRoutes.length<1?"": <div className="allRoutes" >
             <div className="getRoutes">
                          <div className="topRoutesUser">
                             <h2>{language==="1"?"Yo’nalish bo’yicha qatnovlar":"Маршруты"}</h2>
@@ -407,7 +423,7 @@ function RoutesUser() {
                     <li className='list-group-item li3'><div className="l3Child1"><h3>{translateFullName(item.user.fullName)}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={()=>openModal1(item.user.chatId)}>  {language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
                    </div> 
                 ))}
-            </div>
+            </div>}
             <div className="boglanish2">
             <Boglanish2 />
             </div>
