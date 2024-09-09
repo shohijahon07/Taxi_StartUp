@@ -52,13 +52,13 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
+        return "7255093778:AAFVC6VNDj2ZxAY8d_OrIE37BxxJEFsLux4";
     }
 
     
     @Override
     public String getBotUsername() {
-        return "shift_proejct_taxi_bot.";
+        return "shift_taxi_bot";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -1212,65 +1212,66 @@ phoneNumber=message.getContact().getPhoneNumber();
                     execute(sendMessage);
                 }
             }
-            else if (user.getLanguage().equals("uz")) {
-                Optional<User> byChatId = userRepo.findByChatId(chatId);
-                if (byChatId.isPresent()) {
-                    Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
 
-                    if (byUser != null) { // Ensure byUser is not null
-                        if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger)) {
-                            byUser.getPassenger().remove(idPassenger);
-                            Integer countSide = byUser.getCountSide();
-                            byUser.setCountSide(countSide+1);
-                            routeDriverRepo.save(byUser);
-
-                            sendMessage.setChatId(chatId);
-                            if(user.getLanguage().equals("uz")){
-                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
-                            }else if(user.getLanguage().equals("ru")){
-                                sendMessage.setText("✅ Вы удалили пассажира");
-
-                            }
-
-                            execute(sendMessage);
-
-                            DeleteMessage deleteMessage = new DeleteMessage();
-                            deleteMessage.setChatId(chatId);
-                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-                            band_delete_data[1] = "";
-                            execute(deleteMessage);
-                        } else {
-                            sendMessage.setChatId(chatId);
-                            if(user.getLanguage().equals("uz")){
-                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
-                            }else if(user.getLanguage().equals("ru")){
-                                sendMessage.setText("✅ Вы удалили пассажира");
-
-                            }
-                            execute(sendMessage);
-
-                            // Only delete message if it was previously set
-                            if (!band_delete_data[1].isEmpty()) {
-                                DeleteMessage deleteMessage = new DeleteMessage();
-                                deleteMessage.setChatId(chatId);
-                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-                                band_delete_data[1] = "";
-                                execute(deleteMessage);
-                            }
-                        }
-                    }
-                } else {
-                    sendMessage.setChatId(chatId);
-                    if(user.getLanguage().equals("uz")){
-                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
-
-                    }else if(user.getLanguage().equals("ru")){
-                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
-
-                    }
-                    execute(sendMessage);
-                }
-            }
+//            else if (user.getLanguage().equals("uz")) {
+//                Optional<User> byChatId = userRepo.findByChatId(chatId);
+//                if (byChatId.isPresent()) {
+//                    Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
+//
+//                    if (byUser != null) { // Ensure byUser is not null
+//                        if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger)) {
+//                            byUser.getPassenger().remove(idPassenger);
+//                            Integer countSide = byUser.getCountSide();
+//                            byUser.setCountSide(countSide+1);
+//                            routeDriverRepo.save(byUser);
+//
+//                            sendMessage.setChatId(chatId);
+//                            if(user.getLanguage().equals("uz")){
+//                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
+//                            }else if(user.getLanguage().equals("ru")){
+//                                sendMessage.setText("✅ Вы удалили пассажира");
+//
+//                            }
+//
+//                            execute(sendMessage);
+//
+//                            DeleteMessage deleteMessage = new DeleteMessage();
+//                            deleteMessage.setChatId(chatId);
+//                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+//                            band_delete_data[1] = "";
+//                            execute(deleteMessage);
+//                        } else {
+//                            sendMessage.setChatId(chatId);
+//                            if(user.getLanguage().equals("uz")){
+//                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
+//                            }else if(user.getLanguage().equals("ru")){
+//                                sendMessage.setText("✅ Вы удалили пассажира");
+//
+//                            }
+//                            execute(sendMessage);
+//
+//                            // Only delete message if it was previously set
+//                            if (!band_delete_data[1].isEmpty()) {
+//                                DeleteMessage deleteMessage = new DeleteMessage();
+//                                deleteMessage.setChatId(chatId);
+//                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+//                                band_delete_data[1] = "";
+//                                execute(deleteMessage);
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    sendMessage.setChatId(chatId);
+//                    if(user.getLanguage().equals("uz")){
+//                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
+//
+//                    }else if(user.getLanguage().equals("ru")){
+//                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
+//
+//                    }
+//                    execute(sendMessage);
+//                }
+//            }
 
 
             if (user.getStatus().equals(Status.SET_TO)) {
