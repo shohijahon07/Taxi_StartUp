@@ -1,31 +1,29 @@
-import React from 'react'
-import uzbekistan from "../../../pictures/uzbekistan.svg"
-import left from "../../../pictures/leftBorder.svg"
-
+import React, { useContext } from 'react'
+import "./../../user/footer.css"
+import { LanguageContext } from '../../language/LanguageContext';
+import rasm from "../../../pictures/5.svg";
 function DriverFooter() {
+  const { language, changeLanguage } = useContext(LanguageContext);
+
   return (
-    <div className="footer">
-    <div className="footer-body">
-    <img src={left} className='img_footer_dr' alt="#" />
-  <div className="footer-left">
-  <div className="footer-lf-header">
-  <h1 className='pathText'>Yo'nalish</h1>
-  <h1 className='pathText'>Men haqimda</h1>
+    <div className='footer'>
+    <div className="line2"></div>
+<div className="footer3">
+  <div className="textFooter">
+      <ul className='foterUl'>
+<li className='list-group-item' > {language==="1"?"Yo'nalish":"Направление"}   </li>
+<li  className='list-group-item'>{language==="1"?"Men haqimda":"Обо мне"}</li>
+</ul>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum <br /> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum <br /> tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros <br /> elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in <br /> eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius <br /> enim in eros elementum tristique.</p>
   </div>
-  <div className="footer-lf-body">
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.
-  
-  </div>
-  </div>
-  <div className="footer-right">
-    <img src={uzbekistan} alt="" />
-  </div>
-  
-  
-    <img src={left} className='img_footer_dr' alt="#" />
+    <div className="footerYer">
+        <img src={rasm} alt="" style={{objectFit:"contain",width:"100%",height:"100%"}} />
     </div>
-    
-  </div>
+</div>
+
+
+    <div className="line2"></div>
+</div>
   )
 }
 

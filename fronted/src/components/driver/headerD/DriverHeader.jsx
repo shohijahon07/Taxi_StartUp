@@ -15,7 +15,7 @@ function DriverHeader() {
   useEffect(() => {
   getDriver()
  
-}, []);
+}, [language,changeLanguage]);
 function functionDeleteToken() {
   navigate("/")
   localStorage.removeItem("access_token")
@@ -46,9 +46,9 @@ navigate("/yo'nalish")
         </div>
         <div className="center">
           <ul className='listUl'>
-          <li className='list-group-item1' onClick={navigatePath} >Yo'nalish</li>
+          <li className='list-group-item1' onClick={navigatePath} > {language==="1"?"Yo'nalish":"Направление"}</li>
             
-            <li className='list-group-item2'onClick={navigateMyselft} >Men haqimda</li>
+            <li className='list-group-item2'onClick={navigateMyselft} > {language==="1"?"Men haqimda":"Обо мне"}</li>
 
             
           </ul>
