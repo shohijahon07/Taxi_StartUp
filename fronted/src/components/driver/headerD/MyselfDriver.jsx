@@ -12,6 +12,7 @@ import DriverFooter from './DriverFooter';
 import fileicon from "../../../pictures/fileicon.jpg";
 import "../../auth/Register.css";
 import edit from "../../../pictures/edit.svg"
+import apicall from '../../../apicall/apicall';
 function MyselfDriver() {
   const [userName, setUserName] = useState("");
   const [isEditing, setIsEditing] = useState(false); // Track editing mode
@@ -29,24 +30,13 @@ function MyselfDriver() {
   const fileInputRef3 = useRef(null);
 
   function getDriver() {
-    axios({
-      url: "http://localhost:8080/api/auth/name",
-      method: "get",
-      headers: { Authorization: localStorage.getItem("refresh_token") }
-    }).then((res) => {
-      setUserName(res.data.id);
-    });
+    apicall(`/auth/name`, "GET",null).then((res)=>{
+    setUserName(res.id)
+    })
+
   }
 
   const saveDepartment = () => {
-    console.log(EditButtonId);
-    console.log(driverObject);
-    console.log(img);
-    console.log(img1);
-    console.log(img2);
-    console.log(selectedFile1);
-    console.log(selectedFile2);
-    console.log(selectedFile);
     dispatch(editDriver({ EditButtonId, driverObject, img, img1, img2, selectedFile, selectedFile1, selectedFile2 }))
       .unwrap()
       .then(() => {
@@ -166,7 +156,7 @@ function MyselfDriver() {
                             
 
                            </h1>
-                           <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                           <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
 
                     </div>
                   }
@@ -189,9 +179,9 @@ function MyselfDriver() {
                  
                  : <div> <h1>
 
-{language==="1"?"Haydovchilik guvohnomasi":"Водительское удостоверение"}
+{language==="1"?"Haydovchilik guvohnoma":"Водительское удостоверение"}
                  </h1>
-                 <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+                 <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
                </div>
                }
                 </div>
@@ -206,7 +196,7 @@ function MyselfDriver() {
                   />
                   <label htmlFor="file3">
                     <img src={fileicon} alt="Upload Icon" className="upload-icon2"  />
-                    {language==="1"?"Texxpasport rasmi":"Фотография паспорта Техаса"}
+                    {language==="1"?"Texpasport rasmi":"Фотография паспорта Техаса"}
                     
         
                   </label>
@@ -214,10 +204,10 @@ function MyselfDriver() {
 
                     : <div>
                   <h1>
-                  {language==="1"?"Texxpasport rasmi":"Фотография паспорта Техаса"}
+                  {language==="1"?"Texpasport rasmi":"Фотография паспорта Техаса"}
                     
                     </h1>
-                  <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
+                  <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
 
                     </div>
                     
@@ -248,7 +238,7 @@ function MyselfDriver() {
                    </div>
                     :
                     <div className={"inp_child"} >
-                           <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                           <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
           
                            <h1>
                             {language==="1"?"Mashinani rasmi":"Изображение автомобиля"}
@@ -274,7 +264,7 @@ function MyselfDriver() {
                  </div>
                  
                  : <div className='inp_child'> 
-                 <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+                 <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
                  
                  <h1>
                   {language==="1"?"Haydovchilik guvohnomasi":"Водительское удостоверение"}
@@ -302,7 +292,7 @@ function MyselfDriver() {
                 </div>
 
                     : <div className='inp_child'>
-                  <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
+                  <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
 
                   <h1>
                   {language==="1"?"Texxpasport rasmi":"Фотография паспорта Техаса"}

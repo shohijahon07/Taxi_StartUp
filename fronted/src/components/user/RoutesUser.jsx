@@ -143,7 +143,6 @@ function RoutesUser() {
     
 
     const handleOptionSelect = (option) => {
-        console.log(translateCity1(option));
         if (currentOptionType === 'from') {
             dispatch(setKoranCourse({ ...driverRout, fromCity: translateCity1(option) }));
             setShowFromCityModal(false);
@@ -197,7 +196,6 @@ function RoutesUser() {
                   
             })
             .catch((err) => {
-                console.log(err);
                 toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             })
             .finally(() => {
@@ -216,7 +214,6 @@ function RoutesUser() {
                 day = null; 
             })
             .catch((err) => {
-                console.log(err);
                 toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             });
             updateNeedDay()

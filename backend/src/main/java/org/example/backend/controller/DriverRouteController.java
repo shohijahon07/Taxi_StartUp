@@ -52,4 +52,9 @@ public class DriverRouteController {
     public HttpEntity<?> DeleteRoute(@RequestParam UUID id){
         return driverRouteService.DeleteRoute( id);
     }
+    @DeleteMapping("/bydel")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
+    public HttpEntity<?> DeleteByDay(@RequestParam String day,@RequestParam String hour){
+        return driverRouteService.DeleteByDay(day,hour);
+    }
 }

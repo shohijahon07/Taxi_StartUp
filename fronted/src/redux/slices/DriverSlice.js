@@ -31,8 +31,6 @@ export const addDriver = createAsyncThunk('DriverSlice/addDriver', async ({ driv
 });
 export const addDriverAbout = createAsyncThunk('DriverSlice/addDriverAbout', async ({ about, userName }) => {
   try {
-      console.log(userName);
-      console.log(about);
     const response = await apicall(`/user?id=${userName}&text=${about}`, "POST",  null );
     return response; 
   } catch (error) {
@@ -66,7 +64,7 @@ export const editDriver = createAsyncThunk('DriverSlice/editDriver', async ({ Ed
     }
  
     const updatedCourse = { ...driverObject, carImg: newImg, driverImg: newImg1, cardDocument: newImg2 };
-    console.log(updatedCourse);
+  
     const response = await apicall(`/user?id=${EditButtonId}`, "PUT", updatedCourse);
     return { id: EditButtonId, ...updatedCourse };
   });
@@ -82,7 +80,7 @@ export const editDriver = createAsyncThunk('DriverSlice/editDriver', async ({ Ed
   
   
 export const deleteDriver = createAsyncThunk('DriverSlice/deleteDriver', async ({ id }) => {
-  console.log(id);
+  
   await apicall(`/user?id=${id}`, "DELETE", null);
   return id;
 });

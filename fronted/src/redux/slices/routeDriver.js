@@ -25,7 +25,7 @@ export const fetchRoutesByDate = createAsyncThunk('RouteDriverSlice/fetchRoutesB
 
 export const fetchRoutesByDriver = createAsyncThunk('RouteDriverSlice/fetchRoutesByDriver', async (userName) => {
   const response = await apicall1(`/driver/bydriver?id=${userName}`, "GET");
-  console.log(response.data);
+
   return response.data;
 });
 export const fetchRoutesByDay = createAsyncThunk('RouteDriverSlice/fetchRoutesByDay', async (day) => {
@@ -55,6 +55,11 @@ export const deleteRoutes = createAsyncThunk('RouteDriverSlice/deleteRoutes', as
   await apicall(`/driver?id=${id}`, "DELETE", null);
   return id;
 });
+export const deleteRoutesByDay = createAsyncThunk('RouteDriverSlice/deleteRoutesByDay', async ( item1 ) => {
+ 
+  await apicall(`/driver/bydel?day=${item1.day}&hour=${item1.hour}`, "DELETE", null);
+  return item1.id;
+});
 
 const RouteDriverSlice = createSlice({
   name: 'routes',
@@ -70,6 +75,7 @@ const RouteDriverSlice = createSlice({
     EditButtonId: null,
     driverRout: { fromCity: '', toCity: '', countSide: "", price: "", day: "", hour: "", userId: "" },
     selectedFile: null,
+    item1:null
   },
   reducers: {
     setEditButtonId(state, action) {
@@ -83,6 +89,9 @@ const RouteDriverSlice = createSlice({
     },
     setSelectedFile(state, action) {
       state.selectedFile = action.payload;
+    },
+    setClearItem1(state, action) {
+      state.item1 = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -98,9 +107,15 @@ const RouteDriverSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchRoutesByDriver.fulfilled, (state, action) => {
-        console.log(action.payload);
+        
         state.status = 'succeeded';
         state.routesByDriver = action.payload;  
+
+          action.payload.map((item)=>{
+             state.item1=item
+          })
+
+       
       })
       .addCase(fetchRoutesByDay.fulfilled, (state, action) => {
        
@@ -137,10 +152,13 @@ const RouteDriverSlice = createSlice({
       })
       .addCase(deleteRoutes.fulfilled, (state, action) => {
         state.driverRoutes = state.driverRoutes.filter(driverRoute => driverRoute.id !== action.payload);  
+      })
+      .addCase(deleteRoutesByDay.fulfilled, (state, action) => {
+        state.driverRoutes = state.driverRoutes.filter(driverRoute => driverRoute.id !== action.payload);  
       });
   },
 });
 
-export const { setEditButtonId, setKoranCourse, setSelectedFile,setDay } = RouteDriverSlice.actions;
+export const { setEditButtonId, setKoranCourse, setSelectedFile,setDay, setClearItem1} = RouteDriverSlice.actions;
 
 export default RouteDriverSlice.reducer;

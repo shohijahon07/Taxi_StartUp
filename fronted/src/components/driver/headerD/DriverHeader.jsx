@@ -22,15 +22,7 @@ function functionDeleteToken() {
   localStorage.removeItem("refresh_token")
 }
 
-    function getDriver(){
-      axios({
-        url:"http://localhost:8080/api/auth/name",
-        method:"get",
-        headers:{Authorization:localStorage.getItem("refresh_token")}
-    }).then((res)=>{
-      setUserName(res.data)
-    })
-    }
+   
     function navigatePath(){
 navigate("/yo'nalish")
     }

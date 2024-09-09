@@ -50,13 +50,13 @@ navigate(`/bir_haydovchi/${userName}`)
                 <td>{item.phoneNumber}</td> 
                 <td>{item.carType}</td> 
                 <td>
-                <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
                   </td> 
                 <td>
-            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+            <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
                   </td> 
                 <td>
-            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
+            <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
                </td> 
                <td>
                 <button className='saqlash1' onClick={()=>goAboutDrivers(item.id)}>Haqida</button>

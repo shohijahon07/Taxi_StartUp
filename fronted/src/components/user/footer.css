@@ -439,15 +439,13 @@ body{
     }
     .foterUl{
         /* border: 1px solid #000000; */
-        width: 200px;   
+        width: 220px;   
         margin-bottom: 0px;
         font-weight: 500;
         font-size: 20px;
-        line-height: 39px;
-       display: inline-block;
-       justify-content: start;
-       align-items:start;
-       flex-wrap: wrap;
+        line-height: 30px;
+       display: grid;
+        text-align: start;
     
     }
 }
@@ -498,13 +496,11 @@ body{
     }
     .foterUl{
         /* border: 1px solid #000000; */
-        width: 190px;   
+        width: 200px;   
         margin-bottom: 0px;
         margin-left: 10px;
-       display: inline-block;
-       justify-content: start;
-       align-items:start;
-       flex-wrap: wrap;
+       display:grid;
+      text-align: start;
     
     }
     .foterUl li{
@@ -563,13 +559,11 @@ body{
     }
     .foterUl{
         /* border: 1px solid #000000; */
-        width: 160px;   
+        width: 170px;   
         margin-bottom: 0px;
         margin-left: 10px;
-       display: inline-block;
-       justify-content: start;
-       align-items:center;
-       flex-wrap: wrap;
+       display: grid;
+      text-align: start;
     
     }
     .foterUl li{
@@ -631,10 +625,8 @@ body{
         width: 160px;   
         margin-bottom: 0px;
         margin-left: 10px;
-       display: inline-block;
-       justify-content: start;
-       align-items:center;
-       flex-wrap: wrap;
+       display: grid;
+       text-align: start;
     
     }
     .foterUl li{
@@ -696,10 +688,8 @@ body{
         width: 160px;   
         margin-bottom: 0px;
         margin-left: 10px;
-       display: inline-block;
-       justify-content: start;
-       align-items:center;
-       flex-wrap: wrap;
+     display: grid;
+     text-align: start;
     
     }
     .foterUl li{

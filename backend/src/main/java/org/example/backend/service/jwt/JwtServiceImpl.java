@@ -20,7 +20,7 @@ public class JwtServiceImpl implements JwtService {
         String compact = Jwts.builder()
                 .claims(map)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000*60*30))
+                .expiration(new Date(System.currentTimeMillis() + 1000*60*60))
                 .subject(user.getId().toString())
                 .signWith(signWithKey())
                 .compact();
@@ -30,7 +30,7 @@ public class JwtServiceImpl implements JwtService {
     public String generateJwtRefreshToken(User user) {
         return Jwts.builder()
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 100))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60*24))
                 .subject(user.getId().toString())
                 .signWith(signWithKey())
                 .compact();

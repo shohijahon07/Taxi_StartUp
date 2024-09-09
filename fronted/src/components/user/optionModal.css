@@ -10,7 +10,7 @@
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1s ease-in-out, visibility 0.6s ease-in-out;
+    transition: opacity 0.3s ease-in-out, visibility 0.6s ease-in-out;
 }
 
 .option-modal {
@@ -22,7 +22,7 @@
     max-height: 1000px; /* Modalning maksimal balandligi */
     overflow-y: auto; /* Modal ichida aylanish */
     transform: scale(0.5);
-    transition: transform 0.6s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 }
 
 .option-list {

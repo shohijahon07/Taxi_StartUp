@@ -1,5 +1,6 @@
 package org.example.backend.service.route;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.RouteDriverDto;
 import org.example.backend.entity.Route_Driver;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -122,6 +124,27 @@ public class DriverRouteImpl implements DriverRouteService {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
+    }
+
+    @Transactional
+    @Override
+    public HttpEntity<?> DeleteByDay(String day, String hour) {
+       LocalDate today = LocalDate.parse(day);
+        LocalTime time = LocalTime.parse(hour);
+        int dayOfYear1 = today.getDayOfYear();
+        LocalDate now=LocalDate.now();
+        int dayOfYear = now.getDayOfYear();
+        int minute = time.getMinute();
+        LocalTime now1 = LocalTime.now();
+        int minute1 = now1.getMinute();
+
+        if (dayOfYear1<dayOfYear) {
+            routeDriverRepo.deleteByDay(LocalDate.parse(day));
+        } else if (dayOfYear1==dayOfYear && minute1>=minute) {
+            routeDriverRepo.deleteByDay(LocalDate.parse(day));
+        }
+
+        return ResponseEntity.ok("Muvaffaqiyatli o'chirildi!");
     }
 
 }

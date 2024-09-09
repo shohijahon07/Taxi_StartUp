@@ -20,4 +20,6 @@ public interface DriverRouteService {
     ResponseEntity<?> getRouteByDate(RouteDriverDto day);
 
     ResponseEntity<?> getRouteByDay(Integer day);
+
+    HttpEntity<?> DeleteByDay(String day, String hour);
 }

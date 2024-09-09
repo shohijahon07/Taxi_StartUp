@@ -10,7 +10,7 @@
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
+    transition: opacity 0.3s ease-in-out, visibility 1s ease-in-out;
 }
 
 .date-modal {
@@ -23,7 +23,7 @@
     overflow-y: auto;
     position: relative;
     transform: scale(0.5);
-    transition: transform 1s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 }
 
 .date-modal-overlay.active {
@@ -38,9 +38,9 @@
 .btnCloseIcon {
     text-align: center;
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 40px;
+    top: 0px;
+    right: 0px;
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,14 +49,9 @@
     background-color: transparent;
 }
 
-.btnCloseIcon:hover {
-    cursor: pointer;
-    background-color: rgba(15, 187, 187, 0.884);
-}
 
-.btnCloseIcon button:hover {
-    color: white;
-}
+
+
 
 .date-modal h3 {
     margin: 0 0 20px;

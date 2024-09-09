@@ -16,9 +16,9 @@ const OptionModal = ({ options, onSelect, onClose }) => {
     return (
         <div className={`option-modal-overlay ${active ? 'active' : ''}`} onClick={handleClose}>
             <div className="option-modal" onClick={(e) => e.stopPropagation()}>
-                <div className="btnCloseIcon">
+                <div className="btnCloseIcon" style={{paddingRight:"10px"}}>
 
-                <button className="btn btn-close btn12" onClick={handleClose}></button>
+                <button className="btn btn-close" onClick={handleClose}>x</button>
                 </div>
                 <div className="CityH1">
 

@@ -1,14 +1,29 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    host: true, // Expose the server to the network
-    port: 5174, // Optional: Specify the port if needed
-    hmr: {
-      overlay: false, // Disable the error overlay
+  resolve: {
+    alias: {
+     
     },
   },
-})
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'lodash'], 
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000, 
+  },
+  assetsInclude: ['**/*.png', '**/*.PNG', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.gif'], 
+  server: {
+    host: true, 
+    port: 5174, 
+    hmr: {
+      overlay: false, 
+    },
+  },
+});

@@ -87,7 +87,7 @@ public class UserImpl implements UserService{
 
             userRepo.save(user);
 
-            String apiToken ="6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
+            String apiToken ="7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
             String chatId = String.valueOf(user.getChatId());
             String text = "  Tabriklaymiz siz muvaffaqiyatli tastiqlandingiz. Boshlash uchun /start buyrug'ini bering  username: " +user.getPhoneNumber() +  "  parol: " + plainPassword  +" ";
 
@@ -157,7 +157,7 @@ public class UserImpl implements UserService{
         User user = new User(pessengerDto.getName(), pessengerDto.getPhoneNumber(), roles);
         userRepo.save(user);
 
-        String apiToken = "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
+        String apiToken = "7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
         String chatId = String.valueOf(pessengerDto.getDriverChatId());
         String text = "👤 Siz " + user.getFullName() + " yo'lovchini qabul qilasizmi? " +
                 "📞 Telefon raqami: " + user.getPhoneNumber();

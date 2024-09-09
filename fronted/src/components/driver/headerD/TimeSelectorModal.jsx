@@ -78,7 +78,7 @@ const TimeSelectorModal = ({ onClose, onSelect }) => {
           </div>
         </div>
         <div className="time-selector-actions">
-          <button className="btn-confirm" onClick={handleConfirm}>Confirm</button>
+          <button className="btn-confirm" onClick={handleConfirm}>Saqlash</button>
         </div>
       </div>
     </div>

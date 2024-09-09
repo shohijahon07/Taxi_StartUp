@@ -10,8 +10,8 @@ function Boglanish({ isOpen1, onClose }) {
   return (
     <div className="modal-background" onClick={onClose}>
       <div className="modal-body" onClick={(e) => e.stopPropagation()}>
-        <button className="btn btn-close exitBtn" onClick={onClose}>
-          
+        <button className=" exitBtn" onClick={onClose}>
+          x
         </button>
         <div className="modal-header-section">
           <h1 className="modal-heading">{language==="1"?"Savollar Bo'lsa Murojaat qiling!":"Пожалуйста, свяжитесь с нами, если у вас есть какие-либо вопросы!"}</h1>
