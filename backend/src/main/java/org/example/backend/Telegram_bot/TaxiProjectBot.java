@@ -52,13 +52,13 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
+        return "7255093778:AAFVC6VNDj2ZxAY8d_OrIE37BxxJEFsLux4";
     }
 
     
     @Override
     public String getBotUsername() {
-        return "shift_proejct_taxi_bot.";
+        return "shift_taxi_bot";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -370,6 +370,70 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                     }
 
                 }
+                else if(foundUser.getStatus().equals(Status.NEW_PRICE)){
+                    String countS = message.getText();
+                    Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
+                    if (byId.isPresent()) {
+                        Route_Driver routeDriver = byId.get();
+
+                        try {
+                            int count = Integer.parseInt(countS);
+                            routeDriver.setPrice(count);
+
+                            routeDriverRepo.save(routeDriver);
+                            if (foundUser.getLanguage().equals("uz")) {
+                                sendMessage.setText("✅ Narxi  muvaffaqiyatli qo'shildi"); // "✅" for success
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                sendMessage.setText("✅ Цена успешно добавлена"); // "✅" for success
+                            }
+                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
+                            for (Route_Driver routeDriver2 : routeDriverRepo.findAll()) {
+                                if (userIds.contains(routeDriver2.getUser().getId())) {
+                                    if (foundUser.getLanguage().equals("uz")) {
+                                        sendMessage.setText(
+                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
+                                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver2.getCountSide() + " \n" +
+                                                        "💲 Narxi: " + routeDriver2.getPrice() + " so'm \n" +
+                                                        "📅 Sana: " + routeDriver2.getDay() + "\n" +
+                                                        "⏰ Soat: " + routeDriver2.getHour()
+                                        );
+                                    } else if (foundUser.getLanguage().equals("ru")) {
+                                        sendMessage.setText(
+                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
+                                                        "🪑 Количество вакансий: " + routeDriver2.getCountSide() + " \n" +
+                                                        "💲 Цена: " + routeDriver2.getPrice() + " сум \n" +
+                                                        "📅 Дата: " + routeDriver2.getDay() + "\n" +
+                                                        "⏰ Час: " + routeDriver2.getHour()
+                                        );
+                                    }
+
+                                    sendMessage.setReplyMarkup(directionData(routeDriver2.getId(), foundUser));
+                                    execute(sendMessage);
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            if (foundUser.getLanguage().equals("uz")) {
+                                sendMessage.setText("⚠️ Kechirasiz, noto'g'ri qiymat kiritildi. Faqat sonlarni kiriting."); // "⚠️" for warning
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                sendMessage.setText("⚠️ Извините, было введено неверное значение. Просто введите цифры."); // "⚠️" for warning
+                            }
+
+                        }
+
+                        execute(sendMessage);
+                    } else {
+                        if (foundUser.getLanguage().equals("uz")) {
+                            sendMessage.setText("❌ Xatolik."); // "❌" for error
+                        } else if (foundUser.getLanguage().equals("ru")) {
+                            sendMessage.setText("❌ Ошибка."); // "❌" for error
+                        }
+
+                        execute(sendMessage);
+                    }
+
+                }
+
+
                 else if (foundUser.getStatus().equals(Status.NEW_DAY)) {
                     try {
                         System.out.println("kirdi");
@@ -696,7 +760,7 @@ phoneNumber=message.getContact().getPhoneNumber();
 
 
                     sendMessage.setText("🗺️ Yo'nalishingizni kiriting \n 📍 Qayerdan?");
-                    sendMessage.setReplyMarkup(fromCitysButtons());
+                    sendMessage.setReplyMarkup(fromCitysButtons(user));
 
                 execute(sendMessage);
             }
@@ -708,7 +772,7 @@ phoneNumber=message.getContact().getPhoneNumber();
                 user.setLanguage("ru");
                 userRepo.save(user);
                     sendMessage.setText("🗺️ Введите пункт назначения\n 📍Откуда?");
-                    sendMessage.setReplyMarkup(fromCitysButtons());
+                    sendMessage.setReplyMarkup(fromCitysButtons(user));
 
 
                 execute(sendMessage);
@@ -759,7 +823,7 @@ phoneNumber=message.getContact().getPhoneNumber();
                             sendMessage.setText("Введите пункт назначения\n куда?");
 
                         }
-                        sendMessage.setReplyMarkup(toCitysButtons());
+                        sendMessage.setReplyMarkup(toCitysButtons(user));
                         userRepo.save(user);
                         execute(sendMessage);
                         return;
@@ -1212,65 +1276,66 @@ phoneNumber=message.getContact().getPhoneNumber();
                     execute(sendMessage);
                 }
             }
-            else if (user.getLanguage().equals("uz")) {
-                Optional<User> byChatId = userRepo.findByChatId(chatId);
-                if (byChatId.isPresent()) {
-                    Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
 
-                    if (byUser != null) { // Ensure byUser is not null
-                        if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger)) {
-                            byUser.getPassenger().remove(idPassenger);
-                            Integer countSide = byUser.getCountSide();
-                            byUser.setCountSide(countSide+1);
-                            routeDriverRepo.save(byUser);
-
-                            sendMessage.setChatId(chatId);
-                            if(user.getLanguage().equals("uz")){
-                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
-                            }else if(user.getLanguage().equals("ru")){
-                                sendMessage.setText("✅ Вы удалили пассажира");
-
-                            }
-
-                            execute(sendMessage);
-
-                            DeleteMessage deleteMessage = new DeleteMessage();
-                            deleteMessage.setChatId(chatId);
-                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-                            band_delete_data[1] = "";
-                            execute(deleteMessage);
-                        } else {
-                            sendMessage.setChatId(chatId);
-                            if(user.getLanguage().equals("uz")){
-                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
-                            }else if(user.getLanguage().equals("ru")){
-                                sendMessage.setText("✅ Вы удалили пассажира");
-
-                            }
-                            execute(sendMessage);
-
-                            // Only delete message if it was previously set
-                            if (!band_delete_data[1].isEmpty()) {
-                                DeleteMessage deleteMessage = new DeleteMessage();
-                                deleteMessage.setChatId(chatId);
-                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-                                band_delete_data[1] = "";
-                                execute(deleteMessage);
-                            }
-                        }
-                    }
-                } else {
-                    sendMessage.setChatId(chatId);
-                    if(user.getLanguage().equals("uz")){
-                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
-
-                    }else if(user.getLanguage().equals("ru")){
-                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
-
-                    }
-                    execute(sendMessage);
-                }
-            }
+//            else if (user.getLanguage().equals("uz")) {
+//                Optional<User> byChatId = userRepo.findByChatId(chatId);
+//                if (byChatId.isPresent()) {
+//                    Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
+//
+//                    if (byUser != null) { // Ensure byUser is not null
+//                        if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger)) {
+//                            byUser.getPassenger().remove(idPassenger);
+//                            Integer countSide = byUser.getCountSide();
+//                            byUser.setCountSide(countSide+1);
+//                            routeDriverRepo.save(byUser);
+//
+//                            sendMessage.setChatId(chatId);
+//                            if(user.getLanguage().equals("uz")){
+//                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
+//                            }else if(user.getLanguage().equals("ru")){
+//                                sendMessage.setText("✅ Вы удалили пассажира");
+//
+//                            }
+//
+//                            execute(sendMessage);
+//
+//                            DeleteMessage deleteMessage = new DeleteMessage();
+//                            deleteMessage.setChatId(chatId);
+//                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+//                            band_delete_data[1] = "";
+//                            execute(deleteMessage);
+//                        } else {
+//                            sendMessage.setChatId(chatId);
+//                            if(user.getLanguage().equals("uz")){
+//                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
+//                            }else if(user.getLanguage().equals("ru")){
+//                                sendMessage.setText("✅ Вы удалили пассажира");
+//
+//                            }
+//                            execute(sendMessage);
+//
+//                            // Only delete message if it was previously set
+//                            if (!band_delete_data[1].isEmpty()) {
+//                                DeleteMessage deleteMessage = new DeleteMessage();
+//                                deleteMessage.setChatId(chatId);
+//                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+//                                band_delete_data[1] = "";
+//                                execute(deleteMessage);
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    sendMessage.setChatId(chatId);
+//                    if(user.getLanguage().equals("uz")){
+//                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
+//
+//                    }else if(user.getLanguage().equals("ru")){
+//                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
+//
+//                    }
+//                    execute(sendMessage);
+//                }
+//            }
 
 
             if (user.getStatus().equals(Status.SET_TO)) {
@@ -1824,30 +1889,72 @@ phoneNumber=message.getContact().getPhoneNumber();
         return replyKeyboardMarkup;
     }
 
-    private InlineKeyboardMarkup fromCitysButtons() {
-        List<FromCity> fromCities = fromCityRepo.findAll();
+    private InlineKeyboardMarkup fromCitysButtons(User foundUser) {
+        // Uzbek to Russian city mapping for 12 regions
+        Map<String, String> uzbekToRussianCities = new HashMap<>();
+        uzbekToRussianCities.put("Toshkent", "Ташкент");
+        uzbekToRussianCities.put("Andijon", "Андижан");
+        uzbekToRussianCities.put("Buxoro", "Бухара");
+        uzbekToRussianCities.put("Farg'ona", "Фергана");
+        uzbekToRussianCities.put("Jizzax", "Джизак");
+        uzbekToRussianCities.put("Xorazm", "Хорезм");
+        uzbekToRussianCities.put("Namangan", "Наманган");
+        uzbekToRussianCities.put("Navoiy", "Навои");
+        uzbekToRussianCities.put("Qashqadaryo", "Кашкадарья");
+        uzbekToRussianCities.put("Samarqand", "Самарканд");
+        uzbekToRussianCities.put("Sirdaryo", "Сырдарья");
+        uzbekToRussianCities.put("Surxondaryo", "Сурхандарья");
+
+        // Determine user's language preference
+        String userLanguage = foundUser.getLanguage(); // 'uz' for Uzbek or 'ru' for Russian
+
+        // Fetch cities from repository
+        List<FromCity> fromCities = fromCityRepo.findAll(); // Fetch all cities
+
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> currentRow = new ArrayList<>();
 
         for (FromCity fromCity : fromCities) {
-            InlineKeyboardButton button = new InlineKeyboardButton();
-            button.setText(fromCity.getName());
-            button.setCallbackData(fromCity.getName());
+            String cityName = fromCity.getName();
 
+            // Create a new button
+            InlineKeyboardButton button = new InlineKeyboardButton();
+
+            if ("uz".equals(userLanguage)) {
+                // If user's language is Uzbek, set button text in Uzbek
+                button.setText(cityName);
+            } else if ("ru".equals(userLanguage) && uzbekToRussianCities.containsKey(cityName)) {
+                // If user's language is Russian and the city exists in the map, use Russian name
+                button.setText(uzbekToRussianCities.get(cityName));
+            } else {
+                // Default to Uzbek name if not found in the mapping
+                button.setText(cityName);
+            }
+
+            // Always set the callback data to fromCity.getName()
+            button.setCallbackData(cityName);
             currentRow.add(button);
 
+            // Group buttons in rows of 2
             if (currentRow.size() == 2) {
                 rows.add(currentRow);
                 currentRow = new ArrayList<>();
             }
         }
 
+        // Add the last row if it's not empty
         if (!currentRow.isEmpty()) {
             rows.add(currentRow);
         }
 
-        return new InlineKeyboardMarkup(rows);
+        // Return the constructed inline keyboard markup
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.setKeyboard(rows);
+        return inlineKeyboardMarkup;
     }
+
+
+
     public static boolean isNumeric(String str) {
         if (str == null) {
             return false;
@@ -1860,29 +1967,63 @@ phoneNumber=message.getContact().getPhoneNumber();
         }
     }
 
-    private InlineKeyboardMarkup toCitysButtons() {
-        List<ToCity> all = toCityRepo.findAll();
+    private InlineKeyboardMarkup toCitysButtons(User foundUser) {
+        // Uzbek to Russian city mapping for 12 regions (similar to fromCities)
+        Map<String, String> uzbekToRussianCities = new HashMap<>();
+        uzbekToRussianCities.put("Toshkent", "Ташкент");
+        uzbekToRussianCities.put("Andijon", "Андижан");
+        uzbekToRussianCities.put("Buxoro", "Бухара");
+        uzbekToRussianCities.put("Farg'ona", "Фергана");
+        uzbekToRussianCities.put("Jizzax", "Джизак");
+        uzbekToRussianCities.put("Xorazm", "Хорезм");
+        uzbekToRussianCities.put("Namangan", "Наманган");
+        uzbekToRussianCities.put("Navoiy", "Навои");
+        uzbekToRussianCities.put("Qashqadaryo", "Кашкадарья");
+        uzbekToRussianCities.put("Samarqand", "Самарканд");
+        uzbekToRussianCities.put("Sirdaryo", "Сырдарья");
+        uzbekToRussianCities.put("Surxondaryo", "Сурхандарья");
+
+        // Determine user's language preference
+        String userLanguage = foundUser.getLanguage(); // 'uz' for Uzbek or 'ru' for Russian
+
+        // Fetch cities from repository
+        List<ToCity> all = toCityRepo.findAll(); // Fetch all 'To' cities
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> currentRow = new ArrayList<>();
 
         for (ToCity toCity : all) {
+            String cityName = toCity.getName();
             InlineKeyboardButton button = new InlineKeyboardButton();
-            button.setText(toCity.getName());
-            button.setCallbackData(toCity.getName());
 
+            if ("uz".equals(userLanguage)) {
+                // If user's language is Uzbek, set button text in Uzbek
+                button.setText(cityName);
+            } else if ("ru".equals(userLanguage) && uzbekToRussianCities.containsKey(cityName)) {
+                // If user's language is Russian and the city exists in the map, use Russian name
+                button.setText(uzbekToRussianCities.get(cityName));
+            } else {
+                // Default to Uzbek name if not found in the mapping
+                button.setText(cityName);
+            }
+
+            // Always set the callback data to the Uzbek name (toCity.getName())
+            button.setCallbackData(cityName);
             currentRow.add(button);
 
+            // Group buttons in rows of 2
             if (currentRow.size() == 2) {
                 rows.add(new ArrayList<>(currentRow));
                 currentRow.clear();
             }
         }
 
+        // Add the last row if it's not empty
         if (!currentRow.isEmpty()) {
-            rows.add(currentRow);
+            rows.add(new ArrayList<>(currentRow));
         }
 
+        // Return the constructed inline keyboard markup
         return new InlineKeyboardMarkup(rows);
     }
 
@@ -2070,10 +2211,10 @@ phoneNumber=message.getContact().getPhoneNumber();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if (user.getLanguage().equals("uz")) {
             button1.setText("🚖 Haydovchilar");
-            button1.setUrl("http://192.168.1.3:5174/register?chatId=" + chatId);
+            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId);
         } else {
             button1.setText("🚖 Драйверы");
-            button1.setUrl("http://192.168.1.3:5174/register?chatId=" + chatId);
+            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId);
         }
         button1.setCallbackData("Drivers");
         row1.add(button1);
