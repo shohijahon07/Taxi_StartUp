@@ -87,7 +87,7 @@ public class UserImpl implements UserService{
 
             userRepo.save(user);
 
-            String apiToken ="7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
+            String apiToken ="6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
             String chatId = String.valueOf(user.getChatId());
             String text = "  Tabriklaymiz siz muvaffaqiyatli tastiqlandingiz. Boshlash uchun /start buyrug'ini bering  username: " +user.getPhoneNumber() +  "  parol: " + plainPassword  +" ";
 

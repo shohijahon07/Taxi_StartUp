@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDriverOne } from '../../../redux/slices/DriverSlice';
 import "./izohlar.css"
 import { fetchComments } from '../../../redux/slices/CommentSlice';
+import { LanguageContext } from '../../language/LanguageContext';
 
 const Izohlar = ({ isOpen, onClose, userName }) => {
     const dispatch = useDispatch();
     const { driverOne } = useSelector((state) => state.driver);
     const { comments } = useSelector((state) => state.comment);
     const [active, setActive] = useState(false);
+    const { language } = useContext(LanguageContext);
 
     useEffect(() => {
         if (isOpen) {
@@ -34,7 +36,7 @@ const Izohlar = ({ isOpen, onClose, userName }) => {
                 <div className="text">
                     {driverOne?.length > 0 && driverOne.map((item) => (
                         <li className='list-group-item' key={item.id}>
-                            Haydovchi o’zi haqida: {item.about}
+                            {language==="1"?"Haydovchi o’zi haqida:":"О водителе:"} {item.about}
                         </li>
                     ))}
                     {comments?.length > 0 && comments.map((item) => (

@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+
 *{
     margin: 0;
     padding: 0;
@@ -46,7 +50,7 @@
    justify-content: space-between;
 }
 .navbarUl li{
-    
+    font-family: 'Inter', sans-serif;
     position: relative;
     display: inline-block;
     font-size: 32px;
@@ -69,6 +73,14 @@
     width: 100%;
     
 }
+.navbarUl li:hover {
+    cursor: pointer;
+    text-shadow: 
+        -0.5px 0 0 #303383, /* chapga */
+        0.5px 0 0 #303383,  /* o'ngga */
+        0 -0.5px 0 #303383, /* yuqoriga */
+        0 0.5px 0 #303383;  /* pastga */
+}
 .rightUserHeader{
 width: 252px;
 display: flex;
@@ -88,6 +100,7 @@ justify-content: space-between;
         font-size: 25px;
         /* line-height: 35.75; */
         color:#303383;
+        font-family: 'Inter', sans-serif;
 }
 
 .userButtons{
@@ -109,6 +122,7 @@ justify-content: space-between;
     border-radius: 5px;
 }
 .btnCity{
+    font-family: 'Inter', sans-serif;
     display: flex;
     width: 350px;
     justify-content: space-between;
@@ -128,11 +142,13 @@ justify-content: space-between;
     background-color:rgba(224, 236, 236, 0.884)
 }
 .imgCalendar{
+    margin: 0;
     width: 28px;
     height: 30px;
     /* margin-top: 2px; */
 }
 .qidirish{
+    font-family: 'Inter', sans-serif;
     width: 250px;
     border:none;
     height: 70px;
@@ -170,6 +186,7 @@ justify-content: space-between;
     color:white;
 }
 .h1RouterUser h1{
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 62px;
     line-height: 75px;
@@ -255,6 +272,7 @@ justify-content: space-between;
     cursor: pointer;
 }
 .locationImg{
+    margin: 0;
     width: 30px;
     height: 30px;
 }
@@ -270,7 +288,7 @@ justify-content: space-between;
     padding-bottom: 30px;
 }
 .topRoutesUser h2{
-  
+    font-family: 'Inter', sans-serif;
     color: black;
     font-weight: 700;
     font-size: 36px;
@@ -288,6 +306,7 @@ justify-content: space-between;
     display: flex;
 }
 .btnDays{
+    font-family: 'Inter', sans-serif;
     width: 135px;
     height: 38px;
     border: 0.48px solid #2B3187;
@@ -313,6 +332,7 @@ justify-content: space-between;
     gap: 40px;
     color:#000000;
     font-weight: 500;
+    font-family: 'Inter', sans-serif;
     font-size: 30px;
     line-height: 37.91px;
 }
@@ -339,6 +359,7 @@ h3{
     font-weight: 500;
     font-size: 32.14px;
     line-height: 41.32px;
+    font-family: 'Inter', sans-serif;
 }
 p{
     margin: 0;
@@ -349,11 +370,12 @@ p{
     /* box-shadow: 0 0 0 2.44px #211F54; */
 }
 .li1Child3{
+     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
     color:#000000;
     font-weight: 500;
-    font-size: 36.13px;
+    font-size: 34.13px;
     line-height: 47.36px;
     width: 220px;
     /* border:1px solid; */
@@ -375,6 +397,7 @@ p{
 
 }
 .l2Child1 img{
+    margin: 0;
     width: 39px;
     height: 39px;
 }
@@ -383,12 +406,14 @@ p{
     align-items:center;
 }
 .li2Child2 p{
+    font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 20.47px;
     line-height: 29.25px;
     color:#6E7191;
 }
 .li2Child2 h6{
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
     font-size:35.76px;
     line-height: 43.28px;
@@ -402,12 +427,15 @@ p{
     justify-content: space-between;
 }
 .li2Child3 h6{
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 0;
     font-weight: 400;
     font-size:24px;
     line-height:24.92px;
     color:#6E7191;
 }
 .li2Child3 p{
+    font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size:17.44px;
     line-height:24.92px;
@@ -430,6 +458,8 @@ p{
     font-weight: 500;
     font-size:39.22px;
     width: 390px;
+    font-family: 'Inter', sans-serif;
+    
     /* border:1px solid; */
     line-height:47.47px;
     color:#000000;
@@ -447,6 +477,8 @@ p{
   height: 45px;
 }
 .liDriverPhone p{
+    font-family: 'Roboto', sans-serif;
+    margin-top: 5px;
     font-weight: 400;
     font-size:26.89px;
     line-height:38.43px;
@@ -458,6 +490,8 @@ p{
     gap: 40px;
 }
 .li3Child3 button{
+    font-family: 'Inter', sans-serif;
+
    width: 145.48px;
    height: 36px ;
    border-radius:7.5px;
@@ -516,6 +550,7 @@ p{
     
     }
     .locationImg{
+        
         width: 30px;
         height: 30px;
     }
@@ -532,7 +567,7 @@ p{
         padding-bottom: 30px;
     }
     .topRoutesUser h2{
-        font-size: 34px;
+        font-size: 32px;
     }
     .getRoutes{
         margin: 0 auto;
@@ -585,7 +620,7 @@ p{
     }
     .li1Child3{
         font-weight: 500;
-        font-size: 33.13px;
+        font-size: 30.13px;
         line-height: 47.36px;
         width: 200px;
         /* border:1px solid; */
@@ -809,7 +844,7 @@ p{
         padding-bottom: 30px;
     }
     .topRoutesUser h2{
-        font-size: 34px;
+        font-size: 31px;
     }
     .getRoutes{
         margin: 0 auto;
@@ -862,7 +897,7 @@ p{
     }
     .li1Child3{
         font-weight: 500;
-        font-size: 33.13px;
+        font-size: 30.13px;
         line-height: 47.36px;
         width: 200px;
         /* border:1px solid; */
@@ -1085,7 +1120,7 @@ p{
         padding-bottom: 30px;
     }
     .topRoutesUser h2{
-        font-size: 30px;
+        font-size: 26px;
     }
     .getRoutes{
         margin: 0 auto;
@@ -1138,7 +1173,7 @@ p{
     }
     .li1Child3{
         font-weight: 500;
-        font-size: 27.13px;
+        font-size: 26.13px;
         line-height: 35.36px;
         width: 170px;
         /* border:1px solid; */
@@ -1415,7 +1450,7 @@ p{
     }
     .li1Child3{
         font-weight: 500;
-        font-size: 23.13px;
+        font-size: 21.13px;
         line-height: 35.36px;
         width: 140px;
         /* border:1px solid;/ */
@@ -1696,7 +1731,7 @@ p{
     }
     .li1Child3{
         font-weight: 500;
-        font-size: 21.13px;
+        font-size: 19.13px;
         line-height: 30.36px;
         width: 130px;
         /* border:1px solid; */
@@ -4246,8 +4281,8 @@ p{
             /* border:1px solid; */
             display: flex;
             align-items:center;
-            justify-content: start ;
-            gap: 10px;
+            justify-content: center ;
+            gap: 3px;
             color:#000000;
             font-weight: 500;
             font-size: 14px;
@@ -4260,6 +4295,7 @@ p{
             margin: 0;
         }
         .li1Child2 img{
+            margin: 0;
             width: 70px;
             color: #211F54;
             /* box-shadow: 0 0 0 2.44px #211F54; */
@@ -4274,7 +4310,7 @@ p{
             padding: 0;
             color:#000000;
             font-weight: 500;
-            font-size: 17.13px;
+            font-size: 16.13px;
             line-height: 22.36px;
             margin-right: 0px;
             width: 110px;
@@ -4895,7 +4931,7 @@ p{
             gap: 5px;
             color:#000000;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 12px;
             line-height: 15.91px;
         }
         h3{

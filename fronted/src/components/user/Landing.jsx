@@ -12,25 +12,53 @@ function Landing() {
     const { language, changeLanguage } = useContext(LanguageContext);
     const navigate = useNavigate();
 
+
+    
     function goLanding() {
         navigate("/");
     }
     
     const [isModalOpen1, setIsModalOpen1] = useState(false);
     
-    const openModal1 = () => setIsModalOpen1(true);
+    const openModal1 = () => {
+        if (window.innerWidth <= 720) {
+            if (window.innerWidth <= 720 &&window.innerWidth >=600 ) {
+                window.scrollTo({ top: 800, behavior: 'smooth' });
+            }else if(window.innerWidth <= 600 &&window.innerWidth >=500){
+                window.scrollTo({ top:600, behavior: 'smooth' });
+            }else if(window.innerWidth <= 500 &&window.innerWidth >=400){
+                window.scrollTo({ top: 500, behavior: 'smooth' });
+            }else if(window.innerWidth <= 400 ){
+                window.scrollTo({ top: 400, behavior: 'smooth' });
+            }
+
+        }else{
+        setIsModalOpen1(true);
+    }
+    }
     const closeModal1 = () => setIsModalOpen1(false);
     
     const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () =>{
-    setIsModalOpen(true);
-    const specificGroupArea = document.getElementById('specificGroupArea');
-    specificGroupArea.scrollIntoView({ behavior: 'smooth' });
-  } 
+    const openModal = () => {
+        if (window.innerWidth <= 720) {
+            if (window.innerWidth <= 720 &&window.innerWidth >=600 ) {
+                window.scrollTo({ top: 2800, behavior: 'smooth' });
+            }else if(window.innerWidth <= 600 &&window.innerWidth >=500){
+                window.scrollTo({ top: 2500, behavior: 'smooth' });
+            }else if(window.innerWidth <= 500 &&window.innerWidth >=400){
+                window.scrollTo({ top: 2000, behavior: 'smooth' });
+            }else if(window.innerWidth <= 400 ){
+                window.scrollTo({ top: 1700, behavior: 'smooth' });
+            }
+
+        }else{
+            setIsModalOpen(true);
+        }
+    };
   const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => { 
-        console.log("Current language:", language);
+       
     }, [language]);
 
     return (
@@ -41,9 +69,9 @@ function Landing() {
             </div>
             <div className="middleUserHeader">
                 <ul className='navbarUl'>
-                    <li className='list-group-item'>Bosh Sahifa</li>
-                    <li className='list-group-item'  onClick={openModal}>Biz Haqimizda</li>
-                    <li className='list-group-item'  onClick={openModal1}>Bog'lanish</li>
+                    <li className='list-group-item'>{language==="1"?"Bosh Sahifa":"Главная страница"}</li>
+                    <li className='list-group-item'  onClick={openModal}>{language==="1"?"Biz Haqimizda":"О нас"}</li>
+                    <li className='list-group-item'  onClick={openModal1}>{language==="1"?"Bog'lanish":"Связь"}</li>
                 </ul>
             </div>
             <div className="rightUserHeader">
