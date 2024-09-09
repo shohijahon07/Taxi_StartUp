@@ -39,6 +39,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     private String language;
     private String id;
 
+
+
     public TaxiProjectBot(UserRepo userRepo, RouteDriverRepo routeDriverRepo1, FromCityRepo fromCityRepo, ToCityRepo toCityRepo, CommentRepo commentRepo, RoleRepo roleRepo, CommentRepo1 commentRepo1) {
         this.userRepo = userRepo;
         this.routeDriverRepo = routeDriverRepo1;
@@ -145,22 +147,18 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                                 "⏰ Soati: " + routeDriver.getHour() + "\n" +
                                                 "🔢 Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
                                                 "💵 Narxi: " + routeDriver.getPrice() + " So'm");
-                            }
-                            else if(foundUser.getLanguage().equals("ru")){
-                            }
+                                sendMessage.setReplyMarkup(Passsenger(foundUser));
 
-                            sendMessage.setText(
+                            }
+                            else if(foundUser.getLanguage().equals("ru")) {
+                                sendMessage.setText(
                                         "📱 Номер телефона: " + routeDriver.getUser().getPhoneNumber() + " \n" +
                                                 "📅 Дата: " + routeDriver.getDay() + "\n" +
                                                 "⏰ Час: " + routeDriver.getHour() + "\n" +
                                                 "🔢 Количество мест: " + routeDriver.getCountSide() + " ta\n" +
                                                 "💵 Цена: " + routeDriver.getPrice() + " So'm");
+                                sendMessage.setReplyMarkup(Passsenger(foundUser));
 
-
-                            if (chatId1 != null && chatId1 > 0) {
-                                sendMessage.setReplyMarkup(Passsenger(chatId1));
-                            } else {
-                                sendMessage.setReplyMarkup(new ReplyKeyboardRemove(true)); // Remove any existing keyboard
                             }
 
                             sendMessage.setChatId(chatId);  // Ensure chatId is set for the text message
@@ -986,7 +984,7 @@ phoneNumber=message.getContact().getPhoneNumber();
                                         "Цена: " + routeDriver.getPrice() + " So'm");
                     }
 
-                    sendMessage.setReplyMarkup(Passsenger(chatId1));
+                    sendMessage.setReplyMarkup(Passsenger(user));
                     execute(sendMessage);
                 }
             }
@@ -996,8 +994,7 @@ phoneNumber=message.getContact().getPhoneNumber();
                 dataParts = data.split(":");
 
                 idPassenger= user1.getId();
-                sendMessage.setText("Haydovchi tez orada siz bilan aloqaga chiqadi");
-                sendMessage.setChatId(chatId);
+
                 if(dataParts.length > 1){
                     if(user.getLanguage().equals("uz")){
                         sendMessage.setText(
@@ -1545,9 +1542,7 @@ phoneNumber=message.getContact().getPhoneNumber();
         return new InlineKeyboardMarkup(rows);
     }
 
-    private InlineKeyboardMarkup Passsenger(Long id) {
-        Optional<User> byChatId = userRepo.findByChatId(id);
-        User user = byChatId.get();
+    private InlineKeyboardMarkup Passsenger(User user) {
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
