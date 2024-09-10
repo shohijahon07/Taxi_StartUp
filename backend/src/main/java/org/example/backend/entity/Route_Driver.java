@@ -52,4 +52,7 @@ public class Route_Driver {
   this.hour=hour;
   this.user=user;
     }
+
+    public Route_Driver(String cityA, String cityB, String number, String number1, String date, String time, UUID uuid) {
+    }
 }

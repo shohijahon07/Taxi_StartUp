@@ -92,14 +92,29 @@ function MyselfDriver() {
                   onChange={(e) => dispatch(setDriver({ ...driverObject, about: e.target.value }))}
                 /> :
                 <div className={"editFather"}>
- <h1>{item.about}</h1>
- <img src={edit} className='btnedit' onClick={() => EditItem(item)} alt="" />
+                  <h1>{item.about}</h1>
+                    <img src={edit} className='btnedit' onClick={() => EditItem(item)} alt="" />
                 </div>
                
               }
             </div>
             <div className="box">
               <div className="body2_center">
+              <div className='about_div2'>
+                <div className="box_body">
+                {EditButtonId ?
+                <input type="text" className='form-control w-100 h-100' value={driverObject.about}
+                  onChange={(e) => dispatch(setDriver({ ...driverObject, about: e.target.value }))}
+                /> :
+                <div className={"editFather"}>
+                  <h1>{item.about}</h1>
+                    <img src={edit} className='btnedit' onClick={() => EditItem(item)} alt="" />
+                </div>
+               
+              }
+
+                </div>
+                          </div>
                 <div className='box_body'>
                   {EditButtonId ?
                     <input type="text" className='form-control w-100 h-100' value={driverObject.fullName}
@@ -166,7 +181,7 @@ function MyselfDriver() {
                             
 
                            </h1>
-                           <img style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                           <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
 
                     </div>
                   }
@@ -226,8 +241,8 @@ function MyselfDriver() {
                 </div>
                 <div className="box_btn">
                   {isEditing ?
-                     <button onClick={saveDepartment}>Saqlash</button> :
-                    <button onClick={() => EditItem(item)}>Tahrirlash</button>
+                     <button onClick={saveDepartment}>  {language==="1"?"Saqlash":"Сохранять"} </button> :
+                    <button onClick={() => EditItem(item)}> {language==="1"?"Tahrirlash":"Редактирование"} </button>
                   }
                 </div>
               </div>
@@ -317,8 +332,8 @@ function MyselfDriver() {
                 </div>
                 <div className="box_btn">
                   {isEditing ?
-                     <button onClick={saveDepartment}>Saqlash</button> :
-                    <button onClick={() => EditItem(item)}>Tahrirlash</button>
+                     <button onClick={saveDepartment}>  {language==="1"?"Saqlash":"Сохранять"} </button> :
+                    <button onClick={() => EditItem(item)}>{language==="1"?"Tahrirlash":"Редактирование"} </button>
                   }
                 </div>
              </div> 

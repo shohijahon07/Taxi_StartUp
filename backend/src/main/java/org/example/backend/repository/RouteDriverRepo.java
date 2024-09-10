@@ -25,5 +25,5 @@ public interface RouteDriverRepo extends JpaRepository<Route_Driver, UUID> {
     List<Route_Driver> findAllByFromCityAndToCity(String fromCity, String toCity);
 
 
-
+    Route_Driver findByUser(User user);
 }

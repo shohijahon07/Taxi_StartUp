@@ -205,8 +205,6 @@ public class UserImpl implements UserService{
 
         if (byChatId.isPresent()) {
             User user1 = byChatId.get();
-            user1.setFullName(userDto.getFullName());
-            user1.setPhoneNumber(userDto.getPhoneNumber());
 
             user1.setCarType(userDto.getCarType());
             user1.setCarImg(userDto.getCarImg());
