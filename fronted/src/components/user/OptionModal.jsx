@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './optionModal.css';
+import { LanguageContext } from '../language/LanguageContext';
 
 const OptionModal = ({ options, onSelect, onClose }) => {
     const [active, setActive] = useState(false);
+    const { language } = useContext(LanguageContext);
 
     useEffect(() => {
         setActive(true);
@@ -22,7 +24,7 @@ const OptionModal = ({ options, onSelect, onClose }) => {
                 </div>
                 <div className="CityH1">
 
-                <p>Hududni tanlang!</p>
+                <p>{language==="1"?"Hududni tanlang!":"Выбирайте регион!"}</p>
                 </div>
                 <ul style={{ marginTop: "15px",display:"flex",flexWrap:"wrap" }} className="option-list">
                     {options.map((option) => (

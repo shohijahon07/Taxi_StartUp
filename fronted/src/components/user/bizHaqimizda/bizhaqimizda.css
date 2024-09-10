@@ -50,10 +50,13 @@
     font-weight: 500;
     font-size: 32px;
     line-height: 39px;
+    margin-bottom: 0 ;
     color:black
 
   }
-  
+  .bizhaqimizda-h2 h2{
+    margin-bottom: 0;
+  }
   .bizhaqimizda-modal-body {
     max-width: 900px;
     margin: 0 auto;

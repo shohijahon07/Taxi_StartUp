@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import "./date.css";
+import { LanguageContext } from '../language/LanguageContext';
 
 function DateModal({ minDate, maxDate, onDateSelect, onClose }) {
     const [selectedDate, setSelectedDate] = useState(null);
     const [active, setActive] = useState(false);
+    const { language } = useContext(LanguageContext);
 
     useEffect(() => {
         setActive(true);
@@ -33,7 +35,7 @@ function DateModal({ minDate, maxDate, onDateSelect, onClose }) {
 
             <button className="btn btn-close" onClick={handleClose}>x</button>
             </div>
-                <h3>Select a Date</h3>
+                <h3>{language==="1"?"Kunni tanlang!":"Выберите день!"}</h3>
                 <DatePicker
                     selected={selectedDate}
                     onChange={handleChange}

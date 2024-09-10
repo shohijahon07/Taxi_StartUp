@@ -6,6 +6,14 @@
 body{
   
 }
+.logout{
+    width: 130px;
+    height: 40px;
+    border:none;
+    background-color:red;
+    color:white;
+    border-radius:10px;
+}
 .beginAdmin{
  max-width: 1504px;
  background-image:url("../../../pictures/all.svg");
@@ -18,7 +26,7 @@ body{
     display: flex;
     list-style: none;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .ul_admin li{
     cursor: pointer;
@@ -38,3 +46,22 @@ body{
 .inputRoute input{
     width: 300px;
 }
+.rightUserHeader120{
+    width: 145px;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+    }
+    
+    
+    .rightUserHeader120 select{
+        border:none;    
+            width: 145px;
+            height: 49px;
+            background-color:transparent;
+            font-weight: 500;
+            font-size: 25px;
+            /* line-height: 35.75; */
+            color:#303383;
+            font-family: 'Inter', sans-serif;
+    }

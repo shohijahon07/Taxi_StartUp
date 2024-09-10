@@ -1,9 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import './TimeSelectorModal.css';
+import { LanguageContext } from '../../language/LanguageContext';
 
 const TimeSelectorModal = ({ onClose, onSelect }) => {
   const [selectedHour, setSelectedHour] = useState(new Date().getHours());
   const [selectedMinute, setSelectedMinute] = useState(new Date().getMinutes());
+  const { language } = useContext(LanguageContext);
 
   const hours = Array.from({ length: 24 }, (_, i) => i); // 0 to 23 hours
   const minutes = Array.from({ length: 60 }, (_, i) => i); // 0 to 59 minutes
@@ -27,7 +29,7 @@ const TimeSelectorModal = ({ onClose, onSelect }) => {
     <div className="time-selector-overlay" onClick={onClose}>
       <div className="time-selector-modal" onClick={(e) => e.stopPropagation()}>
         <div className="time-selector-header">
-          <h2>Vaqtni tanlang!</h2>
+          <h2>{language==="1"?"Vaqtni tanlang!":"Выберите время!"}</h2>
           <button className=" btn btn-close exitBtn" onClick={onClose}></button>
         </div>
         <div className="time-selector-body">

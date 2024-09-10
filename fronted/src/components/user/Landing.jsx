@@ -69,7 +69,7 @@ function Landing() {
             </div>
             <div className="middleUserHeader">
                 <ul className='navbarUl'>
-                    <li className='list-group-item'>{language==="1"?"Bosh Sahifa":"Главная страница"}</li>
+                    <li className='list-group-item hide-first-item'>{language==="1"?"Bosh Sahifa":"Главная страница"}</li>
                     <li className='list-group-item'  onClick={openModal}>{language==="1"?"Biz Haqimizda":"О нас"}</li>
                     <li className='list-group-item'  onClick={openModal1}>{language==="1"?"Bog'lanish":"Связь"}</li>
                 </ul>

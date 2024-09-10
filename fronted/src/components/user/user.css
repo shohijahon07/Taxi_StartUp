@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
 
-
+body{
+    li{
+        cursor: pointer;
+    }
+}
 *{
     margin: 0;
     padding: 0;
@@ -10,6 +14,7 @@
 .imageBacground{
     padding: 0;
     background-image: url("../../pictures/all.svg");
+    height: auto;
     padding: 0 20px;
 }
 .routUser{
@@ -33,6 +38,7 @@
 }
 .logoImg{
  object-fit: contain;
+ vertical-align: baseline;
  width: 100%;
  height: 100%;
 }
@@ -82,16 +88,20 @@
         0 -0.5px 0 #303383, /* yuqoriga */
         0 0.5px 0 #303383;  /* pastga */
 }
+.imgTelegram{
+    width: 40px;
+    height: 40px;
+}
+
+
 .rightUserHeader{
 width: 252px;
 display: flex;
 align-items:center;
 justify-content: space-between;
 }
-.imgTelegram{
-    width: 40px;
-    height: 40px;
-}
+
+
 .rightUserHeader select{
     border:none;
         width: 145px;
@@ -289,6 +299,7 @@ justify-content: space-between;
     padding-bottom: 30px;
 }
 .topRoutesUser{
+    margin-right: 5px;
     display: flex;
     margin-bottom: 10px;
 }
@@ -309,7 +320,7 @@ justify-content: space-between;
 }
 .getRoutes{
     margin: 0 auto;
-    width: 1032px;
+    width: 1040px;
     padding-top: 22px;
     display: flex;
     align-items:center;
@@ -588,7 +599,7 @@ p{
         height: 70px;
         padding: 7px 20px 10px 30px;
         color: #00000061;
-        font-size: 30.62px;
+        font-size: 28px;
         line-height: 40px;
         font-family: 600;
         border: 1px solid #CFDEE6;
@@ -626,7 +637,7 @@ p{
     }
     .getRoutes{
         margin: 0 auto;
-        width: 900px;
+        width: 905px;
         padding-top: 22px;
     }
     .days{
@@ -869,9 +880,9 @@ p{
         border-radius: 15px;
         background-color: #fff;
         height: 70px;
-        padding: 7px 20px 10px 30px;
+        padding: 7px 20px 10px 10px;
         color: #00000061;
-        font-size: 28.62px;
+        font-size: 24px;
         line-height: 30px;
         font-family: 600;
         border: 1px solid #CFDEE6;
@@ -915,7 +926,7 @@ p{
     }
     .getRoutes{
         margin: 0 auto;
-        width: 900px;
+        width: 905px;
         padding-top: 22px;
     }
     .days{
@@ -1156,9 +1167,9 @@ p{
         border-radius: 15px;
         background-color: #fff;
         height: 60px;
-        padding: 7px 20px 10px 30px;
+        padding: 7px 20px 10px 10px;
         color: #00000061;
-        font-size: 22.62px;
+        font-size: 20px;
         line-height: 30px;
         font-family: 600;
         border: 1px solid #CFDEE6;
@@ -1202,7 +1213,7 @@ p{
     }
     .getRoutes{
         margin: 0 auto;
-        width: 800px;
+        width: 805px;
         padding-top: 22px;
     }
     .days{
@@ -1448,9 +1459,9 @@ p{
         border-radius: 10px;
         background-color: #fff;
         height: 50px;
-        padding: 7px 10px 10px 20px;
+        padding: 7px 10px 10px 10px;
         color: #00000061;
-        font-size: 19px;
+        font-size: 15px;
         line-height: 25px;
         font-family: 600;
         border: 1px solid #CFDEE6;
@@ -1497,7 +1508,7 @@ p{
     }
     .getRoutes{
         margin: 0 auto;
-        width: 700px;
+        width: 705px;
         padding-top: 15px;
     }
     .days{
@@ -1746,7 +1757,7 @@ p{
         height: 40px;
         padding: 7px 10px 10px 10px;
         color: #00000061;
-        font-size: 16.62px;
+        font-size: 12px;
         line-height: 25px;
         font-family: 600;
         border: 1px solid #CFDEE6;
@@ -1793,7 +1804,7 @@ p{
     }
     .getRoutes{
         margin: 0 auto;
-        width: 650px;
+        width: 655px;
         padding-top: 15px;
     }
     .days{
@@ -2964,6 +2975,7 @@ p{
 
         }
         .catchRoute{
+            padding-top: 0;
             width: 350px;
             height: 220px;
             margin: 0 auto;
@@ -3091,14 +3103,14 @@ p{
         .topRoutesUser h2{
             color: black;
             font-weight: 500;
-            font-size: 21px;
+            font-size: 20px;
             line-height: 28px;
             margin-top: 20px;
             text-align: center;
            
         }
         .topRoutesUser h3{
-            font-size: 21px;
+            font-size: 20px;
             line-height: 30px;
         }
         .getRoutes{
@@ -3305,6 +3317,7 @@ p{
 
         }
         .catchRoute{
+            padding-top: 0;
             width: 350px;
             height: 220px;
             margin: 0 auto;
@@ -3655,6 +3668,7 @@ p{
 
         }
         .catchRoute{
+            padding-top: 0;
             width: 350px;
             height: 220px;
             margin: 0 auto;
@@ -3683,13 +3697,13 @@ p{
          height: 55px;
      }
      .leftUserHeader{
-       margin-bottom: 5px;
+       margin-bottom: 0px;
         margin-left:0px;
         width: 70px;
         height: 25px;
     }
     .middleUserHeader{
-       width: 210px;
+       width: 185px;
        /* border:1px solid; */
     }
   .navbarUl{
@@ -3697,13 +3711,13 @@ p{
     padding: 0;
   }
      .navbarUl li{
-         font-size: 12px;
+         font-size: 15px;
          font-weight: 500;
          line-height: 15.73px;
      }
      .rightUserHeader{
        /* border:1px solid; */
-        width: 80px;
+        width: 90px;
         margin-top: 5px;
         }
         .imgTelegram{
@@ -3715,9 +3729,9 @@ p{
             gap: 2px;
             margin: 0; 
             padding: 0 1px;
-            font-size: 9px;
+            font-size: 12px;
             border:none;
-                width: 60px;
+                width: 70px;
                 height: 30px;
                 color:#303383;
         }
@@ -3757,6 +3771,9 @@ p{
             flex-wrap: wrap;
             justify-content: center;
         }
+        .hide-first-item {
+            display: none !important;
+          }
         .btnCity{
             width: 100%;
             background-color: #fff;
@@ -4006,6 +4023,7 @@ p{
 
         }
         .catchRoute{
+            padding-top: 0;
             width: 300px;
             height: 220px;
             margin: 0 auto;
@@ -4033,14 +4051,17 @@ p{
          max-width: 411px;
          height: 50px;
      }
+     .hide-first-item {
+        display: none !important;
+      }
      .leftUserHeader{
-       margin-bottom: 5px;
+       margin-bottom: 0px;
         margin-left:0px;
         width: 65px;
         height: 25px;
     }
     .middleUserHeader{
-       width: 210px;
+       width: 185px;
        /* border:1px solid; */
     }
   .navbarUl{
@@ -4048,13 +4069,13 @@ p{
     margin-top: 8px;
   }
      .navbarUl li{
-         font-size: 12px;
+         font-size: 15px;
          font-weight: 500;
          line-height: 15.73px;
      }
      .rightUserHeader{
        /* border:1px solid; */
-        width: 75px;
+        width: 85px;
         margin-top: 2px;
         }
         .imgTelegram{
@@ -4066,9 +4087,11 @@ p{
             gap: 2px;
             margin: 0; 
             padding: 0 1px;
-            font-size: 9px;
+            font-size: 10px;
+            font-family: 'Inter';
+            font-weight: 600;
             border:none;
-                width: 55px;
+                width: 65px;
                 height: 30px;
                 color:#303383;
         }
@@ -4375,6 +4398,9 @@ p{
         
 }
 @media only screen and (min-width: 357px) and (max-width: 396px) {
+    .hide-first-item {
+        display: none !important;
+      }
     .boglanish2{
     display: block;
 }
@@ -4384,6 +4410,9 @@ p{
          max-width: 396px;
          height: 50px;
      }
+     .logoImg{
+        object-fit: contain;
+     }
      .leftUserHeader{
        margin-bottom: 5px;
         margin-left:0px;
@@ -4391,7 +4420,7 @@ p{
         height: 25px;
     }
     .middleUserHeader{
-       width: 190px;
+       width: 165px;
        /* border:1px solid; */
     }
   .navbarUl{
@@ -4399,28 +4428,28 @@ p{
     padding: 0;
   }
      .navbarUl li{
-         font-size: 10px;
+         font-size: 13px;
          font-weight: 500;
          line-height: 15.73px;
      }
      .rightUserHeader{
        /* border:1px solid; */
-        width: 75px;
+        width: 85px;
         margin-top: 0px;
         }
         .imgTelegram{
-            width: 17px;
-            height: 17px;
+            width: 20px;
+            height: 20px;
         }
         .rightUserHeader select{
             border-radius:2px;
             gap: 2px;
             margin: 0; 
             padding: 0 1px;
-            font-size: 8px;
+            font-size: 10px;
             border:none;
 
-                width: 56px;
+                width: 65px;
                 height: 30px;
                 color:#303383;
         }
@@ -4719,6 +4748,7 @@ p{
 
         }
         .catchRoute{
+            padding-top: 0;
             width: 250px;
             height: 170px;
             margin: 0 auto;
@@ -4737,6 +4767,9 @@ p{
         }
 }
 @media only screen and (min-width: 328px) and (max-width: 357px) {
+    .hide-first-item {
+        display: none !important;
+      }
     .boglanish2{
         display: block;
     }
@@ -4750,10 +4783,10 @@ p{
        margin-bottom: 5px;
         margin-left:0px;
         width: 50px;
-        height: 25px;
+        height: 40px;
     }
     .middleUserHeader{
-       width: 175px;
+       width: 160px;
        /* border:1px solid; */
     }
   .navbarUl{
@@ -4761,27 +4794,27 @@ p{
     margin-top: 5px;
   }
      .navbarUl li{
-         font-size: 10px;
+         font-size: 13px;
          font-weight: 500;
          line-height: 12.73px;
      }
      .rightUserHeader{
        /* border:1px solid; */
-        width: 65px;
+        width: 75px;
         margin-top: 0px;
         }
         .imgTelegram{
-            width: 15px;
-            height: 15px;
+            width: 17px;
+            height: 17px;
         }
         .rightUserHeader select{
             border-radius:2px;
             gap: 2px;
             margin: 0; 
             padding: 0 1px;
-            font-size: 7px;
+            font-size: 8.5px;
             border:none;
-                width: 50px;
+                width: 60px;
                 height: 30px;
                 color:#303383;
         }
@@ -5078,6 +5111,7 @@ p{
 
         }
         .catchRoute{
+            padding-top: 0;
             width: 250px;
             height: 170px;
             margin: 0 auto;
@@ -5096,7 +5130,11 @@ p{
         }
 }
 @media(max-width: 327px) {
+    .hide-first-item {
+        display: none !important;
+      }
     .catchRoute{
+        padding-top: 0;
         width: 200px;
         height: 170px;
         margin: 0 auto;
@@ -5129,7 +5167,7 @@ p{
         height: 20px;
     }
     .middleUserHeader{
-       width: 160px;
+       width: 140px;
        /* border:1px solid; */
     }
   .navbarUl{
@@ -5137,13 +5175,13 @@ p{
     margin-top: 8px;
   }
      .navbarUl li{
-         font-size: 9px;
+         font-size: 11px;
          font-weight: 500;
          line-height: 12.73px;
      }
      .rightUserHeader{
        /* border:1px solid; */
-        width: 50px;
+        width: 60px;
         margin-top: 0px;
         }
         .imgTelegram{
@@ -5154,9 +5192,9 @@ p{
             gap: 2px;
             margin: 0; 
             padding: 0 1px;
-            font-size: 7px;
+            font-size: 9px;
             border:none;
-                width: 50px;
+                width: 60px;
                 height: 30px;
                 color:#303383;
         }

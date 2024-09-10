@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './seatModal.css'; // CSS fayl nomi o'zgarmadi
+import { LanguageContext } from '../../language/LanguageContext';
 
 function SeatSelectionModal({ onSelect, onClose, isTrue }) {
     const [selectedSeat, setSelectedSeat] = useState(null);
     const [seatCount, setSeatCount] = useState(isTrue ? 6 : 12);
     const seats = Array.from({ length: seatCount }, (_, index) => index + 1);
+    const { language } = useContext(LanguageContext);
 
     useEffect(() => {
         setSeatCount(isTrue ? 6 : 12);
@@ -25,7 +27,7 @@ function SeatSelectionModal({ onSelect, onClose, isTrue }) {
                     <button className="close-button1 " onClick={onClose}>x</button>
                 </div>
                 <div className="modal-header1">
-                    <p>O'rindiqlar sonini tanlang!</p>
+                    <p>{language==="1"?"O'rindiqlar sonini tanlang!":"Выбирайте количество мест!"}</p>
                 </div>
                 <div className="seat-container1" style={{ marginTop: '15px', display: 'flex', flexWrap: 'wrap' }}>
                     {seats.map((seatNumber) => (

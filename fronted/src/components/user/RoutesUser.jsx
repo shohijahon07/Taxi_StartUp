@@ -367,15 +367,12 @@ function RoutesUser() {
                         </button>
                 </div>
             </div>
-            {/* <div className="loader111" >
-                <div className="imgLoader"><img style={{objectFit:"cover",width:"100%",height:"100%"}} src={b14} alt="" /></div>
-                            <h3>Hozirgi paytda ushbu yo'nalishda qatnovlar mavjud emas</h3>
-                </div> */}
+           
 
-           <div className="allRoutes" >
+          {allRoutes.length<1?"":  <div className="allRoutes" >
             <div className="getRoutes">
                          <div className="topRoutesUser">
-                            <h2>{language==="1"?`Yo’nalish bo’yicha qatnovlar `:`Маршруты`} <h3>{isAvailable?"mavjud emas":""}</h3></h2>
+                            <h2>{language==="1"?`Yo’nalish bo’yicha qatnovlar `:`Маршруты`} </h2>
                         </div>
                         <div className="days">
                         <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(day12) === formatDate(today) ? "#303383" : ""),color:(formatDate(day12) === formatDate(today) ? "white" : "")}}>
@@ -388,8 +385,8 @@ function RoutesUser() {
                        </div>
                
                 
-           {allRoutes.length<1?"": 
-            allRoutes.map((item, index) => (
+           
+            {allRoutes.map((item, index) => (
                    <div className="mapRoutes">
                     <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateFullName(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
                     <li className="list-group-item li2">
@@ -412,15 +409,32 @@ function RoutesUser() {
                     <li className='list-group-item li3'><div className="l3Child1"><h3>{translateFullName(item.user.fullName)}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={()=>openModal1(item.user.chatId)}>  {language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
                    </div> 
                 ))}
-           {
-            isAvailable?
-            <div className='catchRoute'>
-                <h3>Sanani o'zgartiring</h3>
-                <div className="imgCatchRoute"> <img style={{width:"100%",height:"100%",objectFit:"cover"}} src={b14} alt="" /></div>
-            </div>:""
-           }
+          
                
-            </div>
+            </div>}
+
+            {
+                isAvailable?
+                <div className="allRoutes" >
+                     <div className="getRoutes">
+                         <div className="topRoutesUser">
+                            <h2>{language==="1"?`Yo’nalish bo’yicha qatnovlar `:`Маршруты`} <h3>{isAvailable?"mavjud emas":""}</h3></h2>
+                        </div>
+                        <div className="days">
+                        <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(day12) === formatDate(today) ? "#303383" : ""),color:(formatDate(day12) === formatDate(today) ? "white" : "")}}>
+                        {formatDate(today)}
+                        </button>
+
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('2')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay1) ? "#303383" : ""),color:(formatDate(day12) === formatDate(nextDay1) ? "white" : "")}}>{formatDate(nextDay1)}</button>
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('3')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay2) ? "#303383" : ""),color:(formatDate(day12) === formatDate(nextDay2) ? "white" : "")}}>{formatDate(nextDay2)}</button>
+                        </div>
+                       </div> 
+                       <div className='catchRoute'>
+                <h3>Sanani o'zgartiring</h3>
+               <div className="imgCatchRoute"> <img style={{width:"100%",height:"100%",objectFit:"cover"}} src={b14} alt="" /></div>
+          </div>
+                </div>:""
+            }
             
             <div className="boglanish2">
             <Boglanish2 />
@@ -465,4 +479,6 @@ function RoutesUser() {
     );
 }
 
+                 
+        
 export default RoutesUser;

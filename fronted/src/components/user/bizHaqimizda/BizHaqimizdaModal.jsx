@@ -22,7 +22,7 @@ const BizHaqimizdaModal = ({ isOpen, onClose }) => {
 
           <h2>{language==="1"?"Biz Haqimizda":"О нас"}</h2>
           </div>
-        <button className="btn btn-close" onClick={onClose}>
+        <button className="exitBtn" onClick={onClose}>x
         </button>
         </div>
         <div className="bizhaqimizda-modal-body">
