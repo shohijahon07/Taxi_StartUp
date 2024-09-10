@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apicall1 from "../../apicall/apicall1";
 
-export const fetchComments = createAsyncThunk('CommentSlice/fetchComments', async (userName) => {
-  const response = await apicall1(`/comment?id=${userName}`, "GET");
+export const fetchComments = createAsyncThunk('CommentSlice/fetchComments', async ({language,userName}) => {
+  console.log(userName);
+  const response = await apicall1(`/comment?language=${language}&id=${userName}`, "GET");
+  console.log(response.data);
   return response.data;
 });
 

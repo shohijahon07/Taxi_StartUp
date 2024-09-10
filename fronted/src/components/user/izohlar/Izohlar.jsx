@@ -13,9 +13,10 @@ const Izohlar = ({ isOpen, onClose, userName }) => {
     const { language } = useContext(LanguageContext);
 
     useEffect(() => {
+        console.log(userName);
         if (isOpen) {
             dispatch(fetchDriverOne(userName));
-            dispatch(fetchComments(userName));
+            dispatch(fetchComments({language,userName}));
             setActive(true);
         } else {
             setActive(false);
@@ -32,7 +33,7 @@ const Izohlar = ({ isOpen, onClose, userName }) => {
     return (
         <div className={`izohlar-modal ${active ? 'active' : ''}`}>
             <div className={`izohlar-modal-child ${active ? 'active' : ''}`}>
-                <button className='btn btn-close exitBtn' onClick={handleClose}></button>
+                <button className='exitBtn' onClick={handleClose}>x</button>
                 <div className="text">
                     {driverOne?.length > 0 && driverOne.map((item) => (
                         <li className='list-group-item' key={item.id}>

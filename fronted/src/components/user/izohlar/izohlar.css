@@ -3,7 +3,23 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+.userComment{
+    margin-top: 10px;
+    display: flex;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Inter';
+}
+.izohlarExit{
+    display: flex;
+    border:none;
+    background-color:white;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items:end
+}
 .izohlar-modal {
     position: fixed;
     top: 0;
@@ -78,6 +94,7 @@
     
     .text {
         margin-top: 30px;
+        
     }
     
     .text li {

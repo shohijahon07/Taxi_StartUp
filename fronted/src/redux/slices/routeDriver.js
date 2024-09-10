@@ -11,15 +11,16 @@ export const fetchRoutes = createAsyncThunk('RouteDriverSlice/fetchRoutes', asyn
 export const fetchRoutesByDate = createAsyncThunk('RouteDriverSlice/fetchRoutesByDate', async (driverRout, { getState }) => {
   const response = await apicall1(`/driver/byDate`, "PUT", driverRout);
   
-  const { routes: { allRoutes } } = getState(); 
+  // const { routes: { allRoutes } } = getState(); 
   
   if (!response.data || response.data.length === 0) {
-    toast.error("Bundat yo'nalishda qatnovlar mavjud emas!");
+    return { data: response.data, result: true };  
   } else {
-    toast.success("Bunday yo'nalishda qatnovlar mavjud!");
+    toast.success("Yo'nalishlar muvaffaqiyatli topildi!");
+    return { data: response.data, result: false };  // Yo'nalishlar mavjud - true
   }
   
-  return response.data;
+  // return response.data;
 });
 
 
@@ -32,13 +33,13 @@ export const fetchRoutesByDay = createAsyncThunk('RouteDriverSlice/fetchRoutesBy
   const response = await apicall1(`/driver/byDay?day=${day}`, "GET");
   
   if (!response.data || response.data.length === 0) {
-    toast.error("Ushbu kunda yo'nalishlar mavjud emas!");
+    return { data: response.data, result: true };  
   } else {
     toast.success("Yo'nalishlar muvaffaqiyatli topildi!");
+    return { data: response.data, result: false };  // Yo'nalishlar mavjud - true
   }
-
-  return response.data; 
 });
+
 
 
 export const addRoute = createAsyncThunk('RouteDriverSlice/addRoute', async ({ driverRout, userName }) => {
@@ -75,7 +76,9 @@ const RouteDriverSlice = createSlice({
     EditButtonId: null,
     driverRout: { fromCity: '', toCity: '', countSide: "", price: "", day: "", hour: "", userId: "" },
     selectedFile: null,
-    item1:null
+    item1:null,
+    day12:null,
+    isAvailable:false
   },
   reducers: {
     setEditButtonId(state, action) {
@@ -118,12 +121,17 @@ const RouteDriverSlice = createSlice({
        
       })
       .addCase(fetchRoutesByDay.fulfilled, (state, action) => {
-       
         state.status = 'succeeded';
-        state.allRoutes = action.payload; 
+        state.allRoutes = action.payload.data; 
+        state.isAvailable = action.payload.result; 
       })
+      
       .addCase(fetchRoutesByDate.fulfilled, (state, action) => {
-        state.allRoutes = action.payload; 
+        state.allRoutes = action.payload.data; 
+        state.isAvailable = action.payload.result; 
+        for (let index = 0; index < action.payload.data.length; index++) {
+            state.day12=action.payload.data[index].day
+        }
       })
       .addCase(fetchRoutes.fulfilled, (state, action) => {
         state.status = 'succeeded';

@@ -74,8 +74,8 @@ useEffect(() => {
                 <td>{item.phoneNumber}</td> 
                 <td>{item.carType}</td> 
                <td>
-                <button className='saqlash1' onClick={()=>changeIsDriving(item.id)} > <FaCheck style={{border:"none"}} size={"25px"}/></button>
-                <button className='deleteButton' onClick={()=>deleteDrive(item.id)} >O'chirish</button>
+                <button className='saveButton' onClick={()=>changeIsDriving(item.id)} > <FaCheck style={{border:"none"}} size={"25px"}/></button>
+                <button className='deleteBTN' onClick={()=>deleteDrive(item.id)} >O'chirish</button>
                </td>
                 </tr>
             })

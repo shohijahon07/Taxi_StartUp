@@ -59,8 +59,8 @@ navigate(`/bir_haydovchi/${userName}`)
             <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
                </td> 
                <td>
-                <button className='saqlash1' onClick={()=>goAboutDrivers(item.id)}>Haqida</button>
-                <button className='deleteButton' onClick={()=>deleteDrive(item.id)}>O'chirish</button>
+                <button className='saveButton' onClick={()=>goAboutDrivers(item.id)}>Haqida</button>
+                <button className='deleteBTN' onClick={()=>deleteDrive(item.id)}>O'chirish</button>
                </td>
                 </tr>
             })

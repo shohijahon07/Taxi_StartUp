@@ -18,7 +18,7 @@ import java.util.UUID;
 public class FileController {
     @GetMapping("/photo")
     public void getFile(@RequestParam String img, HttpServletResponse response) throws IOException {
-        FileInputStream inputStream = new FileInputStream("backend/files/" + img);
+        FileInputStream inputStream = new FileInputStream("files/" + img);
         ServletOutputStream outputStream = response.getOutputStream();
         inputStream.transferTo(outputStream);
         inputStream.close();
@@ -26,10 +26,9 @@ public class FileController {
     }
 
     @PostMapping("/photo")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String saveFile(@RequestParam MultipartFile file) throws IOException {
         String img = UUID.randomUUID() + file.getOriginalFilename();
-        FileOutputStream outputStream = new FileOutputStream("backend/files/" + img);
+        FileOutputStream outputStream = new FileOutputStream("files/" + img);
         outputStream.write(file.getBytes());
         outputStream.close();
         return img;

@@ -108,15 +108,15 @@ const DeleteToCity = (id) => {
         <div className="d-flex justify-content-around">
             <div className="RoutesAdminInput">
         <div className="inputRoute">
-            <p>Qayerdan</p> <input type="text" className='form-control' value={fromCityObject.name} onChange={(e)=>dispatch(setFromCity({...fromCityObject,name:e.target.value}))}/>
+            <p>Qayerdan</p> <input type="text" className='form-control inp11Admin' value={fromCityObject.name} onChange={(e)=>dispatch(setFromCity({...fromCityObject,name:e.target.value}))}/>
         </div>
-             <button className='saqlash2' onClick={saveFromCity}> Saqlash</button>
+             <button className='saveButton' onClick={saveFromCity}> Saqlash</button>
       </div>
       <div className="RoutesAdminInput">
         <div className="inputRoute">
             <p>Qayerga</p> <input type="text" className='form-control' value={toCityObject.name} onChange={(e)=>dispatch(setToCity({...toCityObject,name:e.target.value}))} />
         </div>
-             <button className='saqlash2' onClick={saveToCity}> Saqlash</button>
+             <button className='saveButton' onClick={saveToCity}> Saqlash</button>
       </div>
         </div>
 
@@ -124,7 +124,7 @@ const DeleteToCity = (id) => {
         <div className="leftCity">
         {
           fromCities.map((item,index)=>{
-            return  <li  key={item.id} className='list-group-item  liFromCity'><div className="">{index+1}:{item.name}</div> <div className="btn-group"><button className='editButton' onClick={()=>EditToFromCity(item)}>Tahrirlash</button> <button className='deleteButton' onClick={()=>DeleteFromCity(item.id)}>O'chirish</button></div> </li>
+            return  <li  key={item.id} className='list-group-item  liFromCity'><div className=""><p>{index+1}:{item.name}</p></div> <div className="btn-group"><button className='editBTN' onClick={()=>EditToFromCity(item)}>Tahrirlash</button> <button className='deleteBTN' onClick={()=>DeleteFromCity(item.id)}>O'chirish</button></div> </li>
            
             
           })
@@ -133,7 +133,7 @@ const DeleteToCity = (id) => {
         <div className="rightCity">
         {
           toCities.map((item,index)=>{
-            return  <li key={item.id} className='list-group-item  liFromCity'><div className="">{index+1}:{item.name}</div> <div className="btn-group"><button className='editButton' onClick={()=>EditToCity(item)}>Tahrirlash</button> <button className='deleteButton' onClick={()=>DeleteToCity(item.id)}>O'chirish</button></div> </li>
+            return  <li key={item.id} className='list-group-item  liFromCity'><div className=""><p>{index+1}:{item.name}</p></div> <div className="btn-group"><button className='editBTN' onClick={()=>EditToCity(item)}>Tahrirlash</button> <button className='deleteBTN' onClick={()=>DeleteToCity(item.id)}>O'chirish</button></div> </li>
            
             
           })

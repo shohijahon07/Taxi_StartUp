@@ -27,6 +27,7 @@ const Band_qilish = ({ isOpen, onClose, chatId }) => {
           toast.success('Yaqin orada haydovchi sizga aloqaga chiqadi!');
           // Clear the form after successful submission
           dispatch(setPesenger({ name: "", phoneNumber: "", driverChatId: "" }));
+          onClose()
         })
         .catch((err) => {
           console.error("Error in savePessenger:", err);
@@ -40,8 +41,8 @@ const Band_qilish = ({ isOpen, onClose, chatId }) => {
   return (
     <div className="band_modal">
       <div className="band_content">
-        <div className="band_header">
-          <button className="btn btn-close exitBtn" onClick={onClose} />
+        <div className="band_header" onClick={onClose}>
+          <button className="exitBtn"  />x
         </div>
         <div className="footer_band">
           <p>Iltimos quyidagilarni kiriting</p>

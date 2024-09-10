@@ -11,7 +11,6 @@ import { LanguageContext } from '../language/LanguageContext';
 import DateModal from './DateModal';
 import OptionModal from './OptionModal'; // Import the OptionModal
 import calendar from "../../pictures/calendar.png";
-import logo from "../../pictures/Group (1).svg";
 import Boglanish from './Boglanish';
 import BizHaqimizda from './BizHaqimizda';
 import Footer from './Footer';
@@ -19,6 +18,7 @@ import b7 from "../../pictures/b7.svg";
 import b8 from "../../pictures/b8.svg";
 import b9 from "../../pictures/b9.svg";
 import b11 from "../../pictures/b11.svg";
+import b14 from "../../pictures/b18.svg";
 import Boglanish2 from './Boglanish2';
 import BizHaqimizda2 from './bizHaqimizda/BizHaqimizda2';
 import Izohlar from './izohlar/Izohlar';
@@ -30,7 +30,7 @@ function RoutesUser() {
     const { language } = useContext(LanguageContext);
     const { toCities } = useSelector((state) => state.toCity);
     const { fromCities } = useSelector((state) => state.fromCity);
-    const { allRoutes, driverRout } = useSelector((state) => state.routes);
+    const { allRoutes, driverRout,day12,isAvailable } = useSelector((state) => state.routes);
     const [minDate, setMinDate] = useState('');
     const [maxDate, setMaxDate] = useState('');
     const [translatedFromCities, setTranslatedFromCities] = useState([]);
@@ -46,6 +46,7 @@ function RoutesUser() {
     const [id, setId] = useState("");
     const [chatId, setChatId] = useState("");
     const [isModalOpen1, setIsModalOpen1] = useState(false);
+    const [openNoRote, setOpenNoRote] = useState(false);
 
     const cityTranslations = {
         'Uzbekistan': {
@@ -133,13 +134,7 @@ function RoutesUser() {
         setShowDateModal(false); // Close the date modal
         dispatch(setKoranCourse({ ...driverRout, day: formattedDate }));
     };
-    const updateNeedDay = () => {
-        if (allRoutes.length > 0) {
-            const firstDayString = allRoutes[0].day;
-            const dateObject = new Date(firstDayString);
-            setNeedDay(dateObject);
-        }
-    };
+
     
 
     const handleOptionSelect = (option) => {
@@ -153,12 +148,9 @@ function RoutesUser() {
     };
 
     useEffect(() => {
-        // dispatch(fetchRoutes());
         dispatch(fetchToCity());
         dispatch(fetchFromCity());
         setLoading(true); 
-        
-    
         const today = new Date();
         const dayAfterTomorrow = new Date(today);
         dayAfterTomorrow.setDate(today.getDate() + 2);
@@ -193,7 +185,6 @@ function RoutesUser() {
             .unwrap()
             .then(() => {
                
-                  
             })
             .catch((err) => {
                 toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
@@ -201,7 +192,6 @@ function RoutesUser() {
             .finally(() => {
                 setLoading(false); 
             });
-        updateNeedDay()
         setSelectedDate("")
         dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
     }
@@ -216,7 +206,6 @@ function RoutesUser() {
             .catch((err) => {
                 toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             });
-            updateNeedDay()
     }
     
     const today = new Date();
@@ -287,6 +276,8 @@ function RoutesUser() {
         }
         return fullName;
     };
+
+
     
     return (
         <div>
@@ -376,28 +367,29 @@ function RoutesUser() {
                         </button>
                 </div>
             </div>
-           {allRoutes.length<1?"": <div className="allRoutes" >
+            {/* <div className="loader111" >
+                <div className="imgLoader"><img style={{objectFit:"cover",width:"100%",height:"100%"}} src={b14} alt="" /></div>
+                            <h3>Hozirgi paytda ushbu yo'nalishda qatnovlar mavjud emas</h3>
+                </div> */}
+
+           <div className="allRoutes" >
             <div className="getRoutes">
                          <div className="topRoutesUser">
-                            <h2>{language==="1"?"Yo’nalish bo’yicha qatnovlar":"Маршруты"}</h2>
+                            <h2>{language==="1"?`Yo’nalish bo’yicha qatnovlar `:`Маршруты`} <h3>{isAvailable?"mavjud emas":""}</h3></h2>
                         </div>
                         <div className="days">
-                        <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(needDay) === formatDate(today) ? "#303383" : ""),color:(formatDate(needDay) === formatDate(today) ? "white" : "")}}>
+                        <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(day12) === formatDate(today) ? "#303383" : ""),color:(formatDate(day12) === formatDate(today) ? "white" : "")}}>
                         {formatDate(today)}
                         </button>
 
-                            <button className='btnDays'  onClick={()=>getRoutesByDay('2')} style={{backgroundColor: (formatDate(needDay) === formatDate(nextDay1) ? "#303383" : ""),color:(formatDate(needDay) === formatDate(nextDay1) ? "white" : "")}}>{formatDate(nextDay1)}</button>
-                            <button className='btnDays'  onClick={()=>getRoutesByDay('3')} style={{backgroundColor: (formatDate(needDay) === formatDate(nextDay2) ? "#303383" : ""),color:(formatDate(needDay) === formatDate(nextDay2) ? "white" : "")}}>{formatDate(nextDay2)}</button>
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('2')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay1) ? "#303383" : ""),color:(formatDate(day12) === formatDate(nextDay1) ? "white" : "")}}>{formatDate(nextDay1)}</button>
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('3')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay2) ? "#303383" : ""),color:(formatDate(day12) === formatDate(nextDay2) ? "white" : "")}}>{formatDate(nextDay2)}</button>
                         </div>
                        </div>
                
-                {
-                // loading ? (
-                //     <div className="loading-container">
-                //         <img src={logo} alt="Loading..." className="loading-image" />
-                //     </div>
-                // ) : (
-                allRoutes.map((item, index) => (
+                
+           {allRoutes.length<1?"": 
+            allRoutes.map((item, index) => (
                    <div className="mapRoutes">
                     <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateFullName(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
                     <li className="list-group-item li2">
@@ -420,7 +412,16 @@ function RoutesUser() {
                     <li className='list-group-item li3'><div className="l3Child1"><h3>{translateFullName(item.user.fullName)}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={()=>openModal1(item.user.chatId)}>  {language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
                    </div> 
                 ))}
-            </div>}
+           {
+            isAvailable?
+            <div className='catchRoute'>
+                <h3>Sanani o'zgartiring</h3>
+                <div className="imgCatchRoute"> <img style={{width:"100%",height:"100%",objectFit:"cover"}} src={b14} alt="" /></div>
+            </div>:""
+           }
+               
+            </div>
+            
             <div className="boglanish2">
             <Boglanish2 />
             </div>

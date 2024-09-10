@@ -3,20 +3,52 @@
     padding: 0;
     box-sizing:border-box;
 }
-
+.begin1{
+    background-image:url("../../pictures/all.svg");
+    height: 100vh;
+    max-height: 2000px;
+}
 .leftCity{
-    width: 350px;
+    width: 470px;
     /* border: 2px solid; */
 
 }
+.leftCity p{
+font-family: 'Inter';
+font-weight: 500;
+font-size: 20px;
+line-height: 30px;
+color:white;
+
+}
+
+.inputRoute p{
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 30px;
+    color:white;
+}
+.form-control{
+    height: 45px;
+}
+.rightCity p{
+font-family: 'Inter';
+font-weight: 500;
+font-size: 20px;
+line-height: 30px;
+color:white;
+
+}
 .rightCity{
-    width: 350px;
+    width: 470px;
     /* border: 2px solid; */
 }
 .tableCity{
     margin-top: 20px;
     display: flex;
-    justify-content: space-around;
+    padding: 0 100px;
+    justify-content: space-between;
     flex-wrap: wrap;
 }
 .liFromCity{
@@ -54,15 +86,48 @@ justify-content: space-between;
     border-radius: 5px;
 }
 .driverOneHaeder{
-    margin-top: 20px;
+   padding-top: 20px;
     margin-left: 10px;
+    margin-bottom: 20px;
 }
 .StaticsText p{
+    color:white;
     margin-left: 130px;
     margin-top: 50px;
     font-size: 20px;
 }
 .StaticsText1 p{
+    color:white;
     margin-left: 130px;
     font-size: 20px;
+}
+.saveButton{
+    font-family: 'Inter', sans-serif;
+    /* margin-top: 40px; */
+   width: 145.48px;
+   height: 45px ;
+   border-radius:7.5px;
+   border: 0.45px solid #2B3187;
+   background-color:#2B3187;
+   color:white;
+}
+.editBTN{
+    font-family: 'Inter', sans-serif;
+    /* margin-top: 40px; */
+   width: 145.48px;
+   height: 45px ;
+   border-radius:7.5px;
+   border: 0.45px solid white;
+   background-color:rgb(199, 199, 12);
+   color:black;
+}
+.deleteBTN{
+    font-family: 'Inter', sans-serif;
+    /* margin-top: 40px; */
+   width: 145.48px;
+   height: 45px ;
+   border-radius:7.5px;
+   border: 0.45px white;
+   background-color:rgb(82, 56, 56);
+   color:white;
 }
