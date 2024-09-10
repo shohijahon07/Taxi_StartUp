@@ -51,13 +51,13 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
+        return "6995954341:AAFa0pZzNkGS2NJ0VDuMDO0K7Jlqwgs7-jE";
     }
 
     
     @Override
     public String getBotUsername() {
-        return "shift_proejct_taxi_bot";
+        return "jonkatoychoq_bot";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -720,7 +720,7 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                     sendMessage.setText("Assalom eleykum botimizga xush kelibsiz! \uD83D\uDC4B\n" +
                             "Pastdagi knopkalardan birini tanlang. ⬇️ Siz haydovchimi \uD83D\uDE95 yoki yo'lovchi \uDDF3?");
                 } else if (foundUser.getLanguage().equals("ru")) {
-                    sendMessage.setText("Здравствуйте и добро пожаловать в наш бот! \uD83D\uDC4B\n\" +\n" +
+                    sendMessage.setText("Здравствуйте и добро пожаловать в наш бот! \uD83D\uDC4B\n"  +
                             " «Выберите одну из кнопок ниже. ⬇\uFE0F Вы водитель \uD83D\uDE95 или пассажир \uDDF3?");
                 }
                 sendMessage.setReplyMarkup(selectInlineRoleButtons(chatId));
@@ -1048,16 +1048,16 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                 dataParts = data.split(":");
 
                 idPassenger= user1.getId();
-
+                Optional<User> byChatId2 = userRepo.findByChatId(Long.valueOf(dataParts[1]));
                 if(dataParts.length > 1){
-                    if(user.getLanguage().equals("uz")){
+                    if(byChatId2.get().getLanguage().equals("uz")){
                         sendMessage.setText(
                                 "👤 Siz " + user1.getFullName() + " yo'lovchini qabul qilasizmi? \n" +
                                         "📞 Telefon raqami: " + user1.getPhoneNumber()
                         );
-                    }else if(user.getLanguage().equals("ru")){
+                    }else if(byChatId2.get().getLanguage().equals("ru")){
                         sendMessage.setText (
-                                "👤 ты" + user1.getFullName() + "Вы принимаете пассажира? \n" +
+                                "👤 ты " + user1.getFullName() + " Вы принимаете пассажира? \n" +
                                         "📞 Номер телефона:" + user1.getPhoneNumber()
                         );
                     }
@@ -1075,25 +1075,32 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
 
                 // Assuming the second part contains the chatId (numeric value)
                 if (splitData.length > 1) {
-                    user.setCommen_id( splitData[1].trim());  // Trim to remove any extra spaces
-                    System.out.println(user.getCommen_id());
+                    user.setCommen_id(splitData[1].trim());  // Trim to remove any extra spaces
 
                     Optional<User> byChatId = userRepo.findByChatId(chatId);
                     User user2 = byChatId.get();
-                    List<UUID> passengerId = Collections.singletonList(user2.getId());
+                    List<UUID> passengerId = Collections.singletonList(user2.getId()); // Current passenger's ID
 
                     System.out.println("sa" + user.getCommen_id());
+                    System.out.println("salom");
+                    try {
+                        // Parse the extracted numeric chatId
+                        Long extractedChatId = Long.valueOf(user.getCommen_id());
+                        Optional<User> driverIdData = userRepo.findByChatId(extractedChatId);
+                        if (driverIdData.isPresent()) {
+                            Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(driverIdData.get()));
 
-                    if (!user.getCommen_id().isEmpty()) {
-                        try {
-                            // Parse the extracted numeric chatId
-                            Long extractedChatId = Long.valueOf(user.getCommen_id());
+                            // Haydovchidan yo'lovchi UUID'larini olish
+                            List<UUID> passengerList = byUser.getPassenger();
 
-                            Optional<User> driverIdData = userRepo.findByChatId(extractedChatId);
-                            if (driverIdData.isPresent()) {
-                                Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(driverIdData.get()));
+                            if (passengerList != null && !passengerList.isEmpty()) {
+                                // Debug maqsadida yo'lovchilarni logga chiqarish
+                                for (UUID passengerUUID : passengerList) {
+                                    System.out.println("Solishtirilayotgan: " + passengerUUID);
+                                }
 
-                                if (byUser != null && byUser.getPassenger() != null && byUser.getPassenger().equals(passengerId)) {
+                                // Yo'lovchi ID'lari ro'yxatga kiritilganligini tekshirish
+                                if (passengerList.containsAll(passengerId)) {
                                     if (user.getLanguage().equals("uz")) {
                                         sendMessage.setText("✍\uFE0F Haydovchiga fikr qoldiring");
                                     } else if (user.getLanguage().equals("ru")) {
@@ -1111,86 +1118,103 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                                     execute(sendMessage);
                                 }
                             } else {
+                                // Agar yo'lovchilar ro'yxati null yoki bo'sh bo'lsa
                                 if (user.getLanguage().equals("uz")) {
-                                    sendMessage.setText("\uD83D\uDE97 Haydovchi topilmadi.");
+                                    sendMessage.setText("\uD83D\uDEAB Siz  haydovchi  ro'yxati mavjud emassiz .");
                                 } else if (user.getLanguage().equals("ru")) {
-                                    sendMessage.setText("\uD83D\uDE97 Водитель не найден.");
+                                    sendMessage.setText("\uD83D\uDEAB Список пассажиров отсутствует.");
                                 }
                                 execute(sendMessage);
                             }
-                        } catch (NumberFormatException e) {
-                            // Handle invalid numeric value for chatId
+                        } else {
                             if (user.getLanguage().equals("uz")) {
-                                sendMessage.setText("❌ Xato: noto'g'ri chatId formati.");
+                                sendMessage.setText("\uD83D\uDE97 Haydovchi topilmadi.");
                             } else if (user.getLanguage().equals("ru")) {
-                                sendMessage.setText("❌ Ошибка: неверный формат chatId.");
+                                sendMessage.setText("\uD83D\uDE97 Водитель не найден.");
                             }
                             execute(sendMessage);
                         }
-                    } else {
+
+                    } catch (NumberFormatException e) {
+                        // Handle invalid numeric value for chatId
                         if (user.getLanguage().equals("uz")) {
-                            sendMessage.setText("❌ Xato: noto'g'ri format.");
+                            sendMessage.setText("❌ Xato: noto'g'ri chatId formati.");
                         } else if (user.getLanguage().equals("ru")) {
-                            sendMessage.setText("❌ Ошибка: неверный формат.");
+                            sendMessage.setText("❌ Ошибка: неверный формат chatId.");
                         }
                         execute(sendMessage);
                     }
                 }
             }
-            else if(data.equals("ha")) {
+
+            else if (data.equals("ha")) {
                 Optional<User> userOptional1 = userRepo.findByChatId(chatId);
 
                 if (userOptional1.isPresent()) {
                     User user1 = userOptional1.get();
                     Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(user1));
-                    if(byUser.getCountSide()>0){
-                        if (byUser != null) {
-                            List<UUID> currentPassengers = byUser.getPassenger();
 
-                            if (currentPassengers == null) {
-                                currentPassengers = new ArrayList<>();
+                    if (byUser != null && byUser.getCountSide() > 0) {
+                        List<UUID> currentPassengers = byUser.getPassenger();
+
+                        if (currentPassengers == null) {
+                            currentPassengers = new ArrayList<>();
+                        }
+
+                        // Check if idPassenger is already in the passenger list
+                        if (currentPassengers.contains(idPassenger)) {
+                            // If already a passenger, send a message indicating the passenger is already added
+                            if (user.getLanguage().equals("uz")) {
+                                sendMessage.setText("Siz bu yo'lovchini qabul qilgansiz.");
+                            } else if (user.getLanguage().equals("ru")) {
+                                sendMessage.setText("Этот пассажир уже был принят.");
                             }
-
+                        } else {
+                            // Add the passenger if not already in the list
                             currentPassengers.add(idPassenger);
-
                             byUser.setPassenger(currentPassengers);
+
+                            // Update the count of available seats
                             Integer countSide = byUser.getCountSide();
                             byUser.setCountSide(countSide - 1);
                             routeDriverRepo.save(byUser);
+
+                            // Fetch user IDs and display route info
                             List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
                             for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
                                 if (userIds.contains(routeDriver.getUser().getId())) {
-                                    if(user.getLanguage().equals("uz")){
+                                    if (user.getLanguage().equals("uz")) {
                                         sendMessage.setText(
                                                 routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
                                                         "🛋️ Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + "\n" +
                                                         "💰 Narxi: " + routeDriver.getPrice() + " so'm\n" +
-                                                        "📅  Sana" + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                                        "📅 Sana: " + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
                                         );
-                                    }else if(user.getLanguage().equals("ru")){
+                                    } else if (user.getLanguage().equals("ru")) {
                                         sendMessage.setText(
                                                 routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
                                                         "🛋️ Количество вакансий: " + routeDriver.getCountSide() + "\n" +
                                                         "💰 Цена: " + routeDriver.getPrice() + " so'm\n" +
-                                                        "📅  Дата" + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                                        "📅 Дата: " + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
                                         );
                                     }
 
                                     sendMessage.setChatId(chatId);
-                                    sendMessage.setReplyMarkup(directionData(routeDriver.getId(),user ));
+                                    sendMessage.setReplyMarkup(directionData(routeDriver.getId(), user));
                                     execute(sendMessage);
                                 }
                             }
                         }
-                    }else {
-                        if(user.getLanguage().equals("uz")){
+                    } else {
+                        // Handle when there are no more available seats
+                        if (user.getLanguage().equals("uz")) {
                             sendMessage.setText(
                                     "🚫 Sizda jo'ylar soni tugadi. " +
-                                            "📅 Siz yo'lishga borgandan so'ng qayta yo'naltirish qo'shish uchun /start bosing."
+                                            "📅 Siz yo'nalishga borgandan so'ng qayta yo'naltirish qo'shish uchun /start bosing."
                             );
-                        }else if(user.getLanguage().equals("ru")){
+                        } else if (user.getLanguage().equals("ru")) {
                             sendMessage.setText(
-                                    "🚫У вас закончились места. " +
+                                    "🚫 У вас закончились места. " +
                                             "📅 Как только вы доберетесь до пути, нажмите /start, чтобы добавить перенаправление."
                             );
                         }
@@ -1201,80 +1225,98 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                     }
                 }
             }
-            else if(data.startsWith("accept_")) {
+            else if (data.startsWith("accept_")) {
                 String[] parts = data.split("_");
-                User byUser2=null;
-                UUID idPassenger1=null;
+                User byUser2 = null;
+                UUID idPassenger1 = null;
                 if (parts.length == 3) {
                     String action = parts[0]; // "accept" or "decline"
                     idPassenger1 = UUID.fromString(parts[1]);
                     Long driverChatId = Long.parseLong(parts[2]);
                     byUser2 = userRepo.findByChatId(driverChatId).orElseThrow();
+
                     // Process the action based on userId and driverChatId
                     System.out.println(idPassenger1);
                     System.out.println(driverChatId);
                 }
+
                 Route_Driver byUser1 = routeDriverRepo.findByUser(Optional.ofNullable(byUser2));
-                if(byUser1.getCountSide()>0){
+
+                // Check if there's any available seat
+                if (byUser1.getCountSide() > 0) {
                     if (byUser1 != null) {
                         List<UUID> currentPassengers = byUser1.getPassenger();
-
                         if (currentPassengers == null) {
                             currentPassengers = new ArrayList<>();
                         }
 
-                        currentPassengers.add(idPassenger1);
+                        // Check if the passenger is already in the list
+                        if (currentPassengers.contains(idPassenger1)) {
+                            // If passenger is already in the list, send a message indicating that
+                            if (user.getLanguage().equals("uz")) {
+                                sendMessage.setText("❌ Siz bu yo'lovchini allaqachon qabul qilgansiz.");
+                            } else if (user.getLanguage().equals("ru")) {
+                                sendMessage.setText("❌ Вы уже приняли этого пассажира.");
+                            }
+                            sendMessage.setChatId(chatId);
+                            execute(sendMessage);
+                        } else {
+                            // If passenger is not in the list, add them and update countSide
+                            currentPassengers.add(idPassenger1);
+                            byUser1.setPassenger(currentPassengers);
 
-                        byUser1.setPassenger(currentPassengers);
-                        Integer countSide = byUser1.getCountSide();
-                        byUser1.setCountSide(countSide - 1);
-                        routeDriverRepo.save(byUser1);
-                        List<UUID> userIds = userRepo.findAllUserIdsByChatId(byUser2.getChatId());
-                        for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
-                            if (userIds.contains(routeDriver.getUser().getId())) {
-                                if(user.getLanguage().equals("uz")){
-                                sendMessage.setText(
-                                        routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
-                                                "🛋 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + "\n" +
-                                                "💰 Narxi: " + routeDriver.getPrice() + " so'm\n" +
-                                                "📅  Sana" + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
-                                );
-                                }else if(user.getLanguage().equals("ru")){
-                                    sendMessage.setText(
-                                            routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
-                                                    "🛋 Количество вакансий: " + routeDriver.getCountSide() + "\n" +
-                                                    "💰 Цена: " + routeDriver.getPrice() + " so'm\n" +
-                                                    "📅  Дата" + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
-                                    );
+                            // Decrease the seat count
+                            Integer countSide = byUser1.getCountSide();
+                            byUser1.setCountSide(countSide - 1);
+                            routeDriverRepo.save(byUser1);
+
+                            // Notify about the update
+                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(byUser2.getChatId());
+                            for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
+                                if (userIds.contains(routeDriver.getUser().getId())) {
+                                    if (user.getLanguage().equals("uz")) {
+                                        sendMessage.setText(
+                                                routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
+                                                        "🛋 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + "\n" +
+                                                        "💰 Narxi: " + routeDriver.getPrice() + " so'm\n" +
+                                                        "📅 Sana: " + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                        );
+                                    } else if (user.getLanguage().equals("ru")) {
+                                        sendMessage.setText(
+                                                routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
+                                                        "🛋 Количество вакансий: " + routeDriver.getCountSide() + "\n" +
+                                                        "💰 Цена: " + routeDriver.getPrice() + " so'm\n" +
+                                                        "📅 Дата: " + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                        );
+                                    }
+
+                                    sendMessage.setChatId(chatId);
+                                    sendMessage.setReplyMarkup(directionData(routeDriver.getId(), user));
+                                    execute(sendMessage);
                                 }
-
-
-                                sendMessage.setChatId(chatId);
-                                sendMessage.setReplyMarkup(directionData(routeDriver.getId(), user));
-                                execute(sendMessage);
                             }
                         }
                     }
-                }else {
-                    if(user.getLanguage().equals("uz")){
+                } else {
+                    if (user.getLanguage().equals("uz")) {
                         sendMessage.setText(
                                 "🚫 Sizda jo'ylar soni tugadi. " +
-                                        "📅 Siz yo'lishga borgandan so'ng qayta yo'naltirish qo'shish uchun /start bosing."
+                                        "📅 Siz yo'liqishga borgandan so'ng qayta yo'naltirish qo'shish uchun /start bosing."
                         );
-                    }else if(user.getLanguage().equals("ru")){
+                    } else if (user.getLanguage().equals("ru")) {
                         sendMessage.setText(
-                                "🚫У вас закончились места. " +
+                                "🚫 У вас закончились места. " +
                                         "📅 Как только вы доберетесь до пути, нажмите /start, чтобы добавить перенаправление."
                         );
                     }
-
 
                     user.setStatus(Status.START);
                     routeDriverRepo.deleteById(byUser1.getId());
                     execute(sendMessage);
                 }
-
             }
+
+
             else if (data.startsWith("decline_")) {
                 String[] parts = data.split("_");
                 Optional<User> byChatId= null;
@@ -2281,11 +2323,11 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if (user.getLanguage().equals("uz")) {
-            button1.setText("🚖 Haydovchilar");
-            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId);
+            button1.setText("🚖 Haydovchi");
+            button1.setUrl("http://192.168.1.7:5174/register?chatId=" + chatId);
         } else {
             button1.setText("🚖 Драйверы");
-            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId);
+            button1.setUrl("http://192.168.1.7:5174/register?chatId=" + chatId);
         }
         button1.setCallbackData("Drivers");
         row1.add(button1);
@@ -2293,7 +2335,7 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         InlineKeyboardButton button2 = new InlineKeyboardButton();
         if (user.getLanguage().equals("uz")) {
-            button2.setText("🧳 Yo'lovchilar"); // "🧳" Luggage icon for Passengers
+            button2.setText("🧳 Yo'lovchi"); // "🧳" Luggage icon for Passengers
         } else {
             button2.setText("🧳 Пассажиры"); // "🧳" Luggage icon for Passengers
         }
