@@ -53,11 +53,11 @@ public class Route_Driver {
   this.user=user;
     }
 
-    public Route_Driver(String cityA, String cityB, Integer number, Integer number1, LocalDate date, String time, UUID uuid) {
+    public Route_Driver(String cityA, String cityB, String number, String number1, LocalDate date, String time, UUID uuid) {
    this.fromCity=cityA;
    this.toCity=cityB;
-   this.countSide=number;
-   this.price=number1;
+   this.countSide= Integer.valueOf(number);
+   this.price= Integer.valueOf(number1);
    this.day=date;
    this.hour=time;
    this.id=uuid;
