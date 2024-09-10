@@ -293,7 +293,7 @@ function PathDriver() {
     <div>
       <DriverHeader />
       <div className='path_dr_con'>
-        <div className=".path_dr_con2">
+        <div className="path_dr_con2">
 
           <div className="h1RouterUser">
             <h1 id="specificGroupArea" className={"header_dr"}>{language==="1"?"Har kuni O’zbekiston bo’ylab qatnovlar":"Ежедневные поездки по Узбекистану"}</h1>

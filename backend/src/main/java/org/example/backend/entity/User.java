@@ -34,6 +34,7 @@ public class User implements UserDetails {
     private boolean count;
     private Boolean isDriver=false;
     private String language;
+    private String commen_id;
     @Enumerated(EnumType.STRING)
     private Status status=Status.START;
     @ManyToMany(fetch = FetchType.EAGER)

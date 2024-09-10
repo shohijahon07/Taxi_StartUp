@@ -10,9 +10,7 @@ ReactModal.setAppElement('#root'); // Bind modal to your appElement (important f
 function Register() {
   const [chatId, setChatId] = useState(null);
   const [form, setForm] = useState({
-    fullName: "",
     count: "",
-    phoneNumber: "",
     carType: "",
     carImg: "",
     driverImg: "",
@@ -38,7 +36,7 @@ function Register() {
   }, []);
 
   const validateForm = () => {
-    if (!form.fullName || !form.phoneNumber || !form.carType || !form.about || !form.count || !selectFile1 || !selectFile2 || !selectFile3) {
+    if (!form.carType || !form.about || !form.count || !selectFile1 || !selectFile2 || !selectFile3) {
       return false;
     }
     return true;
@@ -132,19 +130,8 @@ function Register() {
     <div className='register_con'>
       <h3 className='text_rg'>Ro’yxatdan o’tish uchun quyidagi ma’lumotlarni kiriting</h3>
       <div className="body-con">
-        <PhoneInput
-          country={"uz"}
-          onChange={(e) => setForm({ ...form, phoneNumber: '+' + e })}
-          value={form.phoneNumber}
-          placeholder={"Iltimos telefon raqamingizni kiriting"}
-        />
-        <input
-          type="text"
-          placeholder='Ism familyasi'
-          className='form-control my-2 hy-5'
-          value={form.fullName}
-          onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-        />
+        
+        
         <input
           type="text"
           placeholder='Mashina rusumi'
@@ -174,7 +161,6 @@ function Register() {
             <img src={fileicon} alt="Upload Icon" className="upload-icon" />
             Mashina rasmini yuklang
           {carImgPreview && <img src={carImgPreview} alt="Car Preview" className="file_rg" />}
-
           </label>
         </div>
 

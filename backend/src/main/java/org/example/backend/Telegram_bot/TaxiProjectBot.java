@@ -13,7 +13,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -28,7 +27,6 @@ import java.util.*;
 
 @Component
 public class TaxiProjectBot extends TelegramLongPollingBot {
-
     private final UserRepo userRepo;
     private final RouteDriverRepo routeDriverRepo;
     private final FromCityRepo fromCityRepo;
@@ -38,7 +36,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     private final RoleRepo roleRepo;
     private String language;
     private String id;
-
 
 
     public TaxiProjectBot(UserRepo userRepo, RouteDriverRepo routeDriverRepo1, FromCityRepo fromCityRepo, ToCityRepo toCityRepo, CommentRepo commentRepo, RoleRepo roleRepo, CommentRepo1 commentRepo1) {
@@ -54,25 +51,22 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7255093778:AAFVC6VNDj2ZxAY8d_OrIE37BxxJEFsLux4";
+        return "7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
     }
 
     
     @Override
     public String getBotUsername() {
-        return "shift_taxi_bot";
+        return "shift_proejct_taxi_bot";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
     private String[] band_delete_data = new String[2];
     private  String[] status = new String[6];
     private String name="";
-    private  String fullName="";
     private String[] dataParts;
     private Integer count=1;
     private UUID idPassenger;
-    private String[] driver_chatId_comment=new String[2];
-    private String phoneNumber="";
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
@@ -102,7 +96,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     sendMessage.setReplyMarkup(selectLanguageButtons());
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
-                } else if (foundUser.getStatus().equals(Status.SET_CITY_FROM_SAVE)) {
+                }
+                else if (foundUser.getStatus().equals(Status.SET_CITY_FROM_SAVE)) {
                     foundUser.setStatus(Status.GET_PASSENGER_PATH);
                     userRepo.save(foundUser);
                     driver_data_path[0] = message.getText();
@@ -147,7 +142,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                                 "⏰ Soati: " + routeDriver.getHour() + "\n" +
                                                 "🔢 Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
                                                 "💵 Narxi: " + routeDriver.getPrice() + " So'm");
-                                sendMessage.setReplyMarkup(Passsenger(foundUser));
+                                sendMessage.setReplyMarkup(Passsenger(foundUser,chatId1));
 
                             }
                             else if(foundUser.getLanguage().equals("ru")) {
@@ -157,7 +152,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                                 "⏰ Час: " + routeDriver.getHour() + "\n" +
                                                 "🔢 Количество мест: " + routeDriver.getCountSide() + " ta\n" +
                                                 "💵 Цена: " + routeDriver.getPrice() + " So'm");
-                                sendMessage.setReplyMarkup(Passsenger(foundUser));
+                                sendMessage.setReplyMarkup(Passsenger(foundUser, chatId1));
 
                             }
 
@@ -180,14 +175,13 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         execute(sendMessage);
                     }
                 }
-
-
                 else if (foundUser.getStatus().equals(Status.COMMENT_CREATE)) {
-                    String chatIdStr = driver_chatId_comment[1];
+                    String chatIdStr = foundUser.getCommen_id();
 
                     // Check if chatIdStr is a valid number
                     if (isNumeric(chatIdStr)) {
                         Optional<User> byChatId1 = userRepo.findByChatId(Long.valueOf(chatIdStr));
+                        chatIdStr="";
                         User user1 = byChatId1.orElse(null);
 
                         if (user1 != null) {
@@ -225,32 +219,30 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                             }
                             execute(sendMessage);
                         } else {
-                            if(language.equals("uz")){
+                            if(foundUser.getLanguage().equals("uz")){
                                 sendMessage.setText("🚫 Haydovchi topilmadi."); // "🚫" for no entry or not available
 
-                            }else if(language.equals("ru")){
+                            }else if(foundUser.getLanguage().equals("ru")){
                                 sendMessage.setText("🚫 Драйвер не найден."); // "🚫" for no entry or not available
-
                             }
 
                             execute(sendMessage);
                         }
                     } else {
-                        if(language.equals("uz")){
+                        if(foundUser.getLanguage().equals("uz")){
                             sendMessage.setText("Noto'g'ri formatdagi chat ID: " + chatIdStr);
 
-                        }else if(language.equals("ru")){
+                        }else if(foundUser.getLanguage().equals("ru")){
                             sendMessage.setText("Идентификатор чата в неправильном формате: " + chatIdStr);
 
                         }
                         execute(sendMessage);
                     }
                 }
-
                 else if (foundUser.getStatus().equals(Status.BACK)) {
-                    if(language.equals("uz")){
+                    if(foundUser.getLanguage().equals("uz")){
                         sendMessage.setText("📍 Qayerdan"); // "📍" for location or starting point
-                    }else if(language.equals("ru")){
+                    }else if(foundUser.getLanguage().equals("ru")){
                         sendMessage.setText("📍 Откуда"); // "📍" for location or starting point
 
                     }
@@ -266,7 +258,7 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                 List<Route_Driver> all = routeDriverRepo.findAll();
 
 
-                if (foundUser.getStatus().equals(Status.START) & message.getText().equalsIgnoreCase("/start") && foundUser.getIsDriver().equals(true)) {
+                if (message.getText().equalsIgnoreCase("/start") && foundUser.getIsDriver().equals(true)) {
                     sendMessage.setText("Iltimos tilni tanlang! Пожалуйста, выберите язык!");
                     sendMessage.setReplyMarkup(selectLanguageButtons());
                     sendMessage.setChatId(chatId);
@@ -305,6 +297,8 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         }
                     }
                 }
+
+
                 else if (foundUser.getStatus().equals(Status.NEW_NUMBER)) {
                     System.out.println("kirdi");
                     String countS = message.getText();
@@ -314,168 +308,185 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
 
                         try {
                             int count = Integer.parseInt(countS);
-                            routeDriver.setCountSide(count);
 
-                            routeDriverRepo.save(routeDriver);
-                            if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText("✅ Jo'ylar soni muvaffaqiyatli qo'shildi"); // "✅" for success
-                            } else if (foundUser.getLanguage().equals("ru")) {
-                                sendMessage.setText("✅ Количество успешно добавленных мест"); // "✅" for success
-                            }
-                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
-                            for (Route_Driver routeDriver2 : routeDriverRepo.findAll()) {
-                                if (userIds.contains(routeDriver2.getUser().getId())) {
+                            if (routeDriver.getUser().isCount()) {
+                                // Count should not exceed 6
+                                if (count > 6) {
                                     if (foundUser.getLanguage().equals("uz")) {
-                                        sendMessage.setText(
-                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
-                                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver2.getCountSide() + " \n" +
-                                                        "💲 Narxi: " + routeDriver2.getPrice() + " so'm \n" +
-                                                        "📅 Sana: " + routeDriver2.getDay() + "\n" +
-                                                        "⏰ Soat: " + routeDriver2.getHour()
-                                        );
+                                        sendMessage.setText("⚠️ Jo'ylar soni 6 dan katta bo'lmasligi kerak. Qayta kiriting.");
                                     } else if (foundUser.getLanguage().equals("ru")) {
-                                        sendMessage.setText(
-                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
-                                                        "🪑 Количество вакансий: " + routeDriver2.getCountSide() + " \n" +
-                                                        "💲 Цена: " + routeDriver2.getPrice() + " сум \n" +
-                                                        "📅 Дата: " + routeDriver2.getDay() + "\n" +
-                                                        "⏰ Час: " + routeDriver2.getHour()
-                                        );
+                                        sendMessage.setText("⚠️ Количество мест не должно превышать 6. Пожалуйста, введите снова.");
                                     }
-
-                                    sendMessage.setReplyMarkup(directionData(routeDriver2.getId(), foundUser));
                                     execute(sendMessage);
+                                    return;
+                                }
+                            } else {
+                                // Count should not exceed 12
+                                if (count > 12) {
+                                    if (foundUser.getLanguage().equals("uz")) {
+                                        sendMessage.setText("⚠️ Jo'ylar soni 12 dan katta bo'lmasligi kerak. Qayta kiriting.");
+                                    } else if (foundUser.getLanguage().equals("ru")) {
+                                        sendMessage.setText("⚠️ Количество мест не должно превышать 12. Пожалуйста, введите снова.");
+                                    }
+                                    execute(sendMessage);
+                                    return;
                                 }
                             }
-                        } catch (NumberFormatException e) {
+
+                            // If valid, set the seat count
+                            routeDriver.setCountSide(count);
+                            routeDriverRepo.save(routeDriver);
+
                             if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText("⚠️ Kechirasiz, noto'g'ri qiymat kiritildi. Faqat sonlarni kiriting."); // "⚠️" for warning
+                                sendMessage.setText("✅ Jo'ylar soni muvaffaqiyatli qo'shildi");
                             } else if (foundUser.getLanguage().equals("ru")) {
-                                sendMessage.setText("⚠️ Извините, было введено неверное значение. Просто введите цифры."); // "⚠️" for warning
+                                sendMessage.setText("✅ Количество успешно добавленных мест");
                             }
 
+                            // Send updated route information to the specific user
+                            if (foundUser.getLanguage().equals("uz")) {
+                                sendMessage.setText(
+                                        routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                                "🪑 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                                "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
+                                                "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                                "⏰ Soat: " + routeDriver.getHour()
+                                );
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                sendMessage.setText(
+                                        routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                                "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
+                                                "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
+                                                "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                                "⏰ Час: " + routeDriver.getHour()
+                                );
+                            }
+
+                            sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
+                            execute(sendMessage);
+
+                        } catch (NumberFormatException e) {
+                            if (foundUser.getLanguage().equals("uz")) {
+                                sendMessage.setText("⚠️ Kechirasiz, noto'g'ri qiymat kiritildi. Faqat sonlarni kiriting.");
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                sendMessage.setText("⚠️ Извините, было введено неверное значение. Просто введите цифры.");
+                            }
+                            execute(sendMessage);
                         }
 
-                        execute(sendMessage);
                     } else {
                         if (foundUser.getLanguage().equals("uz")) {
-                            sendMessage.setText("❌ Xatolik."); // "❌" for error
+                            sendMessage.setText("❌ Xatolik.");
                         } else if (foundUser.getLanguage().equals("ru")) {
-                            sendMessage.setText("❌ Ошибка."); // "❌" for error
+                            sendMessage.setText("❌ Ошибка.");
                         }
-
                         execute(sendMessage);
                     }
-
                 }
-                else if(foundUser.getStatus().equals(Status.NEW_PRICE)){
+
+
+                else if (foundUser.getStatus().equals(Status.NEW_PRICE)) {
                     String countS = message.getText();
                     Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
                     if (byId.isPresent()) {
                         Route_Driver routeDriver = byId.get();
-
                         try {
                             int count = Integer.parseInt(countS);
                             routeDriver.setPrice(count);
-
                             routeDriverRepo.save(routeDriver);
-                            if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText("✅ Narxi  muvaffaqiyatli qo'shildi"); // "✅" for success
-                            } else if (foundUser.getLanguage().equals("ru")) {
-                                sendMessage.setText("✅ Цена успешно добавлена"); // "✅" for success
-                            }
-                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
-                            for (Route_Driver routeDriver2 : routeDriverRepo.findAll()) {
-                                if (userIds.contains(routeDriver2.getUser().getId())) {
-                                    if (foundUser.getLanguage().equals("uz")) {
-                                        sendMessage.setText(
-                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
-                                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver2.getCountSide() + " \n" +
-                                                        "💲 Narxi: " + routeDriver2.getPrice() + " so'm \n" +
-                                                        "📅 Sana: " + routeDriver2.getDay() + "\n" +
-                                                        "⏰ Soat: " + routeDriver2.getHour()
-                                        );
-                                    } else if (foundUser.getLanguage().equals("ru")) {
-                                        sendMessage.setText(
-                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
-                                                        "🪑 Количество вакансий: " + routeDriver2.getCountSide() + " \n" +
-                                                        "💲 Цена: " + routeDriver2.getPrice() + " сум \n" +
-                                                        "📅 Дата: " + routeDriver2.getDay() + "\n" +
-                                                        "⏰ Час: " + routeDriver2.getHour()
-                                        );
-                                    }
 
-                                    sendMessage.setReplyMarkup(directionData(routeDriver2.getId(), foundUser));
-                                    execute(sendMessage);
-                                }
+                            if (foundUser.getLanguage().equals("uz")) {
+                                sendMessage.setText("✅ Narxi muvaffaqiyatli qo'shildi\n");
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                sendMessage.setText("✅ Цена успешно добавлена\n");
                             }
+
+                            // Xabar ma'lumotini jamlash
+                            String routeInfo;
+                            if (foundUser.getLanguage().equals("uz")) {
+                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
+                                        "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                        "⏰ Soat: " + routeDriver.getHour();
+                            } else {
+                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                        "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
+                                        "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                        "⏰ Час: " + routeDriver.getHour();
+                            }
+
+                            // Jamlangan xabarni o'rnatish
+                            sendMessage.setText(sendMessage.getText() + routeInfo);
+
+                            sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
+                            execute(sendMessage);
+
                         } catch (NumberFormatException e) {
                             if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText("⚠️ Kechirasiz, noto'g'ri qiymat kiritildi. Faqat sonlarni kiriting."); // "⚠️" for warning
-                            } else if (foundUser.getLanguage().equals("ru")) {
-                                sendMessage.setText("⚠️ Извините, было введено неверное значение. Просто введите цифры."); // "⚠️" for warning
+                                sendMessage.setText("⚠️ Kechirasiz, noto'g'ri qiymat kiritildi. Faqat sonlarni kiriting.");
+                            } else {
+                                sendMessage.setText("⚠️ Извините, было введено неверное значение. Просто введите цифры.");
                             }
-
+                            execute(sendMessage);
                         }
-
-                        execute(sendMessage);
                     } else {
                         if (foundUser.getLanguage().equals("uz")) {
-                            sendMessage.setText("❌ Xatolik."); // "❌" for error
-                        } else if (foundUser.getLanguage().equals("ru")) {
-                            sendMessage.setText("❌ Ошибка."); // "❌" for error
+                            sendMessage.setText("❌ Xatolik.");
+                        } else {
+                            sendMessage.setText("❌ Ошибка.");
                         }
-
                         execute(sendMessage);
                     }
-
                 }
-
 
                 else if (foundUser.getStatus().equals(Status.NEW_DAY)) {
                     try {
                         System.out.println("kirdi");
 
-                        LocalDate inputDate = validateAndParseDate(message.getText(),foundUser);
+                        LocalDate inputDate = validateAndParseDate(message.getText(), foundUser);
 
                         Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
                         if (byId.isPresent()) {
                             Route_Driver routeDriver = byId.get();
                             routeDriver.setDay(inputDate);
                             routeDriverRepo.save(routeDriver);
+
+                            // Xabarni yaratish
+                            String successMessage = "";
                             if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText("📅 Sana muvaffaqiyatli yangilandi"); // "📅" for date
+                                successMessage = "📅 Sana muvaffaqiyatli yangilandi\n";
                             } else if (foundUser.getLanguage().equals("ru")) {
-                                sendMessage.setText("📅 Дата успешно обновлена"); // "📅" for date
+                                successMessage = "📅 Дата успешно обновлена\n";
                             }
 
-                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
-                            for (Route_Driver routeDriver2 : routeDriverRepo.findAll()) {
-                                if (userIds.contains(routeDriver2.getUser().getId())) {
-                                    if (foundUser.getLanguage().equals("uz")) {
-                                        sendMessage.setText(
-                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
-                                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver2.getCountSide() + " \n" +
-                                                        "💲 Narxi: " + routeDriver2.getPrice() + " so'm \n" +
-                                                        "📅 Sana: " + routeDriver2.getDay() + "\n" +
-                                                        "⏰ Soat: " + routeDriver2.getHour()
-                                        );
-                                    } else if (foundUser.getLanguage().equals("ru")) {
-                                        sendMessage.setText(
-                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
-                                                        "🪑 Количество вакансий: " + routeDriver2.getCountSide() + " \n" +
-                                                        "💲 Цена: " + routeDriver2.getPrice() + " сум \n" +
-                                                        "📅 Дата: " + routeDriver2.getDay() + "\n" +
-                                                        "⏰ Час: " + routeDriver2.getHour()
-                                        );
-                                    }
-
-                                    sendMessage.setReplyMarkup(directionData(routeDriver2.getId(), foundUser));
-                                    execute(sendMessage);
-                                }
+                            // Xabarni ma'lumot bilan to'ldirish
+                            String routeInfo = "";
+                            if (foundUser.getLanguage().equals("uz")) {
+                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
+                                        "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                        "⏰ Soat: " + routeDriver.getHour();
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                        "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
+                                        "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                        "⏰ Час: " + routeDriver.getHour();
                             }
+
+                            // Birlashtirilgan xabarni yuborish
+                            sendMessage.setText(successMessage + routeInfo);
+                            sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
+                            execute(sendMessage);
+
+                        } else {
+                            sendMessage.setText("❌ Xatolik.");
                             execute(sendMessage);
                         }
+
                     } catch (DateTimeParseException e) {
                         sendMessage.setText("⚠️ Noto'g'ri format. Iltimos, sanani 'kun-oy' formatida kiriting (kun 1-31 gacha, oy 1-12 gacha) va bugungi kundan boshlab yana 2 kun kirita olasiz.");
                         execute(sendMessage);
@@ -484,66 +495,75 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         execute(sendMessage);
                     }
                 }
+
+
                 else if (foundUser.getStatus().equals(Status.NEW_TIME)) {
                     System.out.println("kirdi");
                     System.out.println(id);
                     String time = message.getText().trim();
                     Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
                     try {
-                        Route_Driver routeDriver1 = byId.get();
-                        LocalDate day = routeDriver1.getDay();
-                        validateTime(time, String.valueOf(day),foundUser);
                         if (byId.isPresent()) {
                             Route_Driver routeDriver = byId.get();
+                            LocalDate day = routeDriver.getDay();
+
+                            // Vaqtni tekshirish
+                            validateTime(time, String.valueOf(day), foundUser);
+
+                            // Soatni yangilash
                             routeDriver.setHour(time);
                             routeDriverRepo.save(routeDriver);
+
+                            // Xabar matnini bir marta yaratish
+                            String successMessage = "";
                             if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText("📲 Soat muvaffaqiyatli yangilandi");
+                                successMessage = "📲 Soat muvaffaqiyatli yangilandi\n";
                             } else if (foundUser.getLanguage().equals("ru")) {
-                                sendMessage.setText("📲 Часы успешно обновлены");
+                                successMessage = "📲 Часы успешно обновлены\n";
                             }
 
-                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
-                            for (Route_Driver routeDriver2 : routeDriverRepo.findAll()) {
-                                if (userIds.contains(routeDriver2.getUser().getId())) {
-                                    if (foundUser.getLanguage().equals("uz")) {
-                                        sendMessage.setText(
-                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
-                                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver2.getCountSide() + " \n" +
-                                                        "💲 Narxi: " + routeDriver2.getPrice() + " so'm \n" +
-                                                        "📅 Sana: " + routeDriver2.getDay() + "\n" +
-                                                        "⏰ Soat: " + routeDriver2.getHour()
-                                        );
-                                    } else if (foundUser.getLanguage().equals("ru")) {
-                                        sendMessage.setText(
-                                                routeDriver2.getFromCity() + " ➡️ " + routeDriver2.getToCity() + "\n" +
-                                                        "🪑 Количество вакансий: " + routeDriver2.getCountSide() + " \n" +
-                                                        "💲 Цена: " + routeDriver2.getPrice() + " so'm \n" +
-                                                        "📅 Дата: " + routeDriver2.getDay() + "\n" +
-                                                        "⏰ Час: " + routeDriver2.getHour()
-                                        );
-                                    }
-
-                                    sendMessage.setReplyMarkup(directionData(routeDriver2.getId(), foundUser));
-                                    execute(sendMessage);
-                                }
+                            // Yo'nalish va ma'lumotlar
+                            String routeInfo = "";
+                            if (foundUser.getLanguage().equals("uz")) {
+                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
+                                        "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                        "⏰ Soat: " + routeDriver.getHour();
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                        "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
+                                        "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                        "⏰ Час: " + routeDriver.getHour();
                             }
+
+                            // Birlashtirilgan xabarni yuborish
+                            sendMessage.setText(successMessage + routeInfo);
+                            sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
                             execute(sendMessage);
+
                         } else {
+                            // Ma'lumot topilmagan holda xabar
                             if (foundUser.getLanguage().equals("uz")) {
                                 sendMessage.setText("❌ Xatolik mavjud.");
                             } else if (foundUser.getLanguage().equals("ru")) {
                                 sendMessage.setText("❌ Ошибка существует.");
                             }
+                            execute(sendMessage);
                         }
+
                     } catch (DateTimeParseException e) {
+                        // Noto'g'ri vaqt formati uchun xabar
                         sendMessage.setText("⚠️ Noto'g'ri vaqt formati kiritildi. Faqat soat va minutni kiriting, masalan '14:30'.");
                         execute(sendMessage);
                     } catch (Exception e) {
+                        // Umumiy xatolik uchun xabar
                         sendMessage.setText("❌ Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
                         execute(sendMessage);
                     }
                 }
+
                 else if (foundUser.getStatus().equals(Status.SET_GO_MONEY)) {
                     try {
                         foundUser.setStatus(Status.SET_DAY_MONTH);
@@ -657,7 +677,7 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
 
                             }
 
-                            sendMessage.setReplyMarkup(directions());
+                            sendMessage.setReplyMarkup(directions(foundUser));
                             execute(sendMessage);
                             driver_data = new String[6];
                         } else {
@@ -674,7 +694,7 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
             else if (message.hasContact()) {
                 // Save the message ID of the contact message to delete it later
                 int contactMessageId = message.getMessageId();
-phoneNumber=message.getContact().getPhoneNumber();
+
                 // Get user contact details
                 String phoneNumber = message.getContact().getPhoneNumber();
                 String firstName = message.getContact().getFirstName();
@@ -683,11 +703,16 @@ phoneNumber=message.getContact().getPhoneNumber();
 
                 if (lastName == null || lastName.isEmpty()) {
                     fullName = firstName;
+                    foundUser.setFullName(fullName);
+
                 } else {
-                    fullName = firstName + " " + lastName;  // Corrected from 'familiya' to 'lastName'
+                    fullName = firstName + " " + lastName;
+                    foundUser.setFullName(fullName);
+
                 }
 
                 foundUser.setStatus(Status.DIRECTIONS);
+                foundUser.setPhoneNumber(message.getContact().getPhoneNumber());
                 userRepo.save(foundUser);
 
                 // Send welcome message and role selection buttons
@@ -695,8 +720,8 @@ phoneNumber=message.getContact().getPhoneNumber();
                     sendMessage.setText("Assalom eleykum botimizga xush kelibsiz! \uD83D\uDC4B\n" +
                             "Pastdagi knopkalardan birini tanlang. ⬇️ Siz haydovchimi \uD83D\uDE95 yoki yo'lovchi \uDDF3?");
                 } else if (foundUser.getLanguage().equals("ru")) {
-                    sendMessage.setText("Здравствуйте и добро пожаловать в наш бот! \\uD83D\\uDC4B\\n\" +\n" +
-                            " «Выберите одну из кнопок ниже. ⬇\uFE0F Вы водитель \\uD83D\\uDE95 или пассажир \\uDDF3?");
+                    sendMessage.setText("Здравствуйте и добро пожаловать в наш бот! \uD83D\uDC4B\n\" +\n" +
+                            " «Выберите одну из кнопок ниже. ⬇\uFE0F Вы водитель \uD83D\uDE95 или пассажир \uDDF3?");
                 }
                 sendMessage.setReplyMarkup(selectInlineRoleButtons(chatId));
                 execute(sendMessage);
@@ -735,7 +760,8 @@ phoneNumber=message.getContact().getPhoneNumber();
                 user.setLanguage("uz");
                 userRepo.save(user);
                 sendMessage.setText("☎️ Kontakkingizni yuboring ");
-                sendMessage.setReplyMarkup(genContactButtons(user));  // Corrected to use the 'language' variable
+                sendMessage.setReplyMarkup(genContactButtons(user));
+                // Corrected to use the 'language' variable
 
                 // Send the message with the contact button and store the message ID for later deletion
                 Message executedMessage = execute(sendMessage);
@@ -755,10 +781,25 @@ phoneNumber=message.getContact().getPhoneNumber();
                 user.setStatus(Status.SET_FROM);
                 user.setLanguage("uz");
                 userRepo.save(user);
+                Route_Driver byUser = routeDriverRepo.findByUser(user);
+                if(byUser!=null){
 
 
+                    sendMessage.setText(
+                            byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
+                                    "🛋️ Bo'sh-jo'ylar soni: " + byUser.getCountSide() + "\n" +
+                                    "💰 Narxi: " + byUser.getPrice() + " so'm\n" +
+                                    "📅  Sana" + byUser.getDay() + " ⏰ " + byUser.getHour()
+                    );
+                    sendMessage.setReplyMarkup(directionData(byUser.getId(), user));
+
+
+
+                }else{
                     sendMessage.setText("🗺️ Yo'nalishingizni kiriting \n 📍 Qayerdan?");
                     sendMessage.setReplyMarkup(fromCitysButtons(user));
+                }
+
 
                 execute(sendMessage);
             }
@@ -769,16 +810,28 @@ phoneNumber=message.getContact().getPhoneNumber();
                 user.setStatus(Status.SET_FROM);
                 user.setLanguage("ru");
                 userRepo.save(user);
+                Route_Driver byUser1 = routeDriverRepo.findByUser(user);
+                if(byUser1!=null){
+ sendMessage.setText(
+                            byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
+                                    "🛋️ Количество вакансий: " + byUser.getCountSide() + "\n" +
+                                    "💰 Цена: " + byUser.getPrice() + " so'm\n" +
+                                    "📅  Дата" + byUser.getDay() + " ⏰ " + byUser.getHour()
+                    );
+                    sendMessage.setReplyMarkup(directionData(byUser.getId(), user));
+
+
+                }else {
                     sendMessage.setText("🗺️ Введите пункт назначения\n 📍Откуда?");
                     sendMessage.setReplyMarkup(fromCitysButtons(user));
+                }
+
 
 
                 execute(sendMessage);
             }
             else if (data.equals("Passengers")) {
                 user.setStatus(Status.SET_CITY_FROM_SAVE);
-                user.setFullName(fullName);
-                user.setPhoneNumber(phoneNumber);
                 List<Role> roles = new ArrayList<>();
                 Role driverRole = roleRepo.findByName("ROLE_USER");
                 if (driverRole == null) {
@@ -946,45 +999,46 @@ phoneNumber=message.getContact().getPhoneNumber();
                     Route_Driver routeDriver = routeDrivers.get(count);
                     count++;
 
-                    String carImgFileName = routeDriver.getUser().getCarImg();
-                    String basePath = "C:/Users/user/Desktop/Taxi_project/backend/files/";
-                    String fullPath = basePath + carImgFileName.trim();
-                    File file = new File(fullPath);
+//                    String carImgFileName = routeDriver.getUser().getCarImg();
+//                    String basePath = "C:/Users/user/Desktop/Taxi_project/backend/files/";
+//                    String fullPath = basePath + carImgFileName.trim();
+//                    File file = new File(fullPath);
 
-                    if (file.exists()) {
-                        SendPhoto sendPhoto = new SendPhoto();
-                        sendPhoto.setChatId(chatId);
-                        sendPhoto.setPhoto(new InputFile(file));
-                        execute(sendPhoto);
-                    } else {
-                        sendMessage.setChatId(chatId);
-                        if(user.getLanguage().equals("uz")){
-                            sendMessage.setText("Rasmni yuklashda xatolik yuz berdi: noto'g'ri URL yoki fayl manzili.");
+//                    if (file.exists()) {
+//                        SendPhoto sendPhoto = new SendPhoto();
+//                        sendPhoto.setChatId(chatId);
+//                        sendPhoto.setPhoto(new InputFile(file));
+//                        execute(sendPhoto);
+//                    }
+//                    else {
+//                        sendMessage.setChatId(chatId);
+//                        if(user.getLanguage().equals("uz")){
+//                            sendMessage.setText("Rasmni yuklashda xatolik yuz berdi: noto'g'ri URL yoki fayl manzili.");
+//
+//                        }else if(user.getLanguage().equals("ru")){
+//                            sendMessage.setText("При загрузке изображения произошла ошибка: неверный URL-адрес или местоположение файла.");
+//                        }
+//                        execute(sendMessage);
+//                        return;
+//                    }
 
-                        }else if(user.getLanguage().equals("ru")){
-                            sendMessage.setText("При загрузке изображения произошла ошибка: неверный URL-адрес или местоположение файла.");
-                        }
-                        execute(sendMessage);
-                        return;
-                    }
-
-
-                    Long chatId1 = routeDriver.getUser().getChatId();
+                    Long chatId2 = routeDriver.getUser().getChatId();
                     if(user.getLanguage().equals("uz")){
                         sendMessage.setText(
                                 "Telefon raqami: " + routeDriver.getUser().getPhoneNumber() + " \n" +
                                         "Sana: " + routeDriver.getDay() + "\n" +
                                         "Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
                                         "Narxi: " + routeDriver.getPrice() + " So'm");
-                    }else if(user.getLanguage().equals("ru")){
+                    }
+                    else if(user.getLanguage().equals("ru")){
                         sendMessage.setText(
-                                "Номер телефона: " + routeDriver.getUser().getPhoneNumber() + " \n" +
+                                        "Номер телефона: " + routeDriver.getUser().getPhoneNumber() + " \n" +
                                         "Дата: " + routeDriver.getDay() + "\n" +
                                         "Пустое число радости: " + routeDriver.getCountSide() + " ta\n" +
                                         "Цена: " + routeDriver.getPrice() + " So'm");
                     }
 
-                    sendMessage.setReplyMarkup(Passsenger(user));
+                    sendMessage.setReplyMarkup(Passsenger(user, chatId2));
                     execute(sendMessage);
                 }
             }
@@ -1016,58 +1070,73 @@ phoneNumber=message.getContact().getPhoneNumber();
                 }
             }
             else if (data.startsWith("comment")) {
-                driver_chatId_comment=data.split(":");
+                // Extract the part after "comment:"
+                String[] splitData = data.split(":");
 
-                Optional<User> byChatId = userRepo.findByChatId(chatId);
-                User user2 = byChatId.get();
-                List<UUID> passengerId = Collections.singletonList(user2.getId());
-                System.out.println(passengerId);
+                // Assuming the second part contains the chatId (numeric value)
+                if (splitData.length > 1) {
+                    user.setCommen_id( splitData[1].trim());  // Trim to remove any extra spaces
+                    System.out.println(user.getCommen_id());
 
-                if (driver_chatId_comment.length > 1) {
-                    Optional<User> driverIdData = userRepo.findByChatId(Long.valueOf(driver_chatId_comment[1]));
-                    if (driverIdData.isPresent()) {
-                        Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(driverIdData.get()));
+                    Optional<User> byChatId = userRepo.findByChatId(chatId);
+                    User user2 = byChatId.get();
+                    List<UUID> passengerId = Collections.singletonList(user2.getId());
 
-                        if (byUser != null && byUser.getPassenger() != null && byUser.getPassenger().equals(passengerId)) {
-                          if(user.getLanguage().equals("uz")){
-                              sendMessage.setText("✍\uFE0F Haydovchiga fikr qoldiring");
-                          }else if(user.getLanguage().equals("ru")){
-                              sendMessage.setText("✍\uFE0F Оставьте идею водителю  ");
+                    System.out.println("sa" + user.getCommen_id());
 
-                          }
-                            user.setStatus(Status.COMMENT_CREATE);
-                            userRepo.save(user);
-                            execute(sendMessage);
-                        } else {
-                            if(user.getLanguage().equals("uz")){
-                                sendMessage.setText("\uD83D\uDEAB Siz ni oldin haydovchi ruxsat berish kerak");
+                    if (!user.getCommen_id().isEmpty()) {
+                        try {
+                            // Parse the extracted numeric chatId
+                            Long extractedChatId = Long.valueOf(user.getCommen_id());
 
-                            }else if(user.getLanguage().equals("ru")){
-                                sendMessage.setText("\uD83D\uDEAB Вам нужно разрешить вам допустить");
+                            Optional<User> driverIdData = userRepo.findByChatId(extractedChatId);
+                            if (driverIdData.isPresent()) {
+                                Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(driverIdData.get()));
 
+                                if (byUser != null && byUser.getPassenger() != null && byUser.getPassenger().equals(passengerId)) {
+                                    if (user.getLanguage().equals("uz")) {
+                                        sendMessage.setText("✍\uFE0F Haydovchiga fikr qoldiring");
+                                    } else if (user.getLanguage().equals("ru")) {
+                                        sendMessage.setText("✍\uFE0F Оставьте идею водителю");
+                                    }
+                                    user.setStatus(Status.COMMENT_CREATE);
+                                    userRepo.save(user);
+                                    execute(sendMessage);
+                                } else {
+                                    if (user.getLanguage().equals("uz")) {
+                                        sendMessage.setText("\uD83D\uDEAB Sizni oldin haydovchi ruxsat berishi kerak");
+                                    } else if (user.getLanguage().equals("ru")) {
+                                        sendMessage.setText("\uD83D\uDEAB Вам нужно разрешение от водителя");
+                                    }
+                                    execute(sendMessage);
+                                }
+                            } else {
+                                if (user.getLanguage().equals("uz")) {
+                                    sendMessage.setText("\uD83D\uDE97 Haydovchi topilmadi.");
+                                } else if (user.getLanguage().equals("ru")) {
+                                    sendMessage.setText("\uD83D\uDE97 Водитель не найден.");
+                                }
+                                execute(sendMessage);
+                            }
+                        } catch (NumberFormatException e) {
+                            // Handle invalid numeric value for chatId
+                            if (user.getLanguage().equals("uz")) {
+                                sendMessage.setText("❌ Xato: noto'g'ri chatId formati.");
+                            } else if (user.getLanguage().equals("ru")) {
+                                sendMessage.setText("❌ Ошибка: неверный формат chatId.");
                             }
                             execute(sendMessage);
                         }
                     } else {
-                        if(user.getLanguage().equals("uz")){
-                            sendMessage.setText("\uD83D\uDE97  Haydovchi topilmadi.");
-                        }else if(user.getLanguage().equals("ru")){
-                            sendMessage.setText("\uD83D\uDE97  Вам нужно разрешить вам допустить");
-
+                        if (user.getLanguage().equals("uz")) {
+                            sendMessage.setText("❌ Xato: noto'g'ri format.");
+                        } else if (user.getLanguage().equals("ru")) {
+                            sendMessage.setText("❌ Ошибка: неверный формат.");
                         }
                         execute(sendMessage);
                     }
-                } else {
-                    if(user.getLanguage().equals("uz")){
-                        sendMessage.setText(" ❌ Xato: noto'g'ri format.");
-                    }else if(user.getLanguage().equals("ru")){
-                        sendMessage.setText(" ❌ Ошибка: неверный формат.");
-                    }
-                    execute(sendMessage);
                 }
-
             }
-
             else if(data.equals("ha")) {
                 Optional<User> userOptional1 = userRepo.findByChatId(chatId);
 
@@ -1106,7 +1175,6 @@ phoneNumber=message.getContact().getPhoneNumber();
                                                         "📅  Дата" + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
                                         );
                                     }
-
 
                                     sendMessage.setChatId(chatId);
                                     sendMessage.setReplyMarkup(directionData(routeDriver.getId(),user ));
@@ -1274,65 +1342,76 @@ phoneNumber=message.getContact().getPhoneNumber();
                 }
             }
 
-//            else if (user.getLanguage().equals("uz")) {
-//                Optional<User> byChatId = userRepo.findByChatId(chatId);
-//                if (byChatId.isPresent()) {
-//                    Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
-//
-//                    if (byUser != null) { // Ensure byUser is not null
-//                        if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger)) {
-//                            byUser.getPassenger().remove(idPassenger);
-//                            Integer countSide = byUser.getCountSide();
-//                            byUser.setCountSide(countSide+1);
-//                            routeDriverRepo.save(byUser);
-//
-//                            sendMessage.setChatId(chatId);
-//                            if(user.getLanguage().equals("uz")){
-//                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
-//                            }else if(user.getLanguage().equals("ru")){
-//                                sendMessage.setText("✅ Вы удалили пассажира");
-//
-//                            }
-//
-//                            execute(sendMessage);
-//
-//                            DeleteMessage deleteMessage = new DeleteMessage();
-//                            deleteMessage.setChatId(chatId);
-//                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-//                            band_delete_data[1] = "";
-//                            execute(deleteMessage);
-//                        } else {
-//                            sendMessage.setChatId(chatId);
-//                            if(user.getLanguage().equals("uz")){
-//                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
-//                            }else if(user.getLanguage().equals("ru")){
-//                                sendMessage.setText("✅ Вы удалили пассажира");
-//
-//                            }
-//                            execute(sendMessage);
-//
-//                            // Only delete message if it was previously set
-//                            if (!band_delete_data[1].isEmpty()) {
-//                                DeleteMessage deleteMessage = new DeleteMessage();
-//                                deleteMessage.setChatId(chatId);
-//                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-//                                band_delete_data[1] = "";
-//                                execute(deleteMessage);
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    sendMessage.setChatId(chatId);
-//                    if(user.getLanguage().equals("uz")){
-//                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
-//
-//                    }else if(user.getLanguage().equals("ru")){
-//                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
-//
-//                    }
-//                    execute(sendMessage);
-//                }
-//            }
+
+            else if (data.equals("yo'q")) {
+                Optional<User> byChatId = userRepo.findByChatId(chatId);
+                if (byChatId.isPresent()) {
+                    Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
+
+                    if (byUser != null) { // Ensure byUser is not null
+                        if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger)) {
+                            byUser.getPassenger().remove(idPassenger);
+                            Integer countSide = byUser.getCountSide();
+                            byUser.setCountSide(countSide+1);
+                            routeDriverRepo.save(byUser);
+
+                            sendMessage.setChatId(chatId);
+                            if(user.getLanguage().equals("uz")){
+                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
+                            }else if(user.getLanguage().equals("ru")){
+                                sendMessage.setText("✅ Вы удалили пассажира");
+
+                            }
+
+                            execute(sendMessage);
+
+                            DeleteMessage deleteMessage = new DeleteMessage();
+                            deleteMessage.setChatId(chatId);
+                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+                            band_delete_data[1] = "";
+                            execute(deleteMessage);
+                        } else {
+                            sendMessage.setChatId(chatId);
+                            if(user.getLanguage().equals("uz")){
+                                sendMessage.setText("✅ Siz yo'lovchini o'chirdiz");
+                            }else if(user.getLanguage().equals("ru")){
+                                sendMessage.setText("✅ Вы удалили пассажира");
+
+                            }
+                            execute(sendMessage);
+
+                            // Only delete message if it was previously set
+                            if (!band_delete_data[1].isEmpty()) {
+                                DeleteMessage deleteMessage = new DeleteMessage();
+                                deleteMessage.setChatId(chatId);
+                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+                                band_delete_data[1] = "";
+                                execute(deleteMessage);
+                            }
+                        }
+                    } else {
+                        sendMessage.setChatId(chatId);
+                        if(user.getLanguage().equals("uz")){
+                            sendMessage.setText("🚗 Haydovchi topilmadi.");
+
+                        }else if(user.getLanguage().equals("ru")){
+                            sendMessage.setText("🚗 Драйвер не найден.");
+
+                        }
+                        execute(sendMessage);
+                    }
+                } else {
+                    sendMessage.setChatId(chatId);
+                    if(user.getLanguage().equals("uz")){
+                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
+
+                    }else if(user.getLanguage().equals("ru")){
+                        sendMessage.setText("👤 Foydalanuvchi topilmadi.");
+
+                    }
+                    execute(sendMessage);
+                }
+            }
 
 
             if (user.getStatus().equals(Status.SET_TO)) {
@@ -1542,10 +1621,10 @@ phoneNumber=message.getContact().getPhoneNumber();
         return new InlineKeyboardMarkup(rows);
     }
 
-    private InlineKeyboardMarkup Passsenger(User user) {
-
+    private InlineKeyboardMarkup Passsenger(User user, Long id) {
+        System.out.println(id);
+        System.out.println(this.id);
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if(user.getLanguage().equals("uz")){
@@ -1553,7 +1632,6 @@ phoneNumber=message.getContact().getPhoneNumber();
 
         }else if(user.getLanguage().equals("ru")){
             button1.setText("📌Бронирование"); // "📌" for 'Book'
-
         }
         button1.setCallbackData("band:" + id);
         firstRow.add(button1);
@@ -1563,7 +1641,6 @@ phoneNumber=message.getContact().getPhoneNumber();
         InlineKeyboardButton buttonp = new InlineKeyboardButton();
         if(user.getLanguage().equals("uz")){
             buttonp.setText("👤 Haydovchini lichkasiga o'tish"); // "👤" for 'Go to driver's chat'
-
         }else if(user.getLanguage().equals("ru")){
             buttonp.setText("👤 Перейти на водительское удостоверение"); // "👤" for 'Go to driver's chat'
 
@@ -1579,9 +1656,8 @@ phoneNumber=message.getContact().getPhoneNumber();
 
         }else if(user.getLanguage().equals("ru")){
             button2.setText("➡️ Следующий"); // "➡️" for 'Next'
-
         }
-        button2.setCallbackData("next:" + id);
+        button2.setCallbackData("next:" + this.id);
         secondRow.add(button2);
         rows.add(secondRow);
 
@@ -1865,13 +1941,13 @@ phoneNumber=message.getContact().getPhoneNumber();
         return new InlineKeyboardMarkup(rows);
     }
 
-    private ReplyKeyboardMarkup directions() {
+    private ReplyKeyboardMarkup directions(User foundUser) {
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
         KeyboardButton button1 = new KeyboardButton();
-        if (language.equals("uz")) {
+        if (foundUser.getLanguage().equals("uz")) {
             button1.setText("🗺️ Yo'nalishlarim"); // Uzbek: "My Routes"
-        } else if (language.equals("ru")) {
+        } else if (foundUser.getLanguage().equals("ru")) {
             button1.setText("🗺️ Мои маршруты"); // Russian: "My Routes"
         }
         row1.add(button1);
