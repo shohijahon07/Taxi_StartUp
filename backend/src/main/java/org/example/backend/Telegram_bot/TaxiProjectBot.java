@@ -51,13 +51,13 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "6995954341:AAFa0pZzNkGS2NJ0VDuMDO0K7Jlqwgs7-jE";
+        return "7255093778:AAFVC6VNDj2ZxAY8d_OrIE37BxxJEFsLux4";
     }
 
     
     @Override
     public String getBotUsername() {
-        return "jonkatoychoq_bot";
+        return "shift_taxi_bot";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -90,7 +90,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 for (FromCity fromCity : fromCityRepo.findAll()) {
                     name = fromCity.getName();
                 }
-
+//  Passenger  page
                 if (message.getText().equalsIgnoreCase("/start") && foundUser.getIsDriver().equals(false)) {
                     sendMessage.setText("Iltimos tilni tanlang! Пожалуйста, выберите язык!");
                     sendMessage.setReplyMarkup(selectLanguageButtons());
@@ -108,7 +108,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     }
                     sendMessage.setReplyMarkup(toCitysButtonsReply());
                     sendMessage.setChatId(chatId);
-                    execute(sendMessage);
+                    Message execute = execute(sendMessage);
+                    band_delete_data[1]= String.valueOf(execute.getMessageId());
                 }
                 else if (foundUser.getStatus().equals(Status.GET_PASSENGER_PATH)) {
                     System.out.println(driver_data_path[0]);
@@ -136,49 +137,63 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             // After sending the photo, prepare the follow-up message
                             Long chatId1 = routeDriver.getUser().getChatId();
                             if(foundUser.getLanguage().equals("uz")){
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                                String formattedDate = routeDriver.getDay().format(formatter);
+
                                 sendMessage.setText(
                                         "📱 Telefon raqami: " + routeDriver.getUser().getPhoneNumber() + " \n" +
-                                                "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                                "📅 Sana: " + formattedDate + "\n" +
                                                 "⏰ Soati: " + routeDriver.getHour() + "\n" +
                                                 "🔢 Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
-                                                "💵 Narxi: " + routeDriver.getPrice() + " So'm");
+                                                "💵 Narxi: " + routeDriver.getPrice() + " So'm"
+                                );
+
                                 sendMessage.setReplyMarkup(Passsenger(foundUser,chatId1));
 
                             }
                             else if(foundUser.getLanguage().equals("ru")) {
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("ru"));
+                                String formattedDate = routeDriver.getDay().format(formatter);
                                 sendMessage.setText(
                                         "📱 Номер телефона: " + routeDriver.getUser().getPhoneNumber() + " \n" +
                                                 "📅 Дата: " + routeDriver.getDay() + "\n" +
-                                                "⏰ Час: " + routeDriver.getHour() + "\n" +
+                                                "⏰ Час: " + formattedDate + "\n" +
                                                 "🔢 Количество мест: " + routeDriver.getCountSide() + " ta\n" +
                                                 "💵 Цена: " + routeDriver.getPrice() + " So'm");
                                 sendMessage.setReplyMarkup(Passsenger(foundUser, chatId1));
 
                             }
 
-                            sendMessage.setChatId(chatId);  // Ensure chatId is set for the text message
-                            execute(sendMessage);  // Send the text message with details
-
-
-
+                            sendMessage.setChatId(chatId);
+                            execute(sendMessage);
+                            DeleteMessage deleteMessage = new DeleteMessage();
+                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+                            deleteMessage.setChatId(chatId);
+                            execute(deleteMessage);
+                            band_delete_data[1]="";
                     } else {
                         foundUser.setStatus(Status.BACK);
                         userRepo.save(foundUser);
                         sendMessage.setChatId(chatId);
                         if(foundUser.getLanguage().equals("uz")){
-                            sendMessage.setText("🚫 Bunday yo'lga hozircha haydovchi yo'q");
+                            sendMessage.setText("🚫 Yo’nalish bo’yicha qatnovlar mavjud emas");
 
                         }else if(foundUser.getLanguage().equals("ru")){
-sendMessage.setText("🚫 На этой дороге пока нет водителя");
+sendMessage.setText("🚫 По данному направлению услуг нет.");
                         }
                         sendMessage.setReplyMarkup(NotPath(foundUser));
                         execute(sendMessage);
+
+                        DeleteMessage deleteMessage = new DeleteMessage();
+                        deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+                        deleteMessage.setChatId(chatId);
+
+                        execute(deleteMessage);
                     }
                 }
                 else if (foundUser.getStatus().equals(Status.COMMENT_CREATE)) {
+                    foundUser.setStatus(Status.HOME_PAGE);
                     String chatIdStr = foundUser.getCommen_id();
-
-                    // Check if chatIdStr is a valid number
                     if (isNumeric(chatIdStr)) {
                         Optional<User> byChatId1 = userRepo.findByChatId(Long.valueOf(chatIdStr));
                         chatIdStr="";
@@ -190,19 +205,24 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                             User user = byChatId.orElse(null);
                             if (user != null) {
                                 if(foundUser.getLanguage().equals("uz")){
+
                                     String idPassenger = user.getFullName();
                                     String name = message.getText();
                                     System.out.println(idPassenger);
                                     Comment comment = new Comment(name, idPassenger, new User(driver_id));
                                     commentRepo.save(comment);
-                                    sendMessage.setText("✅ Sizning izohingiz qo'shildi"); // "✅" for confirmation
 
+
+
+                                    sendMessage.setText("✅ Sizning izohingiz qo'shildi"); // "✅" for confirmation
                                 }else if(foundUser.getLanguage().equals("ru")){
                                     String idPassenger = user.getFullName();
                                     String name = message.getText();
                                     Comment1 comment1 = new Comment1(name, idPassenger, new User(driver_id));
                                     commentRepo1.save(comment1);
                                     sendMessage.setText("✅ Ваш комментарий добавлен"); // "✅" for confirmation
+
+                                    sendMessage.setReplyMarkup(NotPath2(foundUser));
 
                                 }
 
@@ -257,8 +277,8 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                 Optional<User> byChatId = userRepo.findByChatId(chatId);
                 List<Route_Driver> all = routeDriverRepo.findAll();
 
-
-                if (message.getText().equalsIgnoreCase("/start") && foundUser.getIsDriver().equals(true)) {
+//driver page
+                if (message.getText().equalsIgnoreCase("/start") & foundUser.getIsDriver().equals(true)&foundUser.getLanguage()==null&foundUser.getLanguage()==null) {
                     sendMessage.setText("Iltimos tilni tanlang! Пожалуйста, выберите язык!");
                     sendMessage.setReplyMarkup(selectLanguageButtons());
                     sendMessage.setChatId(chatId);
@@ -297,8 +317,6 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         }
                     }
                 }
-
-
                 else if (foundUser.getStatus().equals(Status.NEW_NUMBER)) {
                     System.out.println("kirdi");
                     String countS = message.getText();
@@ -383,8 +401,6 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         execute(sendMessage);
                     }
                 }
-
-
                 else if (foundUser.getStatus().equals(Status.NEW_PRICE)) {
                     String countS = message.getText();
                     Optional<Route_Driver> byId = routeDriverRepo.findById(UUID.fromString(id));
@@ -440,7 +456,6 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         execute(sendMessage);
                     }
                 }
-
                 else if (foundUser.getStatus().equals(Status.NEW_DAY)) {
                     try {
                         System.out.println("kirdi");
@@ -495,8 +510,6 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         execute(sendMessage);
                     }
                 }
-
-
                 else if (foundUser.getStatus().equals(Status.NEW_TIME)) {
                     System.out.println("kirdi");
                     System.out.println(id);
@@ -563,7 +576,6 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         execute(sendMessage);
                     }
                 }
-
                 else if (foundUser.getStatus().equals(Status.SET_GO_MONEY)) {
                     try {
                         foundUser.setStatus(Status.SET_DAY_MONTH);
@@ -641,7 +653,6 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                         execute(sendMessage);
                     }
                 }
-
                 else if (foundUser.getStatus().equals(Status.SET_TIME)) {
                     try {
                         List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
@@ -690,13 +701,27 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                     }
 
                 }
+
+                if(foundUser.getStatus().equals(Status.HOME_PAGE)){
+                    foundUser.setStatus(Status.SET_CITY_FROM_SAVE);
+                   if(foundUser.getLanguage().equals("uz")){
+                       sendMessage.setText("Qayerdan \uD83C\uDF0D");
+                   }else if(foundUser.getLanguage().equals("ru")){
+                       sendMessage.setText("Откуда \uD83C\uDF0D");
+                   }
+                   sendMessage.setReplyMarkup(fromCitysButtonsReply());
+                   sendMessage.setChatId(chatId);
+                   execute(sendMessage);
+                }
+
             }
             else if (message.hasContact()) {
                 // Save the message ID of the contact message to delete it later
                 int contactMessageId = message.getMessageId();
 
                 // Get user contact details
-                String phoneNumber = message.getContact().getPhoneNumber();
+                String phoneNumber="+";
+                 phoneNumber = message.getContact().getPhoneNumber();
                 String firstName = message.getContact().getFirstName();
                 String lastName = message.getContact().getLastName();
                 String fullName;
@@ -712,7 +737,7 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                 }
 
                 foundUser.setStatus(Status.DIRECTIONS);
-                foundUser.setPhoneNumber(message.getContact().getPhoneNumber());
+                foundUser.setPhoneNumber(phoneNumber);
                 userRepo.save(foundUser);
 
                 // Send welcome message and role selection buttons
@@ -1042,33 +1067,53 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
                     execute(sendMessage);
                 }
             }
-            else if(data.startsWith("band")){
+            else if(data.startsWith("band")) {
+                // Fetch the user by chatId
                 Optional<User> allByChatId = userRepo.findByChatId(chatId);
                 User user1 = allByChatId.get();
-                dataParts = data.split(":");
 
-                idPassenger= user1.getId();
+                // Split the data to extract relevant parts
+                dataParts = data.split(":");
+                idPassenger = user1.getId();
+
                 Optional<User> byChatId2 = userRepo.findByChatId(Long.valueOf(dataParts[1]));
-                if(dataParts.length > 1){
-                    if(byChatId2.get().getLanguage().equals("uz")){
+
+                if(dataParts.length > 1) {
+                    // Check the language of the user and set the message accordingly
+                    if(byChatId2.get().getLanguage().equals("uz")) {
+                        sendMessage.setParseMode("Markdown");
                         sendMessage.setText(
-                                "👤 Siz " + user1.getFullName() + " yo'lovchini qabul qilasizmi? \n" +
-                                        "📞 Telefon raqami: " + user1.getPhoneNumber()
+                                "👤 Siz [" + user1.getFullName() + "](tg://user?id=" + user1.getChatId() + ") yo'lovchini qabul qilasizmi? \n" +
+                                        "📞 Telefon raqamlar: " + "+" + user1.getPhoneNumber()
                         );
-                    }else if(byChatId2.get().getLanguage().equals("ru")){
-                        sendMessage.setText (
-                                "👤 ты " + user1.getFullName() + " Вы принимаете пассажира? \n" +
-                                        "📞 Номер телефона:" + user1.getPhoneNumber()
+                    } else if(byChatId2.get().getLanguage().equals("ru")) {
+                        sendMessage.setParseMode("Markdown");
+                        sendMessage.setText(
+                                "👤 Ty [" + user1.getFullName() + "](tg://user?id=" + user1.getChatId() + "), Qabul qilyapsizmi? \n" +
+                                        "📞 Nomer telefona : " + "+" + user1.getPhoneNumber()
                         );
                     }
 
-
-                    sendMessage.setReplyMarkup(sendBusy(user));
+                    // Send the message to the driver
+                    sendMessage.setReplyMarkup(sendBusy(user1)); // Adjusted to pass the correct user1 object
                     sendMessage.setChatId(dataParts[1]);
                     Message sentMessage = execute(sendMessage);
-                    band_delete_data[1]= String.valueOf(sentMessage.getMessageId());
+
+                    // Store the message ID for tracking purposes
+                    band_delete_data[1] = String.valueOf(sentMessage.getMessageId());
+
+                    // Send a message to the passenger informing them that the driver will contact them soon
+                    SendMessage passengerMessage = new SendMessage();
+                    passengerMessage.setChatId(String.valueOf(user1.getChatId()));
+                    if(user1.getLanguage().equals("uz")) {
+                        passengerMessage.setText("Sizga  haydovchi  tez orada bog'lanadi.");
+                    } else if(user1.getLanguage().equals("ru")) {
+                        passengerMessage.setText("Водитель свяжется с вами в ближайшее время.");
+                    }
+                    execute(passengerMessage);
                 }
             }
+
             else if (data.startsWith("comment")) {
                 // Extract the part after "comment:"
                 String[] splitData = data.split(":");
@@ -1589,6 +1634,29 @@ sendMessage.setText("🚫 На этой дороге пока нет водит�
 
         }
     }
+    private ReplyKeyboardMarkup NotPath2(User foundUser){
+        List<KeyboardRow> rows = new ArrayList<>();
+        KeyboardRow row1 = new KeyboardRow();
+        KeyboardButton button1 = new KeyboardButton();
+        if(foundUser.getLanguage().equals("uz")){
+            button1.setText("\uD83C\uDFE0  Bosh sahifa");
+
+        }else if(foundUser.getLanguage().equals("ru")){
+            button1.setText("\uD83C\uDFE0  Домашняя страница");
+
+        }
+
+        row1.add(button1);
+
+
+        rows.add(row1);
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(rows);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+
+        return replyKeyboardMarkup;
+    }
+
     private ReplyKeyboardMarkup NotPath(User foundUser){
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
