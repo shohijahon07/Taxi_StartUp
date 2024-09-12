@@ -19,10 +19,12 @@ public class Connection1 {
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID id;
     private String phoneNumber;
+    private String fullName;
     private String message;
 
-    public Connection1(String phoneNumber, String message) {
+    public Connection1(String phoneNumber, String fullName , String message) {
         this.phoneNumber = phoneNumber;
+        this.fullName=fullName;
         this.message = message;
     }
 }

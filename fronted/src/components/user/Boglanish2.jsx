@@ -3,10 +3,22 @@ import React, { useContext } from 'react';
 import rasm from "../../pictures/4.svg";
 import "./boglanish.css"
 import { LanguageContext } from '../language/LanguageContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setForm, saveForm } from '../../redux/slices/Connection';
 function Boglanish2() {
- 
-  const { language } = useContext(LanguageContext);
 
+  const { language } = useContext(LanguageContext);
+  const dispatch = useDispatch();
+  const { form } = useSelector((state) => state.boglanish);
+
+  function handleInputChange(e) {
+    const { id, value } = e.target;
+    dispatch(setForm({ [id]: value }));
+  }
+
+  function handleSave() {
+    dispatch(saveForm({ form, language }));
+  }
   return (
       <div className="modal-body" >
         <div className="modal-header-section">
@@ -27,18 +39,18 @@ function Boglanish2() {
         <h4 className='yozmaSavollarH4'>{language==="1"?"Yozma shaklda murojaatingizni qoldiring":"Оставьте заявку в письменном виде"}</h4>
         <div className="inpgroup">
     <div className="form-floating">
-        <input type="text" className="form-control" id="name" placeholder="Ismizgiz"/>
+        <input type="text" className="form-control" id="name" placeholder="Ismizgiz" value={form.fullName} onChange={handleInputChange}/>
         <label htmlFor="name">{language==="1"?"Ismizgiz":"Ваше имя"}</label>
     </div>
     <div className="form-floating">
-        <input type="text" className="form-control" id="phone" placeholder="Telefon raqamingiz"/>
+        <input type="text" className="form-control" id="phone" placeholder="Telefon raqamingiz" value={form.phoneNumber} onChange={handleInputChange}/>
         <label htmlFor="phone">{language==="1"?"Telefon raqamingiz":"Ваш номер телефона"}</label>
     </div>
     <div className="form-floating">
-        <input type="text" className="form-control" id="message" placeholder="Xabar"/>
+        <input type="text" className="form-control" id="message" placeholder="Xabar" value={form.message} onChange={handleInputChange}/>
         <label htmlFor="message">{language==="1"?"Xabar":"Сообщение"}</label>
     </div>
-    <button className='yonalish'>{language==="1"?"Yo'nalish":"Направление"}</button>
+    <button className='yonalish' onClick={handleSave}>{language==="1"?"Yo'nalish":"Направление"}</button>
 </div>
 
 

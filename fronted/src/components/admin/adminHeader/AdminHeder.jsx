@@ -8,6 +8,7 @@ import { fetchDrivers } from '../../../redux/slices/DriverSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../../language/LanguageContext';
+import Connection from '../Connection';
 
 function AdminHeder() {
   const navigate=useNavigate()
@@ -37,6 +38,7 @@ function AdminHeder() {
         <li  onClick={()=>setRoute('2')}>{language==="1"?"Haydovchilar":"Драйверы"}</li>
         <li  onClick={()=>setRoute('3')}>{language==="1"?"Bildirishnomalar":"Уведомления"} {drivers.length > 0 && <sup>{drivers.length}</sup>}</li>
         <li  onClick={()=>setRoute('4')}>{language==="1"?"Hisobot":"Отчет"}</li>
+        <li  onClick={()=>setRoute('5')}>{language==="1"?"Bog'lanish":"Связь"}</li>
         <li>
         <div className="rightUserHeader120">
                 <select className='form-select' value={language} onChange={(e) => changeLanguage(e.target.value)}>
@@ -50,7 +52,7 @@ function AdminHeder() {
       </ul>
 
       {
-        openRoute==="1"?<RoutesAdmin/>:openRoute==="2"?<DriversAdmin/>:openRoute==="3"?<AdminNotification/>:openRoute==="4"?<Statistics/>:""
+        openRoute==="1"?<RoutesAdmin/>:openRoute==="2"?<DriversAdmin/>:openRoute==="3"?<AdminNotification/>:openRoute==="4"?<Statistics/>:openRoute==="5"?<Connection/>:""
       }
     </div>
   )

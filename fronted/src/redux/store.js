@@ -5,6 +5,7 @@ import toCityReducer from './slices/toCity'
 import fromCityReducer from './slices/fromCity'
 import commentReducer from './slices/CommentSlice'
 import pessengerReducer from './slices/userSlice'
+import connection from './slices/Connection'
 const store = configureStore({
     reducer: {
        
@@ -14,13 +15,14 @@ const store = configureStore({
         fromCity: fromCityReducer,
         comment: commentReducer,
         pessenger: pessengerReducer,
+        boglanish:connection
 
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
 
-                ignoredActions: ['driver/setSelectedFile','driver/setSelectedFile1','driver/setSelectedFile2'],
+                ignoredActions: ['driver/setSelectedFile','driver/setSelectedFile1','driver/setSelectedFile2', 'boglanish/saveForm/fulfilled' ],
                 ignoredPaths: ['driver.selectedFile','driver.selectedFile1','driver.selectedFile2',]
 
 
