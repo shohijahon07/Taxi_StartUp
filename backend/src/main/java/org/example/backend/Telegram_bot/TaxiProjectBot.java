@@ -61,7 +61,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
-    private String[] band_delete_data = new String[2];
+    private String[] band_delete_data = new String[3];
     private  String[] status = new String[6];
     private String name="";
     private String[] dataParts;
@@ -284,9 +284,44 @@ sendMessage.setText("🚫 По данному направлению услуг 
 
 //driver page
                 if (foundUser.getStatus().equals(Status.START)&message.getText().equalsIgnoreCase("/start") & foundUser.getIsDriver().equals(true)) {
-                    sendMessage.setText("Iltimos tilni tanlang! Пожалуйста, выберите язык!");
-                    sendMessage.setReplyMarkup(selectLanguageButtons());
-                    sendMessage.setChatId(chatId);
+                    language = "uz";
+                    System.out.println(language);
+                    foundUser.setStatus(Status.SET_FROM);
+                    userRepo.save(foundUser);
+                    Route_Driver byUser = routeDriverRepo.findByUser(foundUser);
+                    if(byUser!=null){
+
+if(foundUser.getLanguage().equals("uz")){
+    sendMessage.setText(
+            byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
+                    "🛋️ Bo'sh-jo'ylar soni: " + byUser.getCountSide() + "\n" +
+                    "💰 Narxi: " + byUser.getPrice() + " so'm\n" +
+                    "📅  Sana" + byUser.getDay() + " ⏰ " + byUser.getHour()
+    );
+}else if(foundUser.getLanguage().equals("ru")){
+    sendMessage.setText(
+            byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
+                    "🛋️ Количество вакансий: " + byUser.getCountSide() + "\n" +
+                    "💰 Цена: " + byUser.getPrice() + " so'm\n" +
+                    "📅  Дата" + byUser.getDay() + " ⏰ " + byUser.getHour()
+    );
+}
+
+                        sendMessage.setReplyMarkup(directionData(byUser.getId(), foundUser));
+
+
+
+                    }else{
+                        if(foundUser.getLanguage().equals("uz")){
+                            sendMessage.setText("🗺️ Yo'nalishingizni kiriting \n 📍 Qayerdan?");
+
+                        }else if(foundUser.getLanguage().equals("ru")){
+                            sendMessage.setText("🗺️ Введите пункт назначения\n" +
+                                    " \uD83D\uDCCDОткуда?");
+
+                        }
+                        sendMessage.setReplyMarkup(fromCitysButtons(foundUser));
+                    }
                     execute(sendMessage);
                 }
                 else if (foundUser.getStatus().equals(Status.SET_DIRECTIONS)) {
@@ -729,6 +764,10 @@ userRepo.save(foundUser);
                     sendMessage.setReplyMarkup(fromCitysButtons(foundUser));
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
+                    DeleteMessage deleteMessage = new DeleteMessage();
+                    deleteMessage.setMessageId(Integer.valueOf(band_delete_data[2]));
+                    deleteMessage.setChatId(chatId);
+                    execute(deleteMessage);
 
                 }
 
@@ -819,61 +858,8 @@ userRepo.save(foundUser);
                 sendMessage.setReplyMarkup(genContactButtons(user));
                 execute(sendMessage);
             }
-            else if (data.equals("uz") && user.getIsDriver()) {
-                language = "uz";
-                System.out.println(language);
-                user.setStatus(Status.SET_FROM);
-                user.setLanguage("uz");
-                userRepo.save(user);
-                Route_Driver byUser = routeDriverRepo.findByUser(user);
-                if(byUser!=null){
 
 
-                    sendMessage.setText(
-                            byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
-                                    "🛋️ Bo'sh-jo'ylar soni: " + byUser.getCountSide() + "\n" +
-                                    "💰 Narxi: " + byUser.getPrice() + " so'm\n" +
-                                    "📅  Sana" + byUser.getDay() + " ⏰ " + byUser.getHour()
-                    );
-                    sendMessage.setReplyMarkup(directionData(byUser.getId(), user));
-
-
-
-                }else{
-                    sendMessage.setText("🗺️ Yo'nalishingizni kiriting \n 📍 Qayerdan?");
-                    sendMessage.setReplyMarkup(fromCitysButtons(user));
-                }
-
-
-                execute(sendMessage);
-            }
-            else if (data.equals("ru") && user.getIsDriver()) {
-                Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(user));
-                language = "ru";
-                System.out.println(language);
-                user.setStatus(Status.SET_FROM);
-                user.setLanguage("ru");
-                userRepo.save(user);
-                Route_Driver byUser1 = routeDriverRepo.findByUser(user);
-                if(byUser1!=null){
- sendMessage.setText(
-                            byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
-                                    "🛋️ Количество вакансий: " + byUser.getCountSide() + "\n" +
-                                    "💰 Цена: " + byUser.getPrice() + " so'm\n" +
-                                    "📅  Дата" + byUser.getDay() + " ⏰ " + byUser.getHour()
-                    );
-                    sendMessage.setReplyMarkup(directionData(byUser.getId(), user));
-
-
-                }else {
-                    sendMessage.setText("🗺️ Введите пункт назначения\n 📍Откуда?");
-                    sendMessage.setReplyMarkup(fromCitysButtons(user));
-                }
-
-
-
-                execute(sendMessage);
-            }
             else if (data.equals("Passengers")) {
                 user.setStatus(Status.SET_CITY_FROM_SAVE);
                 List<Role> roles = new ArrayList<>();
@@ -1568,8 +1554,7 @@ userRepo.save(foundUser);
                     user.setStatus(Status.HOME_PAGE_DRIVER);
                     userRepo.save(user);
                     Message execute = execute(sendMessage);
-                    band_delete_data[1]= String.valueOf(execute.getMessageId());
-
+                    band_delete_data[2]= String.valueOf(execute.getMessageId());
                     sendMessage.setChatId(chatId.toString());
                     sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                     DeleteMessage deleteMessage = new DeleteMessage();

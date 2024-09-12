@@ -6,7 +6,8 @@ import org.example.backend.entity.Connection1;
 import org.example.backend.entity.Connection2;
 import org.example.backend.repository.ConnectionRepo1;
 import org.example.backend.repository.ConnectionRepo2;
-import org.jvnet.hk2.annotations.Service;
+import org.springframework.stereotype.Service;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
@@ -15,22 +16,20 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConnectionImpl implements ConnectionService{
-    private ConnectionRepo1 connectionRepo1;
-    private ConnectionRepo2 connectionRepo2;
+    private final ConnectionRepo1 connectionRepo1;
+    private final ConnectionRepo2 connectionRepo2;
 
-    public ConnectionImpl(ConnectionRepo1 connectionRepo1) {
-        this.connectionRepo1 = connectionRepo1;
-    }
+
 
     @Override
     public HttpEntity<?> saveConnection(Integer language, ConnectionDto connectionDto) {
         if (language == 1) {
-            Connection1 connection1 = new Connection1(connectionDto.getPhoneNumber(), connectionDto.getMessage());
+            Connection1 connection1 = new Connection1(connectionDto.getPhoneNumber(),connectionDto.getFullName() , connectionDto.getMessage());
             connectionRepo1.save(connection1);
             return ResponseEntity.ok("muvaffaqiyatli qo'shildi");
 
         } else if (language == 2) {
-            Connection2 connection2 = new Connection2(connectionDto.getPhoneNumber(), connectionDto.getMessage());
+            Connection2 connection2 = new Connection2(connectionDto.getPhoneNumber(),connectionDto.getFullName() , connectionDto.getMessage());
             connectionRepo2.save(connection2);
             return ResponseEntity.ok("успешно добавлено");
 

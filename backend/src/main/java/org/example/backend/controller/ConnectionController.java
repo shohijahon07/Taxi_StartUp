@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.ConnectionDto;
 import org.example.backend.service.connection.ConnectionService;
 import org.springframework.http.HttpEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -13,17 +13,18 @@ import java.io.IOException;
 @RequestMapping("/api/connection")
 @RequiredArgsConstructor
 public class ConnectionController {
-    private ConnectionService connectionService;
+
+    private final  ConnectionService connectionService;
 
     @PostMapping()
-//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
     public HttpEntity<?> saveUser(@RequestParam Integer language,@RequestBody ConnectionDto connectionDto) {
         System.out.println(connectionDto);
-        return connectionService.saveConnection(language,connectionDto);
+        connectionService.saveConnection(language,connectionDto);
+        return ResponseEntity.ok("success");
     }
-@GetMapping
-@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping
     public  HttpEntity<?> getConnection(@RequestParam Integer language){
-      return   connectionService.getConnection(language);
+    HttpEntity<?> connection = connectionService.getConnection(language);
+    return ResponseEntity.ok(connection);
 }
 }
