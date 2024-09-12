@@ -25,7 +25,6 @@ const Band_qilish = ({ isOpen, onClose, chatId }) => {
         .unwrap()
         .then(() => {
           toast.success('Yaqin orada haydovchi sizga aloqaga chiqadi!');
-          // Clear the form after successful submission
           dispatch(setPesenger({ name: "", phoneNumber: "", driverChatId: "" }));
           onClose()
         })

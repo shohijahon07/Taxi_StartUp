@@ -3,28 +3,29 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import "./date.css";
 import { LanguageContext } from '../language/LanguageContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActive, setSelectedDate } from '../../redux/slices/toCity';
 
 function DateModal({ minDate, maxDate, onDateSelect, onClose }) {
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [active, setActive] = useState(false);
+    const dispatch=useDispatch()
+    const { selectedDate,active } = useSelector((state) => state.toCity);
     const { language } = useContext(LanguageContext);
 
     useEffect(() => {
-        setActive(true);
+        dispatch(setActive(true));
     }, []);
 
     const handleChange = (date) => {
         if (date) {
             const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-            setSelectedDate(dateOnly);
+            dispatch(setSelectedDate(dateOnly));
             onDateSelect(dateOnly);
             handleClose();
-            console.log(date);
         }
     };
 
     const handleClose = () => {
-        setActive(false);
+        dispatch(setActive(false));
         setTimeout(onClose, 1000); // 1 second delay to allow the closing animation
     };
 

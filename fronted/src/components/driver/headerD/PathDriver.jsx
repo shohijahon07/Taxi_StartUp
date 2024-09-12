@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import DriverHeader from './DriverHeader';
 import './PathDriver.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchToCity } from '../../../redux/slices/toCity';
-import { fetchFromCity } from '../../../redux/slices/fromCity';
+import { fetchToCity, setCurrentOptionType, setSelectedDate, setShowDateModal } from '../../../redux/slices/toCity';
+import { fetchFromCity, setShowFromCityModal, setShowToCityModal, setTranslatedFromCities, setTranslatedToCities } from '../../../redux/slices/fromCity';
 import b7 from "../../../pictures/b7.svg";
 import b12 from "../../../pictures/b12.svg";
 import calendar from "../../../pictures/calendar_org.svg";
@@ -24,28 +24,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import DriverFooter from "./DriverFooter";
 import { MdAttachMoney } from "react-icons/md";
 import apicall from '../../../apicall/apicall';
+import { setUserName } from '../../../redux/slices/DriverSlice';
+import { setMaxDate, setMinDate, setOpenModal, setOpenModal1, setSeatCount } from '../../../redux/slices/CommentSlice';
+import { message } from 'antd';
 function PathDriver() {
-  const [openModal, setOpenModal] = useState(false);
-  const [seatCount, setSeatCount] = useState(false);
-  const [openModal1, setOpenModal1] = useState(false);
-  const { driverRout, routesByDriver, EditButtonId,item1 } = useSelector((state) => state.routes);
-
-  const [showFromCityModal, setShowFromCityModal] = useState(false);
-  const [showToCityModal, setShowToCityModal] = useState(false);
-  const [showDateModal, setShowDateModal] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [hours, setHours] = useState('');
-  const [currentOptionType, setCurrentOptionType] = useState('');
-  const [userName, setUserName] = useState("");
-  const { language } = useContext(LanguageContext);
-  const [translatedFromCities, setTranslatedFromCities] = useState([]);
-  const [translatedToCities, setTranslatedToCities] = useState([]);
-  const { fromCities } = useSelector((state) => state.fromCity);
-  const { toCities } = useSelector((state) => state.toCity);
-
   const dispatch = useDispatch();
-  const [minDate, setMinDate] = useState('');
-  const [maxDate, setMaxDate] = useState('');
+  const { driverRout, routesByDriver, EditButtonId,item1 } = useSelector((state) => state.routes);
+  const { fromCities,translatedFromCities,translatedToCities,showFromCityModal,showToCityModal} = useSelector((state) => state.fromCity);
+  const { toCities,showDateModal,selectedDate,currentOptionType } = useSelector((state) => state.toCity);
+  const { userName } = useSelector((state) => state.driver);
+  const { minDate,maxDate,openModal,seatCount,openModal1 } = useSelector((state) => state.comment);
+  const { language } = useContext(LanguageContext);
+  const [hours, setHours] = useState('');
+
   useEffect(() => {
     dispatch(fetchToCity());
     dispatch(fetchFromCity());
@@ -56,8 +47,8 @@ function PathDriver() {
     const dayAfterTomorrow = new Date(today);
     dayAfterTomorrow.setDate(today.getDate() + 2);
     const formatDateForInput = (date) => date.toISOString().split('T')[0];
-    setMinDate(formatDateForInput(today));
-    setMaxDate(formatDateForInput(dayAfterTomorrow));
+    dispatch(setMinDate(formatDateForInput(today)));
+    dispatch(setMaxDate(formatDateForInput(dayAfterTomorrow)));
   
    
 
@@ -111,9 +102,9 @@ function PathDriver() {
   };
   function getDriver() {
     apicall(`/auth/name`, "GET",null).then((res)=>{
-    setUserName(res.id)
-      setSeatCount(res.count)
-     
+    dispatch(setUserName(res.id))
+      dispatch(setSeatCount(res.count))
+      
     })
 
   }
@@ -175,12 +166,56 @@ function PathDriver() {
     
         return result;
     };
-      const translateFullName = (fullName) => {
-        if (language === '2') {
-            return latinToCyrillic(fullName);
-        }
-        return fullName;
-    };
+    const cyrillicToLatin = (text) => {
+      const cyrillicToLatinMap = {
+          А: 'A',  а: 'a',
+          Б: 'B',  б: 'b',
+          В: 'V',  в: 'v',
+          Г: 'G',  г: 'g',
+          Д: 'D',  д: 'd',
+          Е: 'E',  е: 'e',
+          Ё: 'Yo', ё: 'yo',
+          Ж: 'j', ж: 'j',
+          З: 'Z',  з: 'z',
+          И: 'I',  и: 'i',
+          Й: 'Y',  й: 'y',
+          К: 'K',  к: 'k',
+          Л: 'L',  л: 'l',
+          М: 'M',  м: 'm',
+          Н: 'N',  н: 'n',
+          О: 'O',  о: 'o',
+          П: 'P',  п: 'p',
+          Р: 'R',  р: 'r',
+          С: 'S',  с: 's',
+          Т: 'T',  т: 't',
+          У: 'U',  у: 'u',
+          Ф: 'F',  ф: 'f',
+          Х: 'x', х: 'x',
+          Ц: 's', ц: 's',
+          Ч: 'Ch', ч: 'ch',
+          Ш: 'Sh', ш: 'sh',
+          Щ: 'Sh', щ: 'sh',
+          Ъ: '',   ъ: '',
+          Ы: 'Y',  ы: 'y',
+          Ь: '',   ь: '',
+          Э: 'E',  э: 'e',
+          Ю: 'Yu', ю: 'yu',
+          Я: 'Ya', я: 'ya',
+          ҳ: 'h',h: 'ҳ'
+      };
+  
+      return text.split('').map(char => cyrillicToLatinMap[char] || char).join('');
+  };
+  
+  const translateFullName = (name) => {
+      if (language === '1') {
+          return cyrillicToLatin(name);
+      } else if (language === '2') {
+          return latinToCyrillic(name);
+      }
+      return name;
+  };
+
       
   const translateCity = (cityName) => {
     if (language === '2') {
@@ -204,36 +239,36 @@ function PathDriver() {
   const handleDateSelect = (date) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const formattedDate = date.toLocaleDateString('en-CA', options);
-    setSelectedDate(formattedDate);
+    dispatch(setSelectedDate(formattedDate));
     dispatch(setKoranCourse({ ...driverRout, day: formattedDate }))
   };
   useEffect(() => {
-    setTranslatedFromCities(fromCities.map(city => ({
+    dispatch(setTranslatedFromCities(fromCities.map(city => ({
       ...city,
       name: translateCity(city.name)
-    })));
-    setTranslatedToCities(toCities.map(city => ({
+    }))));
+    dispatch(setTranslatedToCities(toCities.map(city => ({
       ...city,
       name: translateCity(city.name)
-    })));
+    }))));
   }, [fromCities, toCities, language]);
 
 
   const handleOptionSelect = (option) => {
     if (currentOptionType === 'from') {
       dispatch(setKoranCourse({ ...driverRout, fromCity: translateCity1(option) }));
-      setShowFromCityModal(false);
+      dispatch(setShowFromCityModal(false));
     } else if (currentOptionType === 'to') {
       dispatch(setKoranCourse({ ...driverRout, toCity: translateCity1(option) }));
-      setShowToCityModal(false);
+      dispatch(setShowToCityModal(false));
     }
   };
   const openModal3 = () => {
-    setOpenModal(true);
+    dispatch(setOpenModal(true));
     delByDay()
   };
   const openModal4 = () => {
-    setOpenModal1(true);
+    dispatch(setOpenModal1(true));
   };
 
   const handleTimeSelect = (selectedTime) => {
@@ -241,45 +276,57 @@ function PathDriver() {
     const formattedMinute = selectedTime.minute.toString().padStart(2, '0');
     const formattedTime = `${formattedHour}:${formattedMinute}`;
     dispatch(setKoranCourse({ ...driverRout, hour: formattedTime }));
-    setOpenModal(false);
+    dispatch(setOpenModal(false));
+    dispatch(setSeatCount(null))
   };
 
   const handleSeatSelect = (seatCount) => {
     dispatch(setKoranCourse({ ...driverRout, countSide: seatCount }));
-    setOpenModal1(false);
+    dispatch(setOpenModal1(false));
   };
   const saveDepartment = () => {
-
-    if (EditButtonId) {
+    const today = new Date();
+    const dayAfterTomorrow = new Date(today);
+    dayAfterTomorrow.setDate(today.getDate() + 2);
+    const formatDateForInput = (date) => date.toISOString().split('T')[0];
+    const getMinuteToday=today.getHours()*60+today.getMinutes()
+    const getMinuteHours=driverRout.hour.split(':').map(Number)[0]*60+(driverRout.hour.split(':').map(Number))[1]
+   if (!driverRout.fromCity||!driverRout.toCity||!driverRout.countSide||!driverRout.day||!driverRout.hour||!driverRout.price) {
+    message.error("Iltimos bo'sh maydonlarni to'ldiring!")
+   }else{
+    if (formatDate((formatDateForInput(today))===formatDate(driverRout.day)) && getMinuteToday>=getMinuteHours ) {
+    message.error("Agar bugungi kunni tanlagan bo'lsangiz vaqtni hozirgi vaqtdan keyinroq qo'ying!")
+    }else{
+      if (EditButtonId) {
+       
       dispatch(editRoute({ EditButtonId, driverRout }))
         .unwrap()
         .then(() => {
-          toast.success('Malumot muvaffaqiyatli tahrirlandi!');
+          message.success('Malumot muvaffaqiyatli tahrirlandi!');
           dispatch(fetchRoutesByDriver(userName));
         })
-        .catch((err) => toast.error("Xatolik yuz berdi!"));
+        .catch((err) => message.error("Xatolik yuz berdi!"));
     } else {
+    
       if (routesByDriver.length >= 1) {
         toast.error("Siz ayni damda faqat 1 ta yo'nalishda ishlay olasiz!")
-
       } else {
         dispatch(addRoute({ driverRout, userName }))
           .unwrap()
           .then(() => {
-            toast.success("Malumot muvaffaqiyatli qo'shildi!");
+            message.success("Malumot muvaffaqiyatli qo'shildi!");
             dispatch(fetchRoutesByDriver(userName));
           })
-          .catch((err) => toast.error(toast.error("xatolik yuz berdi!")));
+          .catch((err) => message.error("xatolik yuz berdi!"));
       }
     }
+    }
 
-
-
-    setSelectedDate("")
+    
+   }
+    dispatch(setSelectedDate(""))
     dispatch(setEditButtonId(null));
     dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
-
-
   };
   const deleteItem = (id) => {
     if (EditButtonId) {
@@ -323,7 +370,7 @@ function PathDriver() {
     specificGroupArea.scrollIntoView({ behavior: 'smooth' });
     dispatch(setEditButtonId(item.id));
     dispatch(setKoranCourse({ fromCity: item.fromCity, toCity: item.toCity, countSide: item.countSide, price: item.price, day: item.day, hour: item.hour, userId: userName }));
-    setSelectedDate(item.day)
+    dispatch(setSelectedDate(item.day))
    
   };
   return (
@@ -342,8 +389,8 @@ function PathDriver() {
                 type="button"
                 className="btnCity1"
                 onClick={() => {
-                  setCurrentOptionType('from');
-                  setShowFromCityModal(true);
+                  dispatch(setCurrentOptionType('from'));
+                  dispatch(setShowFromCityModal(true));
                 }}
               >
                 {driverRout.fromCity ? (
@@ -362,8 +409,8 @@ function PathDriver() {
                 type="button"
                 className="btnCity1"
                 onClick={() => {
-                  setCurrentOptionType('to');
-                  setShowToCityModal(true);
+                  dispatch(setCurrentOptionType('to'));
+                  dispatch(setShowToCityModal(true));
                 }}
                 disabled={!driverRout.fromCity}
                 style={{
@@ -388,7 +435,7 @@ function PathDriver() {
                 type="button"
                 className="btnCity1"
                 value={formatDate(driverRout.day)}
-                onClick={() => setShowDateModal(true)}
+                onClick={() => dispatch(setShowDateModal(true))}
                 disabled={!driverRout.toCity}
                 style={{
                   opacity: !driverRout.toCity ? 0.5 : 1,
@@ -498,14 +545,14 @@ function PathDriver() {
         <OptionModal
           options={translatedFromCities}
           onSelect={handleOptionSelect}
-          onClose={() => setShowFromCityModal(false)}
+          onClose={() => dispatch(setShowFromCityModal(false))}
         />
       )}
       {showToCityModal && (
         <OptionModal
           options={translatedToCities}
           onSelect={handleOptionSelect}
-          onClose={() => setShowToCityModal(false)}
+          onClose={() => dispatch(setShowToCityModal(false))}
         />
       )}
       {showDateModal && (
@@ -513,21 +560,21 @@ function PathDriver() {
           minDate={minDate}
           maxDate={maxDate}
           onDateSelect={handleDateSelect}
-          onClose={() => setShowDateModal(false)}
+          onClose={() => dispatch(setShowDateModal(false))}
         />
       )}
       {openModal && (
         <TimeSelectorModal
           options={hours}
           onSelect={handleTimeSelect}
-          onClose={() => setOpenModal(false)}
+          onClose={() => dispatch(setOpenModal(false))}
         />
       )}
       {openModal1 && (
         <SeatSelectionModal
           onSelect={handleSeatSelect}
           isTrue={seatCount}
-          onClose={() => setOpenModal1(false)}
+          onClose={() => dispatch(setOpenModal1(false))}
         />
       )}
 

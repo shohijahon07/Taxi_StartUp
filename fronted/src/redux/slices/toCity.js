@@ -25,6 +25,12 @@ const ToCitySlice = createSlice({
   name: 'toCity',
   initialState: {
     toCities: [],
+    showDateModal:false,
+    selectedDate:'',
+    currentOptionType:'',
+    isModalOpen:false,
+    isModalOpen1:false,
+    active:false,
     status: 'idle',
     error: null,
     img: '',
@@ -36,8 +42,26 @@ const ToCitySlice = createSlice({
     setEditButtonId(state, action) {
       state.EditButtonId = action.payload;
     },
+    setShowDateModal(state, action) {
+      state.showDateModal = action.payload;
+    },
+    setSelectedDate(state, action) {
+      state.selectedDate = action.payload;
+    },
+    setCurrentOptionType(state, action) {
+      state.currentOptionType = action.payload;
+    },
+    setIsModalOpen(state, action) {
+      state.isModalOpen = action.payload;
+    },
+    setIsModalOpen1(state, action) {
+      state.isModalOpen1 = action.payload;
+    },
     setToCity(state, action) {
       state.toCityObject = action.payload;
+    },
+    setActive(state, action) {
+      state.active = action.payload;
     },
     setSelectedFile(state, action) {
       state.selectedFile = action.payload;
@@ -71,6 +95,6 @@ const ToCitySlice = createSlice({
   },
 });
 
-export const { setEditButtonId, setToCity, setSelectedFile } = ToCitySlice.actions;
+export const { setEditButtonId, setToCity, setSelectedFile,setShowDateModal,setSelectedDate,setCurrentOptionType,setIsModalOpen,setIsModalOpen1,setActive} = ToCitySlice.actions;
 
 export default ToCitySlice.reducer;

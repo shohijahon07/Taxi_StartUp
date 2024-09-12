@@ -10,7 +10,7 @@
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease-in-out, visibility 1s ease-in-out;
+    transition: opacity 0.6s ease-in-out, visibility 1s ease-in-out;
 }
 
 .date-modal {
@@ -23,7 +23,7 @@
     overflow-y: auto;
     position: relative;
     transform: scale(0.5);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.6s ease-in-out;
 }
 
 .date-modal-overlay.active {

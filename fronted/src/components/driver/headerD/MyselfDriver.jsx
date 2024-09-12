@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import DriverHeader from './DriverHeader';
 import "../headerD/Myselft.css";
 import uzbekistan from "../../../pictures/uzbekistan.svg";
-import { addDriverAbout, editDriver, fetchDriverOne, setAbout, setDriver, setEditButtonId, setImg, setImg1, setImg2, setSelectedFile, setSelectedFile1, setSelectedFile2 } from '../../../redux/slices/DriverSlice';
+import { addDriverAbout, editDriver, fetchDriverOne, setAbout, setDriver, setEditButtonId, setImg, setImg1, setImg2, setIsEditing, setSelectedFile, setSelectedFile1, setSelectedFile2, setUserName } from '../../../redux/slices/DriverSlice';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -14,24 +14,22 @@ import "../../auth/Register.css";
 import edit from "../../../pictures/edit.svg"
 import apicall from '../../../apicall/apicall';
 function MyselfDriver() {
-  const [userName, setUserName] = useState("");
-  const [isEditing, setIsEditing] = useState(false); // Track editing mode
-  const { language, changeLanguage } = useContext(LanguageContext);
+  const dispatch = useDispatch();
+  const { EditButtonId, driverObject, driverOne, selectedFile, selectedFile1, selectedFile2, img, img1, img2, isEditing,userName } = useSelector((state) => state.driver);
+  const fileInputRef1 = useRef(null);
+  const fileInputRef2 = useRef(null);
+  const fileInputRef3 = useRef(null);
+  const { language } = useContext(LanguageContext);
 
   useEffect(() => {
     getDriver();
     dispatch(fetchDriverOne(userName));
   }, [userName]);
 
-  const dispatch = useDispatch();
-  const { EditButtonId, driverObject, driverOne, selectedFile, selectedFile1, selectedFile2, img, img1, img2, about } = useSelector((state) => state.driver);
-  const fileInputRef1 = useRef(null);
-  const fileInputRef2 = useRef(null);
-  const fileInputRef3 = useRef(null);
 
   function getDriver() {
     apicall(`/auth/name`, "GET",null).then((res)=>{
-    setUserName(res.id)
+    dispatch(setUserName(res.id))
     })
 
   }
@@ -51,7 +49,7 @@ function MyselfDriver() {
     if (fileInputRef2.current) fileInputRef2.current.value = '';
     if (fileInputRef3.current) fileInputRef3.current.value = '';
 
-    setIsEditing(false); // Reset editing mode
+    dispatch(setIsEditing(false)); // Reset editing mode
   };
 
   const EditItem = (item) => {
@@ -66,7 +64,7 @@ function MyselfDriver() {
       driverImg: item.driverImg, cardDocument: item.cardDocument, about: item.about
     }));
 
-    setIsEditing(true); // Enable editing mode
+    dispatch(setIsEditing(true)); // Enable editing mode
   };
 
   return (

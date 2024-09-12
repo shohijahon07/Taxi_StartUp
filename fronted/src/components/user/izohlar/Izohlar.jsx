@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDriverOne } from '../../../redux/slices/DriverSlice';
+import { fetchDriverOne, setActive } from '../../../redux/slices/DriverSlice';
 import "./izohlar.css"
 import { fetchComments } from '../../../redux/slices/CommentSlice';
 import { LanguageContext } from '../../language/LanguageContext';
 
 const Izohlar = ({ isOpen, onClose, userName }) => {
     const dispatch = useDispatch();
-    const { driverOne } = useSelector((state) => state.driver);
+    const { driverOne,active } = useSelector((state) => state.driver);
     const { comments } = useSelector((state) => state.comment);
-    const [active, setActive] = useState(false);
     const { language } = useContext(LanguageContext);
 
     useEffect(() => {
@@ -17,14 +16,14 @@ const Izohlar = ({ isOpen, onClose, userName }) => {
         if (isOpen) {
             dispatch(fetchDriverOne(userName));
             dispatch(fetchComments({language,userName}));
-            setActive(true);
+            dispatch(setActive(true));
         } else {
-            setActive(false);
+            dispatch(setActive(false));
         }
     }, [dispatch, isOpen, userName]);
 
     const handleClose = () => {
-        setActive(false);
+        dispatch(setActive(false));
         setTimeout(onClose, 1000); 
     };
 

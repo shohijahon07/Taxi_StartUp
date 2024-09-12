@@ -7,18 +7,19 @@ import { LanguageContext } from '../language/LanguageContext';
 import telegram from "../../pictures/telegram.svg";
 import BizHaqimizdaModal from './bizHaqimizda/BizHaqimizdaModal';
 import Boglanish from './Boglanish';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsModalOpen, setIsModalOpen1 } from '../../redux/slices/CommentSlice';
 
 function Landing() {
     const { language, changeLanguage } = useContext(LanguageContext);
     const navigate = useNavigate();
+    const dispatch=useDispatch()
+    const { isModalOpen1,isModalOpen } = useSelector((state) => state.comment);
 
-
-    
     function goLanding() {
         navigate("/");
     }
     
-    const [isModalOpen1, setIsModalOpen1] = useState(false);
     
     const openModal1 = () => {
         if (window.innerWidth <= 720) {
@@ -33,12 +34,10 @@ function Landing() {
             }
 
         }else{
-        setIsModalOpen1(true);
+        dispatch(setIsModalOpen1(true));
     }
     }
-    const closeModal1 = () => setIsModalOpen1(false);
-    
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const closeModal1 = () => dispatch(setIsModalOpen1(false));
     const openModal = () => {
         if (window.innerWidth <= 720) {
             if (window.innerWidth <= 720 &&window.innerWidth >=600 ) {
@@ -52,10 +51,10 @@ function Landing() {
             }
 
         }else{
-            setIsModalOpen(true);
+            dispatch(setIsModalOpen(true));
         }
     };
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => dispatch(setIsModalOpen(false));
 
     useEffect(() => { 
        

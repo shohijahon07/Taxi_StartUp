@@ -25,7 +25,7 @@ public interface UserRepo extends JpaRepository<User, UUID> {
 
     List<User> findAllById(UUID id);
 
-
+    List<User> findAllByFullNameContainingIgnoreCaseAndRoles(String fullName, List<Role> roles);
     Integer countAllByRoles(List<Role> roles);
     List<User> findAllByRolesAndIsDriver(List<Role> roles, Boolean isDriver);
 

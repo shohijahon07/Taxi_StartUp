@@ -4,7 +4,7 @@ import rasm from "../../pictures/4.svg";
 import "./boglanish.css"
 import { LanguageContext } from '../language/LanguageContext';
 function Boglanish({ isOpen1, onClose }) {
-  if (!isOpen1) return null; // Don't render the modal if not open
+  if (!isOpen1) return null; 
   const { language } = useContext(LanguageContext);
 
   return (

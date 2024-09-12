@@ -15,10 +15,11 @@ body{
     border-radius:10px;
 }
 .beginAdmin{
- max-width: 1504px;
+ max-width: 1920px;
  background-image:url("../../../pictures/all.svg");
  height: 100vh;
  padding: 0 20px;
+ margin: 0 auto;
 }
 .ul_admin{
     padding-top: 20px;
@@ -65,3 +66,7 @@ body{
             color:#303383;
             font-family: 'Inter', sans-serif;
     }
+.imageTable{
+    width: 100px;
+    height: 100px;
+}
