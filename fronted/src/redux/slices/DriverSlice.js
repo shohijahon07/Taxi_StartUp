@@ -3,24 +3,24 @@ import apicall1 from "../../apicall/apicall1";
 import apicall from "../../apicall/apicall";
 
 export const fetchDrivers = createAsyncThunk('DriverSlice/fetchDrivers', async (isDriver) => {
-  const response = await apicall1(`/user/drivers?isDriver=${isDriver}`, "GET");
+  const response = await apicall(`/user/drivers?isDriver=${isDriver}`, "GET");
   return response.data;
 });
 export const fetchDriversByFullName = createAsyncThunk('DriverSlice/fetchDriversByFullName', async (name) => {
-  const response = await apicall1(`/user/search?name=${name}`, "GET");
+  const response = await apicall(`/user/search?name=${name}`, "GET");
   return response.data;
 });
 export const fetchDrivers1 = createAsyncThunk('DriverSlice/fetchDrivers1', async (isDriver) => {
-  const response = await apicall1(`/user/drivers?isDriver=${isDriver}`, "GET");
+  const response = await apicall(`/user/drivers?isDriver=${isDriver}`, "GET");
   return response.data;
 });
 export const countDriversAll = createAsyncThunk('DriverSlice/countDriversAll', async () => {
-  const response = await apicall1(`/user/countD`, "GET");
+  const response = await apicall(`/user/countD`, "GET");
  
   return response.data;
 });
 export const countUsersAll = createAsyncThunk('DriverSlice/countUsersAll', async () => {
-  const response = await apicall1(`/user/countU`, "GET");
+  const response = await apicall(`/user/countU`, "GET");
   return response.data;
 });
 
@@ -30,7 +30,7 @@ export const fetchDriverOne = createAsyncThunk('DriverSlice/fetchDriverOne', asy
 });
 
 export const addDriver = createAsyncThunk('DriverSlice/addDriver', async ({ driverRout, userName }) => {
-  const response = await apicall1(`/user`, "POST", { ...driverRout, userId: userName });
+  const response = await apicall(`/user`, "POST", { ...driverRout, userId: userName });
   return response.data;  
 });
 export const addDriverAbout = createAsyncThunk('DriverSlice/addDriverAbout', async ({ about, userName }) => {
@@ -216,7 +216,7 @@ const DriverSlice = createSlice({
       .addCase(editDriver.fulfilled, (state, action) => {
         const index = state.drivers.findIndex(driver => driver.id === action.payload.id);
         if (index !== -1) {
-          state.drivers[index] = action.payload;  // Tahrirlangan yo'nalishni yangilaymiz
+          state.drivers[index] = action.payload;  
         }
       })
       .addCase(editDriverIsDriving.fulfilled, (state, action) => {
@@ -229,7 +229,7 @@ const DriverSlice = createSlice({
       .addCase(addDriverAbout.fulfilled, (state, action) => {
         const index = state.drivers.findIndex(driver => driver.id === action.payload.id);
         if (index !== -1) {
-          state.drivers[index] = action.payload;  // Tahrirlangan yo'nalishni yangilaymiz
+          state.drivers[index] = action.payload; 
         }
       })
       .addCase(deleteDriver.fulfilled, (state, action) => {

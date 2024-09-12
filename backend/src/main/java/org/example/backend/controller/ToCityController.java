@@ -7,6 +7,7 @@ import org.example.backend.service.fromCity.FromCityService;
 import org.example.backend.service.toCity.ToCityService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,17 +23,17 @@ public class ToCityController {
         return toCityService.getCity();
     }
     @PostMapping
-//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public HttpEntity<?> saveCity( @RequestBody ToCityDto toCityDto){
         return toCityService.saveCity(toCityDto);
     }
     @PutMapping
-//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public HttpEntity<?> EditCity( @RequestParam UUID id, @RequestBody ToCityDto toCityDto){
         return toCityService.EditCity(id,toCityDto);
     }
     @DeleteMapping
-//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_MENTOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public HttpEntity<?> DeleteRoute(@RequestParam UUID id){
         return toCityService.DeleteRoute( id);
     }

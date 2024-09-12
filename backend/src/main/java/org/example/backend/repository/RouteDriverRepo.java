@@ -17,6 +17,7 @@ public interface RouteDriverRepo extends JpaRepository<Route_Driver, UUID> {
     Route_Driver findByUser(Optional<User> user);
    List<Route_Driver> findAllByUser(User user);
     void deleteByDay(LocalDate day);
+    void deleteByDayAndHourContainingIgnoreCase(LocalDate day, String hour);
     void deleteByUserId(UUID user_id);
 
    List<Route_Driver> findAllByDayAndFromCityAndToCity(LocalDate day, String fromCity, String toCity);

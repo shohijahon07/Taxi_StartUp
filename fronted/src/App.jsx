@@ -10,12 +10,17 @@ import PathDriver from "./components/driver/headerD/PathDriver"
 import MyselfDriver from "./components/driver/headerD/MyselfDriver"
 import { useEffect } from "react"
 import axios from "axios"
+import { deleteRoutesByTime } from "./redux/slices/routeDriver"
+import { message } from "antd"
+import { useDispatch } from "react-redux"
 
 
 function App() {
+    const dispatch=useDispatch()
   const {pathname}=useLocation();
     const navigate=useNavigate();
     useEffect(() => {
+        delByTime()
         checkRoles();
         const interval = setInterval(() => {
             checkRoles();
@@ -74,6 +79,16 @@ function App() {
             }
           }
 
+          function delByTime(){
+              dispatch(deleteRoutesByTime())
+                .unwrap()
+                .then((res) => {
+                //  message.success(res)
+                })
+              
+            
+            
+          }
   return (
     <LanguageProvider>
       

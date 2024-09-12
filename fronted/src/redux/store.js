@@ -7,7 +7,6 @@ import commentReducer from './slices/CommentSlice'
 import pessengerReducer from './slices/userSlice'
 const store = configureStore({
     reducer: {
-       
         routes: routesReducer,
         driver: driverReducer,
         toCity: toCityReducer,
@@ -20,8 +19,8 @@ const store = configureStore({
         getDefaultMiddleware({
             serializableCheck: {
 
-                ignoredActions: ['driver/setSelectedFile','driver/setSelectedFile1','driver/setSelectedFile2'],
-                ignoredPaths: ['driver.selectedFile','driver.selectedFile1','driver.selectedFile2',]
+                ignoredActions: ['driver/setSelectedFile','driver/setSelectedFile1','driver/setSelectedFile2','toCity/setSelectedDate'],
+                ignoredPaths: ['driver.selectedFile','driver.selectedFile1','driver.selectedFile2','toCity.selectedDate']
 
 
             },

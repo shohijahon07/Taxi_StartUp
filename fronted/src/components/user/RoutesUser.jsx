@@ -3,7 +3,7 @@ import Landing from './Landing';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchToCity, setCurrentOptionType, setIsModalOpen, setIsModalOpen1, setSelectedDate, setShowDateModal } from '../../redux/slices/toCity';
 import { fetchFromCity, setShowFromCityModal, setShowToCityModal, setTranslatedFromCities, setTranslatedToCities } from '../../redux/slices/fromCity';
-import { fetchRoutes, fetchRoutesByDate, fetchRoutesByDay, setDay12, setKoranCourse } from '../../redux/slices/routeDriver';
+import { deleteRoutesByTime, fetchRoutes, fetchRoutesByDate, fetchRoutesByDay, setDay12, setKoranCourse } from '../../redux/slices/routeDriver';
 import "./user.css";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -156,8 +156,9 @@ function RoutesUser() {
         const formatDateForInput = (date) => date.toISOString().split('T')[0];
         dispatch(setMinDate(formatDateForInput(today)));
         dispatch(setMaxDate(formatDateForInput(dayAfterTomorrow)));
+
+
     }, [dispatch, language]);
-    
 
     useEffect(() => {
         dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
@@ -426,7 +427,7 @@ function RoutesUser() {
                 
            
             {allRoutes.map((item, index) => (
-                   <div className="mapRoutes">
+                   <div className="mapRoutes" key={item.id}>
                     <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateFullName(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
                     <li className="list-group-item li2">
                                 <div className="l2Child1">

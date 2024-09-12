@@ -13,7 +13,7 @@ export const fetchRoutesByDate = createAsyncThunk('RouteDriverSlice/fetchRoutesB
   
   
   if (!response.data || response.data.length === 0) {
-    return { data: response.data, result: true };  
+    return { data: response.data, result: true,day:driverRout.day };  
   } else {
     toast.success("Yo'nalishlar muvaffaqiyatli topildi!");
     return { data: response.data, result: false,day:driverRout.day };  // Yo'nalishlar mavjud - true
@@ -41,7 +41,7 @@ export const fetchRoutesByDay = createAsyncThunk('RouteDriverSlice/fetchRoutesBy
 
 
 export const addRoute = createAsyncThunk('RouteDriverSlice/addRoute', async ({ driverRout, userName }) => {
-  const response = await apicall1(`/driver`, "POST", { ...driverRout, userId: userName });
+  const response = await apicall(`/driver`, "POST", { ...driverRout, userId: userName });
   return response.data;  
 });
 
@@ -58,6 +58,10 @@ export const deleteRoutesByDay = createAsyncThunk('RouteDriverSlice/deleteRoutes
  
   await apicall(`/driver/bydel?day=${item1.day}&hour=${item1.hour}`, "DELETE", null);
   return item1.id;
+});
+export const deleteRoutesByTime = createAsyncThunk('RouteDriverSlice/deleteRoutesByTime', async ( ) => {
+  await apicall1(`/driver/byTime`, "DELETE", null);
+  return null;
 });
 
 const RouteDriverSlice = createSlice({
@@ -129,7 +133,6 @@ const RouteDriverSlice = createSlice({
         state.status = 'succeeded';
         state.allRoutes = action.payload.data; 
         state.isAvailable = action.payload.result; 
-        console.log(today.toISOString().substring(0, 10));
         
         if (action.payload.day == "1") {
             state.day12 = today.toISOString().substring(0, 10);
@@ -142,8 +145,12 @@ const RouteDriverSlice = createSlice({
         }
     })
       .addCase(fetchRoutesByDate.fulfilled, (state, action) => {
-        if (action.payload.length===0) {
+        console.log(action.payload.data);
+      
+        if (action.payload.data.length===0) {
             state.day12=action.payload.day
+            state.isAvailable = action.payload.result; 
+
         }else{
           state.allRoutes = action.payload.data; 
           state.isAvailable = action.payload.result; 
@@ -178,9 +185,12 @@ const RouteDriverSlice = createSlice({
         }
       })
       .addCase(deleteRoutes.fulfilled, (state, action) => {
-        state.driverRoutes = state.driverRoutes.filter(driverRoute => driverRoute.id !== action.payload);  
+        state.routesByDriver = state.routesByDriver.filter(routesByDriver => routesByDriver.id !== action.payload);  
       })
       .addCase(deleteRoutesByDay.fulfilled, (state, action) => {
+        state.driverRoutes = state.driverRoutes.filter(driverRoute => driverRoute.id !== action.payload);  
+      })
+      .addCase(deleteRoutesByTime.fulfilled, (state, action) => {
         state.driverRoutes = state.driverRoutes.filter(driverRoute => driverRoute.id !== action.payload);  
       });
   },

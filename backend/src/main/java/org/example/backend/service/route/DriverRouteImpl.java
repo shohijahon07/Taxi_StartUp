@@ -147,4 +147,42 @@ public class DriverRouteImpl implements DriverRouteService {
         return ResponseEntity.ok("Muvaffaqiyatli o'chirildi!");
     }
 
+    @Transactional
+    @Override
+    public HttpEntity<?> DeleteBytTime() {
+        try {
+            LocalDate today = LocalDate.now();
+            LocalTime currentTime = LocalTime.now();
+            int currentMinutes = currentTime.getHour() * 60 + currentTime.getMinute();
+
+            List<Route_Driver> allRoutes = routeDriverRepo.findAll();
+            boolean anyDeleted = false;
+
+            for (Route_Driver routeDriver : allRoutes) {
+                try {
+                    LocalDate routeDay = routeDriver.getDay();
+                    LocalTime routeTime = LocalTime.parse(routeDriver.getHour()); // Bu yerda xato bo'lishi mumkin
+                    int routeMinutes = routeTime.getHour() * 60 + routeTime.getMinute();
+
+                    if (today.equals(routeDay) && currentMinutes > routeMinutes) {
+                        routeDriverRepo.deleteByDayAndHourContainingIgnoreCase(routeDay, routeDriver.getHour());
+                        anyDeleted = true;
+                    }
+                } catch (Exception e) {
+                    // Har bir marshrutni o'chirishda yuzaga keladigan xatolarni ushlaymiz
+                    System.out.println("Marshrutni o'chirishda xatolik: " + e.getMessage());
+                }
+            }
+
+            if (anyDeleted) {
+                return ResponseEntity.ok("Marshrutlar o'chirildi.");
+            } else {
+                return ResponseEntity.ok("O'chirish uchun marshrutlar topilmadi.");
+            }
+        } catch (Exception e) {
+            // Umumiy xatolarni ushlash
+            System.out.println("Xatolik yuz berdi: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Xatolik yuz berdi, keyinroq urinib ko'ring.");
+        }
+    }
 }

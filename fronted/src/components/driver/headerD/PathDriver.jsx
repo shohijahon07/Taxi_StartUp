@@ -265,7 +265,7 @@ function PathDriver() {
   };
   const openModal3 = () => {
     dispatch(setOpenModal(true));
-    delByDay()
+    // delByDay()
   };
   const openModal4 = () => {
     dispatch(setOpenModal1(true));
@@ -288,57 +288,74 @@ function PathDriver() {
     const today = new Date();
     const dayAfterTomorrow = new Date(today);
     dayAfterTomorrow.setDate(today.getDate() + 2);
-    const formatDateForInput = (date) => date.toISOString().split('T')[0];
-    const getMinuteToday=today.getHours()*60+today.getMinutes()
-    const getMinuteHours=driverRout.hour.split(':').map(Number)[0]*60+(driverRout.hour.split(':').map(Number))[1]
-   if (!driverRout.fromCity||!driverRout.toCity||!driverRout.countSide||!driverRout.day||!driverRout.hour||!driverRout.price) {
-    message.error("Iltimos bo'sh maydonlarni to'ldiring!")
-   }else{
-    if (formatDate((formatDateForInput(today))===formatDate(driverRout.day)) && getMinuteToday>=getMinuteHours ) {
-    message.error("Agar bugungi kunni tanlagan bo'lsangiz vaqtni hozirgi vaqtdan keyinroq qo'ying!")
-    }else{
-      if (EditButtonId) {
-       
-      dispatch(editRoute({ EditButtonId, driverRout }))
-        .unwrap()
-        .then(() => {
-          message.success('Malumot muvaffaqiyatli tahrirlandi!');
-          dispatch(fetchRoutesByDriver(userName));
-        })
-        .catch((err) => message.error("Xatolik yuz berdi!"));
+  
+    const formatDateForInput = (date) => {
+      if (!(date instanceof Date)) {
+        console.error("Invalid date:", date);
+        return '';
+      }
+      return date.toISOString().split('T')[0];
+    };
+  
+    const getMinuteToday = today.getHours() * 60 + today.getMinutes();
+    const getMinuteHours = driverRout.hour.split(':').map(Number)[0] * 60 + driverRout.hour.split(':').map(Number)[1];
+  
+    if (!driverRout.fromCity || !driverRout.toCity || !driverRout.countSide || !driverRout.day || !driverRout.hour || !driverRout.price) {
+      message.error("Iltimos bo'sh maydonlarni to'ldiring!");
     } else {
-    
-      if (routesByDriver.length >= 1) {
-        toast.error("Siz ayni damda faqat 1 ta yo'nalishda ishlay olasiz!")
+      const formattedToday = formatDateForInput(today);
+      const formattedDay = new Date(driverRout.day); // Convert driverRout.day to Date if it's a string
+  
+      console.log(formattedToday);
+      console.log(formatDateForInput(formattedDay));
+  
+      if (formatDateForInput(today) === formatDateForInput(formattedDay) && getMinuteToday >= getMinuteHours) {
+        message.error("Agar bugungi kunni tanlagan bo'lsangiz vaqtni hozirgi vaqtdan keyinroq qo'ying!");
       } else {
-        dispatch(addRoute({ driverRout, userName }))
-          .unwrap()
-          .then(() => {
-            message.success("Malumot muvaffaqiyatli qo'shildi!");
-            dispatch(fetchRoutesByDriver(userName));
-          })
-          .catch((err) => message.error("xatolik yuz berdi!"));
+        if (EditButtonId) {
+          dispatch(editRoute({ EditButtonId, driverRout }))
+            .unwrap()
+            .then(() => {
+              message.success('Malumot muvaffaqiyatli tahrirlandi!');
+              dispatch(fetchRoutesByDriver(userName));
+            })
+            .catch((err) => message.error("Xatolik yuz berdi!"));
+        } else {
+          if (routesByDriver.length >= 1) {
+            toast.error("Siz ayni damda faqat 1 ta yo'nalishda ishlay olasiz!");
+          } else {
+            dispatch(addRoute({ driverRout, userName }))
+              .unwrap()
+              .then(() => {
+                message.success("Malumot muvaffaqiyatli qo'shildi!");
+                dispatch(fetchRoutesByDriver(userName));
+              })
+              .catch((err) => message.error("Xatolik yuz berdi!"));
+          }
+        }
       }
     }
-    }
-
-    
-   }
-    dispatch(setSelectedDate(""))
+  
+    dispatch(setSelectedDate(""));
     dispatch(setEditButtonId(null));
     dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
   };
+  
   const deleteItem = (id) => {
     if (EditButtonId) {
-      toast.error('Xatolik yuz berdi!');
+      toast.error("Siz tahrirlab turgan vaqt o'chira olmaysiz!");
     } else {
       dispatch(deleteRoutes({ id }))
         .unwrap()
         .then(() => {
-          toast.success("Malumot muvaffaqiyatli o'chirildi!");
           dispatch(fetchRoutesByDriver(userName));
+          message.success("Malumot muvaffaqiyatli o'chirildi!");
         })
-        .catch(() => toast.error('Xatolik yuz berdi!'));
+        .catch((err) =>{
+          message.error('Xatolik yuz berdi!')
+          dispatch(fetchRoutesByDriver(userName));
+          console.log(err);
+        } )
     }
   };
   const [className, setClassName] = useState('inputs');
