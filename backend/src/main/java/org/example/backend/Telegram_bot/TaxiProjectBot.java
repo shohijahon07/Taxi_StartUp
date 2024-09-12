@@ -638,7 +638,7 @@ sendMessage.setText("🚫 По данному направлению услуг 
                             sendMessage.setText("⚠️ Неверный формат. Введите дату в формате «день-месяц» (день от 1 до 31, месяц от 1 до 12), и вы сможете ввести еще 2 дня, начиная с сегодняшнего дня.");
                         }
 
-                        sendMessage.setChatId(chatId); // ChatID-ni qo'shish
+                        sendMessage.setChatId(chatId);
                         execute(sendMessage);
 
                     } catch (Exception e) {
@@ -729,9 +729,7 @@ userRepo.save(foundUser);
                     sendMessage.setReplyMarkup(fromCitysButtons(foundUser));
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
-                    DeleteMessage deleteMessage = new DeleteMessage();
-                    deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-                    execute(deleteMessage);
+
                 }
 
 
@@ -923,6 +921,7 @@ userRepo.save(foundUser);
                         sendMessage.setReplyMarkup(toCitysButtons(user));
                         userRepo.save(user);
                         execute(sendMessage);
+
                         return;
                     }
                 }
@@ -2540,9 +2539,4 @@ userRepo.save(foundUser);
 //
 //        return null;
 //    }
-
-
-
-
 }
-
