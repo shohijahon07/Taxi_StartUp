@@ -61,7 +61,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
-    private String[] band_delete_data = new String[2];
+    private String[] band_delete_data = new String[3];
     private  String[] status = new String[6];
     private String name="";
     private String[] dataParts;
@@ -729,6 +729,10 @@ userRepo.save(foundUser);
                     sendMessage.setReplyMarkup(fromCitysButtons(foundUser));
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
+                    DeleteMessage deleteMessage = new DeleteMessage();
+                    deleteMessage.setMessageId(Integer.valueOf(band_delete_data[2]));
+                    deleteMessage.setChatId(chatId);
+                    execute(deleteMessage);
 
                 }
 
@@ -1568,8 +1572,7 @@ userRepo.save(foundUser);
                     user.setStatus(Status.HOME_PAGE_DRIVER);
                     userRepo.save(user);
                     Message execute = execute(sendMessage);
-                    band_delete_data[1]= String.valueOf(execute.getMessageId());
-
+                    band_delete_data[2]= String.valueOf(execute.getMessageId());
                     sendMessage.setChatId(chatId.toString());
                     sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                     DeleteMessage deleteMessage = new DeleteMessage();
