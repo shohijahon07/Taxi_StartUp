@@ -1105,13 +1105,13 @@ userRepo.save(foundUser);
                         sendMessage.setParseMode("Markdown");
                         sendMessage.setText(
                                 "👤 Siz [" + user1.getFullName() + "](tg://user?id=" + user1.getChatId() + ") yo'lovchini qabul qilasizmi? \n" +
-                                        "📞 Telefon raqamlar: " + "+" + user1.getPhoneNumber()
+                                        "📞 Telefon raqamlar: "  + user1.getPhoneNumber()
                         );
                     } else if(byChatId2.get().getLanguage().equals("ru")) {
                         sendMessage.setParseMode("Markdown");
                         sendMessage.setText(
                                 "👤 Ты [" + user1.getFullName() + "](tg://user?id=" + user1.getChatId() + "), вы принимаете пассажиров? \n" +
-                                        "📞 Номер телефона : " + "+" + user1.getPhoneNumber()
+                                        "📞 Номер телефона : "  + user1.getPhoneNumber()
                         );
                     }
 
@@ -1275,17 +1275,21 @@ userRepo.save(foundUser);
                         // Handle when there are no more available seats
                         if (user.getLanguage().equals("uz")) {
                             sendMessage.setText(
-                                    "🚫 Sizda jo'ylar soni tugadi. " +
-                                            "📅 Siz yo'nalishga borgandan so'ng qayta yo'naltirish qo'shish uchun /start bosing."
+                                    "🚫 Sizda jo'ylar soni tugadi. "
                             );
+                            sendMessage.setReplyMarkup(NotPath3(user));
+                            user.setStatus(Status.HOME_PAGE_DRIVER);
+                            userRepo.save(user);
                         } else if (user.getLanguage().equals("ru")) {
                             sendMessage.setText(
-                                    "🚫 У вас закончились места. " +
-                                            "📅 Как только вы доберетесь до пути, нажмите /start, чтобы добавить перенаправление."
+                                    "🚫 У вас закончились места. "
                             );
+                            sendMessage.setReplyMarkup(NotPath3(user));
+                            user.setStatus(Status.HOME_PAGE_DRIVER);
+                            userRepo.save(user);
                         }
 
-                        user.setStatus(Status.START);
+
                         routeDriverRepo.deleteById(byUser.getId());
                         execute(sendMessage);
                     }
@@ -1366,14 +1370,20 @@ userRepo.save(foundUser);
                 } else {
                     if (user.getLanguage().equals("uz")) {
                         sendMessage.setText(
-                                "🚫 Sizda jo'ylar soni tugadi. " +
-                                        "📅 Siz yo'liqishga borgandan so'ng qayta yo'naltirish qo'shish uchun /start bosing."
+                                "🚫 Sizda jo'ylar soni tugadi. "
+
                         );
+                        sendMessage.setReplyMarkup(NotPath3(user));
+                        user.setStatus(Status.HOME_PAGE_DRIVER);
+                        userRepo.save(user);
                     } else if (user.getLanguage().equals("ru")) {
                         sendMessage.setText(
-                                "🚫 У вас закончились места. " +
-                                        "📅 Как только вы доберетесь до пути, нажмите /start, чтобы добавить перенаправление."
+                                "🚫 У вас закончились места. "
+
                         );
+                        sendMessage.setReplyMarkup(NotPath3(user));
+                        user.setStatus(Status.HOME_PAGE_DRIVER);
+                        userRepo.save(user);
                     }
 
                     user.setStatus(Status.START);
