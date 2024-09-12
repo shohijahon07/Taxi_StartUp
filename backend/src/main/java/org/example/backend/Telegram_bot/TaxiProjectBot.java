@@ -1386,7 +1386,6 @@ userRepo.save(foundUser);
                         userRepo.save(user);
                     }
 
-                    user.setStatus(Status.START);
                     routeDriverRepo.deleteById(byUser1.getId());
                     execute(sendMessage);
                 }
