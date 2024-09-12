@@ -26,14 +26,22 @@ function Register() {
   const [carImgPreview, setCarImgPreview] = useState(null);
   const [driverImgPreview, setDriverImgPreview] = useState(null);
   const [cardDocPreview, setCardDocPreview] = useState(null);
+  const [language, setLanguage] = useState("");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const chatIdParam = urlParams.get('chatId');
+    const languageParam = urlParams.get('language'); // Language parametrini olamiz
+
     if (chatIdParam) {
       setChatId(chatIdParam);
     }
+
+    if (languageParam) {
+      setLanguage(languageParam); // Language parametrini belgilash
+    }
   }, []);
+  console.log(language);
 
   const validateForm = () => {
     if (!form.carType || !form.about || !form.count || !selectFile1 || !selectFile2 || !selectFile3) {
@@ -44,7 +52,7 @@ function Register() {
 
   const save = async () => {
     if (!validateForm()) {
-      setModalMessage('Barcha ma’lumotlarni to’ldiring. Har bir maydonni to’ldirishingiz kerak.');
+      setModalMessage(language === 'uz' ? 'Barcha ma’lumotlarni to’ldiring. Har bir maydonni to’ldirishingiz kerak.' : 'Пожалуйста, заполните все поля. Вы должны заполнить каждое поле.');
       setModalClass('modal_rg error');
       setShowModal(true);
       return;
@@ -84,31 +92,31 @@ function Register() {
         chatId: chatId
       };
       await apicall1("/user/save", "POST", updatedForm)
-    .then((response) => {
-      setForm({ fullName: "", count: "", phoneNumber: "", about: "", carType: "", carImg: "", driverImg: "", cardDocument: "" });
-      setSelectFile1(null);
-      setSelectFile2(null);
-      setSelectFile3(null);
-      setCarImgPreview(null);
-      setDriverImgPreview(null);
-      setCardDocPreview(null);
-      setModalMessage('Ma’lumotlaringiz tekshirilmoqda iltimos kuting biz o’zimiz telegram bot orqali xabar yuboramiz');
-      setModalClass('modal_rg success');
-      setShowModal(true);
-        console.log(response.data);
-    })
-    .catch((err) => {
-        if (err.response && err.response.data) {
-            alert(err.response.data); // Show the error message from the server
-        } else {
-            alert("An unknown error occurred"); // Fallback error message
-        }
-    });
-      
-      
+        .then((response) => {
+          setForm({ fullName: "", count: "", phoneNumber: "", about: "", carType: "", carImg: "", driverImg: "", cardDocument: "" });
+          setSelectFile1(null);
+          setSelectFile2(null);
+          setSelectFile3(null);
+          setCarImgPreview(null);
+          setDriverImgPreview(null);
+          setCardDocPreview(null);
+          setModalMessage(language === 'uz' ? 'Ma’lumotlaringiz tekshirilmoqda. Iltimos kuting, biz o’zimiz Telegram bot orqali xabar yuboramiz.' : 'Ваши данные проверяются. Пожалуйста, подождите, мы сами отправим вам сообщение через Telegram-бот.');
+          setModalClass('modal_rg success');
+          setShowModal(true);
+          console.log(response.data);
+        })
+        .catch((err) => {
+          if (err.response && err.response.data) {
+            alert(err.response.data); // Serverdan kelgan xabarni ko'rsatish
+          } else {
+            alert(language === 'uz' ? "Noma'lum xatolik yuz berdi" : "Произошла неизвестная ошибка"); // Fallback xabar
+          }
+        });
+
+
     } catch (error) {
       console.error('Error during saving:', error);
-      setModalMessage('Xatolik yuz berdi: ' + error.message);
+      setModalMessage(language === 'uz' ? 'Xatolik yuz berdi: ' + error.message : 'Произошла ошибка: ' + error.message);
       setModalClass('modal_rg error');
       setShowModal(true);
     }
@@ -128,28 +136,28 @@ function Register() {
 
   return (
     <div className='register_con'>
-      <h3 className='text_rg'>Ro’yxatdan o’tish uchun quyidagi ma’lumotlarni kiriting</h3>
+      <h3 className='text_rg'>
+        {language === "uz" ? "Ro’yxatdan o’tish uchun quyidagi ma’lumotlarni kiriting" : "Введите следующую информацию для регистрации"}
+      </h3>
       <div className="body-con">
-        
-        
         <input
           type="text"
-          placeholder='Mashina rusumi'
+          placeholder={language === "uz" ? "Mashina rusumi" : "Марка машины"}
           className='form-control my-2'
           value={form.carType}
           onChange={(e) => setForm({ ...form, carType: e.target.value })}
         />
         <input
           type="text"
-          placeholder='O`zingiz haqingizda yozing'
+          placeholder={language === "uz" ? "O`zingiz haqingizda yozing" : "Напишите о себе"}
           className='form-control my-2'
           value={form.about}
           onChange={(e) => setForm({ ...form, about: e.target.value })}
         />
         <select className='form-control' value={form.count} style={{ marginBottom: "10px" }} onChange={(e) => setForm({ ...form, count: e.target.value })}>
-          <option className='form-control' value={""}>Tanlang</option>
-          <option className='form-control' value={true}>Yengil mashina</option>
-          <option className='form-control' value={false}>Mikro aftobus</option>
+          <option className='form-control' value={""}>{language === "uz" ? "Tanlang" : "Выберите"}</option>
+          <option className='form-control' value={true}>{language === "uz" ? "Yengil mashina" : "Легковой автомобиль"}</option>
+          <option className='form-control' value={false}>{language === "uz" ? "Mikro avtobus" : "Микроавтобус"}</option>
         </select>
         <div className="custom-file-upload">
           <input
@@ -159,8 +167,8 @@ function Register() {
           />
           <label htmlFor="file1">
             <img src={fileicon} alt="Upload Icon" className="upload-icon" />
-            Mashina rasmini yuklang
-          {carImgPreview && <img src={carImgPreview} alt="Car Preview" className="file_rg" />}
+            {language === "uz" ? "Mashina rasmini yuklang" : "Загрузите фото машины"}
+            {carImgPreview && <img src={carImgPreview} alt="Car Preview" className="file_rg" />}
           </label>
         </div>
 
@@ -172,9 +180,8 @@ function Register() {
           />
           <label htmlFor="file2">
             <img src={fileicon} alt="Upload Icon" className="upload-icon" />
-            Haydovchilik guvohnoma
-          {driverImgPreview && <img src={driverImgPreview} alt="Driver Preview" className="file_rg" />}
-
+            {language === "uz" ? "Haydovchilik guvohnomani yuklang" : "Загрузите водительское удостоверение"}
+            {driverImgPreview && <img src={driverImgPreview} alt="Driver Preview" className="file_rg" />}
           </label>
         </div>
 
@@ -186,20 +193,19 @@ function Register() {
           />
           <label htmlFor="file3">
             <img src={fileicon} alt="Upload Icon" className="upload-icon" />
-            Texpasportni yuklang
-          {cardDocPreview && <img  src={cardDocPreview} alt="Card Document Preview" className="file_rg" />}
-
+            {language === "uz" ? "Texpasportni yuklang" : "Загрузите техпаспорт"}
+            {cardDocPreview && <img src={cardDocPreview} alt="Card Document Preview" className="file_rg" />}
           </label>
         </div>
 
-        <button className='btn_rg' onClick={save}>Yuborish</button>
+        <button className='btn_rg' onClick={save}>{language === "uz" ? "Yuborish" : "Отправить"}</button>
       </div>
 
       {/* Modal with custom "X" close button */}
       <ReactModal
         isOpen={showModal}
         onRequestClose={() => setShowModal(false)}
-        contentLabel="Muvaffaqiyatli"
+        contentLabel={language === "uz" ? "Muvaffaqiyatli" : "Успешно"}
         className="modal-content"
         overlayClassName="modal-overlay"
       >
