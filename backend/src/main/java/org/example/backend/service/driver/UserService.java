@@ -35,4 +35,6 @@ public interface UserService {
     ResponseEntity<?> deleteUser(UUID id);
 
     HttpEntity<?> savePessenger(PessengerDto pessengerDto) throws IOException;
+
+    ResponseEntity<?> SearchNameDriver(String name);
 }

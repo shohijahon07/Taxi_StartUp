@@ -10,19 +10,29 @@ const PessengerSlice = createSlice({
   name: 'pessenger',
   initialState: {
     pessen: { name: "", phoneNumber: "", driverChatId: "" },
+    user:{ phoneNumber: '', password: '' },
+    loading:false,
+    showPassword:false,
     status: 'idle',
     error: null,
   },
   reducers: {
     setPesenger(state, action) {
-      // Merge the new pessen data into the existing state
       state.pessen = { ...state.pessen, ...action.payload };
+    },
+    setUser(state, action) {
+      state.user = { ...state.pessen, ...action.payload };
+    },
+    setLoading(state, action) {
+      state.loading = action.payload;
+    },
+    setShowPassword(state, action) {
+      state.showPassword = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(addPessenger.fulfilled, (state, action) => {
-        // Update the state with the response data
         state.pessen = { ...state.pessen, ...action.payload };
         state.status = 'succeeded';
       })
@@ -36,6 +46,6 @@ const PessengerSlice = createSlice({
   },
 });
 
-export const { setPesenger } = PessengerSlice.actions;
+export const { setPesenger,setUser,setLoading,setShowPassword } = PessengerSlice.actions;
 
 export default PessengerSlice.reducer;

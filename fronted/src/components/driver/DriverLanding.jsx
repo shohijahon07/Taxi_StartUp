@@ -8,16 +8,20 @@ import { ToastContainer, toast } from 'react-toastify';
 import { fetchToCity } from '../../redux/slices/toCity';
 import { fetchFromCity } from '../../redux/slices/fromCity';
 import b7 from "../../pictures/b7.svg";
+import { setMaxDate, setMinDate } from '../../redux/slices/CommentSlice';
+import { setUserName } from '../../redux/slices/DriverSlice';
 
 function DriverLanding() {
-  const [minDate, setMinDate] = useState('');
   const dispatch = useDispatch();
-  const [maxDate, setMaxDate] = useState('');
-  const [userName, setUserName] = useState("");
+  const { userName } = useSelector((state) => state.driver);
+  const { minDate,maxDate } = useSelector((state) => state.comment);
   const { EditButtonId, driverRout,driverRoutes} = useSelector((state) => state.routes);
   const { toCities} = useSelector((state) => state.toCity);
   const { fromCities} = useSelector((state) => state.fromCity);
   const { language } = useContext(LanguageContext);
+  // const [minDate, setMinDate] = useState('');
+  // const [maxDate, setMaxDate] = useState('');
+  // const [userName, setUserName] = useState("");
 
   useEffect(() => {
     dispatch(fetchToCity())
@@ -28,8 +32,8 @@ function DriverLanding() {
     tomorrow.setDate(today.getDate() + 1);
     dayAfterTomorrow.setDate(today.getDate() + 2);
     const formatDate = (date) => date.toISOString().split('T')[0];
-    setMinDate(formatDate(today));
-    setMaxDate(formatDate(dayAfterTomorrow));
+    dispatch(setMinDate(formatDate(today)));
+    dispatch(setMaxDate(formatDate(dayAfterTomorrow)));
     getDriver()
       console.log(driverRoutes);
     dispatch(fetchRoutesByDriver(userName));
@@ -73,7 +77,7 @@ function DriverLanding() {
       method:"get",
       headers:{Authorization:localStorage.getItem("refresh_token")}
   }).then((res)=>{
-    setUserName(res.data.id)
+    dispatch(setUserName(res.data.id))
   })
   }
   const EditItem = (item) => {

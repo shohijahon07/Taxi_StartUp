@@ -7,6 +7,8 @@
     background-image:url("../../pictures/all.svg");
     height: 100vh;
     max-height: 2000px;
+    max-width: 1920px;
+    margin: 0 auto;
 }
 .leftCity{
     width: 470px;
@@ -58,13 +60,18 @@ justify-content: space-between;
 }
 .ulDriversOne{
     text-shadow: 1px 1px 2px gray;
+    height: 120px;
     /* margin-top: 50px; */
     display: flex;
     align-items: center;
     justify-content: space-around;
     border:none;
 }
-
+.ulDriversOne li{
+    font-family: 'Inter';
+    font-weight: 600;
+    font-size: 25px;
+}
 .pTextDriversOne{
     text-shadow: 1px 1px 2px gray;
     margin-left: 170px;
@@ -104,7 +111,7 @@ justify-content: space-between;
 .saveButton{
     font-family: 'Inter', sans-serif;
     /* margin-top: 40px; */
-   width: 145.48px;
+   width: 130px;
    height: 45px ;
    border-radius:7.5px;
    border: 0.45px solid #2B3187;
@@ -122,9 +129,10 @@ justify-content: space-between;
    color:black;
 }
 .deleteBTN{
+    margin-left: 5px;
     font-family: 'Inter', sans-serif;
     /* margin-top: 40px; */
-   width: 145.48px;
+   width: 130.48px;
    height: 45px ;
    border-radius:7.5px;
    border: 0.45px white;
@@ -143,3 +151,35 @@ justify-content: space-between;
     font-size: 30px;
     font-weight: 500;
 }
+.qidirishHeader {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    padding-bottom: 10px;
+  }
+  
+  .search-input-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+  }
+  
+  .qidirishHeader input {
+    font-size: 25px;
+    width: 300px;
+    height: 50px;
+    padding-right: 40px; /* Leave space for the icon */
+  }
+  
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    width: 30px;
+    height: 30px;
+  }
+  

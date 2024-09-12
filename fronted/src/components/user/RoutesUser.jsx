@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Landing from './Landing';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchToCity } from '../../redux/slices/toCity';
-import { fetchFromCity } from '../../redux/slices/fromCity';
-import { fetchRoutes, fetchRoutesByDate, fetchRoutesByDay, setKoranCourse } from '../../redux/slices/routeDriver';
+import { fetchToCity, setCurrentOptionType, setIsModalOpen, setIsModalOpen1, setSelectedDate, setShowDateModal } from '../../redux/slices/toCity';
+import { fetchFromCity, setShowFromCityModal, setShowToCityModal, setTranslatedFromCities, setTranslatedToCities } from '../../redux/slices/fromCity';
+import { fetchRoutes, fetchRoutesByDate, fetchRoutesByDay, setDay12, setKoranCourse } from '../../redux/slices/routeDriver';
 import "./user.css";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -23,30 +23,30 @@ import Boglanish2 from './Boglanish2';
 import BizHaqimizda2 from './bizHaqimizda/BizHaqimizda2';
 import Izohlar from './izohlar/Izohlar';
 import Band_qilish from './bandQilish/Band_qilish';
+import { setChatId, setId, setMaxDate, setMinDate } from '../../redux/slices/CommentSlice';
 
 function RoutesUser() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { language } = useContext(LanguageContext);
-    const { toCities } = useSelector((state) => state.toCity);
-    const { fromCities } = useSelector((state) => state.fromCity);
+    const { toCities,showDateModal,selectedDate,currentOptionType,isModalOpen,isModalOpen1 } = useSelector((state) => state.toCity);
+    const { fromCities,translatedFromCities,translatedToCities,showFromCityModal,showToCityModal } = useSelector((state) => state.fromCity);
     const { allRoutes, driverRout,day12,isAvailable } = useSelector((state) => state.routes);
-    const [minDate, setMinDate] = useState('');
-    const [maxDate, setMaxDate] = useState('');
-    const [translatedFromCities, setTranslatedFromCities] = useState([]);
-    const [translatedToCities, setTranslatedToCities] = useState([]);
-    const [showFromCityModal, setShowFromCityModal] = useState(false);
-    const [showToCityModal, setShowToCityModal] = useState(false);
-    const [showDateModal, setShowDateModal] = useState(false); // Ensure this state is defined
-    const [selectedDate, setSelectedDate] = useState('');
-    const [currentOptionType, setCurrentOptionType] = useState('');
-    const [needDay, setNeedDay] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [id, setId] = useState("");
-    const [chatId, setChatId] = useState("");
-    const [isModalOpen1, setIsModalOpen1] = useState(false);
-    const [openNoRote, setOpenNoRote] = useState(false);
+    const { id,chatId,minDate,maxDate } = useSelector((state) => state.comment);
+    // const [minDate, setMinDate] = useState('');
+    // const [maxDate, setMaxDate] = useState('');
+    // const [translatedFromCities, setTranslatedFromCities] = useState([]);
+    // const [translatedToCities, setTranslatedToCities] = useState([]);
+    // const [showFromCityModal, setShowFromCityModal] = useState(false);
+    // const [showToCityModal, setShowToCityModal] = useState(false);
+    // const [showDateModal, setShowDateModal] = useState(false); 
+    // const [selectedDate, setSelectedDate] = useState('');
+    // const [currentOptionType, setCurrentOptionType] = useState('');
+  
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [id, setId] = useState("");
+    // const [chatId, setChatId] = useState("");
+    // const [isModalOpen1, setIsModalOpen1] = useState(false);
 
     const cityTranslations = {
         'Uzbekistan': {
@@ -130,8 +130,8 @@ function RoutesUser() {
         // Format: YYYY-MM-DD
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         const formattedDate = date.toLocaleDateString('en-CA', options); // 'en-CA' locale for YYYY-MM-DD format
-        setSelectedDate(formattedDate);
-        setShowDateModal(false); // Close the date modal
+        dispatch(setSelectedDate(formattedDate));
+        dispatch(setShowDateModal(false)); // Close the date modal
         dispatch(setKoranCourse({ ...driverRout, day: formattedDate }));
     };
 
@@ -140,37 +140,36 @@ function RoutesUser() {
     const handleOptionSelect = (option) => {
         if (currentOptionType === 'from') {
             dispatch(setKoranCourse({ ...driverRout, fromCity: translateCity1(option) }));
-            setShowFromCityModal(false);
+            dispatch(setShowFromCityModal(false));
         } else if (currentOptionType === 'to') {
             dispatch(setKoranCourse({ ...driverRout, toCity: translateCity1(option) }));
-            setShowToCityModal(false);
+            dispatch(setShowToCityModal(false));
         }
     };
 
     useEffect(() => {
         dispatch(fetchToCity());
         dispatch(fetchFromCity());
-        setLoading(true); 
         const today = new Date();
         const dayAfterTomorrow = new Date(today);
         dayAfterTomorrow.setDate(today.getDate() + 2);
         const formatDateForInput = (date) => date.toISOString().split('T')[0];
-        setMinDate(formatDateForInput(today));
-        setMaxDate(formatDateForInput(dayAfterTomorrow));
+        dispatch(setMinDate(formatDateForInput(today)));
+        dispatch(setMaxDate(formatDateForInput(dayAfterTomorrow)));
     }, [dispatch, language]);
     
 
     useEffect(() => {
         dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
       
-        setTranslatedFromCities(fromCities.map(city => ({
+        dispatch(setTranslatedFromCities(fromCities.map(city => ({
             ...city,
             name: translateCity(city.name)
-        })));
-        setTranslatedToCities(toCities.map(city => ({
+        }))));
+        dispatch(setTranslatedToCities(toCities.map(city => ({
             ...city,
             name: translateCity(city.name)
-        })));
+        }))));
     }, [fromCities, toCities, language]);
 
     function getRouteOne() {
@@ -179,7 +178,6 @@ function RoutesUser() {
             return; // Funksiyani to'xtatish
         }
     
-        setLoading(true); // Yuklanishni boshlash
     
         dispatch(fetchRoutesByDate(driverRout))
             .unwrap()
@@ -190,9 +188,9 @@ function RoutesUser() {
                 toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             })
             .finally(() => {
-                setLoading(false); 
             });
-        setSelectedDate("")
+            setDay12(null)
+        dispatch(setSelectedDate(""))
         dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
     }
     function getRoutesByDay(day1) {
@@ -206,6 +204,7 @@ function RoutesUser() {
             .catch((err) => {
                 toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             });
+            setDay12(null)
     }
     
     const today = new Date();
@@ -222,17 +221,17 @@ function RoutesUser() {
     const isFormValid = fromCity && toCity && day;
 
     function openIzohlar(id){
-            setIsModalOpen(true)
-            setId(id)
+            dispatch(setIsModalOpen(true))
+            dispatch(setId(id))
     }
-    const closeModal = () => setIsModalOpen(false);
+    const closeModal = () => dispatch(setIsModalOpen(false));
 
     const openModal1 = (chatId) =>{
            
-            setChatId(chatId)
-        setIsModalOpen1(true);
+            dispatch(setChatId(chatId))
+        dispatch(setIsModalOpen1(true));
     } 
-    const closeModal1 = () => setIsModalOpen1(false);
+    const closeModal1 = () => dispatch(setIsModalOpen1(false));
 
 
     const latinToCyrillic = (text) => {
@@ -269,16 +268,56 @@ function RoutesUser() {
         return result;
     };
   
+    const cyrillicToLatin = (text) => {
+        const cyrillicToLatinMap = {
+            А: 'A',  а: 'a',
+            Б: 'B',  б: 'b',
+            В: 'V',  в: 'v',
+            Г: 'G',  г: 'g',
+            Д: 'D',  д: 'd',
+            Е: 'E',  е: 'e',
+            Ё: 'Yo', ё: 'yo',
+            Ж: 'j', ж: 'j',
+            З: 'Z',  з: 'z',
+            И: 'I',  и: 'i',
+            Й: 'Y',  й: 'y',
+            К: 'K',  к: 'k',
+            Л: 'L',  л: 'l',
+            М: 'M',  м: 'm',
+            Н: 'N',  н: 'n',
+            О: 'O',  о: 'o',
+            П: 'P',  п: 'p',
+            Р: 'R',  р: 'r',
+            С: 'S',  с: 's',
+            Т: 'T',  т: 't',
+            У: 'U',  у: 'u',
+            Ф: 'F',  ф: 'f',
+            Х: 'x', х: 'x',
+            Ц: 's', ц: 's',
+            Ч: 'Ch', ч: 'ch',
+            Ш: 'Sh', ш: 'sh',
+            Щ: 'Sh', щ: 'sh',
+            Ъ: '',   ъ: '',
+            Ы: 'Y',  ы: 'y',
+            Ь: '',   ь: '',
+            Э: 'E',  э: 'e',
+            Ю: 'Yu', ю: 'yu',
+            Я: 'Ya', я: 'ya',
+            ҳ: 'h',h: 'ҳ'
+        };
+    
+        return text.split('').map(char => cyrillicToLatinMap[char] || char).join('');
+    };
     
     const translateFullName = (fullName) => {
-        if (language === '2') {
+        if (language === '1') {
+            return cyrillicToLatin(fullName);
+        } else if (language === '2') {
             return latinToCyrillic(fullName);
         }
         return fullName;
     };
 
-
-    
     return (
         <div>
             <Landing />
@@ -294,8 +333,8 @@ function RoutesUser() {
                         type="button"
                         className="btnCity"
                         onClick={() => {
-                            setCurrentOptionType('from');
-                            setShowFromCityModal(true);
+                            dispatch(setCurrentOptionType('from'));
+                            dispatch(setShowFromCityModal(true));
                         }}
                     >
                         {driverRout.fromCity ? (
@@ -314,8 +353,8 @@ function RoutesUser() {
                                 type="button"
                                 className="btnCity"
                                 onClick={() => {
-                                    setCurrentOptionType('to');
-                                    setShowToCityModal(true);
+                                    dispatch(setCurrentOptionType('to'));
+                                    dispatch(setShowToCityModal(true));
                                 }}
                                 disabled={!driverRout.fromCity} 
                                 style={{
@@ -340,7 +379,7 @@ function RoutesUser() {
                         type="button"
                         className="btnCity"
                         value={formatDate(driverRout.day)}
-                        onClick={() => setShowDateModal(true)} // Ensure this triggers the modal
+                        onClick={() => dispatch(setShowDateModal(true))} // Ensure this triggers the modal
                     >
 
                     {selectedDate? (
@@ -445,14 +484,14 @@ function RoutesUser() {
                 <OptionModal
                     options={translatedFromCities}
                     onSelect={handleOptionSelect}
-                    onClose={() => setShowFromCityModal(false)}
+                    onClose={() => dispatch(setShowFromCityModal(false))}
                 />
             )}
             {showToCityModal && (
                 <OptionModal
                     options={translatedToCities}
                     onSelect={handleOptionSelect}
-                    onClose={() => setShowToCityModal(false)}
+                    onClose={() => dispatch(setShowToCityModal(false))}
                 />
             )}
             {showDateModal && (
@@ -460,7 +499,7 @@ function RoutesUser() {
                     minDate={minDate}
                     maxDate={maxDate}
                     onDateSelect={handleDateSelect}
-                    onClose={() => setShowDateModal(false)} // Ensure this function is defined
+                    onClose={() => dispatch(setShowDateModal(false))} // Ensure this function is defined
                 />
             )}
             <ToastContainer toastStyle={{ backgroundColor: 'white', color: 'black' }} autoClose={1000} />

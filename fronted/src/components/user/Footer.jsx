@@ -4,9 +4,14 @@ import rasm from "../../pictures/5.svg";
 import { LanguageContext } from '../language/LanguageContext';
 import BizHaqimizdaModal from './bizHaqimizda/BizHaqimizdaModal';
 import Boglanish from './Boglanish';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsModalOpen, setIsModalOpen1 } from '../../redux/slices/CommentSlice';
 function Footer() {
   const { language } = useContext(LanguageContext);
-  const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const dispatch=useDispatch()
+  const { isModalOpen1,isModalOpen } = useSelector((state) => state.comment);
+
+  
     function top(){
       const scrollHeight = document.documentElement.scrollHeight;
         const clientHeight = document.documentElement.clientHeight;
@@ -29,13 +34,12 @@ function Footer() {
             window.scrollTo({ top: scrollHeight - clientHeight - 2500, behavior: 'smooth' });
         }
     } else {
-        setIsModalOpen1(true);
+        dispatch(setIsModalOpen1(true));
     }
 };
 
-    const closeModal1 = () => setIsModalOpen1(false);
+    const closeModal1 = () => dispatch(setIsModalOpen1(false));
     
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => {
       if (window.innerWidth <= 720) {
           const scrollHeight = document.documentElement.scrollHeight;
@@ -51,11 +55,11 @@ function Footer() {
               window.scrollTo({ top: scrollHeight - clientHeight - 1000, behavior: 'smooth' });
           }
       } else {
-          setIsModalOpen(true);
+          dispatch(setIsModalOpen(true));
       }
   };
   
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => dispatch(setIsModalOpen(false));
   return (
     <div className='footer'>
             <div className="line2"></div>

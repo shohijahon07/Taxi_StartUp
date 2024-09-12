@@ -205,6 +205,19 @@ public class UserImpl implements UserService{
     }
 
     @Override
+    public ResponseEntity<?> SearchNameDriver(String name) {
+
+        List<Role> roles = new ArrayList<>();
+        Role driverRole = roleRepo.findByName("ROLE_DRIVER");
+        if (driverRole == null) {
+            driverRole = new Role("ROLE_DRIVER");
+            roleRepo.save(driverRole);
+        }
+        List<User> users = userRepo.findAllByFullNameContainingIgnoreCaseAndRoles(name, roles);
+        return ResponseEntity.ok(users);
+    }
+
+    @Override
     public ResponseEntity<?> saveUser(UserDto userDto) {
         System.out.println(userDto);
         System.out.println(userDto.getCardDocument());

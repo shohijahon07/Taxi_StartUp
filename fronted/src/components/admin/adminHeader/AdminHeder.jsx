@@ -33,11 +33,10 @@ function AdminHeder() {
   return (
     <div className='beginAdmin'>
       <ul className='ul_admin'>
-        <li onClick={()=>setRoute('1')}>Yo'nalishlar</li>
-        <li  onClick={()=>setRoute('2')}>Haydovchilar</li>
-        <li  onClick={()=>setRoute('3')}>Bildirishnomalar {drivers.length > 0 && <sup>{drivers.length}</sup>}</li>
-        <li  onClick={()=>setRoute('4')}>Hisobot</li>
-        <li><button className='logout'  onClick={functionDeleteToken}>log out</button></li>
+        <li onClick={()=>setRoute('1')}>{language==="1"?"Yo'nalishlar":"Направления"}</li>
+        <li  onClick={()=>setRoute('2')}>{language==="1"?"Haydovchilar":"Драйверы"}</li>
+        <li  onClick={()=>setRoute('3')}>{language==="1"?"Bildirishnomalar":"Уведомления"} {drivers.length > 0 && <sup>{drivers.length}</sup>}</li>
+        <li  onClick={()=>setRoute('4')}>{language==="1"?"Hisobot":"Отчет"}</li>
         <li>
         <div className="rightUserHeader120">
                 <select className='form-select' value={language} onChange={(e) => changeLanguage(e.target.value)}>
@@ -47,6 +46,7 @@ function AdminHeder() {
               
             </div>
         </li>
+        <li><button className='logout'  onClick={functionDeleteToken}>{language==="1"?"chiqish":"Выход"}</button></li>
       </ul>
 
       {

@@ -11,16 +11,14 @@ export const fetchRoutes = createAsyncThunk('RouteDriverSlice/fetchRoutes', asyn
 export const fetchRoutesByDate = createAsyncThunk('RouteDriverSlice/fetchRoutesByDate', async (driverRout, { getState }) => {
   const response = await apicall1(`/driver/byDate`, "PUT", driverRout);
   
-  // const { routes: { allRoutes } } = getState(); 
   
   if (!response.data || response.data.length === 0) {
     return { data: response.data, result: true };  
   } else {
     toast.success("Yo'nalishlar muvaffaqiyatli topildi!");
-    return { data: response.data, result: false };  // Yo'nalishlar mavjud - true
+    return { data: response.data, result: false,day:driverRout.day };  // Yo'nalishlar mavjud - true
   }
   
-  // return response.data;
 });
 
 
@@ -33,10 +31,10 @@ export const fetchRoutesByDay = createAsyncThunk('RouteDriverSlice/fetchRoutesBy
   const response = await apicall1(`/driver/byDay?day=${day}`, "GET");
   
   if (!response.data || response.data.length === 0) {
-    return { data: response.data, result: true };  
+    return { data: response.data, result: true,day };  
   } else {
     toast.success("Yo'nalishlar muvaffaqiyatli topildi!");
-    return { data: response.data, result: false };  // Yo'nalishlar mavjud - true
+    return { data: response.data, result: false,day }; 
   }
 });
 
@@ -84,6 +82,9 @@ const RouteDriverSlice = createSlice({
     setEditButtonId(state, action) {
       state.EditButtonId = action.payload;
     },
+    setDay12(state, action) {
+      state.day12 = action.payload;
+    },
     setDay(state, action) {
       state.day = action.payload;
     },
@@ -121,16 +122,34 @@ const RouteDriverSlice = createSlice({
        
       })
       .addCase(fetchRoutesByDay.fulfilled, (state, action) => {
+        console.log(action.payload.day);
+        const today = new Date();
+        const nextDay1 = new Date(today);
+        const nextDay2 = new Date(today);
         state.status = 'succeeded';
         state.allRoutes = action.payload.data; 
         state.isAvailable = action.payload.result; 
-      })
-      
+        console.log(today.toISOString().substring(0, 10));
+        
+        if (action.payload.day == "1") {
+            state.day12 = today.toISOString().substring(0, 10);
+        } else if (action.payload.day =="2") {
+            nextDay1.setDate(today.getDate() + 1);
+            state.day12 = nextDay1.toISOString().substring(0, 10);
+        } else if (action.payload.day == "3") {
+            nextDay2.setDate(today.getDate() + 2);
+            state.day12 = nextDay2.toISOString().substring(0, 10);
+        }
+    })
       .addCase(fetchRoutesByDate.fulfilled, (state, action) => {
-        state.allRoutes = action.payload.data; 
-        state.isAvailable = action.payload.result; 
-        for (let index = 0; index < action.payload.data.length; index++) {
-            state.day12=action.payload.data[index].day
+        if (action.payload.length===0) {
+            state.day12=action.payload.day
+        }else{
+          state.allRoutes = action.payload.data; 
+          state.isAvailable = action.payload.result; 
+          for (let index = 0; index < action.payload.data.length; index++) {
+              state.day12=action.payload.data[index].day
+          }
         }
       })
       .addCase(fetchRoutes.fulfilled, (state, action) => {
@@ -167,6 +186,6 @@ const RouteDriverSlice = createSlice({
   },
 });
 
-export const { setEditButtonId, setKoranCourse, setSelectedFile,setDay, setClearItem1} = RouteDriverSlice.actions;
+export const { setEditButtonId, setKoranCourse, setSelectedFile,setDay, setClearItem1,setDay12} = RouteDriverSlice.actions;
 
 export default RouteDriverSlice.reducer;

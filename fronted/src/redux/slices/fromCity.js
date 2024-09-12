@@ -26,6 +26,11 @@ const FromCitySlice = createSlice({
   name: 'fromCity',
   initialState: {
     fromCities: [],
+    translatedFromCities:[],
+    translatedToCities:[],
+    showFromCityModal:false,
+    showToCityModal:false,
+    selectedSeat:null,
     status: 'idle',
     error: null,
     img: '',
@@ -37,11 +42,26 @@ const FromCitySlice = createSlice({
     setEditButtonId1(state, action) {
       state.EditButtonId1 = action.payload;
     },
+    setTranslatedFromCities(state, action) {
+      state.translatedFromCities = action.payload;
+    },
+    setTranslatedToCities(state, action) {
+      state.translatedToCities = action.payload;
+    },
+    setShowFromCityModal(state, action) {
+      state.showFromCityModal = action.payload;
+    },
+    setShowToCityModal(state, action) {
+      state.showToCityModal = action.payload;
+    },
     setFromCity(state, action) {
       state.fromCityObject = action.payload;
     },
     setSelectedFile(state, action) {
       state.selectedFile = action.payload;
+    },
+    setSelectedSeat(state, action) {
+      state.selectedSeat = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -72,6 +92,6 @@ const FromCitySlice = createSlice({
   },
 });
 
-export const { setEditButtonId1, setFromCity, setSelectedFile } = FromCitySlice.actions;
+export const { setEditButtonId1, setFromCity, setSelectedFile,setTranslatedFromCities,setTranslatedToCities,setShowFromCityModal,setShowToCityModal,setSelectedSeat } = FromCitySlice.actions;
 
 export default FromCitySlice.reducer;

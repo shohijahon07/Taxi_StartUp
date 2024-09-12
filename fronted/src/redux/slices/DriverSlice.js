@@ -6,6 +6,10 @@ export const fetchDrivers = createAsyncThunk('DriverSlice/fetchDrivers', async (
   const response = await apicall1(`/user/drivers?isDriver=${isDriver}`, "GET");
   return response.data;
 });
+export const fetchDriversByFullName = createAsyncThunk('DriverSlice/fetchDriversByFullName', async (name) => {
+  const response = await apicall1(`/user/search?name=${name}`, "GET");
+  return response.data;
+});
 export const fetchDrivers1 = createAsyncThunk('DriverSlice/fetchDrivers1', async (isDriver) => {
   const response = await apicall1(`/user/drivers?isDriver=${isDriver}`, "GET");
   return response.data;
@@ -91,6 +95,7 @@ const DriverSlice = createSlice({
     drivers1: [],
     drivers: [],
     driverOne: [],
+    byNameDrivers:[],
     status: 'idle',
     countDriver:"",
     countUser:"",
@@ -105,7 +110,9 @@ const DriverSlice = createSlice({
     img: '',
     img1: '',
     img2: '',
-
+    active:false,
+    isEditing:false,
+    userName:""
   },
   reducers: {
     setEditButtonId(state, action) {
@@ -138,6 +145,15 @@ const DriverSlice = createSlice({
       setImg2(state, action) {
         state.img2 = action.payload;
       },
+      setActive(state, action) {
+        state.active = action.payload;
+      },
+      setIsEditing(state, action) {
+        state.isEditing = action.payload;
+      },
+      setUserName(state, action) {
+        state.userName = action.payload;
+      },
   },
   extraReducers: (builder) => {
     builder
@@ -147,30 +163,41 @@ const DriverSlice = createSlice({
       .addCase(fetchDrivers.pending, (state) => {
         state.status = 'loading';
       })
+      .addCase(fetchDriversByFullName.pending, (state) => {
+        state.status = 'loading';
+      })
       .addCase(fetchDrivers1.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchDriverOne.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.driverOne = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+        state.driverOne = action.payload;  
+      })
+      .addCase(fetchDriversByFullName.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.drivers1 = action.payload;  
       })
       .addCase(fetchDrivers.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.drivers = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+        state.drivers = action.payload;  
       })
       .addCase(fetchDrivers1.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.drivers1 = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+        state.drivers1 = action.payload;  
       })
       .addCase(countDriversAll.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.countDriver = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
+        state.countDriver = action.payload;  
       })
       .addCase(countUsersAll.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.countUser = action.payload;  // Null yoki undefined qiymatlarga e'tibor bering
       })
       .addCase(fetchDriverOne.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(fetchDriversByFullName.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })
@@ -185,9 +212,7 @@ const DriverSlice = createSlice({
       .addCase(addDriver.fulfilled, (state, action) => {
         state.drivers.push(action.payload);  // Yangi yo'nalishni ro'yxatga qo'shamiz
       })
-      // .addCase(addDriverAbout.fulfilled, (state, action) => {
-      //   state.drivers.push(action.payload);  // Yangi yo'nalishni ro'yxatga qo'shamiz
-      // })
+     
       .addCase(editDriver.fulfilled, (state, action) => {
         const index = state.drivers.findIndex(driver => driver.id === action.payload.id);
         if (index !== -1) {
@@ -213,6 +238,6 @@ const DriverSlice = createSlice({
   },
 });
 
-export const { setEditButtonId, setDriver,setDriverIsDriver, setSelectedFile,setImg,setImg1,setImg2,setSelectedFile1,setSelectedFile2 ,setAbout} = DriverSlice.actions;
+export const { setEditButtonId, setDriver,setDriverIsDriver, setSelectedFile,setImg,setImg1,setImg2,setSelectedFile1,setSelectedFile2 ,setAbout,setActive,setIsEditing,setUserName} = DriverSlice.actions;
 
 export default DriverSlice.reducer;

@@ -27,6 +27,10 @@ public class UserController {
     public ResponseEntity<?> getDriverOne(@RequestParam UUID id){
         return userService.getDriverOne(id);
     }
+    @GetMapping("/search")
+    public ResponseEntity<?> SearchDriver(@RequestParam String name){
+        return userService.SearchNameDriver(name);
+    }
 
     @DeleteMapping
     public ResponseEntity<?> DeleteUser(@RequestParam UUID id){

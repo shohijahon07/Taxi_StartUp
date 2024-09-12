@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './optionModal.css';
 import { LanguageContext } from '../language/LanguageContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActive } from '../../redux/slices/CommentSlice';
 
 const OptionModal = ({ options, onSelect, onClose }) => {
-    const [active, setActive] = useState(false);
+    const dispatch=useDispatch()
+    const { active } = useSelector((state) => state.comment);
     const { language } = useContext(LanguageContext);
-
     useEffect(() => {
-        setActive(true);
+        dispatch(setActive(true));
     }, []);
 
     const handleClose = () => {
-        setActive(false);
-        setTimeout(onClose, 1000); // 1 sekund kutish animatsiya tugashi uchun
+        dispatch(setActive(false));
+        setTimeout(onClose, 1000); 
     };
 
     return (
