@@ -89,10 +89,18 @@ public class UserImpl implements UserService{
 
             String apiToken ="7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
             String chatId = String.valueOf(user.getChatId());
-            String text = "  Tabriklaymiz siz muvaffaqiyatli tastiqlandingiz. Boshlash uchun /start buyrug'ini bering  username: " +user.getPhoneNumber() +  "  parol: " + plainPassword  +" ";
+            String text = "";
 
+            if (user.getLanguage().equals("uz")) {
+                text = "Tabriklaymiz! Siz muvaffaqiyatli tasdiqlandingiz. Boshlash uchun /start buyrug'ini bering. Username: "
+                        + user.getPhoneNumber() + " Parol: " + plainPassword;
+            } else  {
+                text = "Поздравляем! Вы успешно подтверждены. Для начала введите команду /start. Username: "
+                        + user.getPhoneNumber() + " Пароль: " + plainPassword;
+            }
 
             String urlString = "https://api.telegram.org/bot" + apiToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
+
 
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -159,8 +167,16 @@ public class UserImpl implements UserService{
 
         String apiToken = "7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
         String chatId = String.valueOf(pessengerDto.getDriverChatId());
-        String text = "👤 Siz " + user.getFullName() + " yo'lovchini qabul qilasizmi? " +
-                "📞 Telefon raqami: " + user.getPhoneNumber();
+        String text="";
+        Optional<User> byChatId = userRepo.findByChatId(Long.valueOf(chatId));
+
+        if(byChatId.get().getLanguage().equals("uz")){
+            text = "👤 Siz " + user.getFullName() + " yo'lovchini qabul qilasizmi? " +
+                    "📞 Telefon raqami: " + user.getPhoneNumber();
+        } else if (byChatId.get().getLanguage().equals("ru")) {
+            text="👤 Вы принимаете " + user.getFullName() + " пассажира?" +
+                    "📞 Номер телефона: " + user.getPhoneNumber();
+        }
 
         InlineKeyboardMarkup markup = sendBusy(user.getId(), Long.valueOf(pessengerDto.getDriverChatId()));
         ObjectMapper objectMapper = new ObjectMapper();
