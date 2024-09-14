@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import "./footer.css"
-import rasm from "../../pictures/5.svg";
+import rasm from "../../pictures/5.webp";
 import { LanguageContext } from '../language/LanguageContext';
 import BizHaqimizdaModal from './bizHaqimizda/BizHaqimizdaModal';
 import Boglanish from './Boglanish';

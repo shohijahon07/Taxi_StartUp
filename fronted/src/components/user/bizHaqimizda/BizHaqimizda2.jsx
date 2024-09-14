@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import "./bizhaqimizda.css";
-import b1 from "../../../pictures/b1.svg";
-import b2 from "../../../pictures/b2.svg";
-import b3 from "../../../pictures/b3.svg";
-import b4 from "../../../pictures/b4.svg";
-import logo from "../../../pictures/Group (1).svg";
+import b1 from "../../../pictures/b1.webp";
+import b2 from "../../../pictures/b2.webp";
+import b3 from "../../../pictures/b3.webp";
+import b4 from "../../../pictures/b4.webp";
+import logo from "../../../pictures/Group (1).webp";
 import { LanguageContext } from "../../language/LanguageContext";
 
 const BizHaqimizda2 = () => {

@@ -1,10 +1,10 @@
 // src/components/user/Landing.jsx
 import React, { useContext, useEffect, useState } from 'react';
 import "./user.css";
-import logo from "../../pictures/b13.png";
+import logo from "../../pictures/Group (1).webp";
 import { useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../language/LanguageContext';
-import telegram from "../../pictures/telegram.svg";
+import telegram from "../../pictures/telegram.webp";
 import BizHaqimizdaModal from './bizHaqimizda/BizHaqimizdaModal';
 import Boglanish from './Boglanish';
 import { useDispatch, useSelector } from 'react-redux';

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import DriverHeader from './headerD/DriverHeader'
 import "./driverLanding.css"
 import axios from 'axios';
 import { addRoute, deleteRoutes, editRoute, fetchRoutesByDriver, setEditButtonId, setKoranCourse } from '../../redux/slices/routeDriver';
@@ -7,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchToCity } from '../../redux/slices/toCity';
 import { fetchFromCity } from '../../redux/slices/fromCity';
-import b7 from "../../pictures/b7.svg";
 import { setMaxDate, setMinDate } from '../../redux/slices/CommentSlice';
 import { setUserName } from '../../redux/slices/DriverSlice';
 

@@ -1,6 +1,6 @@
 
 import React, { useContext } from 'react';
-import rasm from "../../pictures/4.svg";
+import rasm from "../../pictures/4.webp";
 import "./boglanish.css"
 import { LanguageContext } from '../language/LanguageContext';
 import { useDispatch, useSelector } from 'react-redux';

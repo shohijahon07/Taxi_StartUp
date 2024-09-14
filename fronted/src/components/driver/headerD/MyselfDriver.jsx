@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import DriverHeader from './DriverHeader';
 import "../headerD/Myselft.css";
-import uzbekistan from "../../../pictures/uzbekistan.svg";
 import { addDriverAbout, editDriver, fetchDriverOne, setAbout, setDriver, setEditButtonId, setImg, setImg1, setImg2, setIsEditing, setSelectedFile, setSelectedFile1, setSelectedFile2, setUserName } from '../../../redux/slices/DriverSlice';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { LanguageContext } from '../../language/LanguageContext';
 import { toast } from 'react-toastify';
 import DriverFooter from './DriverFooter';
-import fileicon from "../../../pictures/fileicon.jpg";
+import fileicon from "../../../pictures/fileicon.webp";
 import "../../auth/Register.css";
 import edit from "../../../pictures/edit.svg"
 import apicall from '../../../apicall/apicall';

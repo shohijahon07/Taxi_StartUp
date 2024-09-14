@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import "./header12.css"
-import axios from 'axios';
 import { LanguageContext } from '../../language/LanguageContext';
-import logo from "../../../pictures/b13.png";
+import logo from "../../../pictures/Group (1).webp";
 
-import telegram from "../../../pictures/telegram.svg";
+import telegram from "../../../pictures/telegram.webp";
 import { useNavigate } from 'react-router-dom';
 function DriverHeader() {
   const { language, changeLanguage } = useContext(LanguageContext);

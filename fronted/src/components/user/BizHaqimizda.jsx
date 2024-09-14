@@ -1,8 +1,8 @@
 import React from 'react'
 import "./boglanish.css";
-import rasm1 from "../../pictures/1.svg";
-import rasm2 from "../../pictures/2.svg";
-import rasm3 from "../../pictures/3.svg";
+import rasm1 from "../../pictures/1.webp";
+import rasm2 from "../../pictures/2.webp";
+import rasm3 from "../../pictures/3.webp";
 function BizHaqimizda() {
   
   return (

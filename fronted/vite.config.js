@@ -18,7 +18,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 1000, 
   },
-  assetsInclude: ['**/*.png', '**/*.PNG', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.gif'], 
+  assetsInclude: ['**/*.png', '**/*.PNG', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.gif','**/*.WEBP','**/*.webp'], 
   server: {
     host: true, 
     port: 5174, 
