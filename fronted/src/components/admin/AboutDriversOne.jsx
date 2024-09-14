@@ -40,7 +40,7 @@ useEffect(() => {
                 <li className='list-group-item'>{item.fullName}</li>
                 <li className='list-group-item'>{item.phoneNumber}</li>
                 <li className='list-group-item'>
-                    <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                    <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
                 </li>
             </ul>
         ))

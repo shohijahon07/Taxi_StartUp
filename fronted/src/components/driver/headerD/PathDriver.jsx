@@ -147,25 +147,17 @@ function PathDriver() {
             'v': 'в', 'x': 'х', 'y': 'й', 'z': 'з'
         };
     
-       
         let result = text;
-        for (const [key, value] of Object.entries(map)) {
-            if (key.length > 1) {
-                // Katta yoki kichik harf kombinatsiyalarni almashtiramiz
-                const regex = new RegExp(key, 'g');
-                result = result.replace(regex, value);
-            }
-        }
     
-        for (const [key, value] of Object.entries(map)) {
-            if (key.length === 1) {
-                const regex = new RegExp(key, 'g');
-                result = result.replace(regex, value);
-            }
-        }
+        result = result.replace(/Ch/g, map['Ch']).replace(/ch/g, map['ch'])
+                       .replace(/Sh/g, map['Sh']).replace(/sh/g, map['sh']);
+    
+        result = result.split('').map(char => map[char] || char).join('');
     
         return result;
     };
+    
+    
     const cyrillicToLatin = (text) => {
       const cyrillicToLatinMap = {
           А: 'A',  а: 'a',
@@ -175,7 +167,7 @@ function PathDriver() {
           Д: 'D',  д: 'd',
           Е: 'E',  е: 'e',
           Ё: 'Yo', ё: 'yo',
-          Ж: 'j', ж: 'j',
+          Ж: 'J',  ж: 'j',
           З: 'Z',  з: 'z',
           И: 'I',  и: 'i',
           Й: 'Y',  й: 'y',
@@ -190,8 +182,8 @@ function PathDriver() {
           Т: 'T',  т: 't',
           У: 'U',  у: 'u',
           Ф: 'F',  ф: 'f',
-          Х: 'x', х: 'x',
-          Ц: 's', ц: 's',
+          Х: 'X',  х: 'x',
+          Ц: 'S',  ц: 's',
           Ч: 'Ch', ч: 'ch',
           Ш: 'Sh', ш: 'sh',
           Щ: 'Sh', щ: 'sh',
@@ -201,11 +193,13 @@ function PathDriver() {
           Э: 'E',  э: 'e',
           Ю: 'Yu', ю: 'yu',
           Я: 'Ya', я: 'ya',
-          ҳ: 'h',h: 'ҳ'
+          Ҳ: 'H',  ҳ: 'h'
       };
   
       return text.split('').map(char => cyrillicToLatinMap[char] || char).join('');
   };
+  
+  
   
   const translateFullName = (name) => {
       if (language === '1') {
@@ -531,7 +525,7 @@ function PathDriver() {
           <div className=""  >
             {routesByDriver.map((item) => (
               <div className="mapRoutes" key={item.id} style={{ backgroundColor: "white" }} >
-                <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateFullName(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language === "1" ? "So’m" : "Сум"} </p></div></li>
+                <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language === "1" ? "So’m" : "Сум"} </p></div></li>
                 <li className="list-group-item li2">
                   <div className="l2Child1">
                     {Array.from({ length: Math.min(item.countSide, 6) }).map((_, index) => (

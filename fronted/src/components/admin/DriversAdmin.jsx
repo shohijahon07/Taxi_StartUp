@@ -1,53 +1,61 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteDriver, fetchDrivers, fetchDrivers1, fetchDriversByFullName } from '../../redux/slices/DriverSlice';
+import { deleteDriver, fetchDrivers1, fetchDriversByFullName } from '../../redux/slices/DriverSlice';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaSearch } from "react-icons/fa";
-import "./routesAdmin.css"
-function DriversAdmin() {
-const {drivers1} = useSelector((state) => state.driver);
-const dispatch = useDispatch();
-const [isDriver, setIsDriver] = useState(true);
-useEffect(() => {
- dispatch(fetchDrivers1(isDriver)) 
-  }, []);
+import "./routesAdmin.css";
 
-    const navigate=useNavigate()
-  function goAboutDrivers(userName){
-navigate(`/bir_haydovchi/${userName}`)
+function DriversAdmin() {
+  const { drivers1  } = useSelector((state) => state.driver); 
+  const dispatch = useDispatch();
+  const [isDriver, setIsDriver] = useState(true);
+
+  useEffect(() => {
+    dispatch(fetchDrivers1(isDriver));
+  }, [dispatch, isDriver]);
+
+  const navigate = useNavigate();
+
+  function goAboutDrivers(userName) {
+    navigate(`/bir_haydovchi/${userName}`);
   }
+
   function getByName(name) {
     dispatch(fetchDriversByFullName(name))
-        .unwrap()
-        .then(() => {
-           
-        })
-        .catch((err) => {
-            toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
-        })
-        
-}
-  function deleteDrive(id){
-    dispatch(deleteDriver({ id}))
-    .unwrap()
-    .then(() => {
-      toast.success("Malumot muvaffaqiyatli o'chirildi!");
-      dispatch(fetchDrivers(isDriver)) 
-    })
-    .catch((err) =>console.log(err));
+      .unwrap()
+      .then(() => {
+      })
+      .catch(() => {
+        toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
+      });
   }
-  
+
+  function deleteDrive(id) {
+    dispatch(deleteDriver({ id }))
+      .unwrap()
+      .then(() => {
+        toast.success("Malumot muvaffaqiyatli o'chirildi!");
+        dispatch(fetchDrivers1(isDriver));
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div>
-     <div className="qidirishHeader">
-  <div className="search-input-wrapper">
-    <input type="text" className="form-control" placeholder="Qidirish" onChange={(e)=>getByName(e.target.value)} />
-    <FaSearch  className="search-icon" />
-  </div>
-</div>
+      <div className="qidirishHeader">
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Qidirish"
+            onChange={(e) => getByName(e.target.value)}
+          />
+          <FaSearch className="search-icon" />
+        </div>
+      </div>
 
-      <table className='table table-success'>
+      <table className="table table-success">
         <thead>
           <tr>
             <th>N#</th>
@@ -62,36 +70,71 @@ navigate(`/bir_haydovchi/${userName}`)
         </thead>
         <tbody>
           {
-            drivers1.map((item,i)=>{
-              return <tr key={item.id}>
-                <td>{i+1}</td>
-                <td>{item.fullName}</td> 
-                <td>{item.phoneNumber}</td> 
-                <td>{item.carType}</td> 
-                <td>
-                <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
-                  </td> 
-                <td>
-            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
-                  </td> 
-                <td>
-            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
-               </td> 
-               <td>
-                <button className='saveButton' onClick={()=>goAboutDrivers(item.id)}>Haqida</button>
-                <button className='deleteBTN' onClick={()=>deleteDrive(item.id)}>O'chirish</button>
-               </td>
+            drivers1.length > 0 ? (
+              drivers1.map((item, i) => (
+                <tr key={item.id}>
+                  <td>{i + 1}</td>
+                  <td>{item.fullName}</td>
+                  <td>{item.phoneNumber}</td>
+                  <td>{item.carType}</td>
+                  <td>
+                    <img
+                      className="imageTable"
+                      style={{ objectFit: "cover" }}
+                      src={`http:/api/fileController/photo?img=${item.carImg}`}
+                      alt="#"
+                    />
+                  </td>
+                  <td>
+                    <img
+                      className="imageTable"
+                      style={{ objectFit: "cover" }}
+                      src={`http:/api/fileController/photo?img=${item.driverImg}`}
+                      alt="#"
+                    />
+                  </td>
+                  <td>
+                    <img
+                      className="imageTable"
+                      style={{ objectFit: "cover" }}
+                      src={`http:/api/fileController/photo?img=${item.cardDocument}`}
+                      alt="#"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      className="saveButton"
+                      onClick={() => goAboutDrivers(item.id)}
+                    >
+                      Haqida
+                    </button>
+                    <button
+                      className="deleteBTN"
+                      onClick={() => deleteDrive(item.id)}
+                    >
+                      O'chirish
+                    </button>
+                  </td>
                 </tr>
-            })
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8">No drivers found</td>
+              </tr>
+            )
           }
         </tbody>
       </table>
-      <ToastContainer toastStyle={{
+
+      <ToastContainer
+        toastStyle={{
           backgroundColor: 'white',
           color: 'black',
-        }} autoClose={1000} />
+        }}
+        autoClose={1000}
+      />
     </div>
-  )
+  );
 }
 
-export default DriversAdmin
+export default DriversAdmin;

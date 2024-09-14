@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apicall1 from "../../apicall/apicall1";
 import apicall from "../../apicall/apicall";
 import { toast } from 'react-toastify';
+import { message } from 'antd';
 
 export const fetchRoutes = createAsyncThunk('RouteDriverSlice/fetchRoutes', async () => {
   const response = await apicall1(`/driver`, "GET");
@@ -15,7 +16,7 @@ export const fetchRoutesByDate = createAsyncThunk('RouteDriverSlice/fetchRoutesB
   if (!response.data || response.data.length === 0) {
     return { data: response.data, result: true,day:driverRout.day };  
   } else {
-    toast.success("Yo'nalishlar muvaffaqiyatli topildi!");
+    message.success("Yo'nalishlar muvaffaqiyatli topildi!");
     return { data: response.data, result: false,day:driverRout.day };  // Yo'nalishlar mavjud - true
   }
   
@@ -33,7 +34,7 @@ export const fetchRoutesByDay = createAsyncThunk('RouteDriverSlice/fetchRoutesBy
   if (!response.data || response.data.length === 0) {
     return { data: response.data, result: true,day };  
   } else {
-    toast.success("Yo'nalishlar muvaffaqiyatli topildi!");
+    message.success("Yo'nalishlar muvaffaqiyatli topildi!");
     return { data: response.data, result: false,day }; 
   }
 });
@@ -42,7 +43,7 @@ export const fetchRoutesByDay = createAsyncThunk('RouteDriverSlice/fetchRoutesBy
 
 export const addRoute = createAsyncThunk('RouteDriverSlice/addRoute', async ({ driverRout, userName }) => {
   const response = await apicall(`/driver`, "POST", { ...driverRout, userId: userName });
-  return response.data;  
+  return response;  
 });
 
 export const editRoute = createAsyncThunk('RouteDriverSlice/editRoute', async ({ EditButtonId, driverRout }) => {

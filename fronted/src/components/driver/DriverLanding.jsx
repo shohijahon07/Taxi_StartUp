@@ -73,7 +73,7 @@ function DriverLanding() {
   };
   function getDriver(){
     axios({
-      url:"http://localhost:8080/api/auth/name",
+      url:"http:/api/auth/name",
       method:"get",
       headers:{Authorization:localStorage.getItem("refresh_token")}
   }).then((res)=>{

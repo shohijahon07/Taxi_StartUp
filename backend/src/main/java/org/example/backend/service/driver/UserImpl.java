@@ -69,6 +69,7 @@ public class UserImpl implements UserService{
     @Override
     public ResponseEntity<?> getDriversAll(List<Role> roleDriver, Boolean isDriver) {
         List<User> all = userRepo.findAllByRolesAndIsDriver(roleDriver,isDriver);
+        System.out.println(all);
         return ResponseEntity.ok(all);
     }
 
@@ -87,7 +88,7 @@ public class UserImpl implements UserService{
 
             userRepo.save(user);
 
-            String apiToken ="7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
+            String apiToken ="7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
             String chatId = String.valueOf(user.getChatId());
             String text = "";
 
@@ -165,7 +166,7 @@ public class UserImpl implements UserService{
         User user = new User(pessengerDto.getName(), pessengerDto.getPhoneNumber(), roles);
         userRepo.save(user);
 
-        String apiToken = "7170837425:AAGYpViG20xIwtYVNacL7jW47pjxoWFWJc0";
+        String apiToken = "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
         String chatId = String.valueOf(pessengerDto.getDriverChatId());
         String text="";
         Optional<User> byChatId = userRepo.findByChatId(Long.valueOf(chatId));
@@ -213,7 +214,10 @@ public class UserImpl implements UserService{
             driverRole = new Role("ROLE_DRIVER");
             roleRepo.save(driverRole);
         }
+        roles.add(driverRole);
+
         List<User> users = userRepo.findAllByFullNameContainingIgnoreCaseAndRoles(name, roles);
+
         return ResponseEntity.ok(users);
     }
 

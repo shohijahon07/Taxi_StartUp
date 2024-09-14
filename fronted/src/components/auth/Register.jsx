@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import "./Register.css";
 import apicall1 from "../../apicall/apicall1";
 import PhoneInput from "react-phone-input-2";
-import fileicon from "../../pictures/fileicon.jpg";
-import ReactModal from 'react-modal'; // Import React Modal
+import fileicon from "../../pictures/fileicon.webp";
+import ReactModal from 'react-modal'; 
 
 ReactModal.setAppElement('#root'); // Bind modal to your appElement (important for accessibility)
 
@@ -166,7 +166,7 @@ function Register() {
             onChange={(e) => handleFileChange(e, setSelectFile1, setCarImgPreview)}
           />
           <label htmlFor="file1">
-            <img src={fileicon} alt="Upload Icon" className="upload-icon" />
+            {/* <img src={fileicon} alt="Upload Icon" className="upload-icon" /> */}
             {language === "uz" ? "Mashina rasmini yuklang" : "Загрузите фото машины"}
             {carImgPreview && <img src={carImgPreview} alt="Car Preview" className="file_rg" />}
           </label>
@@ -179,7 +179,7 @@ function Register() {
             onChange={(e) => handleFileChange(e, setSelectFile2, setDriverImgPreview)}
           />
           <label htmlFor="file2">
-            <img src={fileicon} alt="Upload Icon" className="upload-icon" />
+            {/* <img src={fileicon} alt="Upload Icon" className="upload-icon" /> */}
             {language === "uz" ? "Haydovchilik guvohnomani yuklang" : "Загрузите водительское удостоверение"}
             {driverImgPreview && <img src={driverImgPreview} alt="Driver Preview" className="file_rg" />}
           </label>
@@ -192,7 +192,7 @@ function Register() {
             onChange={(e) => handleFileChange(e, setSelectFile3, setCardDocPreview)}
           />
           <label htmlFor="file3">
-            <img src={fileicon} alt="Upload Icon" className="upload-icon" />
+            {/* <img src={fileicon} alt="Upload Icon" className="upload-icon" /> */}
             {language === "uz" ? "Texpasportni yuklang" : "Загрузите техпаспорт"}
             {cardDocPreview && <img src={cardDocPreview} alt="Card Document Preview" className="file_rg" />}
           </label>

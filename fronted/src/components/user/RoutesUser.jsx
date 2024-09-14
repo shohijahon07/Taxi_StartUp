@@ -24,6 +24,7 @@ import BizHaqimizda2 from './bizHaqimizda/BizHaqimizda2';
 import Izohlar from './izohlar/Izohlar';
 import Band_qilish from './bandQilish/Band_qilish';
 import { setChatId, setId, setMaxDate, setMinDate } from '../../redux/slices/CommentSlice';
+import { message } from 'antd';
 
 function RoutesUser() {
     const navigate = useNavigate();
@@ -33,21 +34,6 @@ function RoutesUser() {
     const { fromCities,translatedFromCities,translatedToCities,showFromCityModal,showToCityModal } = useSelector((state) => state.fromCity);
     const { allRoutes, driverRout,day12,isAvailable } = useSelector((state) => state.routes);
     const { id,chatId,minDate,maxDate } = useSelector((state) => state.comment);
-    // const [minDate, setMinDate] = useState('');
-    // const [maxDate, setMaxDate] = useState('');
-    // const [translatedFromCities, setTranslatedFromCities] = useState([]);
-    // const [translatedToCities, setTranslatedToCities] = useState([]);
-    // const [showFromCityModal, setShowFromCityModal] = useState(false);
-    // const [showToCityModal, setShowToCityModal] = useState(false);
-    // const [showDateModal, setShowDateModal] = useState(false); 
-    // const [selectedDate, setSelectedDate] = useState('');
-    // const [currentOptionType, setCurrentOptionType] = useState('');
-  
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [id, setId] = useState("");
-    // const [chatId, setChatId] = useState("");
-    // const [isModalOpen1, setIsModalOpen1] = useState(false);
-
     const cityTranslations = {
         'Uzbekistan': {
             'Toshkent': 'Ташкент',
@@ -175,7 +161,7 @@ function RoutesUser() {
 
     function getRouteOne() {
         if (!driverRout.fromCity || !driverRout.toCity || !driverRout.day) {
-            toast.error('Iltimos, barcha maydonlarni to\'ldiring!');
+            message.error('Iltimos, barcha maydonlarni to\'ldiring!');
             return; // Funksiyani to'xtatish
         }
     
@@ -186,7 +172,7 @@ function RoutesUser() {
                
             })
             .catch((err) => {
-                toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
+                message.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             })
             .finally(() => {
             });
@@ -203,7 +189,7 @@ function RoutesUser() {
                 day = null; 
             })
             .catch((err) => {
-                toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
+                message.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             });
             setDay12(null)
     }
@@ -428,7 +414,7 @@ function RoutesUser() {
            
             {allRoutes.map((item, index) => (
                    <div className="mapRoutes" key={item.id}>
-                    <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateFullName(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
+                    <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateCity(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
                     <li className="list-group-item li2">
                                 <div className="l2Child1">
                                     {Array.from({ length: Math.min(item.countSide, 6) }).map((_, index) => (
@@ -458,7 +444,7 @@ function RoutesUser() {
                 <div className="allRoutes" >
                      <div className="getRoutes">
                          <div className="topRoutesUser">
-                            <h2>{language==="1"?`Yo’nalish bo’yicha qatnovlar `:`Маршруты`} <h3>{isAvailable?"mavjud emas":""}</h3></h2>
+                            <h2>{language==="1"?`Yo’nalish bo’yicha qatnovlar `:`Маршруты`} <h3> {isAvailable ? (language === "1" ? "mavjud emas" : "нет в наличии") : ""}</h3></h2>
                         </div>
                         <div className="days">
                         <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(day12) === formatDate(today) ? "#303383" : ""),color:(formatDate(day12) === formatDate(today) ? "white" : "")}}>
@@ -470,7 +456,7 @@ function RoutesUser() {
                         </div>
                        </div> 
                        <div className='catchRoute'>
-                <h3>Sanani o'zgartiring</h3>
+                <h3>{language==="1"?"Sanani o'zgartiring":"Изменить дату"}</h3>
                <div className="imgCatchRoute"> <img style={{width:"100%",height:"100%",objectFit:"cover"}} src={b14} alt="" /></div>
           </div>
                 </div>:""

@@ -8,7 +8,7 @@ import { fetchDrivers } from '../../../redux/slices/DriverSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../../language/LanguageContext';
-import Connection from '../Connection';
+import Connection from '../Connection.jsx';
 
 function AdminHeder() {
   const navigate=useNavigate()
@@ -36,7 +36,7 @@ function AdminHeder() {
       <ul className='ul_admin'>
         <li onClick={()=>setRoute('1')}>{language==="1"?"Yo'nalishlar":"Направления"}</li>
         <li  onClick={()=>setRoute('2')}>{language==="1"?"Haydovchilar":"Драйверы"}</li>
-        <li  onClick={()=>setRoute('3')}>{language==="1"?"Bildirishnomalar":"Уведомления"} {drivers.length > 0 && <sup>{drivers.length}</sup>}</li>
+        <li  onClick={()=>setRoute('3')}>{language==="1"?"Bildirishnomalar":"Уведомления"} {drivers && drivers.length > 0 && <sup>{drivers.length}</sup>}</li>
         <li  onClick={()=>setRoute('4')}>{language==="1"?"Hisobot":"Отчет"}</li>
         <li  onClick={()=>setRoute('5')}>{language==="1"?"Bog'lanish":"Связь"}</li>
         <li>

@@ -8,7 +8,7 @@ export const fetchToCity = createAsyncThunk('ToCitySlice/fetchToCity', async () 
 });
 export const addToCity = createAsyncThunk('ToCitySlice/addToCity', async ({ toCityObject }) => {
   const response = await apicall(`/toCity`, "POST", toCityObject );
-  return response.data;  
+  return response;  
 });
 
 export const editToCity = createAsyncThunk('ToCitySlice/editToCity', async ({ EditButtonId, toCityObject }) => {

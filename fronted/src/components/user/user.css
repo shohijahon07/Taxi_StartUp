@@ -1244,7 +1244,7 @@ p{
         gap: 30px;
         color:#000000;
         font-weight: 500;
-        font-size: 23px;
+        font-size: 22px;
         line-height: 30.91px;
     }
 
@@ -1539,7 +1539,7 @@ p{
         gap: 30px;
         color:#000000;
         font-weight: 500;
-        font-size: 20px;
+        font-size: 18px;
         line-height: 25.91px;
     }
 
@@ -2793,7 +2793,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 21px;
+            font-size: 19px;
             text-align: center;
         }
         .mapRoutes{
@@ -3134,7 +3134,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 20px;
+            font-size: 18px;
             text-align: center;
         }
         .mapRoutes{
@@ -3485,7 +3485,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 18px;
+            font-size: 17px;
             text-align: center;
         }
         .mapRoutes{
@@ -3506,7 +3506,7 @@ p{
             gap: 15px;
             color:#000000;
             font-weight: 500;
-            font-size: 17.5px;
+            font-size: 15px;
             line-height: 21.91px;
         }
         h3{
@@ -3838,7 +3838,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 15px;
+            font-size: 14px;
             text-align: center;
         }
         .mapRoutes{
@@ -4158,6 +4158,7 @@ p{
         }
         .topRoutesUser{
          grid-row: 2;
+         justify-content: center;
         }
         .topRoutesUser h3{
             font-size: 15px;
@@ -4180,20 +4181,22 @@ p{
           grid-template-rows: auto 1fr;
         }
         .days{
-            gap: 18px;
+            gap: 10px;
             display: flex;
             grid-row: 1;
             /* margin-left: 50px; */
+            align-items:center;
+          justify-content: center;
         }
         .btnDays{
-            width: 90px;
+            width: 100px;
             height: 37px;
             border: 0.48px solid #2B3187;
             border-radius:8px;
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 17px;
+            font-size: 14px;
             text-align: center;
         }
         .mapRoutes{
@@ -4214,7 +4217,7 @@ p{
             gap: 15px;
             color:#000000;
             font-weight: 500;
-            font-size: 14.5px;
+            font-size: 13px;
             line-height: 15.91px;
         }
         h3{
@@ -4545,22 +4548,27 @@ p{
             padding-top: 10px;
             display: grid;
           grid-template-rows: auto 1fr;
+          align-items:center;
+          justify-content: center;
         }
         .days{
-            gap: 15px;
+            
+            /* margin-left: 10px; */
+            gap: 10px;
             display: flex;
+            align-items:center;
             grid-row: 1;
             /* margin-left: 50px; */
         }
         .btnDays{
-            width: 80px;
+            width: 85px;
             height: 33px;
             border: 0.48px solid #2B3187;
             border-radius:8px;
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 15px;
+            font-size: 13px;
             text-align: center;
         }
         .mapRoutes{
@@ -4581,7 +4589,7 @@ p{
             gap: 10px;
             color:#000000;
             font-weight: 500;
-            font-size: 14.5px;
+            font-size: 13px;
             line-height: 15.91px;
         }
         h3{
@@ -4886,6 +4894,7 @@ p{
         }
         .topRoutesUser{
          grid-row: 2;
+         justify-content: center;
         }
         .topRoutesUser h3{
             font-size: 12px;
@@ -4907,12 +4916,14 @@ p{
             padding-top: 10px;
             display: grid;
           grid-template-rows: auto 1fr;
+          justify-content: center;
         }
         .days{
             gap: 15px;
             display: flex;
             grid-row: 1;
             /* margin-left: 50px; */
+            
         }
         .btnDays{
             width: 75px;
@@ -4922,7 +4933,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 14px;
+            font-size: 11px;
             text-align: center;
         }
         .mapRoutes{
@@ -4943,7 +4954,7 @@ p{
             gap: 10px;
             color:#000000;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 12px;
             line-height: 15.91px;
         }
         h3{
@@ -5015,14 +5026,14 @@ p{
         .l2Child1{
             display: flex;
             gap: 3px;
-            width: 160px;
+            width: 110px;
             /* border:1px solid; */
             overflow: hidden;
         
         }
         .l2Child1 img{
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
         }
         .li2Child2{
             display: flex;
@@ -5282,7 +5293,7 @@ p{
             font-size: 9px;
             line-height: 10px;
             margin-top: 10px;
-            text-align: center;
+            justify-content: center;
            
         }
         .getRoutes{
@@ -5291,6 +5302,7 @@ p{
             padding-top: 10px;
             display: grid;
           grid-template-rows: auto 1fr;
+          justify-content: center;
         }
         .days{
             gap: 15px;
@@ -5306,7 +5318,7 @@ p{
             border:none;
             background: #3033834F;
             color:#000000;
-            font-size: 12px;
+            font-size: 10px;
             text-align: center;
         }
         .mapRoutes{
@@ -5327,7 +5339,7 @@ p{
             gap: 5px;
             color:#000000;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 11px;
             line-height: 15.91px;
         }
         h3{
@@ -5399,14 +5411,14 @@ p{
         .l2Child1{
             display: flex;
             gap: 3px;
-            width: 110px;
+            width: 90px;
             /* border:1px solid; */
             overflow: hidden;
         
         }
         .l2Child1 img{
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
         }
         .li2Child2{
             display: flex;
@@ -5415,13 +5427,13 @@ p{
         }
         .li2Child2 p{
             font-weight: 400;
-            font-size: 9px;
+            font-size: 8.5px;
             line-height: 12.25px;
             color:#6E7191;
         }
         .li2Child2 h6{
             font-weight: 400;
-            font-size:19.76px;
+            font-size:17px;
             line-height: 21.28px;
             color:#000000;
         }

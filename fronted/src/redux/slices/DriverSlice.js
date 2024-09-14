@@ -4,24 +4,24 @@ import apicall from "../../apicall/apicall";
 
 export const fetchDrivers = createAsyncThunk('DriverSlice/fetchDrivers', async (isDriver) => {
   const response = await apicall(`/user/drivers?isDriver=${isDriver}`, "GET");
-  return response.data;
+  return response;
 });
 export const fetchDriversByFullName = createAsyncThunk('DriverSlice/fetchDriversByFullName', async (name) => {
   const response = await apicall(`/user/search?name=${name}`, "GET");
-  return response.data;
+  return response;
 });
 export const fetchDrivers1 = createAsyncThunk('DriverSlice/fetchDrivers1', async (isDriver) => {
   const response = await apicall(`/user/drivers?isDriver=${isDriver}`, "GET");
-  return response.data;
+  return response;
 });
 export const countDriversAll = createAsyncThunk('DriverSlice/countDriversAll', async () => {
   const response = await apicall(`/user/countD`, "GET");
  
-  return response.data;
+  return response;
 });
 export const countUsersAll = createAsyncThunk('DriverSlice/countUsersAll', async () => {
   const response = await apicall(`/user/countU`, "GET");
-  return response.data;
+  return response;
 });
 
 export const fetchDriverOne = createAsyncThunk('DriverSlice/fetchDriverOne', async (userName) => {
@@ -31,7 +31,7 @@ export const fetchDriverOne = createAsyncThunk('DriverSlice/fetchDriverOne', asy
 
 export const addDriver = createAsyncThunk('DriverSlice/addDriver', async ({ driverRout, userName }) => {
   const response = await apicall(`/user`, "POST", { ...driverRout, userId: userName });
-  return response.data;  
+  return response;  
 });
 export const addDriverAbout = createAsyncThunk('DriverSlice/addDriverAbout', async ({ about, userName }) => {
   try {
@@ -174,6 +174,7 @@ const DriverSlice = createSlice({
         state.driverOne = action.payload;  
       })
       .addCase(fetchDriversByFullName.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.status = 'succeeded';
         state.drivers1 = action.payload;  
       })
