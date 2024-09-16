@@ -20,6 +20,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -50,12 +51,12 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
+        return "6964154747:AAH-HTw_4kM2NIjogEacAQWGJAKRToOzmsc";
     }
 
     @Override
     public String getBotUsername() {
-        return "kenjacar_bot";
+        return "shohjahong35_bot";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -83,6 +84,24 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             }
             userRepo.save(foundUser);
             System.out.println(foundUser);
+//            List<Route_Driver> all1 = routeDriverRepo.findAll();
+//            LocalDateTime now = LocalDateTime.now(); // Get current date and time
+//
+//            for (Route_Driver routeDriver : all1) {
+//                // Assuming routeDriver.getDay() returns a LocalDate
+//                LocalDate routeDate = routeDriver.getDay(); // No need to parse if it's already a LocalDate
+//
+//                // Assuming routeDriver.getHour() returns a String in "HH:mm" format
+//                LocalTime routeTime = LocalTime.parse(routeDriver.getHour(), DateTimeFormatter.ofPattern("HH:mm"));
+//
+//                LocalDateTime routeDateTime = LocalDateTime.of(routeDate, routeTime);
+//
+//                if (routeDateTime.isBefore(now)) {
+//                    // Delete the routeDriver if the date and time are in the past
+//                    routeDriverRepo.delete(routeDriver);
+//                }
+//            }
+
             if (message.hasText()) {
                 System.out.println("array: " + Arrays.toString(driver_data));
                 for (FromCity fromCity : fromCityRepo.findAll()) {
@@ -209,14 +228,22 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                             if (user != null) {
                                 // Izoh qo'shish jarayoni
-                                String idPassenger = user.getFullName();
-                                String name = message.getText();
-                                Comment comment = new Comment(name, idPassenger, new User(driver_id));
-                                commentRepo.save(comment);
+
 
                                 if (foundUser.getLanguage().equals("uz")) {
+                                    String idPassenger = user.getFullName();
+                                    String phoneNumber = user.getPhoneNumber();
+                                    String name = message.getText();
+                                    Comment comment = new Comment(name,phoneNumber, idPassenger, new User(driver_id));
+                                    commentRepo.save(comment);
                                     sendMessage.setText("✅ Sizning izohingiz qo'shildi");
+
                                 } else if (foundUser.getLanguage().equals("ru")) {
+                                    String idPassenger = user.getFullName();
+                                    String phoneNumber = user.getPhoneNumber();
+                                    String name = message.getText();
+                                    Comment1 comment1 = new Comment1(name,phoneNumber, idPassenger, new User(driver_id));
+                                    commentRepo1.save(comment1);
                                     sendMessage.setText("✅ Ваш комментарий добавлен");
                                 }
 
