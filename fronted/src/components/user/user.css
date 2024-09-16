@@ -11,11 +11,14 @@ body{
     padding: 0;
     box-sizing: border-box;
 }
-.imageBacground{
-    padding: 0;
+.imageBacground {
     background-image: url("../../pictures/all.svg");
-    height: auto;
-    padding: 0 20px;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    height: auto; 
+    padding: 0 20px; 
+    box-sizing: border-box; 
 }
 .routUser{
     max-width: 1920px;

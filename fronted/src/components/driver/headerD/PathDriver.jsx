@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import DriverHeader from './DriverHeader';
 import './PathDriver.css';
+import '../../user/user.css'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchToCity, setCurrentOptionType, setSelectedDate, setShowDateModal } from '../../../redux/slices/toCity';
 import { fetchFromCity, setShowFromCityModal, setShowToCityModal, setTranslatedFromCities, setTranslatedToCities } from '../../../redux/slices/fromCity';
@@ -51,7 +52,9 @@ function PathDriver() {
    
 
   }, [userName, dispatch]);
-  const cityTranslations = {
+
+
+ const cityTranslations = useMemo(() => ({
     'Uzbekistan': {
       'Toshkent': 'Ташкент',
       'Samarqand': 'Самарканд',
@@ -97,15 +100,14 @@ function PathDriver() {
       'Қарши': 'Qarshi',
 
     }
-  };
-  function getDriver() {
+  }), []);
+  const getDriver = useCallback(() => {
     apicall(`/auth/name`, "GET",null).then((res)=>{
     dispatch(setUserName(res.id))
       dispatch(setSeatCount(res.count))
       
     })
-
-  }
+  }, [dispatch]);
   const { fromCity, toCity, day, countSide, hour } = driverRout;
   const isFormValid = fromCity && toCity && day && countSide && hour;
 
@@ -199,41 +201,45 @@ function PathDriver() {
   
   
   
-  const translateFullName = (name) => {
+  const translateFullName = useCallback((name) => {
       if (language === '1') {
           return cyrillicToLatin(name);
       } else if (language === '2') {
           return latinToCyrillic(name);
       }
       return name;
-  };
+    }, [language]);
 
       
-  const translateCity = (cityName) => {
+    const translateCity = useCallback((cityName) => {
     if (language === '2') {
       return cityTranslations['Uzbekistan'][cityName] || cityName;
     }
     return cityName;
-  };
-  const translateCity1 = (cityName) => {
+  }, [language, cityTranslations]);
+
+  const translateCity1 = useCallback((cityName) => {
     if (language === '2') {
       return cityTranslations['Russia'][cityName] || cityName;
     }
     return cityName;
-  };
-  const formatDate = (dateString) => {
+  }, [language, cityTranslations]);
+
+  const formatDate = useCallback((dateString) => {
+
     const date = new Date(dateString);
     const day = date.getDate();
     const monthIndex = date.getMonth();
     const month = language === '2' ? monthsRussian[monthIndex] : monthsUzbek[monthIndex];
     return `${day}-${month}`;
-  };
-  const handleDateSelect = (date) => {
+  }, [language]);
+
+  const handleDateSelect = useCallback((date) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const formattedDate = date.toLocaleDateString('en-CA', options);
     dispatch(setSelectedDate(formattedDate));
     dispatch(setKoranCourse({ ...driverRout, day: formattedDate }))
-  };
+  }, [dispatch, driverRout]);
   useEffect(() => {
     dispatch(setTranslatedFromCities(fromCities.map(city => ({
       ...city,
@@ -246,7 +252,7 @@ function PathDriver() {
   }, [fromCities, toCities, language]);
 
 
-  const handleOptionSelect = (option) => {
+  const handleOptionSelect = useCallback((option) => {
     if (currentOptionType === 'from') {
       dispatch(setKoranCourse({ ...driverRout, fromCity: translateCity1(option) }));
       dispatch(setShowFromCityModal(false));
@@ -254,7 +260,7 @@ function PathDriver() {
       dispatch(setKoranCourse({ ...driverRout, toCity: translateCity1(option) }));
       dispatch(setShowToCityModal(false));
     }
-  };
+  }, [currentOptionType, dispatch, driverRout, translateCity1]);
   const openModal3 = () => {
     dispatch(setOpenModal(true));
     // delByDay()
@@ -263,20 +269,20 @@ function PathDriver() {
     dispatch(setOpenModal1(true));
   };
 
-  const handleTimeSelect = (selectedTime) => {
+  const handleTimeSelect = useCallback((selectedTime) => {
     const formattedHour = selectedTime.hour.toString().padStart(2, '0');
     const formattedMinute = selectedTime.minute.toString().padStart(2, '0');
     const formattedTime = `${formattedHour}:${formattedMinute}`;
     dispatch(setKoranCourse({ ...driverRout, hour: formattedTime }));
     dispatch(setOpenModal(false));
     dispatch(setSeatCount(null))
-  };
+  }, [dispatch, driverRout]);
 
   const handleSeatSelect = (seatCount) => {
     dispatch(setKoranCourse({ ...driverRout, countSide: seatCount }));
     dispatch(setOpenModal1(false));
   };
-  const saveDepartment = () => {
+  const saveDepartment = useCallback(() => {
     const today = new Date();
     const dayAfterTomorrow = new Date(today);
     dayAfterTomorrow.setDate(today.getDate() + 2);
@@ -314,7 +320,7 @@ function PathDriver() {
             .catch((err) => message.error("Xatolik yuz berdi!"));
         } else {
           if (routesByDriver.length >= 1) {
-            toast.error("Siz ayni damda faqat 1 ta yo'nalishda ishlay olasiz!");
+            message.error("Siz ayni damda faqat 1 ta yo'nalishda ishlay olasiz!");
           } else {
             dispatch(addRoute({ driverRout, userName }))
               .unwrap()
@@ -331,11 +337,11 @@ function PathDriver() {
     dispatch(setSelectedDate(""));
     dispatch(setEditButtonId(null));
     dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
-  };
+  }, [dispatch, driverRout]);
   
   const deleteItem = (id) => {
     if (EditButtonId) {
-      toast.error("Siz tahrirlab turgan vaqt o'chira olmaysiz!");
+      message.error("Siz tahrirlab turgan vaqt o'chira olmaysiz!");
     } else {
       dispatch(deleteRoutes({ id }))
         .unwrap()
@@ -409,7 +415,7 @@ function PathDriver() {
                     {language === "1" ? "Qayerdan  " : "Откуда"}
                   </span>
                 )}
-                <img src={b7} className='icons' alt="" />
+                <img src={b7} className='icons'  alt="image" />
               </button>
             </div>
 
@@ -435,7 +441,7 @@ function PathDriver() {
                   </span>
                 )}
 
-                <img src={b7} className='icons' alt="" />
+                <img src={b7} className='icons'  alt="image" />
               </button>
             </div>
 
@@ -459,7 +465,7 @@ function PathDriver() {
                     {language === "1" ? "Qachon" : "Когда"}
                   </span>
                 )}
-                <img src={calendar} className='icons' alt="" />
+                <img src={calendar} className='icons'  alt="image" />
               </button>
             </div>
             <div className="inputChild">
@@ -477,7 +483,7 @@ function PathDriver() {
                     {language === "1" ? "Vaqt" : "Время"}
                   </span>
                 )}
-                <img src={b12} className='icons' alt="" />
+                <img src={b12} className='icons' alt="image" />
               </button>
             </div>
             <div className="inputChild">
@@ -523,11 +529,11 @@ function PathDriver() {
           <div className=""  >
             {routesByDriver.map((item) => (
               <div className="mapRoutes" key={item.id} style={{ backgroundColor: "white" }} >
-                <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language === "1" ? "So’m" : "Сум"} </p></div></li>
+                <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8}  alt="image"/> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language === "1" ? "So’m" : "Сум"} </p></div></li>
                 <li className="list-group-item li2">
                   <div className="l2Child1">
                     {Array.from({ length: Math.min(item.countSide, 6) }).map((_, index) => (
-                      <img key={index} src={b9} alt="" />
+                      <img key={index} src={b9} alt="image" />
                     ))}
                   </div>
                   <div className="li2Child2">
@@ -541,7 +547,7 @@ function PathDriver() {
                 </li>
 
 
-                <li className='list-group-item li3'><div className="l3Child1"><h3>{translateFullName(item.user.fullName)}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={() => EditItem(item)}>  {language === "1" ? "Tahirlash" : "Бронирование"}</button> <button onClick={() => deleteItem(item.id)}>{language === "1" ? "O'chirish" : "Выключать"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
+                <li className='list-group-item li3'><div className="l3Child1"><h3>{translateFullName(item.user.fullName)}</h3><div className="liDriverPhone"><img src={b11}  alt="image" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={() => EditItem(item)}>  {language === "1" ? "Tahirlash" : "Бронирование"}</button> <button onClick={() => deleteItem(item.id)}>{language === "1" ? "O'chirish" : "Выключать"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
               </div>
             ))}
           </div>

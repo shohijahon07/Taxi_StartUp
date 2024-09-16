@@ -38,7 +38,7 @@ public class SpringConfig {
                         .requestMatchers("/api/auth/login","/api/user/save/**","/api/auth/name","/api/driver","/api/driver/bydriver","/api/user","/api/toCity","/api/fromCity","/api/user/drivers","/api/user/isDrive").permitAll()
                         .requestMatchers("/api/fileController","/api/fileController/photo","/api/user/save","/api/user/countD","/api/user/countU","/api/comment","/api/user/pessenger").permitAll()
                         .requestMatchers("/","/index.html","/static/**","/*.ico",
-                                "/*.json","/*.png","/*.svg","/*.mp3","/*.mp4","/*.jpeg","/*.m4a","/*.M4A","/*.webm",
+                                "/*.json","/*.png","/*.svg","/*.mp3","/*.mp4","/*.jpeg","/*.m4a","/*.M4A","/*.webm","/*.WEBP","/*.webp",
                                 "/*.gif","/*.wav","/*.ogg","/*.jpg","/*.pdf"
                                 ).permitAll()
                         .anyRequest().authenticated()
