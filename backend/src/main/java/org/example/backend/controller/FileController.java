@@ -3,6 +3,7 @@ package org.example.backend.controller;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,12 +14,12 @@ import java.io.*;
 import java.util.UUID;
 
 @RestController
-    @RequestMapping("/api/fileController")
+@RequestMapping("/api/fileController")
 @CrossOrigin
 public class FileController {
     @GetMapping("/photo")
     public void getFile(@RequestParam String img, HttpServletResponse response) throws IOException {
-        FileInputStream inputStream = new FileInputStream("files/" + img);
+        FileInputStream inputStream = new FileInputStream("backend/files/" + img);
         ServletOutputStream outputStream = response.getOutputStream();
         inputStream.transferTo(outputStream);
         inputStream.close();
@@ -27,12 +28,26 @@ public class FileController {
 
     @PostMapping("/photo")
     public String saveFile(@RequestParam MultipartFile file) throws IOException {
+        // Noyob fayl nomini yaratilmoqda
         String img = UUID.randomUUID() + file.getOriginalFilename();
-        FileOutputStream outputStream = new FileOutputStream("files/" + img);
-        outputStream.write(file.getBytes());
-        outputStream.close();
-        return img;
+        File outputFile = new File("backend/files/" + img);
+
+        // Asl fayl o'lchamini olish
+        long originalSize = file.getSize();
+
+        // Thumbnails yordamida rasmni 2 barobar kichik qilib saqlash
+        Thumbnails.of(file.getInputStream())
+                .scale(0.5)  // Rasmni o'lchamlarini 2 barobar kichraytiradi
+                .outputQuality(0.8) // Sifatni sozlaydi
+                .toFile(outputFile);
+
+        // Rasmning yangi kichik o'lchami
+        long compressedSize = outputFile.length(); // Kichik fayl o'lchami baytlarda
+
+        // Asl va kichraytirilgan fayl o'lchamlarini ko'rsatish
+        return "Original size: " + originalSize + " bytes, Compressed size: " + compressedSize + " bytes, File name: " + img;
     }
+
 
 
 

@@ -6,9 +6,7 @@ import org.example.backend.repository.*;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
@@ -18,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -66,6 +63,21 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     private String[] dataParts;
     private Integer count=1;
     private UUID idPassenger;
+    Map<String, String> ruToUzTranslations = Map.ofEntries(
+            Map.entry("Ташкент", "Toshkent"),
+            Map.entry("Самарканд", "Samarqand"),
+            Map.entry("Бухара", "Buxoro"),
+            Map.entry("Наманган", "Namangan"),
+            Map.entry("Андижан", "Andijon"),
+            Map.entry("Фергана", "Farg'ona"),
+            Map.entry("Карши", "Qarshi"),
+            Map.entry("Нукус", "Nukus"),
+            Map.entry("Джизак", "Jizzax"),
+            Map.entry("Хорезм", "Xorazm"),
+            Map.entry("Сурхандарья", "Surxondaryo"),
+            Map.entry("Сырдарья", "Sirdaryo")
+            // Add other regions as needed
+    );
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
@@ -98,12 +110,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 LocalDateTime routeDateTime = LocalDateTime.of(routeDate, routeTime);
 
                 if (routeDateTime.isBefore(now)) {
-
                     sendMessage.setText("Sizning Yo'nalishingiz Avtomatik o'chib ketti \n" +
                             "Chunki:Sizning yo'nalishgizni hozirgi vaqtdan kichik bo'ldi!");
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
-                    System.out.println("salom broda");
                     System.out.println(routeDriver);
                     routeDriverRepo.delete(routeDriver);
                 }
@@ -129,17 +139,18 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     }else if (foundUser.getLanguage().equals("ru")){
                         sendMessage.setText("Куда вы хотите пойти?   \uD83D\uDE97");
                     }
-                    sendMessage.setReplyMarkup(toCitysButtonsReply());
+                    sendMessage.setReplyMarkup(toCitysButtonsReply(foundUser));
                     sendMessage.setChatId(chatId);
                     Message execute = execute(sendMessage);
                     band_delete_data[1]= String.valueOf(execute.getMessageId());
                 }
                 else if (foundUser.getStatus().equals(Status.GET_PASSENGER_PATH)) {
+
                     System.out.println(driver_data_path[0]);
                     System.out.println(driver_data_path[1]);
                     driver_data_path[1] = message.getText();
-                    String fromCity = driver_data_path[0];
-                    String toCity = driver_data_path[1];
+                    String fromCity = translateIfNeeded(driver_data_path[0]);
+                    String toCity = translateIfNeeded(driver_data_path[1]);
 
                     List<Route_Driver> routeDrivers = routeDriverRepo.findAllByFromCityAndToCity(fromCity, toCity);
                     System.out.println(routeDrivers);
@@ -204,6 +215,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         execute(deleteMessage);
                     }
                 }
+
                 else if (foundUser.getStatus().equals(Status.COMMENT_CREATE)) {
                     System.out.println(foundUser.getStatus());
 
@@ -270,7 +282,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                     }
 
-                    sendMessage.setReplyMarkup(fromCitysButtonsReply());
+                    sendMessage.setReplyMarkup(fromCitysButtonsReply(foundUser));
 
                     foundUser.setStatus(Status.SET_CITY_FROM_SAVE);
                     userRepo.save(foundUser);
@@ -736,7 +748,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     }else if(foundUser.getLanguage().equals("ru")){
                         sendMessage.setText("Откуда \uD83C\uDF0D");
                     }
-                    sendMessage.setReplyMarkup(fromCitysButtonsReply());
+                    sendMessage.setReplyMarkup(fromCitysButtonsReply(foundUser));
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
                 }else if(foundUser.getStatus().equals(Status.HOME_PAGE_DRIVER)){
@@ -872,7 +884,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 } else if (user.getLanguage().equals("ru")) {
                     sendMessage.setText("Откуда \uD83C\uDF0D");
                 }
-                sendMessage.setReplyMarkup(fromCitysButtonsReply());
+                sendMessage.setReplyMarkup(fromCitysButtonsReply(user));
                 sendMessage.setChatId(chatId);
                 execute(sendMessage);
 
@@ -1729,26 +1741,50 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         return new InlineKeyboardMarkup(rows);
     }
 
-    private ReplyKeyboardMarkup toCitysButtonsReply() {
+    private ReplyKeyboardMarkup toCitysButtonsReply(User foundUser) {
+        // Define the translations inside the method using Map.ofEntries for more than 10 key-value pairs
+        Map<String, String> uzToRuTranslations = Map.ofEntries(
+                Map.entry("Toshkent", "Ташкент"),
+                Map.entry("Samarqand", "Самарканд"),
+                Map.entry("Buxoro", "Бухара"),
+                Map.entry("Namangan", "Наманган"),
+                Map.entry("Andijon", "Андижан"),
+                Map.entry("Farg'ona", "Фергана"),
+                Map.entry("Qarshi", "Карши"),
+                Map.entry("Nukus", "Нукус"),
+                Map.entry("Jizzax", "Джизак"),
+                Map.entry("Xorazm", "Хорезм"),
+                Map.entry("Surxondaryo", "Сурхандарья"),
+                Map.entry("Sirdaryo", "Сырдарья")
+                // Add other regions as needed
+        );
+
         List<ToCity> all = toCityRepo.findAll();
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow currentRow = new KeyboardRow();
 
+        // Determine the language and set the translations accordingly
+        boolean isUzbek = foundUser.getLanguage().equals("uz");
+
         for (ToCity toCity : all) {
             KeyboardButton button = new KeyboardButton();
-            button.setText(toCity.getName());
+            String cityName = toCity.getName();
+            String displayName = isUzbek ? cityName : uzToRuTranslations.getOrDefault(cityName, cityName);
+            button.setText(displayName);
 
             currentRow.add(button);
 
             if (currentRow.size() == 2) {
-                rows.add(new KeyboardRow(currentRow));
-                currentRow.clear();
+                rows.add(new KeyboardRow(currentRow));  // Copy the current row
+                currentRow.clear();  // Clear the row for new buttons
             }
         }
 
+        // Add the last row if it's not empty
         if (!currentRow.isEmpty()) {
             rows.add(currentRow);
         }
+
 
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setKeyboard(rows);
@@ -1758,14 +1794,37 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         return replyKeyboardMarkup;
     }
 
-    private ReplyKeyboardMarkup fromCitysButtonsReply() {
+
+    private ReplyKeyboardMarkup fromCitysButtonsReply(User user) {
+        // Define the translations inside the method using Map.ofEntries for more than 10 key-value pairs
+        Map<String, String> uzToRuTranslations = Map.ofEntries(
+                Map.entry("Toshkent", "Ташкент"),
+                Map.entry("Samarqand", "Самарканд"),
+                Map.entry("Buxoro", "Бухара"),
+                Map.entry("Namangan", "Наманган"),
+                Map.entry("Andijon", "Андижан"),
+                Map.entry("Farg'ona", "Фергана"),
+                Map.entry("Qarshi", "Карши"),
+                Map.entry("Nukus", "Нукус"),
+                Map.entry("Jizzax", "Джизак"),
+                Map.entry("Xorazm", "Хорезм"),
+                Map.entry("Surxondaryo", "Сурхандарья"),
+                Map.entry("Sirdaryo", "Сырдарья")
+                // Add other regions as needed
+        );
+
         List<FromCity> fromCities = fromCityRepo.findAll();
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow currentRow = new KeyboardRow();
 
+        // Determine the language and set the translations accordingly
+        boolean isUzbek = user.getLanguage().equals("uz");
+
         for (FromCity fromCity : fromCities) {
             KeyboardButton button = new KeyboardButton();
-            button.setText(fromCity.getName());
+            String cityName = fromCity.getName();
+            String displayName = isUzbek ? cityName : uzToRuTranslations.getOrDefault(cityName, cityName);
+            button.setText(displayName);
 
             currentRow.add(button);
 
@@ -1775,6 +1834,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             }
         }
 
+        // Add the last row if it's not empty
         if (!currentRow.isEmpty()) {
             rows.add(currentRow);
         }
@@ -1786,6 +1846,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
+
 
     private void validateTime(String timeText, String driverDataDay, User foundUser) {
         if (!timeText.matches("\\d{2}:\\d{2}")) {
@@ -1919,7 +1980,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return null;
     }
-
 
     private InlineKeyboardMarkup directionData(UUID id, User foundUser) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
@@ -2374,6 +2434,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
+    private String translateIfNeeded(String cityName) {
+        // Check if the city name is in Cyrillic and translate it
+        return ruToUzTranslations.getOrDefault(cityName, cityName);
+    }
 
 }
