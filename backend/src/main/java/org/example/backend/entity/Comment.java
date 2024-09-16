@@ -20,12 +20,14 @@ public class Comment {
     private UUID id;
     private String text;
     private String  name;
+    private String  phoneNumber;
     @ManyToOne
     private User user;
 
 
-    public Comment(String text, String name, User user) {
+    public Comment(String text,String phoneNumber , String name, User user) {
         this.text = text;
+        this.phoneNumber = phoneNumber;
         this.name = name;
         this.user = user;
     }

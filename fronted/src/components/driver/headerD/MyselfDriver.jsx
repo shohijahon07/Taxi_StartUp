@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { LanguageContext } from '../../language/LanguageContext';
 import { toast } from 'react-toastify';
 import DriverFooter from './DriverFooter';
-import fileicon from "../../../pictures/fileicon.webp";
+import fileicon from "../../../pictures/fileicon.svg";
 import "../../auth/Register.css";
 import edit from "../../../pictures/edit.svg"
 import apicall from '../../../apicall/apicall';
