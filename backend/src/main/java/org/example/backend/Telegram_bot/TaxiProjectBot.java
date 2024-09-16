@@ -85,6 +85,29 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             userRepo.save(foundUser);
             System.out.println(foundUser);
 
+            List<Route_Driver> all1 = routeDriverRepo.findAll();
+            LocalDateTime now = LocalDateTime.now(); // Get current date and time
+
+            for (Route_Driver routeDriver : all1) {
+                // Assuming routeDriver.getDay() returns a LocalDate
+                LocalDate routeDate = routeDriver.getDay(); // No need to parse if it's already a LocalDate
+
+                // Assuming routeDriver.getHour() returns a String in "HH:mm" format
+                LocalTime routeTime = LocalTime.parse(routeDriver.getHour(), DateTimeFormatter.ofPattern("HH:mm"));
+
+                LocalDateTime routeDateTime = LocalDateTime.of(routeDate, routeTime);
+
+                if (routeDateTime.isBefore(now)) {
+
+                    sendMessage.setText("Sizning Yo'nalishingiz Avtomatik o'chib ketti \n" +
+                            "Chunki:Sizning yo'nalishgizni hozirgi vaqtdan kichik bo'ldi!");
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                    System.out.println("salom broda");
+                    System.out.println(routeDriver);
+                    routeDriverRepo.delete(routeDriver);
+                }
+            }
 
             if (message.hasText()) {
                 System.out.println("array: " + Arrays.toString(driver_data));
