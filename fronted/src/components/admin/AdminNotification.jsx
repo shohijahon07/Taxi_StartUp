@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteDriver, editDriverIsDriving, fetchDrivers } from '../../redux/slices/DriverSlice';
 import { FaCheck } from "react-icons/fa6";
 import { ToastContainer, toast } from 'react-toastify';
+import { message } from 'antd';
 
 function AdminNotification() {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ function AdminNotification() {
     dispatch(editDriverIsDriving({ id, driverIsdriving, randomNum }))
       .unwrap()
       .then(() => {
-        toast.success('Malumot muvaffaqiyatli tahrirlandi!');
+        message.success('Malumot muvaffaqiyatli tahrirlandi!');
         dispatch(fetchDrivers(isDriver));
       })
       .catch((err) => console.log(err));
@@ -31,7 +32,7 @@ function AdminNotification() {
     dispatch(deleteDriver({ id }))
       .unwrap()
       .then(() => {
-        toast.success("Malumot muvaffaqiyatli o'chirildi!");
+        message.success("Malumot muvaffaqiyatli o'chirildi!");
         dispatch(fetchDrivers(isDriver));
       })
       .catch((err) => console.log(err));
@@ -58,13 +59,13 @@ function AdminNotification() {
               <tr key={item.id}>
                 <td>{i + 1}</td>
                 <td>
-                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="image" />
                 </td>
                 <td>
-                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.driverImg}`} alt="image" />
                 </td>
                 <td>
-                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
+                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="image" />
                 </td>
                 <td>{item.fullName}</td>
                 <td>{item.phoneNumber}</td>

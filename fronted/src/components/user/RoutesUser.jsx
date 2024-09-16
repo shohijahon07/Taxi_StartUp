@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Landing from './Landing';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchToCity, setCurrentOptionType, setIsModalOpen, setIsModalOpen1, setSelectedDate, setShowDateModal } from '../../redux/slices/toCity';
@@ -34,7 +34,7 @@ function RoutesUser() {
     const { fromCities,translatedFromCities,translatedToCities,showFromCityModal,showToCityModal } = useSelector((state) => state.fromCity);
     const { allRoutes, driverRout,day12,isAvailable } = useSelector((state) => state.routes);
     const { id,chatId,minDate,maxDate } = useSelector((state) => state.comment);
-    const cityTranslations = {
+    const cityTranslations = useMemo(() => ({
         'Uzbekistan': {
             'Toshkent': 'Ташкент',
             'Samarqand': 'Самарканд',
@@ -78,39 +78,40 @@ function RoutesUser() {
             'Хива': 'Xiva',
             "Қўқон": "Qo'qon",
             'Қарши': 'Qarshi',
-
         }
-    };
+    }), []);
 
-    const monthsUzbek = [
+
+    const monthsUzbek = useMemo(() => [
         "yanvar", "fevral", "mart", "aprel", "may", "iyun",
         "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"
-    ];
+    ], []);
 
-    const monthsRussian = [
+    const monthsRussian = useMemo(() => [
         "января", "февраля", "марта", "апреля", "мая", "июня",
         "июля", "августа", "сентября", "октября", "ноября", "декабря"
-    ];
+    ], []);
 
-    const translateCity = (cityName) => {
+    const translateCity = useMemo(() => (cityName) => {
         if (language === '2') {
             return cityTranslations['Uzbekistan'][cityName] || cityName;
         }
         return cityName;
-    };
-    const translateCity1 = (cityName) => {
+    }, [cityTranslations, language]);
+
+    const translateCity1 = useMemo(() => (cityName) => {
         if (language === '2') {
             return cityTranslations['Russia'][cityName] || cityName;
         }
         return cityName;
-    };
-    const formatDate = (dateString) => {
+    }, [cityTranslations, language]);
+    const formatDate = useMemo(() => (dateString) => {
         const date = new Date(dateString);
         const day = date.getDate();
         const monthIndex = date.getMonth();
         const month = language === '2' ? monthsRussian[monthIndex] : monthsUzbek[monthIndex];
         return `${day}-${month}`;
-    };
+    }, [monthsUzbek, monthsRussian, language]);
 
     const handleDateSelect = (date) => {
         // Format: YYYY-MM-DD
@@ -159,7 +160,7 @@ function RoutesUser() {
         }))));
     }, [fromCities, toCities, language]);
 
-    function getRouteOne() {
+    const getRouteOne = useCallback(() => {
         if (!driverRout.fromCity || !driverRout.toCity || !driverRout.day) {
             message.error('Iltimos, barcha maydonlarni to\'ldiring!');
             return; // Funksiyani to'xtatish
@@ -179,8 +180,9 @@ function RoutesUser() {
             setDay12(null)
         dispatch(setSelectedDate(""))
         dispatch(setKoranCourse({ fromCity: '', toCity: '', countSide: '', price: "", day: "", hour: "", userId: "" }));
-    }
-    function getRoutesByDay(day1) {
+    }, [dispatch, driverRout]);
+    
+    const getRoutesByDay = useCallback((day1) =>  {
         let day = parseInt(day1);
         dispatch(fetchRoutesByDay(day))
             .unwrap()
@@ -192,7 +194,7 @@ function RoutesUser() {
                 message.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
             });
             setDay12(null)
-    }
+        }, [dispatch]);
     
     const today = new Date();
     const nextDay1 = new Date(today);
@@ -331,7 +333,7 @@ function RoutesUser() {
                                 {language === "1" ? "Qayerdan  " : "Откуда"}
                             </span>
                         )} 
-                        <img src={b7} className='locationImg' alt="" />
+                        <img src={b7} className='locationImg' alt="image" />
                     </button>
                             </div>
 
@@ -357,7 +359,7 @@ function RoutesUser() {
                             </span>
                         )} 
 
-                        <img src={b7} className='locationImg' alt="" />
+                        <img src={b7} className='locationImg'  alt="image" />
                             </button>
                         </div>
 
@@ -376,7 +378,7 @@ function RoutesUser() {
                                 { language === "1" ? "Qachon" : "Когда"}
                             </span>
                         )} 
-                        <img src={calendar} className='imgCalendar' alt="" />
+                        <img src={calendar} className='imgCalendar'  alt="image" />
                     </button>
                 </div>
                 <div className="inputChild">
@@ -414,11 +416,11 @@ function RoutesUser() {
            
             {allRoutes.map((item, index) => (
                    <div className="mapRoutes" key={item.id}>
-                    <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8} alt="" /> <p>{translateCity(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
+                    <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8}  alt="image" /> <p>{translateCity(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language==="1"?"So’m":"Сум"} </p></div></li>
                     <li className="list-group-item li2">
                                 <div className="l2Child1">
                                     {Array.from({ length: Math.min(item.countSide, 6) }).map((_, index) => (
-                                    <img key={index} src={b9} alt="" />
+                                    <img key={index} src={b9}  alt="image" />
                                     ))}
                                 </div>
                                 <div className="li2Child2">
@@ -432,7 +434,7 @@ function RoutesUser() {
                                 </li>
 
 
-                    <li className='list-group-item li3'><div className="l3Child1"><h3>{translateFullName(item.user.fullName)}</h3><div className="liDriverPhone"><img src={b11} alt="" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={()=>openModal1(item.user.chatId)}>  {language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
+                    <li className='list-group-item li3'><div className="l3Child1"><h3>{translateFullName(item.user.fullName)}</h3><div className="liDriverPhone"><img src={b11}  alt="image" /> <p>{item.user.phoneNumber}</p></div> </div><div className="li3Child3"><button onClick={()=>openModal1(item.user.chatId)}>  {language==="1"?"Band Qilish":"Бронирование"}</button> <button onClick={()=>openIzohlar(item.user.id)}>{language==="1"?"Izohlar":"Примечания"}</button>  <p className='carType'>  {item.user.carType}</p></div></li>
                    </div> 
                 ))}
           
@@ -457,7 +459,7 @@ function RoutesUser() {
                        </div> 
                        <div className='catchRoute'>
                 <h3>{language==="1"?"Sanani o'zgartiring":"Изменить дату"}</h3>
-               <div className="imgCatchRoute"> <img style={{width:"100%",height:"100%",objectFit:"cover"}} src={b14} alt="" /></div>
+               <div className="imgCatchRoute"> <img style={{width:"100%",height:"100%",objectFit:"cover"}} src={b14}  alt="image" /></div>
           </div>
                 </div>:""
             }

@@ -50,12 +50,14 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
+//        return "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
+        return "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
     }
 
     @Override
     public String getBotUsername() {
-        return "kenjacar_bot";
+//        return "kenjacar_bot";
+        return "shox_now_bot";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -2398,10 +2400,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if (user.getLanguage().equals("uz")) {
             button1.setText("🚖 Haydovchi");
-            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId + "&language=uz");
+            button1.setUrl("http://192.168.0.203:5174/register?chatId=" + chatId + "&language=uz");
         } else {
             button1.setText("🚖 Драйверы");
-            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId + "&language=ru");
+            button1.setUrl("http://192.168.0.203:5174/register?chatId=" + chatId + "&language=ru");
 
         }
         button1.setCallbackData("Drivers");

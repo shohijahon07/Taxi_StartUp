@@ -64,7 +64,7 @@ function Landing() {
         <div className="fatherNavbar">
               <div className="navbar">
             <div className="leftUserHeader">
-                <img src={logo} className='logoImg'  onClick={goLanding} />
+                <img src={logo} className='logoImg'  alt="image"  onClick={goLanding} />
             </div>
             <div className="middleUserHeader">
                 <ul className='navbarUl'>
@@ -78,7 +78,7 @@ function Landing() {
                     <option value="1">O'zbek</option>
                     <option value="2">Rus</option>
                 </select>
-                <img src={telegram} className='imgTelegram' alt="" />
+                <img src={telegram} className='imgTelegram'  alt="image"/>
             </div>
         </div>
         <BizHaqimizdaModal isOpen={isModalOpen} onClose={closeModal} />

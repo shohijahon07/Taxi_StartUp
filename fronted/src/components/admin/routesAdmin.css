@@ -182,4 +182,56 @@ justify-content: space-between;
     width: 30px;
     height: 30px;
   }
+  .del{
+    background-color: #F42222;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    width: 57px;
+    height: 54px;
+    margin-left:40px;
+  }
+
+  /* Modal uchun uslublar */
+.modal12{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fonni qorong'ilatish */
+  }
+  
+  .modal-content12 {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  
+  .close12 {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close12:hover,
+  .close12:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .imageTable {
+    cursor: pointer;
+  }
   

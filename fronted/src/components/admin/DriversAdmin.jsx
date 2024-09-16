@@ -10,7 +10,7 @@ function DriversAdmin() {
   const { drivers1  } = useSelector((state) => state.driver); 
   const dispatch = useDispatch();
   const [isDriver, setIsDriver] = useState(true);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   useEffect(() => {
     dispatch(fetchDrivers1(isDriver));
   }, [dispatch, isDriver]);
@@ -39,6 +39,13 @@ function DriversAdmin() {
         dispatch(fetchDrivers1(isDriver));
       })
       .catch((err) => console.log(err));
+  }
+  function openModal(imgSrc) {
+    setSelectedImage(imgSrc); // Rasmingizni modalga joylashtirish
+  }
+
+  function closeModal() {
+    setSelectedImage(null); // Modalni yopish
   }
 
   return (
@@ -81,24 +88,27 @@ function DriversAdmin() {
                     <img
                       className="imageTable"
                       style={{ objectFit: "cover" }}
-                      src={`http:/api/fileController/photo?img=${item.carImg}`}
-                      alt="#"
+                      src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`}
+                      alt="image"
+                      onClick={() => openModal(`http://localhost:8080/api/fileController/photo?img=${item.carImg}`)}
                     />
                   </td>
                   <td>
                     <img
                       className="imageTable"
                       style={{ objectFit: "cover" }}
-                      src={`http:/api/fileController/photo?img=${item.driverImg}`}
-                      alt="#"
+                      src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`}
+                      alt="image"
+                      onClick={() => openModal(`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`)}
                     />
                   </td>
                   <td>
                     <img
                       className="imageTable"
                       style={{ objectFit: "cover" }}
-                      src={`http:/api/fileController/photo?img=${item.cardDocument}`}
-                      alt="#"
+                      src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`}
+                      alt="image"
+                      onClick={() => openModal(`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`)}
                     />
                   </td>
                   <td>
@@ -125,7 +135,12 @@ function DriversAdmin() {
           }
         </tbody>
       </table>
-
+      {selectedImage && (
+        <div className="modal12">
+          <span className="close12" onClick={closeModal}>&times;</span>
+          <img className="modal-content12" src={selectedImage} alt="Selected" />
+        </div>
+      )}
       <ToastContainer
         toastStyle={{
           backgroundColor: 'white',

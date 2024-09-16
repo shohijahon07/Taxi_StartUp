@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchDriverOne } from '../../redux/slices/DriverSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import "./routesAdmin.css"
+import del from "../../pictures/delete.png";
 import { LanguageContext } from '../language/LanguageContext';
 import { fetchRoutesByDriver } from '../../redux/slices/routeDriver';
 import { fetchComments } from '../../redux/slices/CommentSlice';
@@ -40,7 +41,7 @@ useEffect(() => {
                 <li className='list-group-item'>{item.fullName}</li>
                 <li className='list-group-item'>{item.phoneNumber}</li>
                 <li className='list-group-item'>
-                    <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                    <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="img" />
                 </li>
             </ul>
         ))
@@ -68,14 +69,18 @@ useEffect(() => {
           <thead>
             <tr>
               <th>Yo'lovchini ismi </th>
+              <th>Teelefon raqam </th>
               <th>Izoh</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {comments.map((item, i) => (
               <tr key={item.id}>
                 <td>{item.text}</td>
+                <td>{item.user.phoneNumber}</td>
                 <td>{item.name}</td>
+                <td><button className='del' ><img style={{ width: "30px", height: "31px" }} src={del} alt="salom" /> </button></td>
               </tr>
             ))}
           </tbody>

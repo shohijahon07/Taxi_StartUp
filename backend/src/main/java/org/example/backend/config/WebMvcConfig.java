@@ -43,7 +43,7 @@ public void addResourceHandlers(ResourceHandlerRegistry registry) {
         private final Resource index = new ClassPathResource("/static/index.html");
         private final List<String> handledExtensions = Arrays.asList(
                 "html", "js", "json", "csv", "css", "png", "svg", "eot",
-                "ttf", "otf", "woff", "appcache", "jpg", "jpeg", "gif", "ico"
+                "ttf", "otf", "woff", "appcache", "jpg", "jpeg", "gif", "ico","WEBP","webp"
         );
         private final List<String> ignoredPaths = Arrays.asList("api");
 

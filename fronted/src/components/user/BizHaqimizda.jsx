@@ -11,7 +11,7 @@ function BizHaqimizda() {
         <div className="card-header">
           <div className="imgboglanish">
 
-          <img src={rasm1} style={{objectFit:"cover",width:"100%",height:"100%"}}/>
+          <img src={rasm1} style={{objectFit:"cover",width:"100%",height:"100%"}}  alt="image"/>
           </div>
         </div>
       
@@ -24,7 +24,7 @@ function BizHaqimizda() {
         <div className="card-header">
           <div className="imgboglanish">
 
-          <img src={rasm2} style={{objectFit:"cover",width:"100%",height:"100%"}}/>
+          <img src={rasm2} style={{objectFit:"cover",width:"100%",height:"100%"}}  alt="image"/>
           </div>
         </div>
       
@@ -37,7 +37,7 @@ function BizHaqimizda() {
         <div className="card-header">
           <div className="imgboglanish">
 
-          <img src={rasm3} style={{objectFit:"cover",width:"100%",height:"100%"}}/>
+          <img src={rasm3} style={{objectFit:"cover",width:"100%",height:"100%"}}  alt="image"/>
           </div>
         </div>
       
