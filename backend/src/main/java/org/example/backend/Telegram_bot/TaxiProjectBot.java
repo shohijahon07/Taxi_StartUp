@@ -513,10 +513,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         }
 
                     } catch (DateTimeParseException e) {
-                        sendMessage.setText("⚠️ Noto'g'ri format. Iltimos, sanani 'kun-oy' formatida kiriting (kun 1-31 gacha, oy 1-12 gacha) va bugungi kundan boshlab yana 2 kun kirita olasiz.");
+                        sendMessage.setText("⚠️ Noto'g'ri format.");
                         execute(sendMessage);
                     } catch (Exception e) {
-                        sendMessage.setText("❌ Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
+                        sendMessage.setText("❌ Xatolik yuz berdi.");
                         execute(sendMessage);
                     }
                 }
@@ -586,7 +586,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         Integer.parseInt(message.getText());
                         driver_data[3] = message.getText();
                         if(foundUser.getLanguage().equals("uz")){
-                            sendMessage.setText("🔄 Iltimos, sanani va oyni kiriting (masalan, '23-12' kuni uchun):");
+                            sendMessage.setText("🔄 Iltimos, sanani va oyni kiriting (masalan, '23-12' kuni uchun)");
 
                         }else if(foundUser.getLanguage().equals("ru")){
                             sendMessage.setText("🔄 Пожалуйста, введите дату и месяц (например, «23-12»):");
@@ -631,9 +631,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         userRepo.save(foundUser);
 
                         if (foundUser.getLanguage().equals("uz")) {
-                            sendMessage.setText("⚠️ Noto'g'ri format. Iltimos, sanani 'kun-oy' formatida kiriting (kun 1-31 gacha, oy 1-12 gacha) va bugungi kundan boshlab yana 2 kun kirita olasiz.");
+                            sendMessage.setText("⚠️ Noto'g'ri format.");
                         } else if (foundUser.getLanguage().equals("ru")) {
-                            sendMessage.setText("⚠️ Неверный формат. Введите дату в формате «день-месяц» (день от 1 до 31, месяц от 1 до 12), и вы сможете ввести еще 2 дня, начиная с сегодняшнего дня.");
+                            sendMessage.setText("⚠️ Неверный формат.");
                         }
 
                         sendMessage.setChatId(chatId);
@@ -1844,32 +1844,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM");
         String[] parts = dateInput.split("-");
 
-        if (parts.length == 2 && parts[0].length() == 2 && parts[1].length() == 2) {
-            int day = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
-
-            if (day >= 1 && day <= 31 && month >= 1 && month <= 12) {
-                int currentYear = LocalDate.now().getYear();
-                LocalDate inputDate = LocalDate.of(currentYear, month, day);
-                LocalDate today = LocalDate.now();
-
-                if (inputDate.isBefore(today) || inputDate.isAfter(today.plusDays(2))) {
-                    if (foundUser.getLanguage().equals("uz")) {
-                        throw new DateTimeParseException("📅 Sana oraliqdan tashqarida", dateInput, 0);
-                    } else if (foundUser.getLanguage().equals("ru")) {
-                        throw new DateTimeParseException("📅 Дата вне допустимого диапазона", dateInput, 0);
-                    }
-                }
-
-                return inputDate;
-            } else {
-                if (foundUser.getLanguage().equals("uz")) {
-                    throw new DateTimeParseException("📅 Noto'g'ri oy yoki kun", dateInput, 0);
-                } else if (foundUser.getLanguage().equals("ru")) {
-                    throw new DateTimeParseException("📅 Неправильный месяц или день", dateInput, 0);
-                }
-            }
-        } else {
+        if (parts.length != 2 || parts[0].length() != 2 || parts[1].length() != 2) {
             if (foundUser.getLanguage().equals("uz")) {
                 throw new DateTimeParseException("📅 Noto'g'ri format", dateInput, 0);
             } else if (foundUser.getLanguage().equals("ru")) {
@@ -1877,8 +1852,51 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             }
         }
 
+        try {
+            int day = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+
+            if (day < 1 || day > 31) {
+                if (foundUser.getLanguage().equals("uz")) {
+                    throw new DateTimeParseException("📅 Kun noto'g'ri kiritildi (1-31 oralig'ida bo'lishi kerak)", dateInput, 0);
+                } else if (foundUser.getLanguage().equals("ru")) {
+                    throw new DateTimeParseException("📅 Неправильный день (должен быть между 1 и 31)", dateInput, 0);
+                }
+            }
+
+            if (month < 1 || month > 12) {
+                if (foundUser.getLanguage().equals("uz")) {
+                    throw new DateTimeParseException("📅 Oy noto'g'ri kiritildi (1-12 oralig'ida bo'lishi kerak)", dateInput, 0);
+                } else if (foundUser.getLanguage().equals("ru")) {
+                    throw new DateTimeParseException("📅 Неправильный месяц (должен быть между 1 и 12)", dateInput, 0);
+                }
+            }
+
+            int currentYear = LocalDate.now().getYear();
+            LocalDate inputDate = LocalDate.of(currentYear, month, day);
+            LocalDate today = LocalDate.now();
+
+            if (inputDate.isBefore(today) || inputDate.isAfter(today.plusDays(2))) {
+                if (foundUser.getLanguage().equals("uz")) {
+                    throw new DateTimeParseException("📅 Sana oraliqdan tashqarida (faqat bugungi kun va undan keyingi 2 kun kiritilishi mumkin)", dateInput, 0);
+                } else if (foundUser.getLanguage().equals("ru")) {
+                    throw new DateTimeParseException("📅 Дата вне допустимого диапазона (можно вводить только сегодняшнюю дату и следующие 2 дня)", dateInput, 0);
+                }
+            }
+
+            return inputDate;
+
+        } catch (NumberFormatException e) {
+            if (foundUser.getLanguage().equals("uz")) {
+                throw new DateTimeParseException("📅 Sana raqamlar bilan kiritilishi kerak", dateInput, 0);
+            } else if (foundUser.getLanguage().equals("ru")) {
+                throw new DateTimeParseException("📅 Дата должна быть введена цифрами", dateInput, 0);
+            }
+        }
+
         return null;
     }
+
 
     private InlineKeyboardMarkup directionData(UUID id, User foundUser) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();

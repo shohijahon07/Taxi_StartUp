@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./Register.css";
 import apicall1 from "../../apicall/apicall1";
 import PhoneInput from "react-phone-input-2";
-import fileicon from "../../pictures/fileicon.webp";
+import fileicon from "../../pictures/fileicon.svg";
 import ReactModal from 'react-modal'; 
 
 ReactModal.setAppElement('#root'); // Bind modal to your appElement (important for accessibility)
@@ -31,7 +31,7 @@ function Register() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const chatIdParam = urlParams.get('chatId');
-    const languageParam = urlParams.get('language'); // Language parametrini olamiz
+    const languageParam = urlParams.get('language'); 
 
     if (chatIdParam) {
       setChatId(chatIdParam);
@@ -180,7 +180,7 @@ function Register() {
           />
           <label htmlFor="file2">
              <img src={fileicon} alt="Upload Icon" className="upload-icon" />
-            {language === "uz" ? "Haydovchilik guvohnomani yuklang" : "Загрузите водительское удостоверение"}
+            {language === "uz" ? "Haydovchilik guvohnomani " : "Загрузите водительское "}
             {driverImgPreview && <img src={driverImgPreview} alt="Driver Preview" className="file_rg" />}
           </label>
         </div>
