@@ -84,30 +84,13 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             }
             userRepo.save(foundUser);
             System.out.println(foundUser);
-//            List<Route_Driver> all1 = routeDriverRepo.findAll();
-//            LocalDateTime now = LocalDateTime.now(); // Get current date and time
-//
-//            for (Route_Driver routeDriver : all1) {
-//                // Assuming routeDriver.getDay() returns a LocalDate
-//                LocalDate routeDate = routeDriver.getDay(); // No need to parse if it's already a LocalDate
-//
-//                // Assuming routeDriver.getHour() returns a String in "HH:mm" format
-//                LocalTime routeTime = LocalTime.parse(routeDriver.getHour(), DateTimeFormatter.ofPattern("HH:mm"));
-//
-//                LocalDateTime routeDateTime = LocalDateTime.of(routeDate, routeTime);
-//
-//                if (routeDateTime.isBefore(now)) {
-//                    // Delete the routeDriver if the date and time are in the past
-//                    routeDriverRepo.delete(routeDriver);
-//                }
-//            }
+
 
             if (message.hasText()) {
                 System.out.println("array: " + Arrays.toString(driver_data));
                 for (FromCity fromCity : fromCityRepo.findAll()) {
                     name = fromCity.getName();
                 }
-//  Passenger  page
                 if (message.getText().equalsIgnoreCase("/start") && foundUser.getIsDriver().equals(false)) {
                     sendMessage.setText("Iltimos tilni tanlang! Пожалуйста, выберите язык!");
                     sendMessage.setReplyMarkup(selectLanguageButtons());
@@ -140,18 +123,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                     if (!routeDrivers.isEmpty()) {
                         Route_Driver routeDriver = routeDrivers.get(0);
-//                        String carImgFileName = routeDriver.getUser().getCarImg();
-//
-//                        SendPhoto sendPhoto = new SendPhoto();
-//                        String basePath = "C:/Users/user/Desktop/Taxi_project/backend/files/";
-//                        String fullPath = basePath + carImgFileName.trim();
-//                        File file = new File(fullPath);
 
-//                            sendPhoto.setChatId(chatId);
-//                            sendPhoto.setPhoto(new InputFile(file));
-//                            execute(sendPhoto);
 
-                        // After sending the photo, prepare the follow-up message
                         Long chatId1 = routeDriver.getUser().getChatId();
                         if(foundUser.getLanguage().equals("uz")){
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
@@ -161,7 +134,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                     "📱 Telefon raqami: " + routeDriver.getUser().getPhoneNumber() + " \n" +
                                             "📅 Sana: " + formattedDate + "\n" +
                                             "⏰ Soati: " + routeDriver.getHour() + "\n" +
-                                            "🔢 Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
+                                            "🔢 Bo'sh joy soni: " + routeDriver.getCountSide() + " ta\n" +
                                             "💵 Narxi: " + routeDriver.getPrice() + " So'm"
                             );
 
@@ -227,7 +200,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             User user = byChatId.orElse(null);
 
                             if (user != null) {
-                                // Izoh qo'shish jarayoni
 
 
                                 if (foundUser.getLanguage().equals("uz")) {
@@ -237,7 +209,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                     Comment comment = new Comment(name,phoneNumber, idPassenger, new User(driver_id));
                                     commentRepo.save(comment);
                                     sendMessage.setText("✅ Sizning izohingiz qo'shildi");
-
                                 } else if (foundUser.getLanguage().equals("ru")) {
                                     String idPassenger = user.getFullName();
                                     String phoneNumber = user.getPhoneNumber();
@@ -262,7 +233,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             execute(sendMessage);
                         }
                     } catch (IllegalArgumentException e) {
-                        // UUID formatida bo'lmasa, xato qaytaring
                         sendMessage.setText(foundUser.getLanguage().equals("uz") ? "Noto'g'ri formatdagi chat ID: " + chatIdStr : "Идентификатор чата в неправильном формате: " + chatIdStr);
                         execute(sendMessage);
                     }
@@ -271,9 +241,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                 else if (foundUser.getStatus().equals(Status.BACK)) {
                     if(foundUser.getLanguage().equals("uz")){
-                        sendMessage.setText("📍 Qayerdan"); // "📍" for location or starting point
+                        sendMessage.setText("📍 Qayerdan");
                     }else if(foundUser.getLanguage().equals("ru")){
-                        sendMessage.setText("📍 Откуда"); // "📍" for location or starting point
+                        sendMessage.setText("📍 Откуда");
 
                     }
 
@@ -286,7 +256,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 }
                 Optional<User> byChatId = userRepo.findByChatId(chatId);
                 List<Route_Driver> all = routeDriverRepo.findAll();
-//driver page
+
                 if (message.getText().equalsIgnoreCase("/start") & foundUser.getIsDriver().equals(true)) {
                     language = "uz";
                     System.out.println(language);
@@ -294,20 +264,21 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     userRepo.save(foundUser);
                     Route_Driver byUser = routeDriverRepo.findByUser(foundUser);
                     if(byUser!=null){
-
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                        String formattedDate = byUser.getDay().format(formatter);
                         if(foundUser.getLanguage().equals("uz")){
                             sendMessage.setText(
                                     byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
-                                            "🛋️ Bo'sh-jo'ylar soni: " + byUser.getCountSide() + "\n" +
+                                            "🛋️ Bo'sh-joylar soni: " + byUser.getCountSide() + "\n" +
                                             "💰 Narxi: " + byUser.getPrice() + " so'm\n" +
-                                            "📅  Sana" + byUser.getDay() + " ⏰ " + byUser.getHour()
+                                            "📅  Sana" + formattedDate + " ⏰ " + byUser.getHour()
                             );
                         }else if(foundUser.getLanguage().equals("ru")){
                             sendMessage.setText(
                                     byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
                                             "🛋️ Количество вакансий: " + byUser.getCountSide() + "\n" +
                                             "💰 Цена: " + byUser.getPrice() + " so'm\n" +
-                                            "📅  Дата" + byUser.getDay() + " ⏰ " + byUser.getHour()
+                                            "📅  Дата" + formattedDate + " ⏰ " + byUser.getHour()
                             );
                         }
 
@@ -332,12 +303,14 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
                     for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
                         if (userIds.contains(routeDriver.getUser().getId())) {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                            String formattedDate = routeDriver.getDay().format(formatter);
                             if(foundUser.getLanguage().equals("ru")){
                                 sendMessage.setText(
                                         routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
                                                 "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
                                                 "💲 Цена: " + routeDriver.getPrice() + " so'm \n" +
-                                                "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                                "📅 Дата: " + formattedDate + "\n" +
                                                 "⏰ час: " + routeDriver.getHour()
                                 );
                             }else if(foundUser.getLanguage().equals("uz")){
@@ -345,7 +318,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                         routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
                                                 "🪑 Bo'sh ish o'rinlari soni : " + routeDriver.getCountSide() + " \n" +
                                                 "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
-                                                "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                                "📅 Sana: " + formattedDate + "\n" +
                                                 "⏰ soat: " + routeDriver.getHour()
                                 );
                             }
@@ -353,10 +326,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                             sendMessage.setReplyMarkup(directionData(routeDriver.getId(),foundUser));
 
-                            // Execute the message and capture the result
                             Message sentMessage = execute(sendMessage);
 
-                            // Store the message ID from the response
                             band_delete_data[1] = String.valueOf(sentMessage.getMessageId());
                         }
                     }
@@ -372,10 +343,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             int count = Integer.parseInt(countS);
 
                             if (routeDriver.getUser().isCount()) {
-                                // Count should not exceed 6
                                 if (count > 6) {
                                     if (foundUser.getLanguage().equals("uz")) {
-                                        sendMessage.setText("⚠️ Jo'ylar soni 6 dan katta bo'lmasligi kerak. Qayta kiriting.");
+                                        sendMessage.setText("⚠️ Joylar soni 6 dan katta bo'lmasligi kerak. Qayta kiriting.");
                                     } else if (foundUser.getLanguage().equals("ru")) {
                                         sendMessage.setText("⚠️ Количество мест не должно превышать 6. Пожалуйста, введите снова.");
                                     }
@@ -383,10 +353,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                     return;
                                 }
                             } else {
-                                // Count should not exceed 12
                                 if (count > 12) {
                                     if (foundUser.getLanguage().equals("uz")) {
-                                        sendMessage.setText("⚠️ Jo'ylar soni 12 dan katta bo'lmasligi kerak. Qayta kiriting.");
+                                        sendMessage.setText("⚠️ Joylar soni 12 dan katta bo'lmasligi kerak. Qayta kiriting.");
                                     } else if (foundUser.getLanguage().equals("ru")) {
                                         sendMessage.setText("⚠️ Количество мест не должно превышать 12. Пожалуйста, введите снова.");
                                     }
@@ -395,23 +364,22 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                 }
                             }
 
-                            // If valid, set the seat count
                             routeDriver.setCountSide(count);
                             routeDriverRepo.save(routeDriver);
 
                             if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText("✅ Jo'ylar soni muvaffaqiyatli qo'shildi");
+                                sendMessage.setText("✅ Joylar soni muvaffaqiyatli qo'shildi");
                             } else if (foundUser.getLanguage().equals("ru")) {
                                 sendMessage.setText("✅ Количество успешно добавленных мест");
                             }
-
-                            // Send updated route information to the specific user
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                            String formattedDate = routeDriver.getDay().format(formatter);
                             if (foundUser.getLanguage().equals("uz")) {
                                 sendMessage.setText(
                                         routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                                "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
                                                 "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
-                                                "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                                "📅 Sana: " + formattedDate + "\n" +
                                                 "⏰ Soat: " + routeDriver.getHour()
                                 );
                             } else if (foundUser.getLanguage().equals("ru")) {
@@ -419,7 +387,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                         routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
                                                 "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
                                                 "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
-                                                "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                                "📅 Дата: " + formattedDate + "\n" +
                                                 "⏰ Час: " + routeDriver.getHour()
                                 );
                             }
@@ -461,23 +429,23 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                                 sendMessage.setText("✅ Цена успешно добавлена\n");
                             }
 
-                            // Xabar ma'lumotini jamlash
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                            String formattedDate = routeDriver.getDay().format(formatter);
                             String routeInfo;
                             if (foundUser.getLanguage().equals("uz")) {
                                 routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
-                                        "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                        "📅 Sana: " + formattedDate + "\n" +
                                         "⏰ Soat: " + routeDriver.getHour();
                             } else {
                                 routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
                                         "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
-                                        "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                        "📅 Дата: " + formattedDate + "\n" +
                                         "⏰ Час: " + routeDriver.getHour();
                             }
 
-                            // Jamlangan xabarni o'rnatish
                             sendMessage.setText(sendMessage.getText() + routeInfo);
 
                             sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
@@ -512,31 +480,29 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             routeDriver.setDay(inputDate);
                             routeDriverRepo.save(routeDriver);
 
-                            // Xabarni yaratish
                             String successMessage = "";
                             if (foundUser.getLanguage().equals("uz")) {
                                 successMessage = "📅 Sana muvaffaqiyatli yangilandi\n";
                             } else if (foundUser.getLanguage().equals("ru")) {
                                 successMessage = "📅 Дата успешно обновлена\n";
                             }
-
-                            // Xabarni ma'lumot bilan to'ldirish
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                            String formattedDate = routeDriver.getDay().format(formatter);
                             String routeInfo = "";
                             if (foundUser.getLanguage().equals("uz")) {
                                 routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
-                                        "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                        "📅 Sana: " + formattedDate + "\n" +
                                         "⏰ Soat: " + routeDriver.getHour();
                             } else if (foundUser.getLanguage().equals("ru")) {
                                 routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
                                         "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
-                                        "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                        "📅 Дата: " + formattedDate + "\n" +
                                         "⏰ Час: " + routeDriver.getHour();
                             }
 
-                            // Birlashtirilgan xabarni yuborish
                             sendMessage.setText(successMessage + routeInfo);
                             sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
                             execute(sendMessage);
@@ -564,44 +530,39 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             Route_Driver routeDriver = byId.get();
                             LocalDate day = routeDriver.getDay();
 
-                            // Vaqtni tekshirish
                             validateTime(time, String.valueOf(day), foundUser);
 
-                            // Soatni yangilash
                             routeDriver.setHour(time);
                             routeDriverRepo.save(routeDriver);
 
-                            // Xabar matnini bir marta yaratish
                             String successMessage = "";
                             if (foundUser.getLanguage().equals("uz")) {
                                 successMessage = "📲 Soat muvaffaqiyatli yangilandi\n";
                             } else if (foundUser.getLanguage().equals("ru")) {
                                 successMessage = "📲 Часы успешно обновлены\n";
                             }
-
-                            // Yo'nalish va ma'lumotlar
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                            String formattedDate = routeDriver.getDay().format(formatter);
                             String routeInfo = "";
                             if (foundUser.getLanguage().equals("uz")) {
                                 routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                        "🪑 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
-                                        "📅 Sana: " + routeDriver.getDay() + "\n" +
+                                        "📅 Sana: " + formattedDate + "\n" +
                                         "⏰ Soat: " + routeDriver.getHour();
                             } else if (foundUser.getLanguage().equals("ru")) {
                                 routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
                                         "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
-                                        "📅 Дата: " + routeDriver.getDay() + "\n" +
+                                        "📅 Дата: " + formattedDate+ "\n" +
                                         "⏰ Час: " + routeDriver.getHour();
                             }
 
-                            // Birlashtirilgan xabarni yuborish
                             sendMessage.setText(successMessage + routeInfo);
                             sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
                             execute(sendMessage);
 
                         } else {
-                            // Ma'lumot topilmagan holda xabar
                             if (foundUser.getLanguage().equals("uz")) {
                                 sendMessage.setText("❌ Xatolik mavjud.");
                             } else if (foundUser.getLanguage().equals("ru")) {
@@ -611,11 +572,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         }
 
                     } catch (DateTimeParseException e) {
-                        // Noto'g'ri vaqt formati uchun xabar
                         sendMessage.setText("⚠️ Noto'g'ri vaqt formati kiritildi. Faqat soat va minutni kiriting, masalan '14:30'.");
                         execute(sendMessage);
                     } catch (Exception e) {
-                        // Umumiy xatolik uchun xabar
                         sendMessage.setText("❌ Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
                         execute(sendMessage);
                     }
@@ -664,7 +623,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             sendMessage.setText("🕒 Введите время (например, 01:50)");
                         }
 
-                        sendMessage.setChatId(chatId); // ChatID-ni qo'shish
+                        sendMessage.setChatId(chatId);
                         execute(sendMessage);
 
                     } catch (DateTimeParseException e) {
@@ -693,7 +652,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             sendMessage.setText("❗ Произошла ошибка. Пожалуйста, попробуйте еще раз.");
                         }
 
-                        sendMessage.setChatId(chatId); // ChatID-ni qo'shish
+                        sendMessage.setChatId(chatId);
                         execute(sendMessage);
                     }
                 }
@@ -778,11 +737,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
             }
             else if (message.hasContact()) {
-                // Save the message ID of the contact message to delete it later
                 int contactMessageId = message.getMessageId();
 
-                // Get user contact details
-                String phoneNumber="+";
+                String phoneNumber;
                 phoneNumber = message.getContact().getPhoneNumber();
                 String firstName = message.getContact().getFirstName();
                 String lastName = message.getContact().getLastName();
@@ -802,7 +759,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 foundUser.setPhoneNumber(phoneNumber);
                 userRepo.save(foundUser);
 
-                // Send welcome message and role selection buttons
                 if (foundUser.getLanguage().equals("uz")) {
                     sendMessage.setText("Assalom eleykum botimizga xush kelibsiz! \uD83D\uDC4B\n" +
                             "Pastdagi knopkalardan birini tanlang. ⬇️ Siz haydovchimi \uD83D\uDE95 yoki yo'lovchi \uDDF3?");
@@ -814,16 +770,14 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 sendMessage.setReplyMarkup(selectInlineRoleButtons(chatId));
                 execute(sendMessage);
 
-                // Delete the previous contact button message after obtaining contact
                 DeleteMessage deleteMessage = new DeleteMessage();
                 deleteMessage.setChatId(chatId);
-                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1])); // Ensure this is the correct message ID
+                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
                 execute(deleteMessage);
 
-                // Delete the contact message after processing
                 DeleteMessage deleteContactMessage = new DeleteMessage();
                 deleteContactMessage.setChatId(chatId);
-                deleteContactMessage.setMessageId(contactMessageId); // Use the captured contact message ID
+                deleteContactMessage.setMessageId(contactMessageId);
                 execute(deleteContactMessage);
             }
 
@@ -857,9 +811,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     sendMessage.setReplyMarkup(genContactButtons(user));
                 }
 
-                // Corrected to use the 'language' variable
 
-                // Send the message with the contact button and store the message ID for later deletion
                 Message executedMessage = execute(sendMessage);
                 band_delete_data[1] = String.valueOf(executedMessage.getMessageId());
             }
@@ -901,7 +853,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 sendMessage.setChatId(chatId);
                 execute(sendMessage);
 
-                // Delete the previous message
                 DeleteMessage deleteMessage = new DeleteMessage();
                 deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
                 execute(deleteMessage);
@@ -936,7 +887,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 String[] dataParts = data.split(":");
                 System.out.println("place kirdi");
                 if(user.getLanguage().equals("uz")){
-                    sendMessage.setText("Jo'ylar soni yangi qiymatini kiriting:");
+                    sendMessage.setText("Joylar soni yangi qiymatini kiriting:");
                 }else if(user.getLanguage().equals("ru")){
                     sendMessage.setText("Введите новое значение количества слотов:");
 
@@ -1050,41 +1001,23 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     Route_Driver routeDriver = routeDrivers.get(count);
                     count++;
 
-//                    String carImgFileName = routeDriver.getUser().getCarImg();
-//                    String basePath = "C:/Users/user/Desktop/Taxi_project/backend/files/";
-//                    String fullPath = basePath + carImgFileName.trim();
-//                    File file = new File(fullPath);
 
-//                    if (file.exists()) {
-//                        SendPhoto sendPhoto = new SendPhoto();
-//                        sendPhoto.setChatId(chatId);
-//                        sendPhoto.setPhoto(new InputFile(file));
-//                        execute(sendPhoto);
-//                    }
-//                    else {
-//                        sendMessage.setChatId(chatId);
-//                        if(user.getLanguage().equals("uz")){
-//                            sendMessage.setText("Rasmni yuklashda xatolik yuz berdi: noto'g'ri URL yoki fayl manzili.");
-//
-//                        }else if(user.getLanguage().equals("ru")){
-//                            sendMessage.setText("При загрузке изображения произошла ошибка: неверный URL-адрес или местоположение файла.");
-//                        }
-//                        execute(sendMessage);
-//                        return;
-//                    }
 
                     Long chatId2 = routeDriver.getUser().getChatId();
-                    if(user.getLanguage().equals("uz")){
+
+                    String formattedDate = null;
+                    if (user.getLanguage().equals("uz")) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                        formattedDate = routeDriver.getDay().format(formatter);
                         sendMessage.setText(
                                 "Telefon raqami: " + routeDriver.getUser().getPhoneNumber() + " \n" +
-                                        "Sana: " + routeDriver.getDay() + "\n" +
-                                        "Bo'sh jo'y soni: " + routeDriver.getCountSide() + " ta\n" +
+                                        "Sana: " + formattedDate + "\n" +
+                                        "Bo'sh joy soni: " + routeDriver.getCountSide() + " ta\n" +
                                         "Narxi: " + routeDriver.getPrice() + " So'm");
-                    }
-                    else if(user.getLanguage().equals("ru")){
+                    } else if (user.getLanguage().equals("ru")) {
                         sendMessage.setText(
                                 "Номер телефона: " + routeDriver.getUser().getPhoneNumber() + " \n" +
-                                        "Дата: " + routeDriver.getDay() + "\n" +
+                                        "Дата: " + formattedDate + "\n" +
                                         "Пустое число радости: " + routeDriver.getCountSide() + " ta\n" +
                                         "Цена: " + routeDriver.getPrice() + " So'm");
                     }
@@ -1094,18 +1027,15 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 }
             }
             else if(data.startsWith("band")) {
-                // Fetch the user by chatId
                 Optional<User> allByChatId = userRepo.findByChatId(chatId);
                 User user1 = allByChatId.get();
 
-                // Split the data to extract relevant parts
                 dataParts = data.split(":");
                 idPassenger = user1.getId();
 
                 Optional<User> byChatId2 = userRepo.findByChatId(Long.valueOf(dataParts[1]));
 
                 if(dataParts.length > 1) {
-                    // Check the language of the user and set the message accordingly
                     if(byChatId2.get().getLanguage().equals("uz")) {
                         sendMessage.setParseMode("Markdown");
                         sendMessage.setText(
@@ -1120,15 +1050,12 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         );
                     }
 
-                    // Send the message to the driver
-                    sendMessage.setReplyMarkup(sendBusy(user1)); // Adjusted to pass the correct user1 object
+                    sendMessage.setReplyMarkup(sendBusy(user1));
                     sendMessage.setChatId(dataParts[1]);
                     Message sentMessage = execute(sendMessage);
 
-                    // Store the message ID for tracking purposes
                     band_delete_data[1] = String.valueOf(sentMessage.getMessageId());
 
-                    // Send a message to the passenger informing them that the driver will contact them soon
                     SendMessage passengerMessage = new SendMessage();
                     passengerMessage.setChatId(String.valueOf(user1.getChatId()));
                     if(user1.getLanguage().equals("uz")) {
@@ -1156,7 +1083,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         if (allByUserId.isEmpty()) {
                             messageText.append("📭 Hozircha mijozlarni fikr yo'q.");
                         } else {
-                            // Haydovchini faqat bir marta qo'shish
                             messageText.append("🚗 Haydovchi: ").append(allByUserId.get(0).getUser().getFullName()).append("\n")
                                     .append("📝 Mijozlarni fikri:  \n");
 
@@ -1171,7 +1097,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         if (allByUserId1.isEmpty()) {
                             messageText.append("📭 Пока что мнений клиентов нет.");
                         } else {
-                            // Haydovchini faqat bir marta qo'shish
                             messageText.append("🚗 Водитель: ").append(allByUserId1.get(0).getUser().getFullName()).append("\n")
                                     .append("📝 Мнение клиента:  \n");
 
@@ -1204,20 +1129,16 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             currentPassengers = new ArrayList<>();
                         }
 
-                        // Check if idPassenger is already in the passenger list
                         if (currentPassengers.contains(idPassenger)) {
-                            // If already a passenger, send a message indicating the passenger is already added
                             if (user.getLanguage().equals("uz")) {
                                 sendMessage.setText("Siz bu yo'lovchini qabul qilgansiz.");
                             } else if (user.getLanguage().equals("ru")) {
                                 sendMessage.setText("Этот пассажир уже был принят.");
                             }
                         } else {
-                            // Add the passenger if not already in the list
                             currentPassengers.add(idPassenger);
                             byUser.setPassenger(currentPassengers);
 
-                            // Update the count of available seats
                             Integer countSide = byUser.getCountSide();
                             byUser.setCountSide(countSide - 1);
                             routeDriverRepo.save(byUser);
@@ -1231,19 +1152,21 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
                             for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
                                 if (userIds.contains(routeDriver.getUser().getId())) {
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                                    String formattedDate = routeDriver.getDay().format(formatter);
                                     if (user.getLanguage().equals("uz")) {
                                         sendMessage.setText(
                                                 routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
-                                                        "🛋️ Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + "\n" +
+                                                        "🛋️ Bo'sh-joylar soni: " + routeDriver.getCountSide() + "\n" +
                                                         "💰 Narxi: " + routeDriver.getPrice() + " so'm\n" +
-                                                        "📅 Sana: " + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                                        "📅 Sana: " + formattedDate+ " ⏰ " + routeDriver.getHour()
                                         );
                                     } else if (user.getLanguage().equals("ru")) {
                                         sendMessage.setText(
                                                 routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
                                                         "🛋️ Количество вакансий: " + routeDriver.getCountSide() + "\n" +
                                                         "💰 Цена: " + routeDriver.getPrice() + " so'm\n" +
-                                                        "📅 Дата: " + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                                        "📅 Дата: " + formattedDate+ " ⏰ " + routeDriver.getHour()
                                         );
                                     }
 
@@ -1254,10 +1177,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             }
                         }
                     } else {
-                        // Handle when there are no more available seats
                         if (user.getLanguage().equals("uz")) {
                             sendMessage.setText(
-                                    "🚫 Sizda jo'ylar soni tugadi. "
+                                    "🚫 Sizda joylar soni tugadi. "
                             );
                             sendMessage.setReplyMarkup(NotPath3(user));
                             user.setStatus(Status.HOME_PAGE_DRIVER);
@@ -1282,19 +1204,17 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 User byUser2 = null;
                 UUID idPassenger1 = null;
                 if (parts.length == 3) {
-                    String action = parts[0]; // "accept" or "decline"
+                    String action = parts[0];
                     idPassenger1 = UUID.fromString(parts[1]);
                     Long driverChatId = Long.parseLong(parts[2]);
                     byUser2 = userRepo.findByChatId(driverChatId).orElseThrow();
 
-                    // Process the action based on userId and driverChatId
                     System.out.println(idPassenger1);
                     System.out.println(driverChatId);
                 }
 
                 Route_Driver byUser1 = routeDriverRepo.findByUser(Optional.ofNullable(byUser2));
 
-                // Check if there's any available seat
                 if (byUser1.getCountSide() > 0) {
                     if (byUser1 != null) {
                         List<UUID> currentPassengers = byUser1.getPassenger();
@@ -1302,9 +1222,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             currentPassengers = new ArrayList<>();
                         }
 
-                        // Check if the passenger is already in the list
                         if (currentPassengers.contains(idPassenger1)) {
-                            // If passenger is already in the list, send a message indicating that
                             if (user.getLanguage().equals("uz")) {
                                 sendMessage.setText("❌ Siz bu yo'lovchini allaqachon qabul qilgansiz.");
                             } else if (user.getLanguage().equals("ru")) {
@@ -1313,32 +1231,31 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             sendMessage.setChatId(chatId);
                             execute(sendMessage);
                         } else {
-                            // If passenger is not in the list, add them and update countSide
                             currentPassengers.add(idPassenger1);
                             byUser1.setPassenger(currentPassengers);
 
-                            // Decrease the seat count
                             Integer countSide = byUser1.getCountSide();
                             byUser1.setCountSide(countSide - 1);
                             routeDriverRepo.save(byUser1);
 
-                            // Notify about the update
                             List<UUID> userIds = userRepo.findAllUserIdsByChatId(byUser2.getChatId());
                             for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
                                 if (userIds.contains(routeDriver.getUser().getId())) {
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                                    String formattedDate = routeDriver.getDay().format(formatter);
                                     if (user.getLanguage().equals("uz")) {
                                         sendMessage.setText(
                                                 routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
-                                                        "🛋 Bo'sh-jo'ylar soni: " + routeDriver.getCountSide() + "\n" +
+                                                        "🛋 Bo'sh-joylar soni: " + routeDriver.getCountSide() + "\n" +
                                                         "💰 Narxi: " + routeDriver.getPrice() + " so'm\n" +
-                                                        "📅 Sana: " + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                                        "📅 Sana: " + formattedDate + " ⏰ " + routeDriver.getHour()
                                         );
                                     } else if (user.getLanguage().equals("ru")) {
                                         sendMessage.setText(
                                                 routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
                                                         "🛋 Количество вакансий: " + routeDriver.getCountSide() + "\n" +
                                                         "💰 Цена: " + routeDriver.getPrice() + " so'm\n" +
-                                                        "📅 Дата: " + routeDriver.getDay() + " ⏰ " + routeDriver.getHour()
+                                                        "📅 Дата: " + formattedDate + " ⏰ " + routeDriver.getHour()
                                         );
                                     }
 
@@ -1352,7 +1269,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 } else {
                     if (user.getLanguage().equals("uz")) {
                         sendMessage.setText(
-                                "🚫 Sizda jo'ylar soni tugadi. "
+                                "🚫 Sizda joylar soni tugadi. "
 
                         );
                         sendMessage.setReplyMarkup(NotPath3(user));
@@ -1379,18 +1296,17 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 Optional<User> byChatId= null;
                 UUID idPassenger1=null;
                 if (parts.length == 3) {
-                    String action = parts[0]; // "accept" or "decline"
+                    String action = parts[0];
                     idPassenger1 = UUID.fromString(parts[1]);
                     Long driverChatId = Long.parseLong(parts[2]);
                     byChatId = userRepo.findByChatId(driverChatId);
-                    // Process the action based on userId and driverChatId
                     System.out.println(idPassenger1);
                     System.out.println(driverChatId);
                 }
                 if (byChatId.isPresent()) {
                     Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
 
-                    if (byUser != null) { // Ensure byUser is not null
+                    if (byUser != null) {
                         if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger1)) {
                             byUser.getPassenger().remove(idPassenger1);
                             Integer countSide = byUser.getCountSide();
@@ -1418,14 +1334,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             }
                             execute(sendMessage);
 
-                            // Only delete message if it was previously set
-//                            if (!band_delete_data[1].isEmpty()) {
-//                                DeleteMessage deleteMessage = new DeleteMessage();
-//                                deleteMessage.setChatId(byChatId.get().getChatId());
-//                                deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-//                                band_delete_data[1] = "";
-//                                execute(deleteMessage);
-//                            }
+
                         }
                     }
                 } else {
@@ -1447,7 +1356,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 if (byChatId.isPresent()) {
                     Route_Driver byUser = routeDriverRepo.findByUser(Optional.of(byChatId.get()));
 
-                    if (byUser != null) { // Ensure byUser is not null
+                    if (byUser != null) {
                         if (byUser.getPassenger() != null && byUser.getPassenger().contains(idPassenger)) {
                             byUser.getPassenger().remove(idPassenger);
                             Integer countSide = byUser.getCountSide();
@@ -1479,7 +1388,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             }
                             execute(sendMessage);
 
-                            // Only delete message if it was previously set
                             if (!band_delete_data[1].isEmpty()) {
                                 DeleteMessage deleteMessage = new DeleteMessage();
                                 deleteMessage.setChatId(chatId);
@@ -1556,7 +1464,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                     DeleteMessage deleteMessage = new DeleteMessage();
 
-                    // Make sure to parse and use the correct message ID
                     if (band_delete_data[1] != null) {
                         System.out.println("keldi " + band_delete_data[1]);
                         deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
@@ -1741,26 +1648,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         secondRow.add(button2);
         rows.add(secondRow);
 
-//        List<InlineKeyboardButton> secondRow3 = new ArrayList<>();
-//        InlineKeyboardButton button3 = new InlineKeyboardButton();
-//        button3.setText("Sana o'zgartirish ");
-//        button3.setCallbackData("day:" + id);
-//        secondRow3.add(button3);
-//        rows.add(secondRow3);
 
-//        List<InlineKeyboardButton> secondRow4 = new ArrayList<>();
-//        InlineKeyboardButton button4 = new InlineKeyboardButton();
-//        button4.setText("Soatni o'zgartirish ");
-//        button4.setCallbackData("time:" + id);
-//        secondRow4.add(button4);
-//        rows.add(secondRow4);
-
-//        List<InlineKeyboardButton> secondRow5 = new ArrayList<>();
-//        InlineKeyboardButton button5 = new InlineKeyboardButton();
-//        button5.setText("O'chirish");
-//        button5.setCallbackData("del:" + id);
-//        secondRow5.add(button5);
-//        rows.add(secondRow5);
         return new InlineKeyboardMarkup(rows);
     }
 
@@ -1771,10 +1659,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if(user.getLanguage().equals("uz")){
-            button1.setText("📌 Band qilish"); // "📌" for 'Book'
-
+            button1.setText("📌 Band qilish");
         }else if(user.getLanguage().equals("ru")){
-            button1.setText("📌Бронирование"); // "📌" for 'Book'
+            button1.setText("📌Бронирование");
         }
         button1.setCallbackData("band:" + id);
         firstRow.add(button1);
@@ -1783,9 +1670,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> firstRow2 = new ArrayList<>();
         InlineKeyboardButton buttonp = new InlineKeyboardButton();
         if(user.getLanguage().equals("uz")){
-            buttonp.setText("👤 Haydovchini lichkasiga o'tish"); // "👤" for 'Go to driver's chat'
+            buttonp.setText("👤 Haydovchini lichkasiga o'tish");
         }else if(user.getLanguage().equals("ru")){
-            buttonp.setText("👤 Перейти на водительское удостоверение"); // "👤" for 'Go to driver's chat'
+            buttonp.setText("👤 Перейти на водительское удостоверение");
 
         }
         buttonp.setUrl("tg://user?id=" + id);
@@ -1795,10 +1682,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> secondRow = new ArrayList<>();
         InlineKeyboardButton button2 = new InlineKeyboardButton();
         if(user.getLanguage().equals("uz")){
-            button2.setText("➡️ Keyingisi"); // "➡️" for 'Next'
-
+            button2.setText("➡️ Keyingisi");
         }else if(user.getLanguage().equals("ru")){
-            button2.setText("➡️ Следующий"); // "➡️" for 'Next'
+            button2.setText("➡️ Следующий");
         }
         button2.setCallbackData("next:" + this.id);
         secondRow.add(button2);
@@ -1807,35 +1693,15 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> secondRow3 = new ArrayList<>();
         InlineKeyboardButton button3 = new InlineKeyboardButton();
         if(user.getLanguage().equals("uz")){
-            button3.setText("💬 Izohlar"); // "💬" for 'Comments'
-
+            button3.setText("💬 Izohlar");
         }else if(user.getLanguage().equals("ru")){
-            button3.setText("💬 Примечания"); // "💬" for 'Comments'
+            button3.setText("💬 Примечания");
         }
         button3.setCallbackData("comment:" + id);
         secondRow3.add(button3);
         rows.add(secondRow3);
 
-//    List<InlineKeyboardButton> secondRow3 = new ArrayList<>();
-//    InlineKeyboardButton button3 = new InlineKeyboardButton();
-//    button3.setText("📅 Sana o'zgartirish "); // "📅" for 'Change Date'
-//    button3.setCallbackData("day:" + id);
-//    secondRow3.add(button3);
-//    rows.add(secondRow3);
 
-//    List<InlineKeyboardButton> secondRow4 = new ArrayList<>();
-//    InlineKeyboardButton button4 = new InlineKeyboardButton();
-//    button4.setText("⏰ Soatni o'zgartirish "); // "⏰" for 'Change Time'
-//    button4.setCallbackData("time:" + id);
-//    secondRow4.add(button4);
-//    rows.add(secondRow4);
-
-//    List<InlineKeyboardButton> secondRow5 = new ArrayList<>();
-//    InlineKeyboardButton button5 = new InlineKeyboardButton();
-//    button5.setText("🗑️ O'chirish"); // "🗑️" for 'Delete'
-//    button5.setCallbackData("del:" + id);
-//    secondRow5.add(button5);
-//    rows.add(secondRow5);
 
         return new InlineKeyboardMarkup(rows);
     }
@@ -1863,8 +1729,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setKeyboard(rows);
-        replyKeyboardMarkup.setResizeKeyboard(true); // Optional: Resizes the keyboard to fit the screen
-        replyKeyboardMarkup.setOneTimeKeyboard(true); // Optional: Hides the keyboard after use
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         return replyKeyboardMarkup;
     }
@@ -1902,20 +1768,20 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         if (!timeText.matches("\\d{2}:\\d{2}")) {
             if(foundUser.getLanguage().equals("uz")){
 
-                throw new IllegalArgumentException("⏱️ Vaqt formati noto‘g‘ri. Soat: Minut formatida bo'lishi kerak."); // Time format is incorrect
+                throw new IllegalArgumentException("⏱️ Vaqt formati noto‘g‘ri. Soat: Minut formatida bo'lishi kerak.");
 
             }else if(foundUser.getLanguage().equals("ru")){
-                throw new IllegalArgumentException("⏱️ Формат времени неправильный. Час: должен быть в минутном формате."); // Time format is incorrect
+                throw new IllegalArgumentException("⏱️ Формат времени неправильный. Час: должен быть в минутном формате.");
 
             }
         }
 
         if (driverDataDay == null || driverDataDay.isEmpty()) {
             if(foundUser.getLanguage().equals("uz")){
-                throw new IllegalArgumentException("🗓️ Sana ma'lumotlari mavjud emas."); // Date information is missing
+                throw new IllegalArgumentException("🗓️ Sana ma'lumotlari mavjud emas.");
 
             }else if(foundUser.getLanguage().equals("ru")){
-                throw new IllegalArgumentException("🗓️ Информация о дате отсутствует."); // Date information is missing
+                throw new IllegalArgumentException("🗓️ Информация о дате отсутствует.");
 
             }
 
@@ -1927,10 +1793,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         if (hour > 23 || minute > 59) {
             if(foundUser.getLanguage().equals("uz")){
-                throw new IllegalArgumentException("🕒 Soat 23 dan kichik va daqiqa 59 dan kichik bo'lishi kerak."); // Hour should be less than 23 and minutes less than 59
+                throw new IllegalArgumentException("🕒 Soat 23 dan kichik va daqiqa 59 dan kichik bo'lishi kerak.");
 
             } else if (foundUser.getLanguage().equals("ru")) {
-                throw new IllegalArgumentException("🕒 Час должен быть меньше 23, а минуты должны быть меньше 59.."); // Hour should be less than 23 and minutes less than 59
+                throw new IllegalArgumentException("🕒 Час должен быть меньше 23, а минуты должны быть меньше 59..");
 
 
             }
@@ -1944,10 +1810,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             day = LocalDate.parse(driverDataDay);
         } catch (DateTimeParseException e) {
             if(foundUser.getLanguage().equals("uz")){
-                throw new IllegalArgumentException("📅 Sana noto‘g‘ri formatda kiritilgan."); // Date is in the wrong format
-
+                throw new IllegalArgumentException("📅 Sana noto‘g‘ri formatda kiritilgan.");
             }else if(foundUser.getLanguage().equals("ru")){
-                throw new IllegalArgumentException("📅 Дата введена в неправильном формате."); // Date is in the wrong format
+                throw new IllegalArgumentException("📅 Дата введена в неправильном формате.");
 
             }
 
@@ -1968,19 +1833,17 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     }
 
     public LocalDate validateAndParseDate(String dateInput, User foundUser) throws DateTimeParseException {
-        // Check if the date input is null or empty
         if (dateInput == null || dateInput.isEmpty()) {
             if (foundUser.getLanguage().equals("uz")) {
-                throw new DateTimeParseException("🗓️ Sana kiritilmadi yoki noto'g'ri formatda kiritildi", dateInput, 0); // Date not provided or entered in the wrong format.
+                throw new DateTimeParseException("🗓️ Sana kiritilmadi yoki noto'g'ri formatda kiritildi", dateInput, 0);
             } else if (foundUser.getLanguage().equals("ru")) {
-                throw new DateTimeParseException("🗓️ Дата не предоставлена или введена в неправильном формате", dateInput, 0); // Date not provided or entered in the wrong format.
+                throw new DateTimeParseException("🗓️ Дата не предоставлена или введена в неправильном формате", dateInput, 0);
             }
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM");
         String[] parts = dateInput.split("-");
 
-        // Check if the date format is correct and within the range
         if (parts.length == 2 && parts[0].length() == 2 && parts[1].length() == 2) {
             int day = Integer.parseInt(parts[0]);
             int month = Integer.parseInt(parts[1]);
@@ -1992,90 +1855,84 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                 if (inputDate.isBefore(today) || inputDate.isAfter(today.plusDays(2))) {
                     if (foundUser.getLanguage().equals("uz")) {
-                        throw new DateTimeParseException("📅 Sana oraliqdan tashqarida", dateInput, 0); // Date is out of range.
+                        throw new DateTimeParseException("📅 Sana oraliqdan tashqarida", dateInput, 0);
                     } else if (foundUser.getLanguage().equals("ru")) {
-                        throw new DateTimeParseException("📅 Дата вне допустимого диапазона", dateInput, 0); // Date is out of range.
+                        throw new DateTimeParseException("📅 Дата вне допустимого диапазона", dateInput, 0);
                     }
                 }
 
                 return inputDate;
             } else {
                 if (foundUser.getLanguage().equals("uz")) {
-                    throw new DateTimeParseException("📅 Noto'g'ri oy yoki kun", dateInput, 0); // Incorrect month or day.
+                    throw new DateTimeParseException("📅 Noto'g'ri oy yoki kun", dateInput, 0);
                 } else if (foundUser.getLanguage().equals("ru")) {
-                    throw new DateTimeParseException("📅 Неправильный месяц или день", dateInput, 0); // Incorrect month or day.
+                    throw new DateTimeParseException("📅 Неправильный месяц или день", dateInput, 0);
                 }
             }
         } else {
             if (foundUser.getLanguage().equals("uz")) {
-                throw new DateTimeParseException("📅 Noto'g'ri format", dateInput, 0); // Wrong format.
+                throw new DateTimeParseException("📅 Noto'g'ri format", dateInput, 0);
             } else if (foundUser.getLanguage().equals("ru")) {
-                throw new DateTimeParseException("📅 Неправильный формат", dateInput, 0); // Wrong format.
+                throw new DateTimeParseException("📅 Неправильный формат", dateInput, 0);
             }
         }
 
-        // Default return, should never reach here because all branches throw an exception if they do not pass
         return null;
     }
 
     private InlineKeyboardMarkup directionData(UUID id, User foundUser) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
-        // First row: Button for changing seat count
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if (foundUser.getLanguage().equals("uz")) {
-            button1.setText("🔢 Jo'y sonni o'zgartirish:"); // Uzbek: "Change seat count"
+            button1.setText("🔢 Joy sonni o'zgartirish:");
         } else if (foundUser.getLanguage().equals("ru")) {
-            button1.setText("🔢 Изменить количество мест:"); // Russian: "Change seat count"
+            button1.setText("🔢 Изменить количество мест:");
         }
         button1.setCallbackData("place:" + id);
         firstRow.add(button1);
         rows.add(firstRow);
 
-        // Second row: Button for changing price
         List<InlineKeyboardButton> secondRow = new ArrayList<>();
         InlineKeyboardButton button2 = new InlineKeyboardButton();
         if (foundUser.getLanguage().equals("uz")) {
-            button2.setText("💵 Narxni o'zgartirish"); // Uzbek: "Change price"
+            button2.setText("💵 Narxni o'zgartirish");
         } else if (foundUser.getLanguage().equals("ru")) {
-            button2.setText("💵 Изменить цену"); // Russian: "Change price"
+            button2.setText("💵 Изменить цену");
         }
         button2.setCallbackData("money:" + id);
         secondRow.add(button2);
         rows.add(secondRow);
 
-        // Third row: Button for changing date
         List<InlineKeyboardButton> thirdRow = new ArrayList<>();
         InlineKeyboardButton button3 = new InlineKeyboardButton();
         if (foundUser.getLanguage().equals("uz")) {
-            button3.setText("📅 Sana o'zgartirish"); // Uzbek: "Change date"
+            button3.setText("📅 Sana o'zgartirish");
         } else if (foundUser.getLanguage().equals("ru")) {
-            button3.setText("📅 Изменить дату"); // Russian: "Change date"
+            button3.setText("📅 Изменить дату");
         }
         button3.setCallbackData("day:" + id);
         thirdRow.add(button3);
         rows.add(thirdRow);
 
-        // Fourth row: Button for changing time
         List<InlineKeyboardButton> fourthRow = new ArrayList<>();
         InlineKeyboardButton button4 = new InlineKeyboardButton();
         if (foundUser.getLanguage().equals("uz")) {
-            button4.setText("⏰ Soatni o'zgartirish"); // Uzbek: "Change time"
+            button4.setText("⏰ Soatni o'zgartirish");
         } else if (foundUser.getLanguage().equals("ru")) {
-            button4.setText("⏰ Изменить время"); // Russian: "Change time"
+            button4.setText("⏰ Изменить время");
         }
         button4.setCallbackData("time:" + id);
         fourthRow.add(button4);
         rows.add(fourthRow);
 
-        // Fifth row: Button for deleting
         List<InlineKeyboardButton> fifthRow = new ArrayList<>();
         InlineKeyboardButton button5 = new InlineKeyboardButton();
         if (foundUser.getLanguage().equals("uz")) {
-            button5.setText("🗑️ O'chirish"); // Uzbek: "Delete"
+            button5.setText("🗑️ O'chirish");
         } else if (foundUser.getLanguage().equals("ru")) {
-            button5.setText("🗑️ Удалить"); // Russian: "Delete"
+            button5.setText("🗑️ Удалить");
         }
         button5.setCallbackData("del:" + id);
         fifthRow.add(button5);
@@ -2089,9 +1946,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         KeyboardRow row1 = new KeyboardRow();
         KeyboardButton button1 = new KeyboardButton();
         if (foundUser.getLanguage().equals("uz")) {
-            button1.setText("🗺️ Yo'nalishlarim"); // Uzbek: "My Routes"
+            button1.setText("🗺️ Yo'nalishlarim");
         } else if (foundUser.getLanguage().equals("ru")) {
-            button1.setText("🗺️ Мои маршруты"); // Russian: "My Routes"
+            button1.setText("🗺️ Мои маршруты");
         }
         row1.add(button1);
 
@@ -2104,7 +1961,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     }
 
     private InlineKeyboardMarkup fromCitysButtons(User foundUser) {
-        // Uzbek to Russian city mapping for 12 regions
         Map<String, String> uzbekToRussianCities = new HashMap<>();
         uzbekToRussianCities.put("Toshkent", "Ташкент");
         uzbekToRussianCities.put("Andijon", "Андижан");
@@ -2119,11 +1975,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         uzbekToRussianCities.put("Sirdaryo", "Сырдарья");
         uzbekToRussianCities.put("Surxondaryo", "Сурхандарья");
 
-        // Determine user's language preference
-        String userLanguage = foundUser.getLanguage(); // 'uz' for Uzbek or 'ru' for Russian
+        String userLanguage = foundUser.getLanguage();
 
-        // Fetch cities from repository
-        List<FromCity> fromCities = fromCityRepo.findAll(); // Fetch all cities
+        List<FromCity> fromCities = fromCityRepo.findAll();
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> currentRow = new ArrayList<>();
@@ -2131,37 +1985,29 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         for (FromCity fromCity : fromCities) {
             String cityName = fromCity.getName();
 
-            // Create a new button
             InlineKeyboardButton button = new InlineKeyboardButton();
 
             if ("uz".equals(userLanguage)) {
-                // If user's language is Uzbek, set button text in Uzbek
                 button.setText(cityName);
             } else if ("ru".equals(userLanguage) && uzbekToRussianCities.containsKey(cityName)) {
-                // If user's language is Russian and the city exists in the map, use Russian name
                 button.setText(uzbekToRussianCities.get(cityName));
             } else {
-                // Default to Uzbek name if not found in the mapping
                 button.setText(cityName);
             }
 
-            // Always set the callback data to fromCity.getName()
             button.setCallbackData(cityName);
             currentRow.add(button);
 
-            // Group buttons in rows of 2
             if (currentRow.size() == 2) {
                 rows.add(currentRow);
                 currentRow = new ArrayList<>();
             }
         }
 
-        // Add the last row if it's not empty
         if (!currentRow.isEmpty()) {
             rows.add(currentRow);
         }
 
-        // Return the constructed inline keyboard markup
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rows);
         return inlineKeyboardMarkup;
@@ -2182,7 +2028,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     }
 
     private InlineKeyboardMarkup toCitysButtons(User foundUser) {
-        // Uzbek to Russian city mapping for 12 regions (similar to fromCities)
         Map<String, String> uzbekToRussianCities = new HashMap<>();
         uzbekToRussianCities.put("Toshkent", "Ташкент");
         uzbekToRussianCities.put("Andijon", "Андижан");
@@ -2197,11 +2042,9 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         uzbekToRussianCities.put("Sirdaryo", "Сырдарья");
         uzbekToRussianCities.put("Surxondaryo", "Сурхандарья");
 
-        // Determine user's language preference
-        String userLanguage = foundUser.getLanguage(); // 'uz' for Uzbek or 'ru' for Russian
+        String userLanguage = foundUser.getLanguage();
 
-        // Fetch cities from repository
-        List<ToCity> all = toCityRepo.findAll(); // Fetch all 'To' cities
+        List<ToCity> all = toCityRepo.findAll();
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> currentRow = new ArrayList<>();
@@ -2211,33 +2054,26 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             InlineKeyboardButton button = new InlineKeyboardButton();
 
             if ("uz".equals(userLanguage)) {
-                // If user's language is Uzbek, set button text in Uzbek
                 button.setText(cityName);
             } else if ("ru".equals(userLanguage) && uzbekToRussianCities.containsKey(cityName)) {
-                // If user's language is Russian and the city exists in the map, use Russian name
                 button.setText(uzbekToRussianCities.get(cityName));
             } else {
-                // Default to Uzbek name if not found in the mapping
                 button.setText(cityName);
             }
 
-            // Always set the callback data to the Uzbek name (toCity.getName())
             button.setCallbackData(cityName);
             currentRow.add(button);
 
-            // Group buttons in rows of 2
             if (currentRow.size() == 2) {
                 rows.add(new ArrayList<>(currentRow));
                 currentRow.clear();
             }
         }
 
-        // Add the last row if it's not empty
         if (!currentRow.isEmpty()) {
             rows.add(new ArrayList<>(currentRow));
         }
 
-        // Return the constructed inline keyboard markup
         return new InlineKeyboardMarkup(rows);
     }
 
@@ -2357,7 +2193,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         rows.add(row2);
         rows.add(row3);
 
-        // Adding extra rows if count is false
         if (!count) {
             List<InlineKeyboardButton> row4 = new ArrayList<>();
             List<InlineKeyboardButton> row5 = new ArrayList<>();
@@ -2437,18 +2272,16 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         InlineKeyboardButton button2 = new InlineKeyboardButton();
         if (user.getLanguage().equals("uz")) {
-            button2.setText("🧳 Yo'lovchi"); // "🧳" Luggage icon for Passengers
+            button2.setText("🧳 Yo'lovchi");
         } else {
-            button2.setText("🧳 Пассажиры"); // "🧳" Luggage icon for Passengers
+            button2.setText("🧳 Пассажиры");
         }
         button2.setCallbackData("Passengers");
         row2.add(button2);
 
-        // Add rows to the keyboard
         rows.add(row1);
         rows.add(row2);
 
-        // Create InlineKeyboardMarkup object
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rows);
 
@@ -2501,24 +2334,5 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         return new InlineKeyboardMarkup(rows);
     }
 
-//    private User selectUser(Long chatId, String phoneNumber) {
-//        List<User> admins = userRepo.findAllByChatId(chatId);
-//
-//        for (User user : admins) {
-//            if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(phoneNumber)) {
-//                return user;
-//            }
-//        }
-//
-//        if (!admins.isEmpty()) {
-//            User user = admins.get(0);
-//            if (user.getPhoneNumber() == null) {
-//                user.setPhoneNumber(phoneNumber);
-//                userRepo.save(user);
-//            }
-//            return user;
-//        }
-//
-//        return null;
-//    }
+
 }
