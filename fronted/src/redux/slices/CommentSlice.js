@@ -1,11 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apicall1 from "../../apicall/apicall1";
+import apicall from '../../apicall/apicall';
 
 export const fetchComments = createAsyncThunk('CommentSlice/fetchComments', async ({language,userName}) => {
   const response = await apicall1(`/comment?language=${language}&id=${userName}`, "GET");
   return response.data;
 });
-
+export const deleteComment = createAsyncThunk('CommentSlice/deleteComment', async ({ language,id }) => {
+  
+  await apicall(`/comment?language=${language}&id=${id}`, "DELETE", null);
+  return id;
+});
 const CommentSlice = createSlice({
   name: 'comment',
   initialState: {
@@ -67,6 +72,9 @@ const CommentSlice = createSlice({
       .addCase(fetchComments.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.comments = state.comments.filter(comment => comment.id !== action.payload);  // Yo'nalishni ro'yxatdan o'chiramiz
       });
   },
 });

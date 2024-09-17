@@ -17,7 +17,7 @@
     margin: 0;
     padding: 20px;
     width: 300px;
-    height: 350px;
+    height: 320px;
     background-color:white;
     box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.15);
     /* border:1px solid black; */
@@ -54,6 +54,7 @@
   }
   
   .buttonS {
+    margin-top: 40px;
     background-color: #0081ff;
     color: #ffffff;
     border: none;

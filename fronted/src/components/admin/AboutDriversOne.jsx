@@ -6,7 +6,8 @@ import "./routesAdmin.css"
 import del from "../../pictures/delete.png";
 import { LanguageContext } from '../language/LanguageContext';
 import { fetchRoutesByDriver } from '../../redux/slices/routeDriver';
-import { fetchComments } from '../../redux/slices/CommentSlice';
+import { deleteComment, fetchComments } from '../../redux/slices/CommentSlice';
+import { message } from 'antd';
 function AboutDriversOne() {
     const {driverOne} = useSelector((state) => state.driver);
     const {routesByDriver} = useSelector((state) => state.routes);
@@ -14,19 +15,27 @@ function AboutDriversOne() {
   const {comments} = useSelector((state) => state.comment);
 const dispatch = useDispatch();
 const navigate=useNavigate()
-let { userName } = useParams();    
-console.log(userName);
+let { userName } = useParams();   
 useEffect(() => {
  dispatch(fetchDriverOne(userName)) 
  dispatch(fetchRoutesByDriver(userName)) 
 
  dispatch(fetchComments({language , userName}))
   }, [userName]);
-  console.log(driverOne);
 
   function BackPage(){
         navigate(`/bosh_sahifa`)
   }
+  const DeleteComment = (id) => {
+      dispatch(deleteComment({ language,id }))
+        .unwrap()
+        .then(() => {
+          message.success("Malumot muvaffaqiyatli o'chirildi!");
+          dispatch(fetchComments({language,userName}));
+        })
+        .catch(() => message.error('Xatolik yuz berdi!'));
+
+  };
   return (
     <div className='begin1'>
         
@@ -65,11 +74,11 @@ useEffect(() => {
             Mijozlarni fikri
            
         </p>
-        <table className='table table-success'>
+        <table className='table table-success' >
           <thead>
             <tr>
               <th>Yo'lovchini ismi </th>
-              <th>Teelefon raqam </th>
+              <th>Telefon raqam </th>
               <th>Izoh</th>
               <th>Actions</th>
             </tr>
@@ -77,10 +86,10 @@ useEffect(() => {
           <tbody>
             {comments.map((item, i) => (
               <tr key={item.id}>
-                <td>{item.text}</td>
-                <td>{item.user.phoneNumber}</td>
                 <td>{item.name}</td>
-                <td><button className='del' ><img style={{ width: "30px", height: "31px" }} src={del} alt="salom" /> </button></td>
+                <td>{item.phoneNumber}</td>
+                <td>{item.text}</td>
+                <td><button className='del'  onClick={()=>DeleteComment(item.id)}><img style={{ width: "30px", height: "31px" }} src={del} alt="salom" /> </button></td>
               </tr>
             ))}
           </tbody>
