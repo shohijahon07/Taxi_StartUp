@@ -92,16 +92,21 @@ public class UserImpl implements UserService{
             String chatId = String.valueOf(user.getChatId());
             String text = "";
 
+            // Uz tilidagi xabar
             if (user.getLanguage().equals("uz")) {
-                text = "Tabriklaymiz! Siz muvaffaqiyatli tasdiqlandingiz. Boshlash uchun /start buyrug'ini bering. Username: "
-                        + user.getPhoneNumber() + " Parol: " + plainPassword;
-            } else  {
-                text = "Поздравляем! Вы успешно подтверждены. Для начала введите команду /start. Username: "
-                        + user.getPhoneNumber() + " Пароль: " + plainPassword;
+                text = "🎉 Tabriklaymiz! Siz muvaffaqiyatli tasdiqlandingiz. Telegram botdan davom etish uchun /start buyrug'ini bering.\n" +
+                        "🌐 Veb saytdan davom etish uchun: https://kenjacar.uz/login\n" +
+                        "🔑 Login: " + user.getPhoneNumber() + " | Parol: " + plainPassword;
+            }
+            // Rus tilidagi xabar
+            else {
+                text = "🎉 Поздравляем! Вы успешно подтверждены. Для начала введите команду /start.\n" +
+                        "🌐 Продолжить на сайте: https://kenjacar.uz/login\n" +
+                        "🔑 Логин: " + user.getPhoneNumber() + " | Пароль: " + plainPassword;
             }
 
-            String urlString = "https://api.telegram.org/bot" + apiToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
-
+            // Telegram API orqali xabar jo'natish
+            String urlString = "https://api.telegram.org/bot" + apiToken + "/sendMessage?chat_id=" + chatId + "&text=" + URLEncoder.encode(text, "UTF-8");
 
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -120,14 +125,14 @@ public class UserImpl implements UserService{
 
             System.out.println(content.toString());
 
-            return ResponseEntity.ok("edit Successful");
+            return ResponseEntity.ok("Edit Successful");
 
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message");
         }
-
     }
+
 
     @Override
     public ResponseEntity<?> countDriver(List<Role> roleDriver) {

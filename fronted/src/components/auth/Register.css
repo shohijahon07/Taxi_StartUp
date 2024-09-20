@@ -8,6 +8,8 @@
   width: 100%;
   max-width: 500px;
   margin-top: 40px;
+  background-color: #E1E5F1;
+
   border-radius: 15px;
   padding: 20px;
 margin:  20px auto;
@@ -142,10 +144,10 @@ color:#fff;
       width: 100%;
       background-color: #E1E5F1;
       max-width: 100%;
+      border-radius: none !important;
       height: 100% !important;
       padding: 20px;
     margin-top: 0px !important;
-    border-radius: 0 !important;
     }
 
     

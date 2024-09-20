@@ -2361,11 +2361,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if (user.getLanguage().equals("uz")) {
             button1.setText("🚖 Haydovchi");
-            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId + "&language=uz");
+            button1.setUrl("http://192.168.1.16:5174/register?chatId=" + chatId + "&language=uz");
         } else {
             button1.setText("🚖 Драйверы");
-            button1.setUrl("http://192.168.0.81:5174/register?chatId=" + chatId + "&language=ru");
-
+            button1.setUrl("http://192.168.1.16:5174/register?chatId=" + chatId + "&language=ru");
         }
         button1.setCallbackData("Drivers");
         row1.add(button1);
