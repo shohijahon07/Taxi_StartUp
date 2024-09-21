@@ -4,11 +4,12 @@
     box-sizing:border-box
 }
 .band_modal{
+    margin: 0 auto;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-   max-width: 1920px;
+   /* max-width: 1920px; */
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     padding-top: 200px;

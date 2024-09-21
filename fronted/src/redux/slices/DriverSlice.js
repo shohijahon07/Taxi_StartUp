@@ -174,7 +174,7 @@ const DriverSlice = createSlice({
         state.driverOne = action.payload;  
       })
       .addCase(fetchDriversByFullName.fulfilled, (state, action) => {
-        console.log(action.payload);
+        
         state.status = 'succeeded';
         state.drivers1 = action.payload;  
       })

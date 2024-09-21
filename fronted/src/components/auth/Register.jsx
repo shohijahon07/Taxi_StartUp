@@ -41,7 +41,6 @@ function Register() {
       setLanguage(languageParam); // Language parametrini belgilash
     }
   }, []);
-  console.log(language);
 
   const validateForm = () => {
     if (!form.carType || !form.about || !form.count || !selectFile1 || !selectFile2 || !selectFile3) {
@@ -103,7 +102,6 @@ function Register() {
           setModalMessage(language === 'uz' ? 'Ma’lumotlaringiz tekshirilmoqda. Iltimos kuting, biz o’zimiz Telegram bot orqali xabar yuboramiz.' : 'Ваши данные проверяются. Пожалуйста, подождите, мы сами отправим вам сообщение через Telegram-бот.');
           setModalClass('modal_rg success');
           setShowModal(true);
-          console.log(response.data);
         })
         .catch((err) => {
           if (err.response && err.response.data) {

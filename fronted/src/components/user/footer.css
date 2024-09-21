@@ -435,6 +435,7 @@ body{
         height: auto;
         display: flex;
         align-items:center;
+        justify-content: start;
         
     }
     .foterUl{
@@ -446,6 +447,7 @@ body{
         line-height: 30px;
        display: grid;
         text-align: start;
+        align-items:start
     
     }
 }
@@ -501,7 +503,7 @@ body{
         margin-left: 10px;
        display:grid;
       text-align: start;
-    
+     justify-content: start;    
     }
     .foterUl li{
 
@@ -564,6 +566,8 @@ body{
         margin-left: 10px;
        display: grid;
       text-align: start;
+      justify-content: start;
+      margin-bottom: 20px;
     
     }
     .foterUl li{
@@ -627,6 +631,8 @@ body{
         margin-left: 10px;
        display: grid;
        text-align: start;
+       justify-content: start;
+       margin-bottom: 20px;
     
     }
     .foterUl li{
@@ -690,6 +696,7 @@ body{
         margin-left: 10px;
      display: grid;
      text-align: start;
+     justify-content: start;
     
     }
     .foterUl li{

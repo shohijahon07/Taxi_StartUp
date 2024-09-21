@@ -47,7 +47,7 @@ const TimeSelectorModal = ({ onClose, onSelect }) => {
         <div className="time-selector-modal" onClick={(e) => e.stopPropagation()}>
           <div className="time-selector-header">
             <h2>{language === "1" ? "Vaqtni tanlang!" : "Выберите время!"}</h2>
-            <button className="btn btn-close exitBtn" onClick={onClose}></button>
+            <button className="exi"  onClick={onClose}>x</button>
           </div>
           <div className="time-selector-body">
             <div className="time-selector-picker">

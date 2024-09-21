@@ -40,7 +40,7 @@ body{
     justify-content: space-between;
 }
 .logoImg{
- object-fit: contain;
+ object-fit: scale-down;
  vertical-align: baseline;
  width: 100%;
  height: 100%;
@@ -280,6 +280,7 @@ justify-content: space-between;
     100% { transform: translateX(0); }
 }
 .leftUserHeader{
+    margin-bottom: 10px;
     margin-left: 30px;
     width: 220px;
     height: 39px;
@@ -297,14 +298,16 @@ justify-content: space-between;
     border-radius:5px;
     max-width: 1700px;
     background-color:white;
-    margin: 0 50px;
+    margin: 0 auto;
     margin-bottom: 30px;
     padding-bottom: 30px;
+    padding-top: 22px;
 }
 .topRoutesUser{
     margin-right: 5px;
     display: flex;
-    margin-bottom: 10px;
+    align-items:center;
+    justify-content: center;
 }
 .topRoutesUser h2{
     display: flex;
@@ -313,6 +316,7 @@ justify-content: space-between;
     font-weight: 700;
     font-size: 28px;
     margin-bottom: 0;
+    line-height:44px
 }
 .topRoutesUser h3{
     margin-left: 5px;
@@ -320,14 +324,18 @@ justify-content: space-between;
     color: red;
     font-weight: 700;
     font-size: 28px;
+    line-height:44px
+
 }
 .getRoutes{
     margin: 0 auto;
+    margin-bottom: 20px;
     width: 1040px;
-    padding-top: 22px;
+    /* padding-top: 22px; */
     display: flex;
     align-items:center;
     justify-content: space-between;
+    height: 44px;
 }
 .days{
     gap: 22px;
@@ -337,18 +345,19 @@ justify-content: space-between;
     font-family: 'Inter', sans-serif;
     width: 135px;
     height: 38px;
+    font-weight: 400;
     border: 0.48px solid #2B3187;
     border-radius:8px;
     border:none;
     background: #3033834F;
     color:#000000;
-    font-size: 22px;
+    font-size: 20px;
     text-align: center;
 }
 .mapRoutes{
     padding: 0px 30px;
-    margin: 0 auto;
-    width: 1100px;
+    margin: 15px auto;
+    width: 1347px;
     height: 210px;
     background-color:#2B318721;
     border-radius:10px
@@ -405,16 +414,16 @@ p{
     font-weight: 500;
     font-size: 34.13px;
     line-height: 47.36px;
-    width: 220px;
+    width: 250px;
     /* border:1px solid; */
     text-align: end;
 }
 .li2{
-    margin-top: 10px;
+    margin-top: 20px;
     display: flex;
     align-items:center;
     justify-content: space-between;
-    margin: 0;
+    /* margin: 0; */
     padding: 0;
 }
 .l2Child1{
@@ -431,8 +440,11 @@ p{
     height: 39px;
 }
 .li2Child2{
+    gap: 5px;
     display: flex;
     align-items:center;
+    justify-content: center;
+    height: 43px;
 }
 .li2Child2 p{
     font-family: 'Roboto', sans-serif;
@@ -447,6 +459,7 @@ p{
     font-size:35.76px;
     line-height: 43.28px;
     color:#000000;
+    margin-bottom: 0;
 }
 .li2Child3{
     width: 280px;
@@ -471,7 +484,7 @@ p{
     color:#6E7191;
 }
 .li3{
-    margin-top: 10px;
+    margin-top: 20px;
     display: flex;
     align-items:center;
     justify-content: space-between;
@@ -484,10 +497,10 @@ p{
 
 }
 .l3Child1 h3{
-    width: 302px;
+    width: auto;
     font-weight: 500;
     font-size:39.22px;
-    width: 390px;
+    min-width: 350px;
     font-family: 'Inter', sans-serif;
     
     /* border:1px solid; */
@@ -496,9 +509,9 @@ p{
 
 }
 .liDriverPhone{
-   
+   height: 45px;
+   align-items:center;
     display: flex;
-    /* align-items:center; */
     justify-content: center;
     gap: 16px;
 }
@@ -508,10 +521,11 @@ p{
 }
 .liDriverPhone p{
     font-family: 'Roboto', sans-serif;
-    margin-top: 5px;
+    /* margin-top: 5px; */
     font-weight: 400;
     font-size:26.89px;
     line-height:38.43px;
+    margin-bottom: 5px;
     color:#6E7191;
 }
 .li3Child3{
@@ -561,14 +575,14 @@ p{
     width: 500px;
     height: 300px;
 }
-@media only screen and (min-width: 1270px) and (max-width: 1400px) {
+@media only screen and (min-width: 1400px) and (max-width: 1550px) {
     .imageBacground{
         padding: 0;
         background-image: url("../../pictures/all.svg");
         padding: 0 20px;
     }
     .routUser{
-        max-width: 1400px;
+        max-width: 1550px;
         margin: 0 auto;
         background-color:white;
         border-radius:0px, 0px, 5px, 5px;
@@ -619,7 +633,7 @@ p{
     }
     .allRoutes{
         border-radius:5px;
-        max-width: 1200px;
+        max-width: 1350px;
         background-color:white;
         margin: 0 50px;
         margin-bottom: 30px;
@@ -640,8 +654,9 @@ p{
     }
     .getRoutes{
         margin: 0 auto;
-        width: 905px;
+        width: 1005px;
         padding-top: 22px;
+        margin-bottom: 30px;
     }
     .days{
         gap: 22px;
@@ -655,13 +670,13 @@ p{
         border:none;
         background: #3033834F;
         color:#000000;
-        font-size: 22px;
+        font-size: 20px;
         text-align: center;
     }
     .mapRoutes{
         padding: 0px 30px;
         margin: 15px auto;
-        width: 1000px;
+        width: 1100px;
         height: 200px;
         background-color:#2B318721;
         border-radius:10px
@@ -752,10 +767,244 @@ p{
     
     }
     .l3Child1 h3{
-        width: 302px;
         font-weight: 500;
-        font-size:37.22px;
-        width: 370px;
+        font-size:35.22px;
+        width: auto;
+        min-width: 350px;
+        /* border:1px solid; */
+        line-height:43.47px;
+        color:#000000;
+    
+    }
+    .liDriverPhone{
+       
+        display: flex;
+        /* align-items:center; */
+        justify-content: center;
+        gap: 10px;
+    }
+    .liDriverPhone img{
+      width: 45px;
+      height: 45px;
+    }
+    .liDriverPhone p{
+        font-weight: 400;
+        font-size:23.89px;
+        line-height:35.43px;
+    }
+    .li3Child3{
+        display: flex;
+        align-items:center;
+        gap: 20px;
+    }
+    .li3Child3 button{
+       width: 130.48px;
+       height: 36px ;
+       border-radius:7.5px;
+       border: 0.45px solid #2B3187;
+       background-color:#2B3187;
+       color:white;
+       font-size:18px;
+    }
+    .carType{
+        display: none;
+    }
+}
+@media only screen and (min-width: 1270px) and (max-width: 1400px) {
+    .imageBacground{
+        padding: 0;
+        background-image: url("../../pictures/all.svg");
+        padding: 0 20px;
+    }
+    .routUser{
+        max-width: 1400px;
+        margin: 0 auto;
+        background-color:white;
+        border-radius:0px, 0px, 5px, 5px;
+    }  
+    .h1RouterUser{
+        padding-top: 25px;
+        margin-left: 40px;  
+        color:white;
+    }
+    .h1RouterUser h1{
+        font-weight: 700;
+        font-size: 59px;
+        line-height: 70px;
+    
+    }
+
+    .inputs{
+        margin: 0 auto;
+        margin-bottom: 120px;
+        margin-top: 70px;
+        max-width: 1701px;
+
+    }
+    .btnCity{
+        display: flex;
+        width: 320px;
+        justify-content: space-between;
+        align-items:center;
+        border-radius: 15px;
+        background-color: #fff;
+        height: 70px;
+        padding: 7px 20px 10px 30px;
+        color: #00000061;
+        font-size: 28px;
+        line-height: 40px;
+        font-family: 600;
+        border: 1px solid #CFDEE6;
+    
+    }
+    .locationImg{
+        width: 30px;
+        height: 30px;
+    }
+    .imgCalendar{
+        width: 28px;
+        height: 30px;
+    }
+    .allRoutes{
+        border-radius:5px;
+        max-width: 1200px;
+        background-color:white;
+        margin: 0 50px;
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+    }
+    .topRoutesUser h2{
+        /* display: flex; */
+        font-size: 22px;
+        font-family: 'Inter';
+        font-weight: 700;
+    }
+    .topRoutesUser h3{
+        margin-left: 5px;
+        font-family: 'Inter', sans-serif;
+        color: red;
+        font-weight: 700;
+        font-size: 22px;
+    }
+    .getRoutes{
+        margin: 0 auto;
+        width: 905px;
+        padding-top: 22px;
+        margin-bottom: 25px;
+    }
+    .days{
+        gap: 22px;
+        display: flex;
+    }
+    .btnDays{
+        width: 135px;
+        height: 38px;
+        border: 0.48px solid #2B3187;
+        border-radius:8px;
+        border:none;
+        background: #3033834F;
+        color:#000000;
+        font-size: 20px;
+        text-align: center;
+    }
+    .mapRoutes{
+        padding: 0px 30px;
+        margin: 15px auto;
+        width: 1000px;
+        height: 200px;
+        background-color:#2B318721;
+        border-radius:10px
+    }
+    .li2{
+        margin-top: 15px;
+    }
+    .li3{
+        margin-top: 15px;
+    }
+    .l1Child1{
+        gap: 40px;
+        color:#000000;
+        font-weight: 500;
+        font-size: 28px;
+        line-height: 32.91px;
+    }
+
+    .li1Child2{
+        width: 430px;
+        /* border:1px solid; */
+        font-weight: 500;
+        font-size: 29.14px;
+        line-height: 41.32px;
+    }
+ 
+    .li1Child2 img{
+        width: 105px;
+        color: #211F54;
+        /* box-shadow: 0 0 0 2.44px #211F54; */
+    }
+    .li1Child3{
+        font-weight: 500;
+        font-size: 30.13px;
+        line-height: 47.36px;
+        width: 200px;
+        /* border:1px solid; */
+        text-align: end;
+    }
+
+    .l2Child1{
+        display: flex;
+        gap: 4px;
+        width: 260px;
+        /* border:1px solid; */
+        overflow: hidden;
+    
+    }
+    .l2Child1 img{
+        width: 39px;
+        height: 39px;
+    }
+
+    .li2Child2 p{
+        font-weight: 400;
+        font-size: 19.47px;
+        line-height: 25.25px;
+        color:#6E7191;
+    }
+    .li2Child2 h6{
+        font-weight: 400;
+        font-size:34.76px;
+        line-height: 40.28px;
+        color:#000000;
+    }
+    .li2Child3{
+        width: 240px;
+        /* border:1px solid; */
+    }
+    .li2Child3 h6{
+        font-weight: 400;
+        font-size:20px;
+        line-height:24.92px;
+        color:#6E7191;
+    }
+    .li2Child3 p{
+        font-weight: 400;
+        font-size:17.44px;
+        line-height:24.92px;
+        color:#6E7191;
+    }
+
+    .l3Child1{
+        display: flex;
+        align-items:center;
+        gap: 10px;
+        
+    
+    }
+    .l3Child1 h3{
+        width: auto;
+        font-weight: 500;
+        font-size:30px;
+       min-width: 300px;
         /* border:1px solid; */
         line-height:43.47px;
         color:#000000;
@@ -863,7 +1112,7 @@ p{
     }
     .h1RouterUser h1{
         font-weight: 700;
-        font-size: 54px;
+        font-size: 50px;
         line-height: 60px;
     
     }
@@ -931,6 +1180,7 @@ p{
         margin: 0 auto;
         width: 905px;
         padding-top: 22px;
+        margin-bottom: 25px;
     }
     .days{
         gap: 22px;
@@ -944,12 +1194,12 @@ p{
         border:none;
         background: #3033834F;
         color:#000000;
-        font-size: 22px;
+        font-size: 20px;
         text-align: center;
     }
     .mapRoutes{
         padding: 0px 30px;
-        margin: 0 auto;
+        margin: 15px auto;
         width: 1000px;
         height: 180px;
         background-color:#2B318721;
@@ -1041,10 +1291,10 @@ p{
     
     }
     .l3Child1 h3{
-        width: 302px;
         font-weight: 500;
-        font-size:37.22px;
-        width: 370px;
+        width: auto;
+        min-width: 300px;
+        font-size: 28.5px;
         /* border:1px solid; */
         line-height:43.47px;
         color:#000000;
@@ -1207,17 +1457,23 @@ p{
         margin-bottom: 30px;
         padding-bottom: 30px;
     }
+    .topRoutesUser{
+        margin-bottom: 5px;
+    }
     .topRoutesUser h2{
         font-size: 20px;
+        line-height: 25px;
     }
     .topRoutesUser h3{
-   
         font-size: 20px;
+        line-height: 25px;
+
     }
     .getRoutes{
         margin: 0 auto;
         width: 805px;
         padding-top: 22px;
+        margin-bottom: 20px;
     }
     .days{
         gap: 22px;
@@ -1236,8 +1492,8 @@ p{
         text-align: center;
     }
     .mapRoutes{
-        padding: 0px 30px;
-        margin: 0 auto;
+        padding: 0px 20px;
+        margin: 15px auto;
         width: 800px;
         height: 170px;
         background-color:#2B318721;
@@ -1334,8 +1590,9 @@ p{
     }
     .l3Child1 h3{
         font-weight: 500;
-        font-size:28.22px;
-        width: 290px;
+        font-size:21px;
+        width: auto;
+        min-width: 200px;
         /* border:1px solid; */
         line-height:35.47px;
         color:#000000;
@@ -1419,6 +1676,7 @@ p{
                color:#303383;
        }
        .leftUserHeader{
+        margin-top: 5px;
         margin-right: 5px;
         margin-left: 20px;
         width: 150px;
@@ -1513,6 +1771,7 @@ p{
         margin: 0 auto;
         width: 705px;
         padding-top: 15px;
+        margin-bottom: 20px;
     }
     .days{
         gap: 15px;
@@ -1531,8 +1790,8 @@ p{
         text-align: center;
     }
     .mapRoutes{
-        padding: 0px 20px;
-        margin: 0 auto;
+        padding: 0px 15px;
+        margin: 15px auto;
         width: 700px;
         height: 160px;
         background-color:#2B318721;
@@ -1626,10 +1885,11 @@ p{
     }
     .l3Child1 h3{
         font-weight: 500;
-        font-size:24px;
-        width: 240px;
+        font-size:18px;
+        width: auto;
+        min-width: 200px;
         /* border:1px solid; */
-        line-height:35.47px;
+        line-height:30.47px;
         color:#000000;
     
     }
@@ -1645,7 +1905,7 @@ p{
       height: 40px;
     }
     .liDriverPhone p{
-        margin-top: 8px;
+        margin-top: 3px;
         font-weight: 400;
         font-size:15.89px;
         line-height:20.43px;
@@ -1686,14 +1946,14 @@ p{
       margin: 0;
     }
     .navbarUl li{
-        margin-top: 20px;
+        margin-top: 15px;
         font-size: 20px;
         font-weight: 500;
         line-height: 25.73px;
     }
     .rightUserHeader{
        /* border:1px solid; */
-            margin-top: 10px;
+            margin-top: 0px;
        width: 140px;
        display: flex;
        align-items:center;
@@ -1796,19 +2056,21 @@ p{
         padding-bottom: 30px;
     }
     .topRoutesUser{
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
     .topRoutesUser h2{
-        font-size: 17px;
+        font-size: 16px;
+        line-height: 25px;
     }
     .topRoutesUser h3{
-   
-        font-size: 17px;
+        line-height: 25px;
+        font-size: 16px;
     }
     .getRoutes{
         margin: 0 auto;
-        width: 655px;
+        width: 650px;
         padding-top: 15px;
+        margin-bottom: 10px;
     }
     .days{
         margin-bottom: 10px;
@@ -1823,12 +2085,12 @@ p{
         border:none;
         background: #3033834F;
         color:#000000;
-        font-size: 14.5px;
+        font-size: 14px;
         text-align: center;
     }
     .mapRoutes{
         padding: 0px 20px;
-        margin: 0 auto;
+        margin: 15px auto;
         width: 650px;
         height: 150px;
         background-color:#2B318721;
@@ -1838,7 +2100,7 @@ p{
         gap: 10px;
         color:#000000;
         font-weight: 500;
-        font-size: 18px;
+        font-size: 17px;
         line-height: 25.91px;
     }
 
@@ -1880,11 +2142,11 @@ p{
         margin-top: 10px;
     }
     .li3{
-        margin-top: 10px;
+        margin-top: 5px;
     }
     .li2Child2 p{
         font-weight: 400;
-        font-size: 15.47px;
+        font-size: 12px;
         line-height: 18.25px;
         color:#6E7191;
     }
@@ -1900,12 +2162,12 @@ p{
     }
     .li2Child3 h6{
         font-weight: 400;
-        font-size:16px;
+        font-size:13px;
         line-height:20.92px;
         color:#6E7191;
     }
     .li2Child3 p{
-        margin-top: 3px;
+        margin-top: 1px;
         font-weight: 400;
         font-size:12.44px;
         line-height:20.92px;
@@ -1922,8 +2184,9 @@ p{
     }
     .l3Child1 h3{
         font-weight: 500;
-        font-size:21px;
-        width: 210px;
+        font-size:14px;
+        width: auto;
+        min-width: 180px;
         /* border:1px solid; */
         line-height:35.47px;
         color:#000000;
@@ -1991,6 +2254,7 @@ p{
          height: 70px;
      }
      .leftUserHeader{
+        margin-top: 5px;
         margin-left:15px;
         width: 120px;
         height: 30px;
@@ -2004,7 +2268,7 @@ p{
        justify-content: space-between;
     }
   .navbarUl{
-    margin-top: 10px;
+    margin-top: 7px;
     padding: 0;
   }
      .navbarUl li{
@@ -2097,7 +2361,7 @@ p{
     font-weight: 500;
     font-size: 25px;
     line-height: 30px;
-    margin-top: 30px;
+    margin-top: 20px;
    
 }
 .getRoutes{
@@ -2106,6 +2370,7 @@ p{
     padding-top: 22px;
     display: grid;
   grid-template-rows: auto 1fr;
+  margin-bottom: 85px;
 }
 .days{
     gap: 40px;
@@ -2125,7 +2390,7 @@ p{
     text-align: center;
 }
 .mapRoutes{
-    padding: 0px 30px;
+    padding: 0px 20px;
     margin: 0 auto;
     width: 100%;
     height: 240px;
@@ -2265,12 +2530,14 @@ p{
 }
 .l3Child1 h3{
     /* border:1px solid; */
-    width: 300px;
+    width: auto;
     font-weight: 500;
-    font-size:28.22px;
+    font-size:22px;
+    min-width: 280px;
     line-height:35.47px;
     color:#000000;
     overflow: hidden;
+    margin-bottom: 5px;
 
 }
 .liDriverPhone{
@@ -2290,9 +2557,11 @@ p{
     color:#6E7191;
 }
 .li3Child3{
-    margin-top: 10px;
+    width: 100%;
+    margin-top: 5px;
     display: flex;
     align-items:center;
+    justify-content: space-around;
     gap: 40px;
 }
 .li3Child3 button{
@@ -2325,7 +2594,7 @@ p{
     height: 200px;
 }
 }
-@media only screen and (min-width: 602px) and (max-width: 672px) {
+@media only screen and (min-width: 602px) and (max-width: 673px) {
     .boglanish2{
         display: block;
     }
@@ -2336,6 +2605,7 @@ p{
          height: 60px;
      }
      .leftUserHeader{
+        margin-top: 1px;
         margin-left:15px;
         width: 100px;
         height: 30px;
@@ -2429,7 +2699,7 @@ p{
             font-weight: 500;
             font-size: 25px;
             line-height: 32px;
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: center;
            
         }
@@ -2443,6 +2713,7 @@ p{
             padding-top: 20px;
             display: grid;
           grid-template-rows: auto 1fr;
+          margin-bottom: 85px;
         }
         .days{
             gap: 30px;
@@ -2512,7 +2783,7 @@ p{
             line-height: 29.32px;
         }
         .list-group-item{
-           margin-top: 10px !important;
+           margin-top: 5px !important;
         }
         p{
             margin: 0;
@@ -2564,13 +2835,13 @@ p{
         }
         .li2Child2 p{
             font-weight: 400;
-            font-size: 16.47px;
+            font-size: 13px;
             line-height: 18.25px;
             color:#6E7191;
         }
         .li2Child2 h6{
             font-weight: 400;
-            font-size:28.76px;
+            font-size:25px;
             line-height: 31.28px;
             color:#000000;
         }
@@ -2592,12 +2863,14 @@ p{
         }
         .l3Child1 h3{
             /* border:1px solid; */
-            width: 280px;
+            width: auto;
+            min-width: 200px;
             font-weight: 500;
-            font-size:26px;
+            font-size:19px;
             line-height:30.47px;
             color:#000000;
             overflow: hidden;
+            margin-bottom: 7px;
         
         }
         .liDriverPhone{
@@ -2668,6 +2941,7 @@ p{
          height: 55px;
      }
      .leftUserHeader{
+        margin-top: 7px;
         margin-left:10px;
         width: 90px;
         height: 30px;
@@ -2679,7 +2953,7 @@ p{
     }
   .navbarUl{
     padding: 0;
-    margin-top: 10px;
+    margin-top: 7px;
   }
      .navbarUl li{
          font-size: 16px;
@@ -2767,7 +3041,7 @@ p{
             font-weight: 500;
             font-size: 22px;
             line-height: 28px;
-            margin-top: 20px;
+            margin-top: 15px;
             text-align: center;
            
         }
@@ -2781,6 +3055,7 @@ p{
             padding-top: 15px;
             display: grid;
           grid-template-rows: auto 1fr;
+          margin-bottom: 70px;
         }
         .days{
             gap: 30px;
@@ -2902,7 +3177,7 @@ p{
         }
         .li2Child2 p{
             font-weight: 400;
-            font-size: 16.47px;
+            font-size: 14px;
             line-height: 18.25px;
             color:#6E7191;
         }
@@ -2930,15 +3205,18 @@ p{
         }
         .l3Child1 h3{
             /* border:1px solid; */
-            width: 240px;
+            width: auto;
             font-weight: 500;
-            font-size:23px;
+            min-width: 200px;
+            font-size:17px;
             line-height:30.47px;
             color:#000000;
             overflow: hidden;
+            margin-bottom: 5px;
         
         }
         .liDriverPhone{
+            margin-left: 5px;
             display: flex;
             align-items:center;
             justify-content: center;
@@ -3008,6 +3286,7 @@ p{
          height: 60px;
      }
      .leftUserHeader{
+        margin-top: 5px;
         margin-left:5px;
         width: 90px;
         height: 30px;
@@ -3029,7 +3308,7 @@ p{
      .rightUserHeader{
        /* border:1px solid; */
         width: 95px;
-        margin-top: 5px;
+        margin-top: 1px;
         }
         .imgTelegram{
             width: 25px;
@@ -3108,7 +3387,7 @@ p{
             font-weight: 500;
             font-size: 20px;
             line-height: 28px;
-            margin-top: 20px;
+            margin-top: 15px;
             text-align: center;
            
         }
@@ -3122,6 +3401,7 @@ p{
             padding-top: 15px;
             display: grid;
           grid-template-rows: auto 1fr;
+          margin-bottom: 70px;
         }
         .days{
             gap: 25px;
@@ -3158,7 +3438,7 @@ p{
             gap: 15px;
             color:#000000;
             font-weight: 500;
-            font-size: 19px;
+            font-size: 17px;
             line-height: 21.91px;
         }
         h3{
@@ -3191,10 +3471,11 @@ p{
             line-height: 27.32px;
         }
         .list-group-item{
-           margin-top: 10px !important;
+           margin-top: 5px !important;
         }
         p{
             margin: 0;
+            text-align: end;
         }
         .li1Child2 img{
             width: 105px;
@@ -3211,10 +3492,10 @@ p{
             padding: 0;
             color:#000000;
             font-weight: 500;
-            font-size: 24.13px;
+            font-size: 22.13px;
             line-height: 28.36px;
             margin-right: 5px;
-            width: 200px;
+            width: 180px;
             /* border:1px solid; */
             text-align: end;
         }
@@ -3243,13 +3524,13 @@ p{
         }
         .li2Child2 p{
             font-weight: 400;
-            font-size: 13.47px;
+            font-size: 12px;
             line-height: 18.25px;
             color:#6E7191;
         }
         .li2Child2 h6{
             font-weight: 400;
-            font-size:26.76px;
+            font-size:24px;
             line-height: 31.28px;
             color:#000000;
         }
@@ -3266,17 +3547,18 @@ p{
             align-items:center;
             justify-content: space-between;
             gap: 0px;
-            
-        
         }
         .l3Child1 h3{
             /* border:1px solid; */
-            width: 215px;
+            width: auto;
+            margin-bottom: 5px;
             font-weight: 500;
-            font-size:21px;
+            font-size:15.5px;
             line-height:30.47px;
             color:#000000;
             overflow: hidden;
+            min-width: 200px;
+            margin-bottom: 5px;
         
         }
         .liDriverPhone{
@@ -3284,6 +3566,7 @@ p{
             align-items:center;
             justify-content: center;
             gap: 5px;
+            margin-left: 5px;
         }
         .liDriverPhone img{
           width: 32px;
@@ -3300,6 +3583,8 @@ p{
             display: flex;
             align-items:center;
             gap: 20px;
+            width: 100%;
+            justify-content: space-between;
         }
         .li3Child3 button{
            width: 120.48px;
@@ -3338,7 +3623,7 @@ p{
             height: 200px;
         }
 }
-@media only screen and (min-width: 471px) and (max-width: 527px) {
+@media only screen and (min-width: 487px) and (max-width: 528px) {
     .boglanish2{
         display: block;
     }
@@ -3349,9 +3634,10 @@ p{
          height: 60px;
      }
      .leftUserHeader{
+        margin-top: 5px;
         margin-left:0px;
-        width: 80px;
-        height: 25px;
+        width: 100px;
+        height: 40px;
     }
     .middleUserHeader{
        width: 245px;
@@ -3459,7 +3745,7 @@ p{
             font-weight: 500;
             font-size: 17px;
             line-height: 28px;
-            margin-top: 20px;
+            margin-top: 10px;
             text-align: center;
            
         }
@@ -3473,6 +3759,7 @@ p{
             padding-top: 15px;
             display: grid;
           grid-template-rows: auto 1fr;
+          margin-bottom: 60px;
         }
         .days{
             gap: 20px;
@@ -3492,7 +3779,7 @@ p{
             text-align: center;
         }
         .mapRoutes{
-            padding: 0px 20px;
+            padding: 0px 10px;
             margin: 0 auto;
             width: 100%;
             height: 240px;
@@ -3594,13 +3881,13 @@ p{
         }
         .li2Child2 p{
             font-weight: 400;
-            font-size: 11.5px;
+            font-size: 10.5px;
             line-height: 14.25px;
             color:#6E7191;
         }
         .li2Child2 h6{
             font-weight: 400;
-            font-size:24.76px;
+            font-size:23px;
             line-height: 28.28px;
             color:#000000;
         }
@@ -3622,10 +3909,11 @@ p{
         }
         .l3Child1 h3{
             /* border:1px solid; */
-            width: 210px;
+            min-width: 200px;
             font-weight: 500;
-            font-size:19px;
+            font-size:14.5px;
             line-height:22.47px;
+            margin-bottom: 5px;
             color:#000000;
             overflow: hidden;
         
@@ -3651,6 +3939,8 @@ p{
             display: flex;
             align-items:center;
             gap: 20px;
+            width: 100%;
+            justify-content: space-between;
         }
         .li3Child3 button{
            width: 115px;
@@ -3689,7 +3979,7 @@ p{
             height: 200px;
         }
 }
-@media only screen and (min-width: 412px) and (max-width: 470px) {
+@media only screen and (min-width: 412px) and (max-width: 487px) {
     .boglanish2{
         display: block;
     }
@@ -3702,15 +3992,15 @@ p{
      .leftUserHeader{
        margin-bottom: 0px;
         margin-left:0px;
-        width: 70px;
-        height: 25px;
+        width: 90px;
+        height: 40px;
     }
     .middleUserHeader{
        width: 185px;
        /* border:1px solid; */
     }
   .navbarUl{
-    margin-top: 10px;
+    margin-top: 15px;
     padding: 0;
   }
      .navbarUl li{
@@ -3826,12 +4116,16 @@ p{
             padding-top: 10px;
             display: grid;
           grid-template-rows: auto 1fr;
+          margin-bottom: 60px;
         }
         .days{
             gap: 20px;
             display: flex;
             grid-row: 1;
             /* margin-left: 50px; */
+        }
+        .list-group-item {
+            margin-top: 5px !important;
         }
         .btnDays{
             width: 95px;
@@ -3846,7 +4140,7 @@ p{
         }
         .mapRoutes{
             padding: 0px 10px;
-            margin: 0 auto;
+            margin: 15px auto;
             width: 100%;
             height: 210px;
             background-color:#2B318721;
@@ -3894,9 +4188,7 @@ p{
             font-size: 15.5px;
             line-height: 25.32px;
         }
-        .list-group-item{
-           margin-top: 10px !important;
-        }
+      
         p{
             margin: 0;
         }
@@ -3947,13 +4239,13 @@ p{
         }
         .li2Child2 p{
             font-weight: 400;
-            font-size: 11.5px;
+            font-size: 10px;
             line-height: 14.25px;
             color:#6E7191;
         }
         .li2Child2 h6{
             font-weight: 400;
-            font-size:22.76px;
+            font-size:20px;
             line-height: 28.28px;
             color:#000000;
         }
@@ -3977,12 +4269,13 @@ p{
         }
         .l3Child1 h3{
             /* border:1px solid; */
-            width: 180px;
+            min-width: 160px;
             font-weight: 500;
-            font-size:16px;
+            font-size:13px;
             line-height:22.47px;
             color:#000000;
             overflow: hidden;
+            margin-bottom: 7px;
         
         }
         .liDriverPhone{
@@ -3990,6 +4283,7 @@ p{
             align-items:center;
             justify-content: center;
             gap: 5px;
+            height: 30px;
         }
         .liDriverPhone img{
           width: 25px;
@@ -4006,6 +4300,8 @@ p{
             display: flex;
             align-items:center;
             gap: 15px;
+            width: 100%;
+            justify-content: space-between;
         }
         .li3Child3 button{
            width: 100px;
@@ -4060,8 +4356,9 @@ p{
      .leftUserHeader{
        margin-bottom: 0px;
         margin-left:0px;
-        width: 65px;
-        height: 25px;
+        width: 80px;
+        height: 40px;
+        margin-bottom: 5px;
     }
     .middleUserHeader{
        width: 185px;
@@ -4069,7 +4366,7 @@ p{
     }
   .navbarUl{
     padding: 0;
-    margin-top: 8px;
+    margin-top: 15px;
   }
      .navbarUl li{
          font-size: 15px;
@@ -4182,6 +4479,7 @@ p{
             padding-top: 10px;
             display: grid;
           grid-template-rows: auto 1fr;
+          margin-bottom: 50px;
         }
         .days{
             gap: 10px;
@@ -4204,9 +4502,9 @@ p{
         }
         .mapRoutes{
             padding: 0px 10px;
-            margin: 0 auto;
+            margin: 10px auto;
             width: 100%;
-            height: 200px;
+            height: 210px;
             background-color:#2B318721;
             border-radius:8px
         }
@@ -4249,11 +4547,11 @@ p{
             gap: 10px;
             color:#000000;
             font-weight: 500;
-            font-size: 15.5px;
+            font-size: 14px;
             line-height: 25.32px;
         }
         .list-group-item{
-           margin-top: 10px !important;
+           margin-top: 0px !important;
         }
         p{
             margin: 0;
@@ -4305,13 +4603,13 @@ p{
         }
         .li2Child2 p{
             font-weight: 400;
-            font-size: 11.5px;
+            font-size: 9px;
             line-height: 14.25px;
             color:#6E7191;
         }
         .li2Child2 h6{
             font-weight: 400;
-            font-size:22.76px;
+            font-size:20px;
             line-height: 28.28px;
             color:#000000;
         }
@@ -4337,9 +4635,11 @@ p{
         .l3Child1 h3{
             /* border:1px solid; */
             width: auto;
+            min-width: 100px;
             font-weight: 500;
-            font-size:16px;
+            font-size:12px;
             line-height:18.47px;
+            margin-bottom: 4px;
             color:#000000;
             overflow: hidden;
         
@@ -4355,6 +4655,7 @@ p{
           height: 25px;
         }
         .liDriverPhone p{
+            margin-top: 4px;
             font-weight: 400;
             font-size:11.89px;
             line-height:13.43px;
@@ -4417,12 +4718,12 @@ p{
          height: 50px;
      }
      .logoImg{
-        object-fit: contain;
+        object-fit: scale-down;
      }
      .leftUserHeader{
        margin-bottom: 5px;
         margin-left:0px;
-        width: 55px;
+        width: 70px;
         height: 25px;
     }
     .middleUserHeader{
@@ -4430,7 +4731,7 @@ p{
        /* border:1px solid; */
     }
   .navbarUl{
-    margin-top: 5px;
+    margin-top: 12px;
     padding: 0;
   }
      .navbarUl li{
@@ -4553,6 +4854,7 @@ p{
           grid-template-rows: auto 1fr;
           align-items:center;
           justify-content: center;
+          margin-bottom: 40px;
         }
         .days{
             
@@ -4625,7 +4927,7 @@ p{
             line-height: 17.32px;
         }
         .list-group-item{
-           margin-top: 10px !important;
+           margin-top: 3px !important;
         }
         p{
             margin: 0;
@@ -4651,7 +4953,7 @@ p{
             margin-right: 0px;
             width: 110px;
             /* border:1px solid; */
-            text-align: center;
+            text-align: end;
         }
         .li2{
             display: flex;
@@ -4711,8 +5013,9 @@ p{
         .l3Child1 h3{
             /* border:1px solid; */
             width: auto;
+            min-width: 100px;
             font-weight: 500;
-            font-size:14px;
+            font-size:12px;
             line-height:16.47px;
             color:#000000;
             overflow: hidden;
@@ -4723,6 +5026,7 @@ p{
             align-items:center;
             justify-content: center;
             gap: 5px;
+            height: 22px;
         }
         .liDriverPhone img{
           width: 22px;
@@ -4735,10 +5039,12 @@ p{
             color:#6E7191;
         }
         .li3Child3{
-            margin-top: 10px;
+            margin-top: 5px;
             display: flex;
             align-items:center;
             gap: 10px;
+            width: 100%;
+            justify-content: space-between;
         }
         .li3Child3 button{
            width: 90px;
@@ -4777,7 +5083,7 @@ p{
             height: 150px;
         }
 }
-@media only screen and (min-width: 328px) and (max-width: 357px) {
+@media only screen and (min-width: 331px) and (max-width: 357px) {
     .hide-first-item {
         display: none !important;
       }
@@ -4793,7 +5099,7 @@ p{
      .leftUserHeader{
        margin-bottom: 5px;
         margin-left:0px;
-        width: 50px;
+        width: 60px;
         height: 40px;
     }
     .middleUserHeader{
@@ -4802,7 +5108,7 @@ p{
     }
   .navbarUl{
     padding: 0;
-    margin-top: 5px;
+    margin-top: 13px;
   }
      .navbarUl li{
          font-size: 13px;
@@ -4920,6 +5226,7 @@ p{
             display: grid;
           grid-template-rows: auto 1fr;
           justify-content: center;
+          margin-bottom: 35px;
         }
         .days{
             gap: 15px;
@@ -4941,7 +5248,7 @@ p{
         }
         .mapRoutes{
             padding: 0px 7px;
-            margin: 0 auto;
+            margin: 15px auto;
             width: 100%;
             height: 180px;
             background-color:#2B318721;
@@ -4957,7 +5264,7 @@ p{
             gap: 10px;
             color:#000000;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 11px;
             line-height: 15.91px;
         }
         h3{
@@ -4992,7 +5299,7 @@ p{
             justify-content: center;
         }
         .list-group-item{
-           margin-top: 10px !important;
+           margin-top: 0px !important;
         }
         p{
             margin: 0;
@@ -5017,7 +5324,7 @@ p{
             margin-right: 0px;
             width: 110px;
             /* border:1px solid; */
-            text-align: center;
+            text-align: end;
         }
         .li2{
             display: flex;
@@ -5076,6 +5383,7 @@ p{
         }
         .l3Child1 h3{
             /* border:1px solid; */
+            min-width: 100px;
             width: auto;
             font-weight: 500;
             font-size:14px;
@@ -5089,6 +5397,7 @@ p{
             align-items:center;
             justify-content: center;
             gap: 5px;
+            height: 25px;
         }
         .liDriverPhone img{
           width: 22px;
@@ -5143,7 +5452,7 @@ p{
             height: 150px;
         }
 }
-@media(max-width: 327px) {
+@media(max-width: 331px) {
     .hide-first-item {
         display: none !important;
       }
@@ -5177,8 +5486,8 @@ p{
      .leftUserHeader{
        margin-bottom: 5px;
         margin-left:0px;
-        width: 40px;
-        height: 20px;
+        width: 60px;
+        height: 30px;
     }
     .middleUserHeader{
        width: 140px;
@@ -5306,6 +5615,7 @@ p{
             display: grid;
           grid-template-rows: auto 1fr;
           justify-content: center;
+          margin-bottom: 25px;
         }
         .days{
             gap: 15px;
@@ -5326,9 +5636,9 @@ p{
         }
         .mapRoutes{
             padding: 0px 7px;
-            margin: 0 auto;
+            margin: 10px auto;
             width: 100%;
-            height: 170px;
+            height: 160px;
             background-color:#2B318721;
             border-radius:8px
         }
@@ -5342,7 +5652,7 @@ p{
             gap: 5px;
             color:#000000;
             font-weight: 500;
-            font-size: 11px;
+            font-size: 10px;
             line-height: 15.91px;
         }
         h3{
@@ -5377,7 +5687,7 @@ p{
             justify-content: center;
         }
         .list-group-item{
-           margin-top: 10px !important;
+           margin-top: 5px !important;
         }
         p{
             margin: 0;
@@ -5402,7 +5712,7 @@ p{
             margin-right: 0px;
             width: 100px;
             /* border:1px solid; */
-            text-align: start;
+            text-align: end;
         }
         .li2{
             display: flex;
@@ -5427,6 +5737,7 @@ p{
             display: flex;
             align-items:center;
             justify-content: space-between;
+            height: 25px;
         }
         .li2Child2 p{
             font-weight: 400;
@@ -5462,6 +5773,7 @@ p{
         .l3Child1 h3{
             /* border:1px solid; */
             width: auto;
+            min-width: 100px;
             font-weight: 500;
             font-size:12px;
             line-height:14.47px;
@@ -5474,12 +5786,14 @@ p{
             align-items:center;
             justify-content: center;
             gap: 5px;
+            height: 25px;
         }
         .liDriverPhone img{
           width: 20px;
           height: 20px;
         }
         .liDriverPhone p{
+            margin-top: 3px;
             font-weight: 400;
             font-size:9.89px;
             line-height:10.43px;
@@ -5490,6 +5804,7 @@ p{
             display: flex;
             align-items:center;
             gap: 10px;
+           
         }
         .li3Child3 button{
            width: 80px;

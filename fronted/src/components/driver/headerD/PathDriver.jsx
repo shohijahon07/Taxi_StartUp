@@ -304,8 +304,6 @@ function PathDriver() {
       const formattedToday = formatDateForInput(today);
       const formattedDay = new Date(driverRout.day); // Convert driverRout.day to Date if it's a string
   
-      console.log(formattedToday);
-      console.log(formatDateForInput(formattedDay));
   
       if (formatDateForInput(today) === formatDateForInput(formattedDay) && getMinuteToday >= getMinuteHours) {
         message.error("Agar bugungi kunni tanlagan bo'lsangiz vaqtni hozirgi vaqtdan keyinroq qo'ying!");
@@ -352,7 +350,6 @@ function PathDriver() {
         .catch((err) =>{
           message.error('Xatolik yuz berdi!')
           dispatch(fetchRoutesByDriver(userName));
-          console.log(err);
         } )
     }
   };

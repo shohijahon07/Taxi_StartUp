@@ -59,13 +59,13 @@ function AdminNotification() {
               <tr key={item.id}>
                 <td>{i + 1}</td>
                 <td>
-                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="image" />
+                  <img className="imageTable" style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.carImg}`} alt="image" />
                 </td>
                 <td>
-                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.driverImg}`} alt="image" />
+                  <img className="imageTable" style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.driverImg}`} alt="image" />
                 </td>
                 <td>
-                  <img className="imageTable" style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="image" />
+                  <img className="imageTable" style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.cardDocument}`} alt="image" />
                 </td>
                 <td>{item.fullName}</td>
                 <td>{item.phoneNumber}</td>

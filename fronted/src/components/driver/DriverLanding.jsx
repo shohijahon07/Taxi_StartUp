@@ -33,7 +33,6 @@ function DriverLanding() {
     dispatch(setMinDate(formatDate(today)));
     dispatch(setMaxDate(formatDate(dayAfterTomorrow)));
     getDriver()
-      console.log(driverRoutes);
     dispatch(fetchRoutesByDriver(userName));
   }, [userName,dispatch]);
 
@@ -71,7 +70,7 @@ function DriverLanding() {
   };
   function getDriver(){
     axios({
-      url:"http:/api/auth/name",
+      url:"https:/api/auth/name",
       method:"get",
       headers:{Authorization:localStorage.getItem("refresh_token")}
   }).then((res)=>{

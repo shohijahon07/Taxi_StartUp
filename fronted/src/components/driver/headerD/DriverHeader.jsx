@@ -15,7 +15,9 @@ function functionDeleteToken() {
   localStorage.removeItem("access_token")
   localStorage.removeItem("refresh_token")
 }
-
+function handleIcons(value){
+  window.open(value, "_blank");
+}
 function functionDeleteToken() {
   navigate("/")
   localStorage.removeItem("access_token")
@@ -50,7 +52,7 @@ navigate("/yo'nalish")
                     <option value="1">O'zbek</option>
                     <option value="2">Rus</option>
                 </select>
-                <img src={telegram} className='imgTelegram1' alt="" />
+                <img src={telegram} className='imgTelegram1' style={{cursor:"pointer"}}  alt="image" onClick={()=>handleIcons('https://t.me/kenjacar_bot')}/>
                 <button className='logout1' onClick={functionDeleteToken}>chiqish</button>
             </div>
         </div>

@@ -127,7 +127,7 @@ const RouteDriverSlice = createSlice({
        
       })
       .addCase(fetchRoutesByDay.fulfilled, (state, action) => {
-        console.log(action.payload.day);
+      
         const today = new Date();
         const nextDay1 = new Date(today);
         const nextDay2 = new Date(today);
@@ -146,8 +146,7 @@ const RouteDriverSlice = createSlice({
         }
     })
       .addCase(fetchRoutesByDate.fulfilled, (state, action) => {
-        console.log(action.payload.data);
-      
+  
         if (action.payload.data.length===0) {
             state.day12=action.payload.day
             state.isAvailable = action.payload.result; 

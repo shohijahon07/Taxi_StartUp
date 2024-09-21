@@ -34,7 +34,7 @@ function DateModal({ minDate, maxDate, onDateSelect, onClose }) {
             <div className="date-modal" onClick={(e) => e.stopPropagation()}>
             <div className="btnCloseIcon" style={{paddingLeft:"8px"}}>
 
-            <button className="btn btn-close" onClick={handleClose}>x</button>
+            <button style={{border:"none",backgroundColor:"transparent",fontSize:"20px"}} onClick={handleClose}>x</button>
             </div>
                 <h3>{language==="1"?"Kunni tanlang!":"Выберите день!"}</h3>
                 <DatePicker

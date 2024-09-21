@@ -51,7 +51,6 @@ function MyselfDriver() {
   };
 
   const EditItem = (item) => {
-    console.log("salom")
     dispatch(setEditButtonId(item.id));
     dispatch(setImg(item.carImg));
     dispatch(setImg1(item.driverImg));
@@ -167,7 +166,7 @@ function MyselfDriver() {
                             
 
                            </h1>
-                           <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                           <img style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.carImg}`} alt="#" />
 
                     </div>
                   }
@@ -192,7 +191,7 @@ function MyselfDriver() {
 
 {language==="1"?"Haydovchilik guvohnoma":"Водительское удостоверение"}
                  </h1>
-                 <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+                 <img style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
                </div>
                }
                 </div>
@@ -218,7 +217,7 @@ function MyselfDriver() {
                   {language==="1"?"Texpasport rasmi":"Фотография паспорта Техаса"}
                     
                     </h1>
-                  <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
+                  <img style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
 
                     </div>
                     
@@ -249,7 +248,7 @@ function MyselfDriver() {
                    </div>
                     :
                     <div className={"inp_child"} >
-                           <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.carImg}`} alt="#" />
+                           <img style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.carImg}`} alt="#" />
           
                            <h1>
                             {language==="1"?"Mashinani rasmi":"Изображение автомобиля"}
@@ -275,7 +274,7 @@ function MyselfDriver() {
                  </div>
                  
                  : <div className='inp_child'> 
-                 <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+                 <img style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
                  
                  <h1>
                   {language==="1"?"Haydovchilik guvohnomasi":"Водительское удостоверение"}
@@ -303,7 +302,7 @@ function MyselfDriver() {
                 </div>
 
                     : <div className='inp_child'>
-                  <img style={{ objectFit: "cover" }} src={`http:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
+                  <img style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
 
                   <h1>
                   {language==="1"?"Texxpasport rasmi":"Фотография паспорта Техаса"}

@@ -19,18 +19,19 @@ import java.util.UUID;
 public class FileController {
     @GetMapping("/photo")
     public void getFile(@RequestParam String img, HttpServletResponse response) throws IOException {
-        FileInputStream inputStream = new FileInputStream("backend/files/" + img);
+        FileInputStream inputStream = new FileInputStream("files/" + img);
         ServletOutputStream outputStream = response.getOutputStream();
         inputStream.transferTo(outputStream);
         inputStream.close();
         outputStream.close();
     }
 
+
     @PostMapping("/photo")
     public String saveFile(@RequestParam MultipartFile file) throws IOException {
         // Noyob fayl nomini yaratilmoqda
         String img = UUID.randomUUID() + file.getOriginalFilename();
-        File outputFile = new File("backend/files/" + img);
+        File outputFile = new File("files/" + img);
 
         // Asl fayl o'lchamini olish
         long originalSize = file.getSize();
@@ -42,11 +43,13 @@ public class FileController {
                 .toFile(outputFile);
 
         // Rasmning yangi kichik o'lchami
-        long compressedSize = outputFile.length(); // Kichik fayl o'lchami baytlarda
+        long compressedSize = outputFile.length();
+        System.out.println("orginal"+originalSize);
+        System.out.println("qisqardi"+compressedSize);
 
-        // Asl va kichraytirilgan fayl o'lchamlarini ko'rsatish
-        return "Original size: " + originalSize + " bytes, Compressed size: " + compressedSize + " bytes, File name: " + img;
+        return img;
     }
+
 
 
 

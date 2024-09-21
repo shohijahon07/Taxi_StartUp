@@ -299,14 +299,15 @@ function RoutesUser() {
     };
     
     const translateFullName = (fullName) => {
-        if (language === '1') {
-            return cyrillicToLatin(fullName);
-        } else if (language === '2') {
+        // if (language === '1') {
+        //     return cyrillicToLatin(fullName);
+        // }
+          if (language === '2') {
             return latinToCyrillic(fullName);
         }
         return fullName;
     };
-
+  
     return (
         <div>
             <Landing />

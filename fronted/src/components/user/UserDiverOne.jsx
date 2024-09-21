@@ -25,7 +25,7 @@ function UserDiverOne() {
                     return <li className='list-group-item'> 
                         <div>
                             <p>Mashina Rasmi:</p>
-                            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+                            <img className="imageTable" style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
 
                         </div>
                         <div>

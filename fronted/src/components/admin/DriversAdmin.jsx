@@ -88,27 +88,27 @@ function DriversAdmin() {
                     <img
                       className="imageTable"
                       style={{ objectFit: "cover" }}
-                      src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`}
+                      src={`https:/api/fileController/photo?img=${item.carImg}`}
                       alt="image"
-                      onClick={() => openModal(`http://localhost:8080/api/fileController/photo?img=${item.carImg}`)}
+                      onClick={() => openModal(`https:/api/fileController/photo?img=${item.carImg}`)}
                     />
                   </td>
                   <td>
                     <img
                       className="imageTable"
                       style={{ objectFit: "cover" }}
-                      src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`}
+                      src={`https:/api/fileController/photo?img=${item.driverImg}`}
                       alt="image"
-                      onClick={() => openModal(`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`)}
+                      onClick={() => openModal(`https:/api/fileController/photo?img=${item.driverImg}`)}
                     />
                   </td>
                   <td>
                     <img
                       className="imageTable"
                       style={{ objectFit: "cover" }}
-                      src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`}
+                      src={`https:/api/fileController/photo?img=${item.cardDocument}`}
                       alt="image"
-                      onClick={() => openModal(`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`)}
+                      onClick={() => openModal(`https:/api/fileController/photo?img=${item.cardDocument}`)}
                     />
                   </td>
                   <td>
