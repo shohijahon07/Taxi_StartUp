@@ -343,7 +343,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             if(foundUser.getLanguage().equals("ru")){
                                 sendMessage.setText(
                                         routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
+                                                "🪑 Количество свободных мест: " + routeDriver.getCountSide() + " \n" +
                                                 "💲 Цена: " + routeDriver.getPrice() + " so'm \n" +
                                                 "📅 Дата: " + formattedDate + "\n" +
                                                 "⏰ час: " + routeDriver.getHour()
@@ -351,7 +351,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             }else if(foundUser.getLanguage().equals("uz")){
                                 sendMessage.setText(
                                         routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Bo'sh ish o'rinlari soni : " + routeDriver.getCountSide() + " \n" +
+                                                "🪑 Bo’sh o’rindiqlar soni : " + routeDriver.getCountSide() + " \n" +
                                                 "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
                                                 "📅 Sana: " + formattedDate + "\n" +
                                                 "⏰ soat: " + routeDriver.getHour()
@@ -1608,7 +1608,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private ReplyKeyboardMarkup NotPath2(User foundUser){
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -1631,7 +1630,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private ReplyKeyboardMarkup NotPath(User foundUser){
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -1686,7 +1684,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
     private InlineKeyboardMarkup Passsenger(User user, Long id) {
         System.out.println(id);
         System.out.println(this.id);
@@ -1740,7 +1737,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
     private ReplyKeyboardMarkup toCitysButtonsReply(User foundUser) {
         // Define the translations inside the method using Map.ofEntries for more than 10 key-value pairs
         Map<String, String> uzToRuTranslations = Map.ofEntries(
@@ -1793,10 +1789,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
-
     private ReplyKeyboardMarkup fromCitysButtonsReply(User user) {
-        // Define the translations inside the method using Map.ofEntries for more than 10 key-value pairs
         Map<String, String> uzToRuTranslations = Map.ofEntries(
                 Map.entry("Toshkent", "Ташкент"),
                 Map.entry("Samarqand", "Самарканд"),
@@ -1846,8 +1839,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
-
     private void validateTime(String timeText, String driverDataDay, User foundUser) {
         if (!timeText.matches("\\d{2}:\\d{2}")) {
             if(foundUser.getLanguage().equals("uz")){
@@ -1915,7 +1906,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             }
         }
     }
-
     public LocalDate validateAndParseDate(String dateInput, User foundUser) throws DateTimeParseException {
         if (dateInput == null || dateInput.isEmpty()) {
             if (foundUser.getLanguage().equals("uz")) {
@@ -1980,7 +1970,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return null;
     }
-
     private InlineKeyboardMarkup directionData(UUID id, User foundUser) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
@@ -2041,7 +2030,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
     private ReplyKeyboardMarkup directions(User foundUser) {
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -2060,7 +2048,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private InlineKeyboardMarkup fromCitysButtons(User foundUser) {
         Map<String, String> uzbekToRussianCities = new HashMap<>();
         uzbekToRussianCities.put("Toshkent", "Ташкент");
@@ -2113,9 +2100,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         inlineKeyboardMarkup.setKeyboard(rows);
         return inlineKeyboardMarkup;
     }
-
-
-
     public static boolean isNumeric(String str) {
         if (str == null) {
             return false;
@@ -2127,7 +2111,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             return false;
         }
     }
-
     private InlineKeyboardMarkup toCitysButtons(User foundUser) {
         Map<String, String> uzbekToRussianCities = new HashMap<>();
         uzbekToRussianCities.put("Toshkent", "Ташкент");
@@ -2177,8 +2160,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
-
     private InlineKeyboardMarkup countseatButtons(User user) {
         boolean count = user.isCount();
         String language1 = user.getLanguage();
@@ -2321,7 +2302,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
     private ReplyKeyboardMarkup selectRoleButtons() {
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -2350,7 +2330,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private InlineKeyboardMarkup selectInlineRoleButtons(Long chatId) {
         Optional<User> byChatId = userRepo.findByChatId(chatId);
         User user = byChatId.get();
@@ -2387,7 +2366,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return inlineKeyboardMarkup;
     }
-
     private ReplyKeyboardMarkup genContactButtons(User user) {
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row = new KeyboardRow();
@@ -2414,7 +2392,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private InlineKeyboardMarkup selectLanguageButtons() {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
@@ -2434,7 +2411,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         return new InlineKeyboardMarkup(rows);
     }
     private String translateIfNeeded(String cityName) {
-        // Check if the city name is in Cyrillic and translate it
         return ruToUzTranslations.getOrDefault(cityName, cityName);
     }
 
