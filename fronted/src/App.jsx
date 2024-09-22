@@ -6,7 +6,6 @@ import { deleteRoutesByTime } from "./redux/slices/routeDriver";
 import { message } from "antd";
 import { LanguageProvider } from "./components/language/LanguageContext";
 import Loader from "./components/loader/Loader";
-
 // Lazy loading components
 const Login = lazy(() => import("./components/auth/Login"));
 const Landing = lazy(() => import("./components/user/Landing"));
@@ -49,7 +48,7 @@ function App() {
       const rolePerm = check();
       if (rolePerm != null) {
         axios({
-          url: "http:/api/auth/check",
+          url: "https:/api/auth/check",
           method: "get",
           headers: { authorization: localStorage.getItem("refresh_token") },
         })

@@ -61,7 +61,7 @@ const {user,loading,showPassword} = useSelector((state) => state.pessenger);
                         placeholder="Parol..."
                         type={showPassword ? "text" : "password"} // Toggle between text and password
                     />
-                    <span
+                    <span 
                         className="eye-icon"
                         onClick={() => dispatch(setShowPassword(!showPassword))}
                     >

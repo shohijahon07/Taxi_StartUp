@@ -59,7 +59,9 @@ function Landing() {
     useEffect(() => { 
        
     }, [language]);
-
+    function handleIcons(value){
+        window.open(value, "_blank");
+    }
     return (
         <div className="fatherNavbar">
               <div className="navbar">
@@ -78,7 +80,7 @@ function Landing() {
                     <option value="1">O'zbek</option>
                     <option value="2">Rus</option>
                 </select>
-                <img src={telegram} className='imgTelegram'  alt="image"/>
+                <img src={telegram} className='imgTelegram' style={{cursor:"pointer"}}  alt="image" onClick={()=>handleIcons('https://t.me/kenjacar_bot')}/>
             </div>
         </div>
         <BizHaqimizdaModal isOpen={isModalOpen} onClose={closeModal} />

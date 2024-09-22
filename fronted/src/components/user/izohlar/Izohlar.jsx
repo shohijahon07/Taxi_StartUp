@@ -12,7 +12,6 @@ const Izohlar = ({ isOpen, onClose, userName }) => {
     const { language } = useContext(LanguageContext);
 
     useEffect(() => {
-        console.log(userName);
         if (isOpen) {
             dispatch(fetchDriverOne(userName));
             dispatch(fetchComments({language,userName}));

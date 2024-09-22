@@ -22,7 +22,7 @@ const OptionModal = ({ options, onSelect, onClose }) => {
             <div className="option-modal" onClick={(e) => e.stopPropagation()}>
                 <div className="btnCloseIcon" style={{paddingRight:"10px"}}>
 
-                <button className="btn btn-close" onClick={handleClose}>x</button>
+                <button className="btn btn-close" onClick={handleClose}></button>
                 </div>
                 <div className="CityH1">
 

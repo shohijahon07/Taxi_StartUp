@@ -21,7 +21,7 @@ useEffect(() => {
 
 function getDriver(){
     axios({
-      url:"http://localhost:8080/api/auth/name",
+      url:"https:/api/auth/name",
       method:"get",
       headers:{Authorization:localStorage.getItem("refresh_token")}
   }).then((res)=>{
@@ -85,21 +85,21 @@ function getDriver(){
               onChange={(e) => dispatch(setDriver({ ...driverObject, carType: e.target.value }))}
             /></li>
           <li className='list-group-item'><h5>Mashina Rasmi:</h5>
-            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.carImg}`} alt="#" />
+            <img className="imageTable" style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.carImg}`} alt="#" />
            <div className="imputFile">
            <p>Rasm tanlang</p>
            </div>
             
           </li>
           <li className='list-group-item'><h5>Haydovchilik Guvohnomasi:</h5>
-            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.driverImg}`} alt="#" />
+            <img className="imageTable" style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.driverImg}`} alt="#" />
            <div className="imputFile">
             <p>Rasm tanlang</p>
             <input type="file" className='from-control' accept="image/*"  ref={fileInputRef2} onChange={(e) => dispatch(setSelectedFile1(e.target.files[0]))} />
            </div>
           </li>
           <li className='list-group-item'><h5>Mashina Texpasporti:</h5>
-            <img className="imageTable" style={{ objectFit: "cover" }} src={`http://localhost:8080/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
+            <img className="imageTable" style={{ objectFit: "cover" }} src={`https:/api/fileController/photo?img=${item.cardDocument}`} alt="#" />
             <div className="imputFile">
             <p>Rasm tanlang</p>
 
