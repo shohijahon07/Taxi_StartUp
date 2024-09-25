@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -100,11 +101,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             System.out.println(foundUser);
 
             List<Route_Driver> all1 = routeDriverRepo.findAll();
-            LocalDateTime now = LocalDateTime.now(); // Get current date and time
+            LocalDateTime now = LocalDateTime.now();
 
             for (Route_Driver routeDriver : all1) {
-                // Assuming routeDriver.getDay() returns a LocalDate
-                LocalDate routeDate = routeDriver.getDay(); // No need to parse if it's already a LocalDate
+                LocalDate routeDate = routeDriver.getDay();
 
                 // Assuming routeDriver.getHour() returns a String in "HH:mm" format
                 LocalTime routeTime = LocalTime.parse(routeDriver.getHour(), DateTimeFormatter.ofPattern("HH:mm"));
@@ -336,39 +336,47 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     }
                     execute(sendMessage);
                 }
-                else if (foundUser.getStatus().equals(Status.SET_DIRECTIONS)) {
+                else if (message.getText().equals("🗺️ Yo'nalishlarim") || message.getText().equals("🗺️ Мои маршруты")) {
+
                     List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
                     for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
                         if (userIds.contains(routeDriver.getUser().getId())) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
                             String formattedDate = routeDriver.getDay().format(formatter);
-                            if(foundUser.getLanguage().equals("ru")){
+
+                            // Display message in the user's selected language
+                            if (foundUser.getLanguage().equals("ru")) {
                                 sendMessage.setText(
                                         routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
+                                                "🪑 Количество свободных мест: " + routeDriver.getCountSide() + " \n" +
                                                 "💲 Цена: " + routeDriver.getPrice() + " so'm \n" +
                                                 "📅 Дата: " + formattedDate + "\n" +
                                                 "⏰ час: " + routeDriver.getHour()
                                 );
-                            }else if(foundUser.getLanguage().equals("uz")){
+                            } else if (foundUser.getLanguage().equals("uz")) {
                                 sendMessage.setText(
                                         routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Bo'sh ish o'rinlari soni : " + routeDriver.getCountSide() + " \n" +
+                                                "🪑 Bo’sh o’rindiqlar soni: " + routeDriver.getCountSide() + " \n" +
                                                 "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
                                                 "📅 Sana: " + formattedDate + "\n" +
                                                 "⏰ soat: " + routeDriver.getHour()
                                 );
                             }
 
-
-                            sendMessage.setReplyMarkup(directionData(routeDriver.getId(),foundUser));
-
+                            sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
                             Message sentMessage = execute(sendMessage);
+
+                            sendMessage.setReplyMarkup(new ReplyKeyboardRemove(true));
+                            DeleteMessage deleteMessage = new DeleteMessage();
+                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
+                            deleteMessage.setChatId(chatId);
+                            execute(deleteMessage);
 
                             band_delete_data[1] = String.valueOf(sentMessage.getMessageId());
                         }
                     }
                 }
+
                 else if (foundUser.getStatus().equals(Status.NEW_NUMBER)) {
                     System.out.println("kirdi");
                     String countS = message.getText();
@@ -616,34 +624,68 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         execute(sendMessage);
                     }
                 }
+
+
                 else if (foundUser.getStatus().equals(Status.SET_GO_MONEY)) {
                     try {
                         foundUser.setStatus(Status.SET_DAY_MONTH);
                         userRepo.save(foundUser);
                         Integer.parseInt(message.getText());
                         driver_data[3] = message.getText();
-                        if(foundUser.getLanguage().equals("uz")){
-                            sendMessage.setText("🔄 Iltimos, sanani va oyni kiriting (masalan, '23-12' kuni uchun)");
 
-                        }else if(foundUser.getLanguage().equals("ru")){
-                            sendMessage.setText("🔄 Пожалуйста, введите дату и месяц (например, «23-12»):");
+                        // Create reply keyboard buttons for today, tomorrow, and the day after tomorrow
+                        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+                        List<KeyboardRow> keyboard = new ArrayList<>();
 
+                        // Get today's, tomorrow's, and the day after tomorrow's dates
+                        LocalDate today = LocalDate.now();
+                        LocalDate tomorrow = today.plusDays(1);
+                        LocalDate dayAfterTomorrow = today.plusDays(2);
+
+                        // Format the dates to 'dd-MMMM' where the month is in Uzbek
+                        DateTimeFormatter uzbekDayMonthFormatter = DateTimeFormatter.ofPattern("dd-MMMM", Locale.forLanguageTag("uz"));
+
+                        // Row 1 - Button for today's date
+                        KeyboardRow row1 = new KeyboardRow();
+                        row1.add(today.format(uzbekDayMonthFormatter)); // Today's date in Uzbek
+
+                        KeyboardRow row2 = new KeyboardRow();
+                        row2.add(tomorrow.format(uzbekDayMonthFormatter)); // Tomorrow's date in Uzbek
+
+                        KeyboardRow row3 = new KeyboardRow();
+                        row3.add(dayAfterTomorrow.format(uzbekDayMonthFormatter)); // Day after tomorrow's date in Uzbek
+
+                        keyboard.add(row1);
+                        keyboard.add(row2);
+                        keyboard.add(row3);
+
+                        // Set the keyboard layout
+                        replyKeyboardMarkup.setKeyboard(keyboard);
+                        replyKeyboardMarkup.setResizeKeyboard(true); // Resize for mobile devices
+
+                        // Send the message with the reply keyboard
+                        if (foundUser.getLanguage().equals("uz")) {
+                            sendMessage.setText("🔄 Iltimos, sanani tanlang:");
+                        } else if (foundUser.getLanguage().equals("ru")) {
+                            sendMessage.setText("🔄 Пожалуйста, выберите дату:");
                         }
 
+                        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+                        sendMessage.setChatId(chatId);
                         execute(sendMessage);
+
                     } catch (NumberFormatException e) {
+                        // Handle invalid input
                         foundUser.setStatus(Status.SET_GO_MONEY);
                         userRepo.save(foundUser);
-                        if(foundUser.getLanguage().equals("uz")){
+                        if (foundUser.getLanguage().equals("uz")) {
                             sendMessage.setText("⚠️ Noto'g'ri format. Iltimos, faqat son kiritishingiz kerak.");
-
-                        }else if(foundUser.getLanguage().equals("ru")){
+                        } else if (foundUser.getLanguage().equals("ru")) {
                             sendMessage.setText("⚠️ Неверный формат. Пожалуйста, введите только число.");
                         }
-
+                        sendMessage.setChatId(chatId);
                         execute(sendMessage);
                     }
-
                 }
                 else if (foundUser.getStatus().equals(Status.SET_DAY_MONTH)) {
                     try {
@@ -693,6 +735,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         execute(sendMessage);
                     }
                 }
+
+
+
+
                 else if (foundUser.getStatus().equals(Status.SET_TIME)) {
                     try {
                         List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
@@ -703,8 +749,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         driver_data[5] = timeText;
 
                         if (!userIds.isEmpty()) {
-                            foundUser.setStatus(Status.SET_DIRECTIONS);
-                            userRepo.save(foundUser);
                             User user = userRepo.findById(userIds.get(0)).orElseThrow(() -> new IllegalStateException("User not found"));
 
                             String fromCity = driver_data[0];
@@ -723,13 +767,15 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             if(foundUser.getLanguage().equals("uz")){
                                 sendMessage.setText("✅ Muvaffaqiyatli qo'shildi");
 
-                            }else if(foundUser.getLanguage().equals("ru")){
+                            }else if(foundUser.getLanguage().equals("ru"
+                            )){
                                 sendMessage.setText("✅ Добавлено успешно");
 
                             }
 
                             sendMessage.setReplyMarkup(directions(foundUser));
-                            execute(sendMessage);
+                            Message execute = execute(sendMessage);
+                            band_delete_data[1]= String.valueOf(execute.getMessageId());
                             driver_data = new String[6];
                         } else {
                             sendMessage.setText("User not found for the given chat ID");
@@ -1610,7 +1656,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private ReplyKeyboardMarkup NotPath2(User foundUser){
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -1633,7 +1678,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private ReplyKeyboardMarkup NotPath(User foundUser){
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -1688,7 +1732,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
     private InlineKeyboardMarkup Passsenger(User user, Long id) {
         System.out.println(id);
         System.out.println(this.id);
@@ -1742,7 +1785,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
     private ReplyKeyboardMarkup toCitysButtonsReply(User foundUser) {
         // Define the translations inside the method using Map.ofEntries for more than 10 key-value pairs
         Map<String, String> uzToRuTranslations = Map.ofEntries(
@@ -1795,10 +1837,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
-
     private ReplyKeyboardMarkup fromCitysButtonsReply(User user) {
-        // Define the translations inside the method using Map.ofEntries for more than 10 key-value pairs
         Map<String, String> uzToRuTranslations = Map.ofEntries(
                 Map.entry("Toshkent", "Ташкент"),
                 Map.entry("Samarqand", "Самарканд"),
@@ -1848,8 +1887,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
-
     private void validateTime(String timeText, String driverDataDay, User foundUser) {
         if (!timeText.matches("\\d{2}:\\d{2}")) {
             if(foundUser.getLanguage().equals("uz")){
@@ -1917,70 +1954,50 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             }
         }
     }
-
     public LocalDate validateAndParseDate(String dateInput, User foundUser) throws DateTimeParseException {
-        if (dateInput == null || dateInput.isEmpty()) {
-            if (foundUser.getLanguage().equals("uz")) {
-                throw new DateTimeParseException("🗓️ Sana kiritilmadi yoki noto'g'ri formatda kiritildi", dateInput, 0);
-            } else if (foundUser.getLanguage().equals("ru")) {
-                throw new DateTimeParseException("🗓️ Дата не предоставлена или введена в неправильном формате", dateInput, 0);
-            }
+        // Print the input for debugging
+        System.out.println("Input date: " + dateInput);
+
+        // Mapping Uzbek month names to their numerical equivalents
+        Map<String, String> uzbekMonthMap = new HashMap<>();
+        uzbekMonthMap.put("yanvar", "01");
+        uzbekMonthMap.put("fevral", "02");
+        uzbekMonthMap.put("mart", "03");
+        uzbekMonthMap.put("aprel", "04");
+        uzbekMonthMap.put("may", "05");
+        uzbekMonthMap.put("iyun", "06");
+        uzbekMonthMap.put("iyul", "07");
+        uzbekMonthMap.put("avgust", "08");
+        uzbekMonthMap.put("sentabr", "09");
+        uzbekMonthMap.put("oktabr", "10");
+        uzbekMonthMap.put("noyabr", "11");
+        uzbekMonthMap.put("dekabr", "12");
+
+        // Normalize input (trim spaces and make lowercase)
+        String normalizedInput = dateInput.trim().toLowerCase(); // e.g., "24-sentabr"
+
+        // Split the input into day and month parts
+        String[] dateParts = normalizedInput.split("-");
+
+        // Ensure the input has exactly two parts: day and month
+        if (dateParts.length != 2 || !uzbekMonthMap.containsKey(dateParts[1])) {
+            throw new DateTimeParseException("Invalid date format or month", dateInput, 0);
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM");
-        String[] parts = dateInput.split("-");
+        // Extract day and month
+        String day = dateParts[0]; // e.g., "24"
+        String month = uzbekMonthMap.get(dateParts[1]); // e.g., "09" for "sentabr"
 
-        if (parts.length != 2 || parts[0].length() != 2 || parts[1].length() != 2) {
-            if (foundUser.getLanguage().equals("uz")) {
-                throw new DateTimeParseException("📅 Noto'g'ri format", dateInput, 0);
-            } else if (foundUser.getLanguage().equals("ru")) {
-                throw new DateTimeParseException("📅 Неправильный формат", dateInput, 0);
-            }
-        }
+        // Get the current year
+        String currentYear = String.valueOf(LocalDate.now().getYear());
 
-        try {
-            int day = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
+        String formattedDate = String.format("%02d-%s-%s", Integer.parseInt(day), month, currentYear);
 
-            if (day < 1 || day > 31) {
-                if (foundUser.getLanguage().equals("uz")) {
-                    throw new DateTimeParseException("📅 Kun noto'g'ri kiritildi (1-31 oralig'ida bo'lishi kerak)", dateInput, 0);
-                } else if (foundUser.getLanguage().equals("ru")) {
-                    throw new DateTimeParseException("📅 Неправильный день (должен быть между 1 и 31)", dateInput, 0);
-                }
-            }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate parsedDate = LocalDate.parse(formattedDate, formatter);
 
-            if (month < 1 || month > 12) {
-                if (foundUser.getLanguage().equals("uz")) {
-                    throw new DateTimeParseException("📅 Oy noto'g'ri kiritildi (1-12 oralig'ida bo'lishi kerak)", dateInput, 0);
-                } else if (foundUser.getLanguage().equals("ru")) {
-                    throw new DateTimeParseException("📅 Неправильный месяц (должен быть между 1 и 12)", dateInput, 0);
-                }
-            }
-
-            int currentYear = LocalDate.now().getYear();
-            LocalDate inputDate = LocalDate.of(currentYear, month, day);
-            LocalDate today = LocalDate.now();
-
-            if (inputDate.isBefore(today) || inputDate.isAfter(today.plusDays(2))) {
-                if (foundUser.getLanguage().equals("uz")) {
-                    throw new DateTimeParseException("📅 Sana oraliqdan tashqarida (faqat bugungi kun va undan keyingi 2 kun kiritilishi mumkin)", dateInput, 0);
-                } else if (foundUser.getLanguage().equals("ru")) {
-                    throw new DateTimeParseException("📅 Дата вне допустимого диапазона (можно вводить только сегодняшнюю дату и следующие 2 дня)", dateInput, 0);
-                }
-            }
-
-            return inputDate;
-
-        } catch (NumberFormatException e) {
-            if (foundUser.getLanguage().equals("uz")) {
-                throw new DateTimeParseException("📅 Sana raqamlar bilan kiritilishi kerak", dateInput, 0);
-            } else if (foundUser.getLanguage().equals("ru")) {
-                throw new DateTimeParseException("📅 Дата должна быть введена цифрами", dateInput, 0);
-            }
-        }
-
-        return null;
+        System.out.println("Parsed date: " + parsedDate);
+        return parsedDate;
     }
 
     private InlineKeyboardMarkup directionData(UUID id, User foundUser) {
@@ -2043,7 +2060,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
     private ReplyKeyboardMarkup directions(User foundUser) {
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -2062,7 +2078,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private InlineKeyboardMarkup fromCitysButtons(User foundUser) {
         Map<String, String> uzbekToRussianCities = new HashMap<>();
         uzbekToRussianCities.put("Toshkent", "Ташкент");
@@ -2115,9 +2130,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         inlineKeyboardMarkup.setKeyboard(rows);
         return inlineKeyboardMarkup;
     }
-
-
-
     public static boolean isNumeric(String str) {
         if (str == null) {
             return false;
@@ -2129,7 +2141,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             return false;
         }
     }
-
     private InlineKeyboardMarkup toCitysButtons(User foundUser) {
         Map<String, String> uzbekToRussianCities = new HashMap<>();
         uzbekToRussianCities.put("Toshkent", "Ташкент");
@@ -2179,8 +2190,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
-
     private InlineKeyboardMarkup countseatButtons(User user) {
         boolean count = user.isCount();
         String language1 = user.getLanguage();
@@ -2323,7 +2332,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return new InlineKeyboardMarkup(rows);
     }
-
     private ReplyKeyboardMarkup selectRoleButtons() {
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -2352,7 +2360,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private InlineKeyboardMarkup selectInlineRoleButtons(Long chatId) {
         Optional<User> byChatId = userRepo.findByChatId(chatId);
         User user = byChatId.get();
@@ -2389,7 +2396,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return inlineKeyboardMarkup;
     }
-
     private ReplyKeyboardMarkup genContactButtons(User user) {
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row = new KeyboardRow();
@@ -2416,7 +2422,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
-
     private InlineKeyboardMarkup selectLanguageButtons() {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
@@ -2436,7 +2441,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         return new InlineKeyboardMarkup(rows);
     }
     private String translateIfNeeded(String cityName) {
-        // Check if the city name is in Cyrillic and translate it
         return ruToUzTranslations.getOrDefault(cityName, cityName);
     }
 
