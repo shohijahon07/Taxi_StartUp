@@ -13,7 +13,7 @@ function Connection() {
   }, [dispatch, language]);
 
   return (
-    <div>
+    <div style={{paddingBottom:"30px"}}>
       {status === 'loading' ? (
         <p>Loading...</p>
       ) : status === 'failed' ? (

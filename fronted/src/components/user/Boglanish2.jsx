@@ -17,6 +17,10 @@ function Boglanish2() {
   }
 
   function handleSave() {
+    if (!form.fullName || !form.phoneNumber || !form.message) {
+      alert(language === "1" ? "Iltimos, barcha maydonlarni to'ldiring." : "Пожалуйста, заполните все поля.");
+      return;
+    }
     dispatch(saveForm({ form, language }));
   }
   return (
@@ -39,11 +43,11 @@ function Boglanish2() {
         <h4 className='yozmaSavollarH4'>{language==="1"?"Yozma shaklda murojaatingizni qoldiring":"Оставьте заявку в письменном виде"}</h4>
         <div className="inpgroup">
     <div className="form-floating">
-        <input type="text" className="form-control" id="name" placeholder="Ismizgiz" value={form.fullName} onChange={handleInputChange}/>
+        <input type="text" className="form-control" id="fullName" placeholder="Ismizgiz" value={form.fullName} onChange={handleInputChange}/>
         <label htmlFor="name">{language==="1"?"Ismizgiz":"Ваше имя"}</label>
     </div>
     <div className="form-floating">
-        <input type="text" className="form-control" id="phone" placeholder="Telefon raqamingiz" value={form.phoneNumber} onChange={handleInputChange}/>
+        <input type="text" className="form-control" id="phoneNumber" placeholder="Telefon raqamingiz" value={form.phoneNumber} onChange={handleInputChange}/>
         <label htmlFor="phone">{language==="1"?"Telefon raqamingiz":"Ваш номер телефона"}</label>
     </div>
     <div className="form-floating">

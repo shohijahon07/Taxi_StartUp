@@ -133,6 +133,9 @@ padding: 0;
     justify-content: space-around;
 }
 .inpgroup input{
+  pointer-events: auto; /* Ishonch hosil qiling input kliklanishi mumkin */
+  visibility: visible; /* Yashirin bo'lmaganiga ishonch hosil qiling */
+  z-index: 1;
     font-size: 15px;
     font-weight: 400;
     color:#333333;
@@ -1000,7 +1003,8 @@ padding: 0;
     margin: 0;
     width: 100%;
     height: 370px;
-    border: 10.98px solid #FFFFFF
+    border: 10.98px solid #FFFFFF;
+    margin-top: 10px;
    
 }
 .card-header{
@@ -1102,8 +1106,8 @@ padding: 0;
      margin: 0;
      width: 100%;
      height: 370px;
-     border: 10.98px solid #FFFFFF
-    
+     border: 10.98px solid #FFFFFF;
+     margin-top: 10px;
  }
  .card-header{
    margin-bottom: 14px;
@@ -1205,8 +1209,8 @@ padding: 0;
      margin: 0;
      width: 100%;
      height: 370px;
-     border: 10.98px solid #FFFFFF
-    
+     border: 10.98px solid #FFFFFF;
+     margin-top: 10px;
  }
  .card-header{
    margin-bottom: 14px;
@@ -1310,8 +1314,8 @@ padding: 0;
      margin: 0;
      width: 100%;
      height: 300px;
-     border: 10.98px solid #FFFFFF
-    
+     border: 10.98px solid #FFFFFF;
+     margin-top: 7px;
  }
  .card-header{
    margin-bottom: 10px;
@@ -1413,7 +1417,8 @@ padding: 0;
      margin: 0;
      width: 100%;
      height: 300px;
-     border: 10.98px solid #FFFFFF
+     border: 10.98px solid #FFFFFF;
+     margin-top: 7px;
     
  }
  .card-header{
@@ -1518,7 +1523,8 @@ padding: 0;
      margin: 0;
      width: 100%;
      height: 250px;
-     border: 10.98px solid #FFFFFF
+     border: 10.98px solid #FFFFFF;
+     margin-top: 5px;
     
  }
  .card-header{

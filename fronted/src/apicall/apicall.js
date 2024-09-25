@@ -3,7 +3,7 @@ import axios from "axios";
 const apicall = async (url, method, data) => {
   try {
     const response = await axios({
-        baseURL: "https:/api",
+        baseURL: "http://localhost:8080/api",
       url,
       method,
       data,
@@ -13,7 +13,7 @@ const apicall = async (url, method, data) => {
   } catch (error) {
 
                const refreshResponse = await axios({
-          url: `https:/api/auth/refresh`,
+          url: `http://localhost:8080/api/auth/refresh`,
           method: "POST",
           headers: { refreshToken: localStorage.getItem("refresh_token") },
         });
@@ -21,7 +21,7 @@ const apicall = async (url, method, data) => {
         localStorage.setItem("access_token", refreshResponse.data);
 
         const retryResponse = await axios({
-          baseURL: "https:/api",
+          baseURL: "http://localhost:8080/api",
           url,
           method,
           data,

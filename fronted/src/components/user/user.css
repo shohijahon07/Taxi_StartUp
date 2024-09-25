@@ -17,8 +17,11 @@ body{
     background-position: center;
     background-repeat: no-repeat; 
     height: auto; 
-    padding: 0 20px; 
     box-sizing: border-box; 
+}
+.backgroundColor{
+    background-color:#000000A1;
+    padding: 0 20px; 
 }
 .routUser{
     max-width: 1920px;
@@ -577,9 +580,8 @@ p{
 }
 @media only screen and (min-width: 1400px) and (max-width: 1550px) {
     .imageBacground{
-        padding: 0;
         background-image: url("../../pictures/all.svg");
-        padding: 0 20px;
+      
     }
     .routUser{
         max-width: 1550px;
@@ -812,9 +814,8 @@ p{
 }
 @media only screen and (min-width: 1270px) and (max-width: 1400px) {
     .imageBacground{
-        padding: 0;
         background-image: url("../../pictures/all.svg");
-        padding: 0 20px;
+     
     }
     .routUser{
         max-width: 1400px;
@@ -1095,9 +1096,8 @@ p{
         }
 
     .imageBacground{
-        padding: 0;
         background-image: url("../../pictures/all.svg");
-        padding: 0 20px;
+      
     }
     .routUser{
         max-width: 1270px;
@@ -1384,9 +1384,8 @@ p{
     }
 
     .imageBacground{
-        padding: 0;
         background-image: url("../../pictures/all.svg");
-        padding: 0 20px;
+       
     }
     .routUser{
         max-width: 1100px;
@@ -1684,9 +1683,8 @@ p{
     }
 
     .imageBacground{
-        padding: 0;
         background-image: url("../../pictures/all.svg");
-        padding: 0 20px;
+      
     }
     .routUser{
         max-width: 920px;
@@ -1982,9 +1980,8 @@ p{
     }
 
     .imageBacground{
-        padding: 0;
         background-image: url("../../pictures/all.svg");
-        padding: 0 20px;
+        
     }
     .routUser{
         max-width: 800px;
@@ -2296,8 +2293,7 @@ p{
             background-position: center; /* Rasmni markazda joylashtiradi */
             background-repeat: no-repeat; /* Rasmni takrorlamaslik uchun */
             max-width: 720px;/* Ekran kengligini egallaydi */
-            /* height: 100vw;  */
-            padding: 0 20px;
+          
             padding-bottom: 30px;
             
         }
@@ -2645,8 +2641,7 @@ p{
             background-position: center; /* Rasmni markazda joylashtiradi */
             background-repeat: no-repeat; /* Rasmni takrorlamaslik uchun */
             max-width: 720px;/* Ekran kengligini egallaydi */
-            /* height: 100vw;  */
-            padding: 0 20px;
+          
             padding-bottom: 30px;
         }
         .h1RouterUser{
@@ -2983,8 +2978,7 @@ p{
             background-position: center; /* Rasmni markazda joylashtiradi */
             background-repeat: no-repeat; /* Rasmni takrorlamaslik uchun */
             max-width: 601px;/* Ekran kengligini egallaydi */
-            /* height: 100vw;  */
-            padding: 0 20px;
+           
             padding-bottom: 20px;
         }
         .h1RouterUser{
@@ -3329,8 +3323,7 @@ p{
             background-position: center; 
             background-repeat: no-repeat; 
             max-width: 601px;
-            /* height: 100vw;  */
-            padding: 0 20px;
+          
             
             padding-bottom: 20px;
         }
@@ -3678,8 +3671,7 @@ p{
             background-position: center; 
             background-repeat: no-repeat; 
             max-width: 601px;
-            /* height: 100vw;  */
-            padding: 0 20px;
+          
             padding-bottom: 20px;
         }
         .h1RouterUser{
@@ -4002,6 +3994,7 @@ p{
   .navbarUl{
     margin-top: 15px;
     padding: 0;
+    justify-content: space-around;
   }
      .navbarUl li{
          font-size: 15px;
@@ -4034,9 +4027,7 @@ p{
             background-position: center; 
             background-repeat: no-repeat; 
             max-width: 466px;
-            /* height: 100vw;  */
-
-            padding: 0 20px;
+            
             padding-bottom: 20px;
         }
         .h1RouterUser{
@@ -4367,6 +4358,7 @@ p{
   .navbarUl{
     padding: 0;
     margin-top: 15px;
+    justify-content: space-around;
   }
      .navbarUl li{
          font-size: 15px;
@@ -4401,8 +4393,7 @@ p{
             background-position: center; 
             background-repeat: no-repeat; 
             max-width: 466px;
-            /* height: 100vw;  */
-            padding: 0 20px;
+         
             padding-bottom: 20px;
         }
         .h1RouterUser{
@@ -4733,6 +4724,7 @@ p{
   .navbarUl{
     margin-top: 12px;
     padding: 0;
+    justify-content: space-around;
   }
      .navbarUl li{
          font-size: 13px;
@@ -4768,8 +4760,7 @@ p{
             background-position: center; 
             background-repeat: no-repeat; 
             max-width: 466px;
-            /* height: 100vw;  */
-            padding: 0 20px;
+           
             padding-bottom: 20px;
         }
         .h1RouterUser{
@@ -5109,6 +5100,7 @@ p{
   .navbarUl{
     padding: 0;
     margin-top: 13px;
+    justify-content: space-around;
   }
      .navbarUl li{
          font-size: 13px;
@@ -5141,8 +5133,7 @@ p{
             background-position: center; 
             background-repeat: no-repeat; 
             max-width: 466px;
-            /* height: 100vw;  */
-            padding: 0 20px;
+           
             padding-bottom: 20px;
         }
         .h1RouterUser{
@@ -5496,6 +5487,7 @@ p{
   .navbarUl{
     padding: 0;
     margin-top: 8px;
+    justify-content: space-around;
   }
      .navbarUl li{
          font-size: 11px;
@@ -5527,8 +5519,7 @@ p{
             background-position: center; 
             background-repeat: no-repeat; 
             max-width: 327px;
-            /* height: 100vw;  */
-            padding: 0 20px;
+           
             padding-bottom: 20px;
         }
         .h1RouterUser{

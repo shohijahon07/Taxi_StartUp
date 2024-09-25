@@ -12,6 +12,20 @@ const OptionModal = ({ options, onSelect, onClose }) => {
         dispatch(setActive(true));
     }, []);
 
+    useEffect(() => {
+        if (active) {
+            // Modal ochilganda body scrollni to'xtatamiz
+            document.body.style.overflow = 'hidden';
+        } else {
+            // Modal yopilganda body scrollni tiklaymiz
+            document.body.style.overflow = '';
+        }
+
+        return () => {
+            // Komponent unmount bo'lganda scrollni tiklaymiz
+            document.body.style.overflow = '';
+        };
+    }, [active]);
     const handleClose = () => {
         dispatch(setActive(false));
         setTimeout(onClose, 1000); 
@@ -22,7 +36,7 @@ const OptionModal = ({ options, onSelect, onClose }) => {
             <div className="option-modal" onClick={(e) => e.stopPropagation()}>
                 <div className="btnCloseIcon" style={{paddingRight:"10px"}}>
 
-                <button className="btn btn-close" onClick={handleClose}></button>
+                <button style={{backgroundColor:"transparent",border:"none",fontSize:"20px"}} onClick={handleClose}>x</button>
                 </div>
                 <div className="CityH1">
 
