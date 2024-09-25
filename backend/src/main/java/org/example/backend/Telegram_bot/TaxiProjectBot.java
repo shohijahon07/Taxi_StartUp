@@ -377,7 +377,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             band_delete_data[1] = String.valueOf(sentMessage.getMessageId());
                         }
                     }
-                }else if(message.getText().equals("👤 O'zim haqimda")){
+                }else if(message.getText().equals("👤 O'zim haqimda")||message.getText().equals("\uD83D\uDC64 Обо мне")){
                     Optional<User> byChatId1 = userRepo.findByChatId(chatId);
                     sendMessage.setText(
                             "👤 Ism familyangiz: " + byChatId1.get().getFullName() + "\n" +
@@ -830,14 +830,25 @@ else if(foundUser.getStatus().equals(Status.SET_FULL_NAME)){
     foundUser.setFullName(message.getText());
     foundUser.setStatus(Status.NONE);
     userRepo.save(foundUser);
-                    sendMessage.setText(
-                            "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
-                                    "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
-                                    "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
-                                    "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
-                    );
-                    sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
+    if(foundUser.getLanguage().equals("uz")){
+        sendMessage.setText(
+                "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
+                        "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
+                        "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
+                        "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
+        );
+    }
+    else {
 
+        sendMessage.setText(
+                "✅ Успех обновлен \n 👤 Ваша фамилия: " + foundUser.getFullName() + "\n" +
+                        "📞 Ваш номер телефона: " + foundUser.getPhoneNumber() + "\n" +
+                        "🚗Ваша машина: " + foundUser.getCarType() + "\n" +
+                        "\uD83D\uDCDD  О себе: " + foundUser.getAbout() + "\n"
+        );
+    }
+
+                    sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
                     sendMessage.setChatId(chatId);
     execute(sendMessage);
                 }
@@ -846,12 +857,23 @@ else if(foundUser.getStatus().equals(Status.SET_PHONE_NUMBER)){
                     foundUser.setPhoneNumber(message.getText());
                     foundUser.setStatus(Status.NONE);
                     userRepo.save(foundUser);
-                    sendMessage.setText(
-                            "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
-                                    "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
-                                    "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
-                                    "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
-                    );
+                    if(foundUser.getLanguage().equals("uz")){
+                        sendMessage.setText(
+                                "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
+                                        "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    else {
+
+                        sendMessage.setText(
+                                "✅ Успех обновлен \n 👤 Ваша фамилия: " + foundUser.getFullName() + "\n" +
+                                        "📞 Ваш номер телефона: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗Ваша машина: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  О себе: " + foundUser.getAbout() + "\n"
+                        );
+                    }
                     sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
 
                     sendMessage.setChatId(chatId);
@@ -862,12 +884,23 @@ else if(foundUser.getStatus().equals(Status.SET_PHONE_NUMBER)){
                     foundUser.setCarType(message.getText());
                     foundUser.setStatus(Status.NONE);
                     userRepo.save(foundUser);
-                    sendMessage.setText(
-                            "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
-                                    "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
-                                    "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
-                                    "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
-                    );
+                    if(foundUser.getLanguage().equals("uz")){
+                        sendMessage.setText(
+                                "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
+                                        "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    else {
+
+                        sendMessage.setText(
+                                "✅ Успех обновлен \n 👤 Ваша фамилия: " + foundUser.getFullName() + "\n" +
+                                        "📞 Ваш номер телефона: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗Ваша машина: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  О себе: " + foundUser.getAbout() + "\n"
+                        );
+                    }
                     sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
 
                     sendMessage.setChatId(chatId);
@@ -878,12 +911,23 @@ else if(foundUser.getStatus().equals(Status.SET_PHONE_NUMBER)){
                     foundUser.setAbout(message.getText());
                     foundUser.setStatus(Status.NONE);
                     userRepo.save(foundUser);
-                    sendMessage.setText(
-                            "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
-                                    "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
-                                    "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
-                                    "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
-                    );
+                    if(foundUser.getLanguage().equals("uz")){
+                        sendMessage.setText(
+                                "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
+                                        "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    else {
+
+                        sendMessage.setText(
+                                "✅ Успех обновлен \n 👤 Ваша фамилия: " + foundUser.getFullName() + "\n" +
+                                        "📞 Ваш номер телефона: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗Ваша машина: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  О себе: " + foundUser.getAbout() + "\n"
+                        );
+                    }
                     sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
