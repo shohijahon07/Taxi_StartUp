@@ -13,8 +13,11 @@ function Statistics() {
       }, []);
   return (
     <div className='begin1'>
-        <div className='StaticsText'> <p>Haydovchilar Soni:{countDriver}</p></div>
+      <div className="colorback">
+          <div className='StaticsText'> <p>Haydovchilar Soni:{countDriver}</p></div>
         <div className='StaticsText1'> <p>Mijozlar Soni:{countUser}</p></div>
+      </div>
+      
     </div>
   )
 }

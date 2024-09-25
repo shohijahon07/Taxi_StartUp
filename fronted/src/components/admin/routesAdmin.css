@@ -5,8 +5,8 @@
 }
 .begin1{
     background-image:url("../../pictures/all.svg");
-    height: 100vh;
-    max-height: 2000px;
+    min-height: 100vh;
+    height: auto;
     max-width: 1920px;
     margin: 0 auto;
 }
@@ -14,6 +14,12 @@
     width: 470px;
     /* border: 2px solid; */
 
+}
+.colorback{
+    background-color:#000000A1;
+    height: auto; 
+    min-height: 100vh;
+    padding: 0 20px;
 }
 .leftCity p{
 font-family: 'Inter';
@@ -111,7 +117,7 @@ justify-content: space-between;
 .saveButton{
     font-family: 'Inter', sans-serif;
     /* margin-top: 40px; */
-   width: 130px;
+   width: 100px;
    height: 45px ;
    border-radius:7.5px;
    border: 0.45px solid #2B3187;
@@ -132,7 +138,7 @@ justify-content: space-between;
     margin-left: 5px;
     font-family: 'Inter', sans-serif;
     /* margin-top: 40px; */
-   width: 130.48px;
+   width: 100px;
    height: 45px ;
    border-radius:7.5px;
    border: 0.45px white;

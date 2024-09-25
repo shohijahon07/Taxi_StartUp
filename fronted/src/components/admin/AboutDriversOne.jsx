@@ -38,8 +38,8 @@ useEffect(() => {
   };
   return (
     <div className='begin1'>
-        
-        <div className='w-100'>
+        <div className="colorback">
+           <div className='w-100'>
     <div className='driverOneHaeder' onClick={BackPage}>
         <button className='back'>Orqaga</button>
     </div>
@@ -74,7 +74,7 @@ useEffect(() => {
             Mijozlarni fikri
            
         </p>
-        <table className='table table-success' >
+        <table className='table table-success '  >
           <thead>
             <tr>
               <th>Yo'lovchini ismi </th>
@@ -95,6 +95,8 @@ useEffect(() => {
           </tbody>
         </table>
       </div>
+        </div>
+       
       
     </div>
   )

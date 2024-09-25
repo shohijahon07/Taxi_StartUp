@@ -17,9 +17,18 @@ body{
 .beginAdmin{
  max-width: 1920px;
  background-image:url("../../../pictures/all.svg");
- height: 100vh;
- padding: 0 20px;
+ background-size: cover; 
+ background-position: center;
+ background-repeat: no-repeat; 
+ height: auto; 
+ min-height: 100vh;
  margin: 0 auto;
+}
+.backcol{
+    padding: 0 20px;
+  background-color:#000000A1;
+  height: auto; 
+  min-height: 100vh;
 }
 .ul_admin{
     padding-top: 20px;
@@ -63,7 +72,7 @@ body{
             font-weight: 500;
             font-size: 25px;
             /* line-height: 35.75; */
-            color:#303383;
+            color:#92a8d1;
             font-family: 'Inter', sans-serif;
     }
 .imageTable{

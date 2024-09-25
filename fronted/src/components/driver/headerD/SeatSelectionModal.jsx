@@ -14,7 +14,16 @@ function SeatSelectionModal({ onSelect, onClose, isTrue }) {
         onSelect(seatNumber);
         onClose();
     };
-
+    useEffect(() => {
+        // Prevent background scrolling when modal is open
+        document.body.style.overflow = 'hidden';
+    
+        // Cleanup function to restore body scroll when modal is closed
+        return () => {
+          document.body.style.overflow = 'auto';
+        };
+      }, []);
+    
     return (
         <div className="modal-overlay1" onClick={onClose}>
             <div className="modal-content1" onClick={(e) => e.stopPropagation()}>

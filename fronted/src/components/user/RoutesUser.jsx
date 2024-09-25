@@ -313,7 +313,8 @@ function RoutesUser() {
             <Landing />
             <div className="routUser">
                 <div className="imageBacground">
-                <div className="h1RouterUser">
+                    <div className="backgroundColor">
+                        <div className="h1RouterUser">
                 <h1 className=''>{language==="1"?"Har kuni O’zbekiston bo’ylab qatnovlar":"Ежедневные поездки по Узбекистану"}</h1>
 
                 </div>
@@ -425,7 +426,7 @@ function RoutesUser() {
                                     ))}
                                 </div>
                                 <div className="li2Child2">
-                                    <p>{language==="1"?" Bo'sh O'rindiqlar soni:":"Количество свободных мест:"}</p>
+                                    <p>{language==="1"?" Bo'sh O'rindiqlar soni:":"Место:"}</p>
                                     <h6>{item.countSide}</h6>
                                 </div>
                                 <div className="li2Child3">
@@ -469,7 +470,9 @@ function RoutesUser() {
             <Boglanish2 />
             </div>
                 <BizHaqimizda/>         
-                </div>
+                </div> 
+                    </div>
+               
             {showFromCityModal && (
                 <OptionModal
                     options={translatedFromCities}

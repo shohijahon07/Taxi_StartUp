@@ -23,7 +23,20 @@ function DateModal({ minDate, maxDate, onDateSelect, onClose }) {
             handleClose();
         }
     };
+    useEffect(() => {
+        if (active) {
+            // Modal ochilganda body scrollni to'xtatamiz
+            document.body.style.overflow = 'hidden';
+        } else {
+            // Modal yopilganda body scrollni tiklaymiz
+            document.body.style.overflow = '';
+        }
 
+        return () => {
+            // Komponent unmount bo'lganda scrollni tiklaymiz
+            document.body.style.overflow = '';
+        };
+    }, [active]);
     const handleClose = () => {
         dispatch(setActive(false));
         setTimeout(onClose, 1000); // 1 second delay to allow the closing animation

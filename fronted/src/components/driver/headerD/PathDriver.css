@@ -6,12 +6,17 @@
     height: auto;
     background-image: url('../../../pictures/all.svg') ;
     margin:0 auto;
-    padding-bottom: 30px;
-
+   
 }
 .path_dr{
     padding:0 200px;
     
+    
+}
+.backColor{
+  background-color:#000000A1;
+  padding-bottom: 10px;
+
 }
 .btn_dr{
     width:330px;

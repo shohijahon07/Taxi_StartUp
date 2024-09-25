@@ -150,7 +150,7 @@ const RouteDriverSlice = createSlice({
         if (action.payload.data.length===0) {
             state.day12=action.payload.day
             state.isAvailable = action.payload.result; 
-
+            state.allRoutes=action.payload.data
         }else{
           state.allRoutes = action.payload.data; 
           state.isAvailable = action.payload.result; 

@@ -67,11 +67,15 @@ const { fromCities,fromCityObject,EditButtonId1} = useSelector((state) => state.
 
 };
 const EditToCity = (item) => {
+  const specificGroupArea = document.getElementById('specificGroupArea');
+  specificGroupArea.scrollIntoView({ behavior: 'smooth' });
   dispatch(setEditButtonId(item.id));
   dispatch(setToCity({ name:item.name }));
 
 };
 const EditToFromCity = (item) => {
+  const specificGroupArea = document.getElementById('specificGroupArea');
+  specificGroupArea.scrollIntoView({ behavior: 'smooth' });
   dispatch(setEditButtonId1(item.id));
   dispatch(setFromCity({ name:item.name }));
 
@@ -104,10 +108,10 @@ const DeleteToCity = (id) => {
   }
 };
   return (
-    <div>
+    <div style={{paddingBottom:"30px"}}>
         <div className="d-flex justify-content-around">
             <div className="RoutesAdminInput">
-        <div className="inputRoute">
+        <div className="inputRoute" id="specificGroupArea">
             <p>Qayerdan</p> <input type="text" className='form-control inp11Admin' value={fromCityObject.name} onChange={(e)=>dispatch(setFromCity({...fromCityObject,name:e.target.value}))}/>
         </div>
              <button className='saveButton' onClick={saveFromCity}> Saqlash</button>

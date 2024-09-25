@@ -49,7 +49,7 @@ function DriversAdmin() {
   }
 
   return (
-    <div>
+    <div style={{paddingBottom:"30px"}}>
       <div className="qidirishHeader">
         <div className="search-input-wrapper">
           <input
