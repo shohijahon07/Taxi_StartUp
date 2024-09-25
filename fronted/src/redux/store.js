@@ -6,6 +6,7 @@ import fromCityReducer from './slices/fromCity'
 import commentReducer from './slices/CommentSlice'
 import pessengerReducer from './slices/userSlice'
 import connection from './slices/Connection'
+import registers from './slices/Register'
 const store = configureStore({
     reducer: {
        
@@ -15,7 +16,8 @@ const store = configureStore({
         fromCity: fromCityReducer,
         comment: commentReducer,
         pessenger: pessengerReducer,
-        boglanish:connection
+        boglanish:connection,
+        register:registers
 
     },
     middleware: (getDefaultMiddleware) =>
