@@ -88,7 +88,7 @@ public class UserImpl implements UserService{
 
             userRepo.save(user);
 
-            String apiToken ="7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
+            String apiToken ="6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
             String chatId = String.valueOf(user.getChatId());
             String text = "";
 
@@ -171,7 +171,7 @@ public class UserImpl implements UserService{
         User user = new User(pessengerDto.getName(), pessengerDto.getPhoneNumber(), roles);
         userRepo.save(user);
 
-        String apiToken = "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
+        String apiToken = "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
         String chatId = String.valueOf(pessengerDto.getDriverChatId());
         String text="";
         Optional<User> byChatId = userRepo.findByChatId(Long.valueOf(chatId));

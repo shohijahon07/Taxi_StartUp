@@ -33,7 +33,7 @@ public class SpringConfig {
         httpSecurity.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(
                 auth -> auth
                         .requestMatchers("/**","/login","/index.html","/assets/**","/static/**","/*ico","/*.json","/*.png").permitAll()
-                        .requestMatchers("/api/auth/login","/api/auth/name","/api/auth/refresh","/api/driver","/api/driver/bydriver","/api/user","/api/auth/check","/api/toCity","/api/fromCity","/api/user/drivers","/api/user/isDrive","/api/driver/bydel").permitAll()
+                        .requestMatchers("/api/auth/login","/api/advertising","/api/auth/name","/api/auth/refresh","/api/driver","/api/driver/bydriver","/api/user","/api/auth/check","/api/toCity","/api/fromCity","/api/user/drivers","/api/user/isDrive","/api/driver/bydel").permitAll()
                         .requestMatchers("/api/fileController","/api/fileController/photo","/api/user/countD","/api/user/countU","/api/user/search","/api/driver/byDate","/api/driver/byDay","/api/driver/byTime").permitAll()
                         .requestMatchers("/api/auth/login","/api/user/save/**","/api/auth/name","/api/driver","/api/driver/bydriver","/api/user","/api/toCity","/api/fromCity","/api/user/drivers","/api/user/isDrive").permitAll()
                         .requestMatchers("/api/fileController","/api/fileController/photo","/api/user/save","/api/user/countD","/api/user/countU","/api/comment","/api/user/pessenger").permitAll()

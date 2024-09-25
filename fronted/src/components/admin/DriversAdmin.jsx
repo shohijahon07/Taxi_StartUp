@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaSearch } from "react-icons/fa";
 import "./routesAdmin.css";
+import { message } from 'antd';
 
 function DriversAdmin() {
   const { drivers1  } = useSelector((state) => state.driver); 
@@ -27,7 +28,7 @@ function DriversAdmin() {
       .then(() => {
       })
       .catch(() => {
-        toast.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
+        message.error('Ma\'lumotlarni olishda xatolik yuz berdi!');
       });
   }
 
@@ -35,7 +36,7 @@ function DriversAdmin() {
     dispatch(deleteDriver({ id }))
       .unwrap()
       .then(() => {
-        toast.success("Malumot muvaffaqiyatli o'chirildi!");
+        message.success("Malumot muvaffaqiyatli o'chirildi!");
         dispatch(fetchDrivers1(isDriver));
       })
       .catch((err) => console.log(err));

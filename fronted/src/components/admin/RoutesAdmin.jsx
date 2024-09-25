@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import "./routesAdmin.css"
 import { addFromCity, deleteFromCity, editFromCity, fetchFromCity, setEditButtonId1, setFromCity } from '../../redux/slices/fromCity';
+import { message } from 'antd';
 function RoutesAdmin() {
 const dispatch=useDispatch()
 const { toCities,toCityObject,selectedFile,EditButtonId} = useSelector((state) => state.toCity);
@@ -21,7 +22,7 @@ const { fromCities,fromCityObject,EditButtonId1} = useSelector((state) => state.
         dispatch(editToCity({ EditButtonId, toCityObject }))
         .unwrap()
         .then(() => {
-          toast.success('Malumot muvaffaqiyatli tahrirlandi!');
+          message.success('Malumot muvaffaqiyatli tahrirlandi!');
           dispatch(fetchToCity());
         })
         .catch((err) =>console.log(err));
@@ -30,7 +31,7 @@ const { fromCities,fromCityObject,EditButtonId1} = useSelector((state) => state.
           dispatch(addToCity({ toCityObject, }))
         .unwrap()
         .then(() => {
-          toast.success('Malumot muvaffaqiyatli qoshildi!');
+          message.success('Malumot muvaffaqiyatli qoshildi!');
           dispatch(fetchToCity());
         })
         .catch((err) =>console.log(err));
@@ -47,7 +48,7 @@ const { fromCities,fromCityObject,EditButtonId1} = useSelector((state) => state.
         dispatch(editFromCity({ EditButtonId1, fromCityObject }))
         .unwrap()
         .then(() => {
-          toast.success('Malumot muvaffaqiyatli tahrirlandi!');
+          message.success('Malumot muvaffaqiyatli tahrirlandi!');
           dispatch(fetchFromCity());
         })
         .catch((err) =>console.log(err));
@@ -55,7 +56,7 @@ const { fromCities,fromCityObject,EditButtonId1} = useSelector((state) => state.
          dispatch(addFromCity({ fromCityObject }))
         .unwrap()
         .then(() => {
-          toast.success('Malumot muvaffaqiyatli qoshildi!');
+          message.success('Malumot muvaffaqiyatli qoshildi!');
           dispatch(fetchFromCity());
         })
         .catch((err) =>console.log(err));
@@ -83,28 +84,28 @@ const EditToFromCity = (item) => {
 
 const DeleteFromCity = (id) => {
   if (EditButtonId) {
-    toast.error('Xatolik yuz berdi!');
+    message.error('Xatolik yuz berdi!');
   } else {
     dispatch(deleteFromCity({ id }))
       .unwrap()
       .then(() => {
-        toast.success("Malumot muvaffaqiyatli o'chirildi!");
+        message.success("Malumot muvaffaqiyatli o'chirildi!");
         dispatch(fetchFromCity());
       })
-      .catch(() => toast.error('Xatolik yuz berdi!'));
+      .catch(() => message.error('Xatolik yuz berdi!'));
   }
 };
 const DeleteToCity = (id) => {
   if (EditButtonId) {
-    toast.error('Xatolik yuz berdi!');
+    message.error('Xatolik yuz berdi!');
   } else {
     dispatch(deleteToCity({ id }))
       .unwrap()
       .then(() => {
-        toast.success("Malumot muvaffaqiyatli o'chirildi!");
+        message.success("Malumot muvaffaqiyatli o'chirildi!");
         dispatch(fetchToCity());
       })
-      .catch(() => toast.error('Xatolik yuz berdi!'));
+      .catch(() => message.error('Xatolik yuz berdi!'));
   }
 };
   return (

@@ -19,7 +19,7 @@ public class AdvertisingServiceImpl implements AdvertisingService {
 
     private final UserRepo userRepo;
     private final RestTemplate restTemplate;
-    private final String apiToken = "6964154747:AAH-HTw_4kM2NIjogEacAQWGJAKRToOzmsc";
+    private final String apiToken = "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
     @Override
     public void saveAdvertising(AdvertsiningDTO advertsiningDTO) {
 
@@ -43,7 +43,7 @@ public class AdvertisingServiceImpl implements AdvertisingService {
         String img =advertsiningDTO.getImg();
         String buttonName = advertsiningDTO.getButtonName();
         String link = advertsiningDTO.getLink();
-
+        System.out.println(advertsiningDTO);
         try {
             // Xabar yuborish
             String sendMessageUrl = "https://api.telegram.org/bot" + apiToken + "/sendPhoto";

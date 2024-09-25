@@ -124,6 +124,17 @@ justify-content: space-between;
    background-color:#2B3187;
    color:white;
 }
+.saveButton1{
+    font-family: 'Inter', sans-serif;
+    /* margin-top: 40px; */
+    font-size: 21px;
+   width: 150px;
+   height: 50px ;
+   border-radius:7.5px;
+   border: 0.45px solid #2B3187;
+   background-color:#2B3187;
+   color:white;
+}
 .editBTN{
     font-family: 'Inter', sans-serif;
     /* margin-top: 40px; */
@@ -240,4 +251,11 @@ justify-content: space-between;
   .imageTable {
     cursor: pointer;
   }
-  
+  .inputsT{
+    width: 100%;
+    display: flex;
+    align-items:center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 5px;
+  }

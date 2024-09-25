@@ -19,7 +19,7 @@ import java.util.UUID;
 public class FileController {
     @GetMapping("/photo")
     public void getFile(@RequestParam String img, HttpServletResponse response) throws IOException {
-        FileInputStream inputStream = new FileInputStream("files/" + img);
+        FileInputStream inputStream = new FileInputStream("backend/files/" + img);
         ServletOutputStream outputStream = response.getOutputStream();
         inputStream.transferTo(outputStream);
         inputStream.close();
@@ -30,7 +30,7 @@ public class FileController {
     public String saveFile(@RequestParam MultipartFile file) throws IOException {
         // Noyob fayl nomini yaratilmoqda
         String img = UUID.randomUUID() + file.getOriginalFilename();
-        File outputFile = new File("files/" + img);
+        File outputFile = new File("backend/files/" + img);
 
         // Asl fayl o'lchamini olish
         long originalSize = file.getSize();
