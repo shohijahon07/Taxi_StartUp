@@ -35,6 +35,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     private final RoleRepo roleRepo;
     private String language;
     private String id;
+    private String idDriver;
+
 
 
     public TaxiProjectBot(UserRepo userRepo, RouteDriverRepo routeDriverRepo1, FromCityRepo fromCityRepo, ToCityRepo toCityRepo, CommentRepo commentRepo, RoleRepo roleRepo, CommentRepo1 commentRepo1) {
@@ -375,6 +377,17 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             band_delete_data[1] = String.valueOf(sentMessage.getMessageId());
                         }
                     }
+                }else if(message.getText().equals("👤 O'zim haqimda")||message.getText().equals("\uD83D\uDC64 Обо мне")){
+                    Optional<User> byChatId1 = userRepo.findByChatId(chatId);
+                    sendMessage.setText(
+                            "👤 Ism familyangiz: " + byChatId1.get().getFullName() + "\n" +
+                                    "📞 Telefon raqamingiz: " + byChatId1.get().getPhoneNumber() + "\n" +
+                                    "🚗 Mashinangiz: " + byChatId1.get().getCarType() + "\n" +
+                                    "\uD83D\uDCDD  O'zim haqimda: " + byChatId1.get().getAbout() + "\n"
+                    );
+                    sendMessage.setReplyMarkup(directionDataPassenger(byChatId.get().getId(),foundUser));
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
                 }
 
                 else if (foundUser.getStatus().equals(Status.NEW_NUMBER)) {
@@ -735,10 +748,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         execute(sendMessage);
                     }
                 }
-
-
-
-
                 else if (foundUser.getStatus().equals(Status.SET_TIME)) {
                     try {
                         List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
@@ -787,7 +796,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     }
 
                 }
-
                 if(message.getText().equals("\uD83C\uDFE0  Bosh sahifa") & foundUser.getStatus().equals(Status.HOME_PAGE)){
                     foundUser.setStatus(Status.SET_CITY_FROM_SAVE);
                     userRepo.save(foundUser);
@@ -799,7 +807,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     sendMessage.setReplyMarkup(fromCitysButtonsReply(foundUser));
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
-                }else if(foundUser.getStatus().equals(Status.HOME_PAGE_DRIVER)){
+                }
+                else if(foundUser.getStatus().equals(Status.HOME_PAGE_DRIVER)){
                     foundUser.setStatus(Status.SET_FROM);
                     userRepo.save(foundUser);
                     if(foundUser.getLanguage().equals("uz")){
@@ -816,7 +825,113 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     execute(deleteMessage);
 
                 }
+else if(foundUser.getStatus().equals(Status.SET_FULL_NAME)){
+                    System.out.println("aaaww");
+    foundUser.setFullName(message.getText());
+    foundUser.setStatus(Status.NONE);
+    userRepo.save(foundUser);
+    if(foundUser.getLanguage().equals("uz")){
+        sendMessage.setText(
+                "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
+                        "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
+                        "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
+                        "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
+        );
+    }
+    else {
 
+        sendMessage.setText(
+                "✅ Успех обновлен \n 👤 Ваша фамилия: " + foundUser.getFullName() + "\n" +
+                        "📞 Ваш номер телефона: " + foundUser.getPhoneNumber() + "\n" +
+                        "🚗Ваша машина: " + foundUser.getCarType() + "\n" +
+                        "\uD83D\uDCDD  О себе: " + foundUser.getAbout() + "\n"
+        );
+    }
+
+                    sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
+                    sendMessage.setChatId(chatId);
+    execute(sendMessage);
+                }
+else if(foundUser.getStatus().equals(Status.SET_PHONE_NUMBER)){
+                    System.out.println("aaaww");
+                    foundUser.setPhoneNumber(message.getText());
+                    foundUser.setStatus(Status.NONE);
+                    userRepo.save(foundUser);
+                    if(foundUser.getLanguage().equals("uz")){
+                        sendMessage.setText(
+                                "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
+                                        "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    else {
+
+                        sendMessage.setText(
+                                "✅ Успех обновлен \n 👤 Ваша фамилия: " + foundUser.getFullName() + "\n" +
+                                        "📞 Ваш номер телефона: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗Ваша машина: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  О себе: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
+
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                }
+                else if(foundUser.getStatus().equals(Status.SET_CAR)){
+                    System.out.println("aaaww");
+                    foundUser.setCarType(message.getText());
+                    foundUser.setStatus(Status.NONE);
+                    userRepo.save(foundUser);
+                    if(foundUser.getLanguage().equals("uz")){
+                        sendMessage.setText(
+                                "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
+                                        "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    else {
+
+                        sendMessage.setText(
+                                "✅ Успех обновлен \n 👤 Ваша фамилия: " + foundUser.getFullName() + "\n" +
+                                        "📞 Ваш номер телефона: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗Ваша машина: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  О себе: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
+
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                }
+                else if(foundUser.getStatus().equals(Status.SET_MYSELF)){
+                    System.out.println("aaaww");
+                    foundUser.setAbout(message.getText());
+                    foundUser.setStatus(Status.NONE);
+                    userRepo.save(foundUser);
+                    if(foundUser.getLanguage().equals("uz")){
+                        sendMessage.setText(
+                                "✅ Muvaffaqiyat yangilandi \n 👤 Ism familyangiz: " + foundUser.getFullName() + "\n" +
+                                        "📞 Telefon raqamingiz: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗 Mashinangiz: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  O'zim haqimda: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    else {
+
+                        sendMessage.setText(
+                                "✅ Успех обновлен \n 👤 Ваша фамилия: " + foundUser.getFullName() + "\n" +
+                                        "📞 Ваш номер телефона: " + foundUser.getPhoneNumber() + "\n" +
+                                        "🚗Ваша машина: " + foundUser.getCarType() + "\n" +
+                                        "\uD83D\uDCDD  О себе: " + foundUser.getAbout() + "\n"
+                        );
+                    }
+                    sendMessage.setReplyMarkup(directionDataPassenger(foundUser.getId(),foundUser));
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                }
 
             }
             else if (message.hasContact()) {
@@ -879,7 +994,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             System.out.println(data);
             List<FromCity> allFromCities = fromCityRepo.findAll();
             List<ToCity> allToCities = toCityRepo.findAll();
-
             if (data.equals("uz") && !user.getIsDriver()) {
                 language = "uz";
                 user.setLanguage("uz");
@@ -914,7 +1028,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 execute(sendMessage);
             }
 
-
             else if (data.equals("Passengers")) {
                 user.setStatus(Status.SET_CITY_FROM_SAVE);
                 List<Role> roles = new ArrayList<>();
@@ -940,7 +1053,50 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
                 execute(deleteMessage);
             }
-
+else if(data.equals("fullName")){
+    user.setStatus(Status.SET_FULL_NAME);
+    userRepo.save(user);
+                if (user.getLanguage().equals("uz")) {
+                    sendMessage.setText("✏️ Ismingizni yangi qiymatini kiriting");
+                } else if (user.getLanguage().equals("ru")) {
+                    sendMessage.setText("✏️ Введите новое имя");
+                }
+                sendMessage.setChatId(chatId);
+                execute(sendMessage);
+            }
+else if(data.equals("phoneNumber")){
+                user.setStatus(Status.SET_PHONE_NUMBER);
+                userRepo.save(user);
+                if (user.getLanguage().equals("uz")) {
+                    sendMessage.setText("✏️ Telefon yangi qiymatini kiriting");
+                } else if (user.getLanguage().equals("ru")) {
+                    sendMessage.setText("✏️ Телефон янги кийматини киритинг");
+                }
+                sendMessage.setChatId(chatId);
+                execute(sendMessage);
+            }
+else if(data.equals("car")){
+                user.setStatus(Status.SET_CAR);
+                userRepo.save(user);
+                if (user.getLanguage().equals("uz")) {
+                    sendMessage.setText("✏️ Mashinani  yangi nomi kiriting");
+                } else if (user.getLanguage().equals("ru")) {
+                    sendMessage.setText("✏️ Введите новое имя машины");
+                }
+                sendMessage.setChatId(chatId);
+                execute(sendMessage);
+            }
+            else if(data.equals("myself")){
+                user.setStatus(Status.SET_MYSELF);
+                userRepo.save(user);
+                if (user.getLanguage().equals("uz")) {
+                    sendMessage.setText("✏️ O'zingiz haqingizda yangi qiymatni kiriting  kiriting");
+                } else if (user.getLanguage().equals("ru")) {
+                    sendMessage.setText("✏️ Введите новое значение о себе");
+                }
+                sendMessage.setChatId(chatId);
+                execute(sendMessage);
+            }
 
 
             boolean cityFound = false;
@@ -1634,6 +1790,59 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         }
     }
+    private InlineKeyboardMarkup directionDataPassenger(UUID id, User foundUser) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+
+        // First Row: Change Full Name
+        List<InlineKeyboardButton> firstRow = new ArrayList<>();
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        if (foundUser.getLanguage().equals("uz")) {
+            button1.setText("✍️ Ism familyani o'zgartirish:");
+        } else if (foundUser.getLanguage().equals("ru")) {
+            button1.setText("✍️ Изменить имя семьи:");
+        }
+        button1.setCallbackData("fullName");
+        firstRow.add(button1);
+        rows.add(firstRow);
+
+        // Second Row: Change Phone Number
+        List<InlineKeyboardButton> secondRow = new ArrayList<>();
+        InlineKeyboardButton button2 = new InlineKeyboardButton();
+        if (foundUser.getLanguage().equals("uz")) {
+            button2.setText("📞 Telefon raqamni o'zgartirish");
+        } else if (foundUser.getLanguage().equals("ru")) {
+            button2.setText("📞 Изменить номер телефона");
+        }
+        button2.setCallbackData("phoneNumber");
+        secondRow.add(button2);
+        rows.add(secondRow);
+
+        // Third Row: Change Car Name
+        List<InlineKeyboardButton> thirdRow = new ArrayList<>();
+        InlineKeyboardButton button3 = new InlineKeyboardButton();
+        if (foundUser.getLanguage().equals("uz")) {
+            button3.setText("🚗 Mashinani nomini o'zgartirish");
+        } else if (foundUser.getLanguage().equals("ru")) {
+            button3.setText("🚗 Переименуйте машину");
+        }
+        button3.setCallbackData("car");
+        thirdRow.add(button3);
+        rows.add(thirdRow);
+
+        // Fourth Row: Change About Info
+        List<InlineKeyboardButton> fourthRow = new ArrayList<>();
+        InlineKeyboardButton button4 = new InlineKeyboardButton();
+        if (foundUser.getLanguage().equals("uz")) {
+            button4.setText("ℹ️ O'zingiz haqqingizdagi ma'lumotlarni o'zgartirish");
+        } else if (foundUser.getLanguage().equals("ru")) {
+            button4.setText("ℹ️ Измените информацию о себе");
+        }
+        button4.setCallbackData("myself");
+        fourthRow.add(button4);
+        rows.add(fourthRow);
+
+        return new InlineKeyboardMarkup(rows);
+    }
     private ReplyKeyboardMarkup NotPath3(User foundUser){
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
@@ -2063,6 +2272,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     private ReplyKeyboardMarkup directions(User foundUser) {
         List<KeyboardRow> rows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
+
+        // Yo'nalishlarim button
         KeyboardButton button1 = new KeyboardButton();
         if (foundUser.getLanguage().equals("uz")) {
             button1.setText("🗺️ Yo'nalishlarim");
@@ -2071,6 +2282,15 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
         }
         row1.add(button1);
 
+        // O'zim haqimda button
+        KeyboardButton button2 = new KeyboardButton();
+        if (foundUser.getLanguage().equals("uz")) {
+            button2.setText("\uD83D\uDC64 O'zim haqimda");
+        } else if (foundUser.getLanguage().equals("ru")) {
+            button2.setText("\uD83D\uDC64 Обо мне");
+        }
+        row1.add(button2);
+
         rows.add(row1);
 
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(rows);
@@ -2078,6 +2298,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
         return replyKeyboardMarkup;
     }
+
     private InlineKeyboardMarkup fromCitysButtons(User foundUser) {
         Map<String, String> uzbekToRussianCities = new HashMap<>();
         uzbekToRussianCities.put("Toshkent", "Ташкент");
