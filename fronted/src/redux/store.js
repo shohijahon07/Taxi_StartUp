@@ -6,6 +6,7 @@ import fromCityReducer from './slices/fromCity'
 import commentReducer from './slices/CommentSlice'
 import pessengerReducer from './slices/userSlice'
 import connection from './slices/Connection'
+import advertisementReducer from './slices/advertisementSlice'
 const store = configureStore({
     reducer: {
        
@@ -15,15 +16,15 @@ const store = configureStore({
         fromCity: fromCityReducer,
         comment: commentReducer,
         pessenger: pessengerReducer,
-        boglanish:connection
-
+        boglanish:connection,
+        advertisement:advertisementReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
 
-                ignoredActions: ['driver/setSelectedFile','driver/setSelectedFile1','driver/setSelectedFile2','toCity/setSelectedDate','boglanish/saveForm/fulfilled'],
-                ignoredPaths: ['driver.selectedFile','driver.selectedFile1','driver.selectedFile2','toCity.selectedDate']
+                ignoredActions: ['driver/setSelectedFile','driver/setSelectedFile1','driver/setSelectedFile2','toCity/setSelectedDate','boglanish/saveForm/fulfilled',"advertisement/setSelectedFileA"],
+                ignoredPaths: ['driver.selectedFile','driver.selectedFile1','driver.selectedFile2','toCity.selectedDate','advertisement.selectedFileA']
 
 
             },
