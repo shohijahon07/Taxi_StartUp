@@ -51,14 +51,16 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
+//        return "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
 //        return "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
+        return "6964154747:AAH-HTw_4kM2NIjogEacAQWGJAKRToOzmsc";
     }
 
     @Override
     public String getBotUsername() {
-        return "kenjacar_bot";
+//        return "kenjacar_bot";
 //        return "https://t.me/shox_now_bot";
+        return "shohjahong35_bot";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -117,8 +119,10 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     sendMessage.setText("Sizning Yo'nalishingiz Avtomatik o'chib ketti \n" +
                             "Chunki:Sizning yo'nalishgizni hozirgi vaqtdan kichik bo'ldi!");
                     sendMessage.setChatId(chatId);
+                    sendMessage.setReplyMarkup(NotPath3(foundUser));
+                    foundUser.setStatus(Status.HOME_PAGE_DRIVER);
+                    userRepo.save(foundUser);
                     execute(sendMessage);
-                    System.out.println(routeDriver);
                     routeDriverRepo.delete(routeDriver);
                 }
             }
@@ -643,7 +647,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     try {
                         foundUser.setStatus(Status.SET_DAY_MONTH);
                         userRepo.save(foundUser);
-                        Integer.parseInt(message.getText());
+                        Integer.parseInt(message.getText()); // Ensuring the input is a number
                         driver_data[3] = message.getText();
 
                         // Create reply keyboard buttons for today, tomorrow, and the day after tomorrow
@@ -655,28 +659,41 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         LocalDate tomorrow = today.plusDays(1);
                         LocalDate dayAfterTomorrow = today.plusDays(2);
 
-                        // Format the dates to 'dd-MMMM' where the month is in Uzbek
-                        DateTimeFormatter uzbekDayMonthFormatter = DateTimeFormatter.ofPattern("dd-MMMM", Locale.forLanguageTag("uz"));
+                        // Define the formatter and locale dynamically based on user language
+                        DateTimeFormatter dayMonthFormatter;
+                        if (foundUser.getLanguage().equals("uz")) {
+                            // Use Uzbek locale for Uzbek month names
+                            dayMonthFormatter = DateTimeFormatter.ofPattern("dd-MMMM", Locale.forLanguageTag("uz"));
+                        } else if (foundUser.getLanguage().equals("ru")) {
+                            // Use Russian locale for Russian month names
+                            dayMonthFormatter = DateTimeFormatter.ofPattern("dd-MMMM", Locale.forLanguageTag("ru"));
+                        } else {
+                            // Fallback if language is neither Uzbek nor Russian (optional)
+                            dayMonthFormatter = DateTimeFormatter.ofPattern("dd-MMMM", Locale.getDefault());
+                        }
 
                         // Row 1 - Button for today's date
                         KeyboardRow row1 = new KeyboardRow();
-                        row1.add(today.format(uzbekDayMonthFormatter)); // Today's date in Uzbek
+                        row1.add(today.format(dayMonthFormatter));
 
+                        // Row 2 - Button for tomorrow's date
                         KeyboardRow row2 = new KeyboardRow();
-                        row2.add(tomorrow.format(uzbekDayMonthFormatter)); // Tomorrow's date in Uzbek
+                        row2.add(tomorrow.format(dayMonthFormatter));
 
+                        // Row 3 - Button for the day after tomorrow's date
                         KeyboardRow row3 = new KeyboardRow();
-                        row3.add(dayAfterTomorrow.format(uzbekDayMonthFormatter)); // Day after tomorrow's date in Uzbek
+                        row3.add(dayAfterTomorrow.format(dayMonthFormatter));
 
+                        // Add all rows to the keyboard layout
                         keyboard.add(row1);
                         keyboard.add(row2);
                         keyboard.add(row3);
 
-                        // Set the keyboard layout
+                        // Set the keyboard layout and resize it for mobile
                         replyKeyboardMarkup.setKeyboard(keyboard);
-                        replyKeyboardMarkup.setResizeKeyboard(true); // Resize for mobile devices
+                        replyKeyboardMarkup.setResizeKeyboard(true);
 
-                        // Send the message with the reply keyboard
+                        // Send the message with the reply keyboard based on language
                         if (foundUser.getLanguage().equals("uz")) {
                             sendMessage.setText("🔄 Iltimos, sanani tanlang:");
                         } else if (foundUser.getLanguage().equals("ru")) {
@@ -688,7 +705,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         execute(sendMessage);
 
                     } catch (NumberFormatException e) {
-                        // Handle invalid input
+                        // Handle invalid number input
                         foundUser.setStatus(Status.SET_GO_MONEY);
                         userRepo.save(foundUser);
                         if (foundUser.getLanguage().equals("uz")) {
@@ -700,6 +717,8 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                         execute(sendMessage);
                     }
                 }
+
+
                 else if (foundUser.getStatus().equals(Status.SET_DAY_MONTH)) {
                     try {
                         foundUser.setStatus(Status.SET_TIME);
@@ -823,7 +842,6 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     deleteMessage.setMessageId(Integer.valueOf(band_delete_data[2]));
                     deleteMessage.setChatId(chatId);
                     execute(deleteMessage);
-
                 }
 else if(foundUser.getStatus().equals(Status.SET_FULL_NAME)){
                     System.out.println("aaaww");
@@ -2167,41 +2185,59 @@ else if(data.equals("car")){
         // Print the input for debugging
         System.out.println("Input date: " + dateInput);
 
-        // Mapping Uzbek month names to their numerical equivalents
-        Map<String, String> uzbekMonthMap = new HashMap<>();
-        uzbekMonthMap.put("yanvar", "01");
-        uzbekMonthMap.put("fevral", "02");
-        uzbekMonthMap.put("mart", "03");
-        uzbekMonthMap.put("aprel", "04");
-        uzbekMonthMap.put("may", "05");
-        uzbekMonthMap.put("iyun", "06");
-        uzbekMonthMap.put("iyul", "07");
-        uzbekMonthMap.put("avgust", "08");
-        uzbekMonthMap.put("sentabr", "09");
-        uzbekMonthMap.put("oktabr", "10");
-        uzbekMonthMap.put("noyabr", "11");
-        uzbekMonthMap.put("dekabr", "12");
+        Map<String, String> monthMap = new HashMap<>();
+
+        // Mapping Uzbek and Russian month names to their numerical equivalents
+        if (foundUser.getLanguage().equals("uz")) {
+            monthMap.put("yanvar", "01");
+            monthMap.put("fevral", "02");
+            monthMap.put("mart", "03");
+            monthMap.put("aprel", "04");
+            monthMap.put("may", "05");
+            monthMap.put("iyun", "06");
+            monthMap.put("iyul", "07");
+            monthMap.put("avgust", "08");
+            monthMap.put("sentabr", "09");
+            monthMap.put("oktabr", "10");
+            monthMap.put("noyabr", "11");
+            monthMap.put("dekabr", "12");
+        } else if (foundUser.getLanguage().equals("ru")) {
+            monthMap.put("январь", "01");
+            monthMap.put("февраль", "02");
+            monthMap.put("март", "03");
+            monthMap.put("апрель", "04");
+            monthMap.put("май", "05");
+            monthMap.put("июнь", "06");
+            monthMap.put("июль", "07");
+            monthMap.put("август", "08");
+            monthMap.put("сентябрь", "09");
+            monthMap.put("октябрь", "10");
+            monthMap.put("ноябрь", "11");
+            monthMap.put("декабрь", "12");
+        }
 
         // Normalize input (trim spaces and make lowercase)
-        String normalizedInput = dateInput.trim().toLowerCase(); // e.g., "24-sentabr"
+        String normalizedInput = dateInput.trim().toLowerCase(); // e.g., "24-sentabr" or "24-сентябрь"
 
         // Split the input into day and month parts
         String[] dateParts = normalizedInput.split("-");
 
         // Ensure the input has exactly two parts: day and month
-        if (dateParts.length != 2 || !uzbekMonthMap.containsKey(dateParts[1])) {
+        if (dateParts.length != 2 || !monthMap.containsKey(dateParts[1])) {
             throw new DateTimeParseException("Invalid date format or month", dateInput, 0);
         }
 
         // Extract day and month
         String day = dateParts[0]; // e.g., "24"
-        String month = uzbekMonthMap.get(dateParts[1]); // e.g., "09" for "sentabr"
+        String month = monthMap.get(dateParts[1]); // e.g., "09" for "sentabr" or "сентябрь"
 
         // Get the current year
         String currentYear = String.valueOf(LocalDate.now().getYear());
 
+        // Format the final date string
         String formattedDate = String.format("%02d-%s-%s", Integer.parseInt(day), month, currentYear);
 
+        // Parse the date using the formatter
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate parsedDate = LocalDate.parse(formattedDate, formatter);
 

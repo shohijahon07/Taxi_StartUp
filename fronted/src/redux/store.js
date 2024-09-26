@@ -18,8 +18,7 @@ const store = configureStore({
         comment: commentReducer,
         pessenger: pessengerReducer,
         boglanish:connection,
-        advertisement:advertisementReducer
-        boglanish:connection,
+        advertisement:advertisementReducer,
         register:registers
 
     },
