@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.example.backend.DTO.AdvertsiningDTO;
 import org.example.backend.entity.User;
 import org.example.backend.repository.UserRepo;
-import org.example.backend.service.Advertising.AdvertisingService;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,76 +23,115 @@ public class AdvertisingServiceImpl implements AdvertisingService {
     private final UserRepo userRepo;
     private final RestTemplate restTemplate;
     private final String apiToken = "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
+    private final String fileDirectory = "backend/files/"; // .jar fayl joylashgan joyda
+
     @Override
     public void saveAdvertising(AdvertsiningDTO advertsiningDTO) {
-
-        List<Long> usersChatIds = getAllChatIds();  // Chat ID larni olamiz
-
-        // Har bir foydalanuvchiga reklama jo'natish
+        List<Long> usersChatIds = getAllChatIds();
         for (Long chatId : usersChatIds) {
-            sendMessage(chatId, advertsiningDTO);
+            try {
+                sendMessage(chatId, advertsiningDTO);
+            } catch (Exception e) {
+                System.err.println("Xabar yuborishda xatolik: " + chatId + " - " + e.getMessage());
+            }
         }
     }
 
     private List<Long> getAllChatIds() {
         return userRepo.findAllByChatIdIsNotNull()
                 .stream()
-                .map(user -> ((User) user).getChatId())  // User turiga cast qilish
+                .map(user -> ((User) user).getChatId())
                 .collect(Collectors.toList());
     }
 
-    private void sendMessage(Long chatId, AdvertsiningDTO advertsiningDTO) {
+    private void sendMessage(Long chatId, AdvertsiningDTO advertsiningDTO) throws IOException {
         String text = advertsiningDTO.getText();
-        String img =advertsiningDTO.getImg();
+        String img = advertsiningDTO.getImg();
         String buttonName = advertsiningDTO.getButtonName();
         String link = advertsiningDTO.getLink();
-        System.out.println(advertsiningDTO);
-        try {
-            // Xabar yuborish
-            String sendMessageUrl = "https://api.telegram.org/bot" + apiToken + "/sendPhoto";
-            URI uri = UriComponentsBuilder.fromHttpUrl(sendMessageUrl)
-                    .queryParam("chat_id", chatId)
-                    .queryParam("photo", img)
-                    .queryParam("caption", text)
-                    .build().toUri();
 
-            restTemplate.getForEntity(uri, String.class);  // Xabarni yuboramiz
+        File imageFile = new File(fileDirectory + img);
+        if (!imageFile.exists()) {
+            throw new IOException("Rasm fayli mavjud emas: " + imageFile.getAbsolutePath());
+        }
 
-            // Agar tugma nomi va link bo'lsa, tugmalarni qo'shamiz
-            if (buttonName != null && link != null) {
-                String[] buttonNames = buttonName.split(",");
-                String[] links = link.split(",");
+        String sendPhotoUrl = "https://api.telegram.org/bot" + apiToken + "/sendPhoto";
 
-                for (int i = 0; i < buttonNames.length; i++) {
-                    String buttonText = buttonNames[i];
-                    String buttonLink = links[i];
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-                    // Inline button yaratish va yuborish
-                    sendInlineKeyboard(chatId, buttonText, buttonLink);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("chat_id", chatId.toString());
+        body.add("photo", new FileSystemResource(imageFile));
+        body.add("caption", text);
+
+        // Inline tugmalarni tayyorlash
+        if (buttonName != null && link != null) {
+            String[] buttonNames = buttonName.split(",");
+            String[] links = link.split(",");
+
+            StringBuilder inlineKeyboard = new StringBuilder("[[");
+            for (int i = 0; i < buttonNames.length; i++) {
+                inlineKeyboard.append("{\"text\": \"").append(buttonNames[i]).append("\", \"url\": \"").append(links[i]).append("\"}");
+                if (i != buttonNames.length - 1) {
+                    inlineKeyboard.append(",");
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();  // Hato yuz berishi mumkin
+            inlineKeyboard.append("]]");
+
+            // `reply_markup` qismiga inline tugmalarni qo'shish
+            body.add("reply_markup", "{\"inline_keyboard\": " + inlineKeyboard + "}");
+        }
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                sendPhotoUrl,
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            System.out.println("Xabar muvaffaqiyatli yuborildi: " + response.getBody());
+        } else {
+            System.err.println("Xabar yuborishda xatolik: " + response.getStatusCode() + " - " + response.getBody());
         }
     }
 
-    // Inline tugma yuborish
     private void sendInlineKeyboard(Long chatId, String buttonText, String buttonLink) {
         String sendInlineKeyboardUrl = "https://api.telegram.org/bot" + apiToken + "/sendMessage";
 
         try {
-            String messageText = "Tugma: " + buttonText;
-            String inlineKeyboard = "[[{\"text\": \"" + buttonText + "\", \"url\": \"" + buttonLink + "\"}]]"; // JSON formatida
+            // Inline klaviaturani to'g'ri JSON formatida yaratish
+            String inlineKeyboard = "[[{\"text\": \"" + buttonText + "\", \"url\": \"" + buttonLink + "\"}]]";
 
-            URI uri = UriComponentsBuilder.fromHttpUrl(sendInlineKeyboardUrl)
-                    .queryParam("chat_id", chatId)
-                    .queryParam("text", messageText)
-                    .queryParam("reply_markup", inlineKeyboard)  // Inline tugmalarni qo'shamiz
-                    .build().toUri();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-            restTemplate.getForEntity(uri, String.class);  // Inline tugma yuboramiz
+            // JSON formatida to'g'ri so'rov yaratish
+            String requestBody = String.format(
+                    "{\"chat_id\": %d, \"text\": \"Iltimos, tugmani bosing:\", \"reply_markup\": {\"inline_keyboard\": %s}}",
+                    chatId, inlineKeyboard
+            );
+
+            HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(
+                    sendInlineKeyboardUrl,
+                    HttpMethod.POST,
+                    entity,
+                    String.class
+            );
+
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                System.err.println("Inline tugma yuborishda xatolik: " + response.getStatusCode() + " - " + response.getBody());
+            } else {
+                System.out.println("Inline tugma muvaffaqiyatli yuborildi: " + response.getBody());
+            }
         } catch (Exception e) {
-            e.printStackTrace();  // Hato yuz berishi mumkin
+            System.err.println("Inline tugma yuborishda xatolik: " + e.getMessage());
         }
     }
+
 }
