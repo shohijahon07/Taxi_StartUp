@@ -70,7 +70,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
     private String[] dataParts;
     private Integer count=1;
     private UUID idPassenger;
-    Map<String, String> ruToUzTranslations = Map.ofEntries(
+     Map<String, String> ruToUzTranslations = Map.ofEntries(
             Map.entry("Ташкент", "Toshkent"),
             Map.entry("Самарканд", "Samarqand"),
             Map.entry("Бухара", "Buxoro"),
@@ -88,6 +88,24 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             Map.entry(  "Термиз","Termiz")
 
     );
+    Map<String, String> uzToRuTranslations = Map.ofEntries(
+            Map.entry("Toshkent", "Ташкент"),
+            Map.entry("Samarqand", "Самарканд"),
+            Map.entry("Buxoro", "Бухара"),
+            Map.entry("Namangan", "Наманган"),
+            Map.entry("Andijon", "Андижан"),
+            Map.entry("Farg'ona", "Фергана"),
+            Map.entry("Qarshi", "Карши"),
+            Map.entry("Nukus", "Нукус"),
+            Map.entry("Jizzax", "Джизак"),
+            Map.entry("Xorazm", "Хорезм"),
+            Map.entry("Surxondaryo", "Сурхандарья"),
+            Map.entry("Sirdaryo", "Сырдарья"),
+            Map.entry("Qaraqalpog'iston", "Каракалпакстан"),
+            Map.entry("Urganch", "Урганч"),
+            Map.entry("Termiz", "Термиз")
+    );
+
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
@@ -290,21 +308,30 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                     if(byUser!=null){
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
                         String formattedDate = byUser.getDay().format(formatter);
-                        if(foundUser.getLanguage().equals("uz")){
+                        if (foundUser.getLanguage().equals("uz")) {
+                            String fromCityUzbek = translateCityToUzbek(byUser.getFromCity(), ruToUzTranslations);
+                            String toCityUzbek = translateCityToUzbek(byUser.getToCity(), ruToUzTranslations);
+
                             sendMessage.setText(
-                                    byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
+                                    fromCityUzbek + " 🚖 " + toCityUzbek + "\n" +
                                             "🛋️ Bo'sh-joylar soni: " + byUser.getCountSide() + "\n" +
                                             "💰 Narxi: " + byUser.getPrice() + " so'm\n" +
-                                            "📅  Sana" + formattedDate + " ⏰ " + byUser.getHour()
+                                            "📅 Sana: " + formattedDate + " ⏰ " + byUser.getHour()
                             );
-                        }else if(foundUser.getLanguage().equals("ru")){
+                        } else if (foundUser.getLanguage().equals("ru")) {
+                            // O'zbek shahar nomlarini ruscha tarjimaga o'girish
+                            String fromCityRussian = translateCityToRussian(byUser.getFromCity(), uzToRuTranslations);
+                            String toCityRussian = translateCityToRussian(byUser.getToCity(), uzToRuTranslations);
+
                             sendMessage.setText(
-                                    byUser.getFromCity() + " 🚖 " + byUser.getToCity() + "\n" +
+                                    fromCityRussian + " 🚖 " + toCityRussian + "\n" +
                                             "🛋️ Количество вакансий: " + byUser.getCountSide() + "\n" +
-                                            "💰 Цена: " + byUser.getPrice() + " so'm\n" +
-                                            "📅  Дата" + formattedDate + " ⏰ " + byUser.getHour()
+                                            "💰 Цена: " + byUser.getPrice() + " сум\n" +
+                                            "📅 Дата: " + formattedDate + " ⏰ " + byUser.getHour()
                             );
                         }
+
+
 
                         sendMessage.setReplyMarkup(directionData(byUser.getId(), foundUser));
 
@@ -331,45 +358,58 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
                             String formattedDate = routeDriver.getDay().format(formatter);
 
-                            // Display message in the user's selected language
-                            if (foundUser.getLanguage().equals("ru")) {
-                                sendMessage.setText(
-                                        routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Количество свободных мест: " + routeDriver.getCountSide() + " \n" +
-                                                "💲 Цена: " + routeDriver.getPrice() + " so'm \n" +
-                                                "📅 Дата: " + formattedDate + "\n" +
-                                                "⏰ час: " + routeDriver.getHour()
-                                );
-                            } else if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText(
-                                        routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Bo’sh o’rindiqlar soni: " + routeDriver.getCountSide() + " \n" +
-                                                "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
-                                                "📅 Sana: " + formattedDate + "\n" +
-                                                "⏰ soat: " + routeDriver.getHour()
-                                );
+                            String routeInfo = null;
+                            if (foundUser.getLanguage().equals("uz")) {
+                                String fromCityUzbek = translateCityToUzbek(routeDriver.getFromCity(), ruToUzTranslations);
+                                String toCityUzbek = translateCityToUzbek(routeDriver.getToCity(), ruToUzTranslations);
+
+                                routeInfo = fromCityUzbek + " ➡️ " + toCityUzbek + "\n" +
+                                        "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
+                                        "📅 Sana: " + formattedDate + "\n" +
+                                        "⏰ Soat: " + routeDriver.getHour();
+                            }
+                            else if (foundUser.getLanguage().equals("ru")) {
+                                String fromCityRussian = translateCityToRussian(routeDriver.getFromCity(), uzToRuTranslations);
+                                String toCityRussian = translateCityToRussian(routeDriver.getToCity(), uzToRuTranslations);
+
+                                routeInfo = fromCityRussian + " ➡️ " + toCityRussian + "\n" +
+                                        "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
+                                        "📅 Дата: " + formattedDate + "\n" +
+                                        "⏰ Час: " + routeDriver.getHour();
                             }
 
+
                             sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
+                            sendMessage.setText(routeInfo);
+                            sendMessage.setChatId(chatId);
                             Message sentMessage = execute(sendMessage);
 
-                            sendMessage.setReplyMarkup(new ReplyKeyboardRemove(true));
-                            DeleteMessage deleteMessage = new DeleteMessage();
-                            deleteMessage.setMessageId(Integer.valueOf(band_delete_data[1]));
-                            deleteMessage.setChatId(chatId);
-                            execute(deleteMessage);
+
 
                             band_delete_data[1] = String.valueOf(sentMessage.getMessageId());
                         }
                     }
-                }else if(message.getText().equals("👤 O'zim haqimda")||message.getText().equals("\uD83D\uDC64 Обо мне")){
+                }
+                else if(message.getText().equals("👤 O'zim haqimda")||message.getText().equals("\uD83D\uDC64 Обо мне")){
                     Optional<User> byChatId1 = userRepo.findByChatId(chatId);
-                    sendMessage.setText(
-                            "👤 Ism familyangiz: " + byChatId1.get().getFullName() + "\n" +
-                                    "📞 Telefon raqamingiz: " + byChatId1.get().getPhoneNumber() + "\n" +
-                                    "🚗 Mashinangiz: " + byChatId1.get().getCarType() + "\n" +
-                                    "\uD83D\uDCDD  O'zim haqimda: " + byChatId1.get().getAbout() + "\n"
-                    );
+                    if(foundUser.getLanguage().equals("uZ")){
+                        sendMessage.setText(
+                                "👤 Ism familyangiz: " + byChatId1.get().getFullName() + "\n" +
+                                        "📞 Telefon raqamingiz: " + byChatId1.get().getPhoneNumber() + "\n" +
+                                        "🚗 Mashinangiz: " + byChatId1.get().getCarType() + "\n" +
+                                        "\uD83D\uDCDD  O'zim haqimda: " + byChatId1.get().getAbout() + "\n"
+                        );
+                    }else {
+                        sendMessage.setText(
+                                "👤 Ваша фамилия: " + byChatId1.get().getFullName() + "\n" +
+                                        "📞 Ваш номер телефона: " + byChatId1.get().getPhoneNumber() + "\n" +
+                                        "🚗 Ваша машина: " + byChatId1.get().getCarType() + "\n" +
+                                        "\uD83D\uDCDD  О себе: " + byChatId1.get().getAbout() + "\n"
+                        );
+                    }
+
                     sendMessage.setReplyMarkup(directionDataPassenger(byChatId.get().getId(),foundUser));
                     sendMessage.setChatId(chatId);
                     execute(sendMessage);
@@ -417,24 +457,27 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             }
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
                             String formattedDate = routeDriver.getDay().format(formatter);
+                            String routeInfo = null;
                             if (foundUser.getLanguage().equals("uz")) {
-                                sendMessage.setText(
-                                        routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
-                                                "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
-                                                "📅 Sana: " + formattedDate + "\n" +
-                                                "⏰ Soat: " + routeDriver.getHour()
-                                );
-                            } else if (foundUser.getLanguage().equals("ru")) {
-                                sendMessage.setText(
-                                        routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
-                                                "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
-                                                "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
-                                                "📅 Дата: " + formattedDate + "\n" +
-                                                "⏰ Час: " + routeDriver.getHour()
-                                );
-                            }
+                                String fromCityUzbek = translateCityToUzbek(routeDriver.getFromCity(), ruToUzTranslations);
+                                String toCityUzbek = translateCityToUzbek(routeDriver.getToCity(), ruToUzTranslations);
 
+                                routeInfo = fromCityUzbek + " ➡️ " + toCityUzbek + "\n" +
+                                        "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
+                                        "📅 Sana: " + formattedDate + "\n" +
+                                        "⏰ Soat: " + routeDriver.getHour();
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                String fromCityRussian = translateCityToRussian(routeDriver.getFromCity(), uzToRuTranslations);
+                                String toCityRussian = translateCityToRussian(routeDriver.getToCity(), uzToRuTranslations);
+
+                                routeInfo = fromCityRussian + " ➡️ " + toCityRussian + "\n" +
+                                        "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
+                                        "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
+                                        "📅 Дата: " + formattedDate + "\n" +
+                                        "⏰ Час: " + routeDriver.getHour();
+                            }
+                            sendMessage.setText(routeInfo);
                             sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
                             execute(sendMessage);
 
@@ -474,20 +517,27 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
                             String formattedDate = routeDriver.getDay().format(formatter);
-                            String routeInfo;
+                            String routeInfo = null;
                             if (foundUser.getLanguage().equals("uz")) {
-                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                String fromCityUzbek = translateCityToUzbek(routeDriver.getFromCity(), ruToUzTranslations);
+                                String toCityUzbek = translateCityToUzbek(routeDriver.getToCity(), ruToUzTranslations);
+
+                                routeInfo = fromCityUzbek + " ➡️ " + toCityUzbek + "\n" +
                                         "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
                                         "📅 Sana: " + formattedDate + "\n" +
                                         "⏰ Soat: " + routeDriver.getHour();
-                            } else {
-                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                            } else if (foundUser.getLanguage().equals("ru")) {
+                                String fromCityRussian = translateCityToRussian(routeDriver.getFromCity(), uzToRuTranslations);
+                                String toCityRussian = translateCityToRussian(routeDriver.getToCity(), uzToRuTranslations);
+
+                                routeInfo = fromCityRussian + " ➡️ " + toCityRussian + "\n" +
                                         "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
                                         "📅 Дата: " + formattedDate + "\n" +
                                         "⏰ Час: " + routeDriver.getHour();
                             }
+
 
                             sendMessage.setText(sendMessage.getText() + routeInfo);
 
@@ -531,20 +581,27 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             }
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
                             String formattedDate = routeDriver.getDay().format(formatter);
-                            String routeInfo = "";
+                            String routeInfo = null;
                             if (foundUser.getLanguage().equals("uz")) {
-                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                String fromCityUzbek = translateCityToUzbek(routeDriver.getFromCity(), ruToUzTranslations);
+                                String toCityUzbek = translateCityToUzbek(routeDriver.getToCity(), ruToUzTranslations);
+
+                                routeInfo = fromCityUzbek + " ➡️ " + toCityUzbek + "\n" +
                                         "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
                                         "📅 Sana: " + formattedDate + "\n" +
                                         "⏰ Soat: " + routeDriver.getHour();
                             } else if (foundUser.getLanguage().equals("ru")) {
-                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                String fromCityRussian = translateCityToRussian(routeDriver.getFromCity(), uzToRuTranslations);
+                                String toCityRussian = translateCityToRussian(routeDriver.getToCity(), uzToRuTranslations);
+
+                                routeInfo = fromCityRussian + " ➡️ " + toCityRussian + "\n" +
                                         "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
                                         "📅 Дата: " + formattedDate + "\n" +
                                         "⏰ Час: " + routeDriver.getHour();
                             }
+
 
                             sendMessage.setText(successMessage + routeInfo);
                             sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
@@ -591,19 +648,29 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
                             String formattedDate = routeDriver.getDay().format(formatter);
                             String routeInfo = "";
+
+
                             if (foundUser.getLanguage().equals("uz")) {
-                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                String fromCityUzbek = translateCityToUzbek(routeDriver.getFromCity(), ruToUzTranslations);
+                                String toCityUzbek = translateCityToUzbek(routeDriver.getToCity(), ruToUzTranslations);
+
+                                routeInfo = fromCityUzbek + " ➡️ " + toCityUzbek + "\n" +
                                         "🪑 Bo'sh-joylar soni: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Narxi: " + routeDriver.getPrice() + " so'm \n" +
                                         "📅 Sana: " + formattedDate + "\n" +
                                         "⏰ Soat: " + routeDriver.getHour();
                             } else if (foundUser.getLanguage().equals("ru")) {
-                                routeInfo = routeDriver.getFromCity() + " ➡️ " + routeDriver.getToCity() + "\n" +
+                                String fromCityRussian = translateCityToRussian(routeDriver.getFromCity(), uzToRuTranslations);
+                                String toCityRussian = translateCityToRussian(routeDriver.getToCity(), uzToRuTranslations);
+
+                                routeInfo = fromCityRussian + " ➡️ " + toCityRussian + "\n" +
                                         "🪑 Количество вакансий: " + routeDriver.getCountSide() + " \n" +
                                         "💲 Цена: " + routeDriver.getPrice() + " сум \n" +
-                                        "📅 Дата: " + formattedDate+ "\n" +
+                                        "📅 Дата: " + formattedDate + "\n" +
                                         "⏰ Час: " + routeDriver.getHour();
                             }
+
+
 
                             sendMessage.setText(successMessage + routeInfo);
                             sendMessage.setReplyMarkup(directionData(routeDriver.getId(), foundUser));
@@ -792,7 +859,6 @@ band_delete_data[1]= String.valueOf(execute.getMessageId());
 
                             sendMessage.setReplyMarkup(directions(foundUser));
                             Message execute = execute(sendMessage);
-                            band_delete_data[1]= String.valueOf(execute.getMessageId());
                             driver_data = new String[6];
                         } else {
                             sendMessage.setText("User not found for the given chat ID");
@@ -1432,41 +1498,75 @@ else if(data.equals("car")){
                             Integer countSide = byUser.getCountSide();
                             byUser.setCountSide(countSide - 1);
                             routeDriverRepo.save(byUser);
-                            Optional<User> byId = userRepo.findById(idPassenger);
-                            byId.get().setStatus(Status.COMMENT_CREATE);
-                            byId.get().setCommen_id(String.valueOf(user.getId()));
-                            sendMessage.setText("✍\uFE0F Haydovchiga izoh qoldiring !");
-                            sendMessage.setChatId(byId.get().getChatId());
-                            execute(sendMessage);
-                            userRepo.save(byId.get());
-                            List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
-                            for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
-                                if (userIds.contains(routeDriver.getUser().getId())) {
-                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
-                                    String formattedDate = routeDriver.getDay().format(formatter);
-                                    if (user.getLanguage().equals("uz")) {
-                                        sendMessage.setText(
-                                                routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
-                                                        "🛋️ Bo'sh-joylar soni: " + routeDriver.getCountSide() + "\n" +
-                                                        "💰 Narxi: " + routeDriver.getPrice() + " so'm\n" +
-                                                        "📅 Sana: " + formattedDate+ " ⏰ " + routeDriver.getHour()
-                                        );
-                                    } else if (user.getLanguage().equals("ru")) {
-                                        sendMessage.setText(
-                                                routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
-                                                        "🛋️ Количество вакансий: " + routeDriver.getCountSide() + "\n" +
-                                                        "💰 Цена: " + routeDriver.getPrice() + " so'm\n" +
-                                                        "📅 Дата: " + formattedDate+ " ⏰ " + routeDriver.getHour()
-                                        );
-                                    }
 
-                                    sendMessage.setChatId(chatId);
-                                    sendMessage.setReplyMarkup(directionData(routeDriver.getId(), user));
-                                    execute(sendMessage);
+                            // Check if countSide is now 0
+                           if (byUser.getCountSide() == 0) {
+                                routeDriverRepo.delete(byUser);
+
+                                if (user.getLanguage().equals("uz")) {
+                                    sendMessage.setText("Siz so'ngi yo'lovchini qabul qildingiz. ✅ Sizda 🚫 jo'ylar soni tugadi.");
+                                } else if (user.getLanguage().equals("ru")) {
+                                    sendMessage.setText("Вы приняли последнего пассажира. ✅ На вашем маршруте 🚫 закончились места.");
+                                }
+
+
+                                  sendMessage.setReplyMarkup(NotPath3(user));
+                                user.setStatus(Status.HOME_PAGE_DRIVER);
+                                userRepo.save(user);
+                                sendMessage.setChatId(chatId);
+                               Message execute = execute(sendMessage);
+                               Integer messageId = execute.getMessageId();
+                               band_delete_data[2]= String.valueOf(messageId);
+                           }
+
+                                Optional<User> byId = userRepo.findById(idPassenger);
+                                byId.get().setStatus(Status.COMMENT_CREATE);
+                                byId.get().setCommen_id(String.valueOf(user.getId()));
+                                sendMessage.setText("✍️ Haydovchiga izoh qoldiring!");
+                                sendMessage.setChatId(byId.get().getChatId());
+                                execute(sendMessage);
+                                userRepo.save(byId.get());
+
+
+                            if (byUser.getCountSide() > 0) {
+                                List<UUID> userIds = userRepo.findAllUserIdsByChatId(chatId);
+                                for (Route_Driver routeDriver : routeDriverRepo.findAll()) {
+                                    if (userIds.contains(routeDriver.getUser().getId())) {
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
+                                        String formattedDate = routeDriver.getDay().format(formatter);
+                                        if (user.getLanguage().equals("uz")) {
+                                            String fromCityUzbek = translateCityToUzbek(byUser.getFromCity(), ruToUzTranslations);
+                                            String toCityUzbek = translateCityToUzbek(byUser.getToCity(), ruToUzTranslations);
+
+                                            sendMessage.setText(
+                                                    fromCityUzbek + " 🚖 " + toCityUzbek + "\n" +
+                                                            "🛋️ Bo'sh-joylar soni: " + byUser.getCountSide() + "\n" +
+                                                            "💰 Narxi: " + byUser.getPrice() + " so'm\n" +
+                                                            "📅 Sana: " + formattedDate + " ⏰ " + byUser.getHour()
+                                            );
+                                        } else if (user.getLanguage().equals("ru")) {
+                                            // O'zbek shahar nomlarini ruscha tarjimaga o'girish
+                                            String fromCityRussian = translateCityToRussian(byUser.getFromCity(), uzToRuTranslations);
+                                            String toCityRussian = translateCityToRussian(byUser.getToCity(), uzToRuTranslations);
+
+                                            sendMessage.setText(
+                                                    fromCityRussian + " 🚖 " + toCityRussian + "\n" +
+                                                            "🛋️ Количество вакансий: " + byUser.getCountSide() + "\n" +
+                                                            "💰 Цена: " + byUser.getPrice() + " сум\n" +
+                                                            "📅 Дата: " + formattedDate + " ⏰ " + byUser.getHour()
+                                            );
+                                        }
+
+                                        sendMessage.setChatId(chatId);
+                                        sendMessage.setReplyMarkup(directionData(routeDriver.getId(), user));
+                                        execute(sendMessage);
+                                    }
                                 }
                             }
                         }
-                    } else {
+                    }
+
+                    else {
                         if (user.getLanguage().equals("uz")) {
                             sendMessage.setText(
                                     "🚫 Sizda joylar soni tugadi. "
@@ -1504,6 +1604,22 @@ else if(data.equals("car")){
                 }
 
                 Route_Driver byUser1 = routeDriverRepo.findByUser(Optional.ofNullable(byUser2));
+                if (byUser1.getCountSide() == 0) {
+                    routeDriverRepo.delete(byUser1);
+
+                    if (user.getLanguage().equals("uz")) {
+                        sendMessage.setText("Siz so'ngi yo'lovchini qabul qildingiz. ✅ Sizda 🚫 jo'ylar soni tugadi.");
+                    } else if (user.getLanguage().equals("ru")) {
+                        sendMessage.setText("Вы приняли последнего пассажира. ✅ На вашем маршруте 🚫 закончились места.");
+                    }
+
+
+                    sendMessage.setReplyMarkup(NotPath3(user));
+                    user.setStatus(Status.HOME_PAGE_DRIVER);
+                    userRepo.save(user);
+                    sendMessage.setChatId(chatId);
+                    execute(sendMessage);
+                }
 
                 if (byUser1.getCountSide() > 0) {
                     if (byUser1 != null) {
@@ -1534,20 +1650,28 @@ else if(data.equals("car")){
                                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("uz"));
                                     String formattedDate = routeDriver.getDay().format(formatter);
                                     if (user.getLanguage().equals("uz")) {
+                                        String fromCityUzbek = translateCityToUzbek(routeDriver.getFromCity(), ruToUzTranslations);
+                                        String toCityUzbek = translateCityToUzbek(routeDriver.getToCity(), ruToUzTranslations);
+
                                         sendMessage.setText(
-                                                routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
-                                                        "🛋 Bo'sh-joylar soni: " + routeDriver.getCountSide() + "\n" +
+                                                fromCityUzbek + " 🚖 " + toCityUzbek + "\n" +
+                                                        "🛋️ Bo'sh-joylar soni: " + routeDriver.getCountSide() + "\n" +
                                                         "💰 Narxi: " + routeDriver.getPrice() + " so'm\n" +
                                                         "📅 Sana: " + formattedDate + " ⏰ " + routeDriver.getHour()
                                         );
                                     } else if (user.getLanguage().equals("ru")) {
+                                        // O'zbek shahar nomlarini ruscha tarjimaga o'girish
+                                        String fromCityRussian = translateCityToRussian(routeDriver.getFromCity(), uzToRuTranslations);
+                                        String toCityRussian = translateCityToRussian(routeDriver.getToCity(), uzToRuTranslations);
+
                                         sendMessage.setText(
-                                                routeDriver.getFromCity() + " 🚖 " + routeDriver.getToCity() + "\n" +
-                                                        "🛋 Количество вакансий: " + routeDriver.getCountSide() + "\n" +
-                                                        "💰 Цена: " + routeDriver.getPrice() + " so'm\n" +
+                                                fromCityRussian + " 🚖 " + toCityRussian + "\n" +
+                                                        "🛋️ Количество вакансий: " + routeDriver.getCountSide() + "\n" +
+                                                        "💰 Цена: " + routeDriver.getPrice() + " сум\n" +
                                                         "📅 Дата: " + formattedDate + " ⏰ " + routeDriver.getHour()
                                         );
                                     }
+
 
                                     sendMessage.setChatId(chatId);
                                     sendMessage.setReplyMarkup(directionData(routeDriver.getId(), user));
@@ -2356,7 +2480,6 @@ else if(data.equals("car")){
         }
         row1.add(button1);
 
-        // O'zim haqimda button
         KeyboardButton button2 = new KeyboardButton();
         if (foundUser.getLanguage().equals("uz")) {
             button2.setText("\uD83D\uDC64 O'zim haqimda");
@@ -2738,5 +2861,14 @@ else if(data.equals("car")){
     private String translateIfNeeded(String cityName) {
         return ruToUzTranslations.getOrDefault(cityName, cityName);
     }
+
+    public String translateCityToRussian(String city, Map<String, String> translations) {
+        return translations.getOrDefault(city, city);
+    }
+    public String translateCityToUzbek(String city, Map<String, String> translations) {
+        return translations.getOrDefault(city.trim().toLowerCase(), city);
+    }
+
+
 
 }
