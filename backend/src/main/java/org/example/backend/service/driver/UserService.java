@@ -7,6 +7,7 @@ import org.example.backend.DTO.UserDto;
 import org.example.backend.entity.Role;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,11 +31,11 @@ public interface UserService {
 
 
 
-    ResponseEntity<?> saveUser(UserDto userDto);
-
     ResponseEntity<?> deleteUser(UUID id);
 
     HttpEntity<?> savePessenger(PessengerDto pessengerDto) throws IOException;
 
     ResponseEntity<?> SearchNameDriver(String name);
+
+    ResponseEntity<?> saveUser(String userDtoString, MultipartFile carImg, MultipartFile driverImg, MultipartFile cardDocument);
 }
