@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -36,6 +38,7 @@ public class UserImpl implements UserService{
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
     private final RouteDriverRepo routeDriverRepo;
+    private final FileService fileService;
 
     @Override
     public ResponseEntity<?> getDriverOne(UUID id) {
@@ -146,6 +149,60 @@ public class UserImpl implements UserService{
         return ResponseEntity.ok(users);
     }
 
+    public ResponseEntity<?> saveUser(String userDtoString, MultipartFile carImg, MultipartFile driverImg, MultipartFile cardDocument) {
+        try {
+            // Convert the userDto string back to an object
+            ObjectMapper objectMapper = new ObjectMapper();
+            UserDto userDto = objectMapper.readValue(userDtoString, UserDto.class);
+
+            // Handle file uploads
+            if (carImg != null && !carImg.isEmpty()) {
+                String carImgPath = fileService.saveFile(carImg);
+                userDto.setCarImg(carImgPath);
+            }
+            if (driverImg != null && !driverImg.isEmpty()) {
+                String driverImgPath = fileService.saveFile(driverImg);
+                userDto.setDriverImg(driverImgPath);
+            }
+            if (cardDocument != null && !cardDocument.isEmpty()) {
+                String cardDocumentPath = fileService.saveFile(cardDocument);
+                userDto.setCardDocument(cardDocumentPath);
+            }
+
+            // Handle roles and user saving
+            List<Role> roles = new ArrayList<>();
+            Role driverRole = roleRepo.findByName("ROLE_DRIVER");
+            if (driverRole == null) {
+                driverRole = new Role("ROLE_DRIVER");
+                roleRepo.save(driverRole);
+            }
+            roles.add(driverRole);
+
+            Optional<User> byChatId = userRepo.findByChatId(userDto.getChatId());
+
+            if (byChatId.isPresent()) {
+                User user = byChatId.get();
+                user.setCarType(userDto.getCarType());
+                user.setCarImg(userDto.getCarImg());
+                user.setDriverImg(userDto.getDriverImg());
+                user.setCardDocument(userDto.getCardDocument());
+                user.setAbout(userDto.getAbout());
+                user.setChatId(userDto.getChatId());
+                user.setCount(userDto.isCount());
+                user.setRoles(roles);
+
+                userRepo.save(user);
+                return ResponseEntity.ok("User updated successfully");
+            } else {
+                return ResponseEntity.ok("Please register first through the bot");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("An error occurred while saving the user");
+        }
+    }
+
     @Override
     @Transactional
     public ResponseEntity<?> deleteUser(UUID id) {
@@ -226,39 +283,7 @@ public class UserImpl implements UserService{
         return ResponseEntity.ok(users);
     }
 
-    @Override
-    public ResponseEntity<?> saveUser(UserDto userDto) {
-        System.out.println(userDto);
-        System.out.println(userDto.getCardDocument());
 
-        List<Role> roles = new ArrayList<>();
-        Role driverRole = roleRepo.findByName("ROLE_DRIVER");
-        if (driverRole == null) {
-            driverRole = new Role("ROLE_DRIVER");
-            roleRepo.save(driverRole);
-        }
-        roles.add(driverRole);
-
-        Optional<User> byChatId = userRepo.findByChatId(userDto.getChatId());
-
-        if (byChatId.isPresent()) {
-            User user1 = byChatId.get();
-
-            user1.setCarType(userDto.getCarType());
-            user1.setCarImg(userDto.getCarImg());
-            user1.setDriverImg(userDto.getDriverImg());
-            user1.setCardDocument(userDto.getCardDocument());
-            user1.setAbout(userDto.getAbout());
-            user1.setChatId(userDto.getChatId());
-            user1.setCount(userDto.isCount());
-            user1.setRoles(roles);
-
-            userRepo.save(user1);
-            return ResponseEntity.ok("ok");
-        } else {
-return ResponseEntity.ok("Siz oldin botdan ro'yxatdan o'tishingiz kerak");
-        }
-    }
 
 
     private InlineKeyboardMarkup sendBusy(UUID userId, Long driverChatId) {

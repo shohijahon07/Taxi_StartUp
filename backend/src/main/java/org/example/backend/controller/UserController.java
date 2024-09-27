@@ -12,6 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,10 +46,15 @@ public class UserController {
         System.out.println(pessengerDto);
         return userService.savePessenger(pessengerDto);
     }
-   @PostMapping("/save")
-   public ResponseEntity<?>save(@RequestBody UserDto userDto){
-       return ResponseEntity.ok(userService.saveUser(userDto));
-}
+    @PostMapping("/save")
+    public ResponseEntity<?> saveUser(
+            @RequestParam("userDto") String userDtoString,
+            @RequestParam(value = "carImg", required = false) MultipartFile carImg,
+            @RequestParam(value = "driverImg", required = false) MultipartFile driverImg,
+            @RequestParam(value = "cardDocument", required = false) MultipartFile cardDocument) {
+
+        return userService.saveUser(userDtoString, carImg, driverImg, cardDocument);
+    }
     @GetMapping("/drivers")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getDriverAll(@RequestParam Boolean isDriver){
