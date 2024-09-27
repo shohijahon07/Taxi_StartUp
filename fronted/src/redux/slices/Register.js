@@ -4,37 +4,35 @@ import apicall1 from '../../apicall/apicall1';
 export const saveUserData = createAsyncThunk(
   'register/saveUserData',
   async ({ form, selectFiles, chatId }) => {
-    let newImg = form.carImg;
-    let newImg1 = form.driverImg;
-    let newImg2 = form.cardDocument;
+    const formData = new FormData();
 
-    const uploadFile = async (file) => {
-      const formData = new FormData();
-      formData.append('file', file);
-      const response = await apicall1('/fileController/photo', 'POST', formData);
-      return response.data;
-    };
+    // Append the form data (excluding the files)
+    formData.append('userDto', JSON.stringify({
+      ...form,
+      chatId, // Add the chatId to the form data
+    }));
 
+    // Append the files if they are selected
     if (selectFiles[0]) {
-      newImg = await uploadFile(selectFiles[0]);
+      formData.append('carImg', selectFiles[0]);
     }
     if (selectFiles[1]) {
-      newImg1 = await uploadFile(selectFiles[1]);
+      formData.append('driverImg', selectFiles[1]);
     }
     if (selectFiles[2]) {
-      newImg2 = await uploadFile(selectFiles[2]);
+      formData.append('cardDocument', selectFiles[2]);
     }
 
-    const updatedForm = {
-      ...form,
-      carImg: newImg,
-      driverImg: newImg1,
-      cardDocument: newImg2,
-      chatId: chatId,
-    };
+    // Send the form data with files and user details in one request
+    const response = await apicall1('/user/save', 'POST', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then((res)=>{
+      console.log(res.data+"sdd");
+    })
 
-    const response = await apicall1("/user/save", "POST", updatedForm);
-    return response;
+    return response.data; // Adjust according to your API response structure
   }
 );
 
