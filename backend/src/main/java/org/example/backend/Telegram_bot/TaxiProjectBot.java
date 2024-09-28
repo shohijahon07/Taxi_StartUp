@@ -394,7 +394,7 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
                 }
                 else if(message.getText().equals("👤 O'zim haqimda")||message.getText().equals("\uD83D\uDC64 Обо мне")){
                     Optional<User> byChatId1 = userRepo.findByChatId(chatId);
-                    if(foundUser.getLanguage().equals("uZ")){
+                    if(foundUser.getLanguage().equals("uz")){
                         sendMessage.setText(
                                 "👤 Ism familyangiz: " + byChatId1.get().getFullName() + "\n" +
                                         "📞 Telefon raqamingiz: " + byChatId1.get().getPhoneNumber() + "\n" +
@@ -2868,7 +2868,5 @@ else if(data.equals("car")){
     public String translateCityToUzbek(String city, Map<String, String> translations) {
         return translations.getOrDefault(city.trim().toLowerCase(), city);
     }
-
-
 
 }

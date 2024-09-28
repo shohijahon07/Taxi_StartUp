@@ -11,7 +11,7 @@
   background-color: #E1E5F1;
   border-radius: 15px;
   padding: 20px;
-margin:  20px auto;
+  margin:  20px auto;
 }
 .text_rg{
 font-family: 'Inter', sans-serif;
@@ -147,6 +147,9 @@ color:#fff;
       height: 100% !important;
       padding: 20px;
     margin-top: 0px !important;
+    }
+    body{
+      background-color:#E1E5F1 ;
     }
 
     
