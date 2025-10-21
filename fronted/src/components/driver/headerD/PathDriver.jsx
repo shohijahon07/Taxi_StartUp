@@ -320,6 +320,7 @@ function PathDriver() {
           if (routesByDriver.length >= 1) {
             message.error("Siz ayni damda faqat 1 ta yo'nalishda ishlay olasiz!");
           } else {
+              dispatch()
             dispatch(addRoute({ driverRout, userName }))
               .unwrap()
               .then(() => {
@@ -389,7 +390,8 @@ function PathDriver() {
     <div>
       <DriverHeader />
       <div className='path_dr_con'>
-        <div className="path_dr_con2">
+        <div className="backColor">
+           <div className="path_dr_con2">
 
           <div className="h1RouterUser">
             <h1 id="specificGroupArea" className={"header_dr"}>{language==="1"?"Har kuni O’zbekiston bo’ylab qatnovlar":"Ежедневные поездки по Узбекистану"}</h1>
@@ -523,7 +525,7 @@ function PathDriver() {
             </div>
           </div>
 
-          <div className=""  >
+          <div className=""  style={{margin:"0 10px"}}>
             {routesByDriver.map((item) => (
               <div className="mapRoutes" key={item.id} style={{ backgroundColor: "white" }} >
                 <li className='list-group-item li1'><div className="l1Child1"><p> {formatDate(item.day)}</p> <p>{item.hour}</p></div> <div className="li1Child2"> <p>{translateCity(item.fromCity)}</p> <img src={b8}  alt="image"/> <p>{translateFullName(item.toCity)}</p></div> <div className="li1Child3"><p>{item.price} {language === "1" ? "So’m" : "Сум"} </p></div></li>
@@ -548,11 +550,11 @@ function PathDriver() {
               </div>
             ))}
           </div>
-
-
-
         </div>
       </div>
+        </div>
+       
+
       {showFromCityModal && (
         <OptionModal
           options={translatedFromCities}

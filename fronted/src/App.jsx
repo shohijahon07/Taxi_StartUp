@@ -48,7 +48,7 @@ function App() {
       const rolePerm = check();
       if (rolePerm != null) {
         axios({
-          url: "http://localhost:8080/api/auth/check",
+          url: "/api/auth/check",
           method: "get",
           headers: { authorization: localStorage.getItem("refresh_token") },
         })

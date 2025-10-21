@@ -14,10 +14,10 @@ import calendar from "../../pictures/calendar.webp";
 import Boglanish from './Boglanish';
 import BizHaqimizda from './BizHaqimizda';
 import Footer from './Footer';
-import b7 from "../../pictures/b7.svg";
+import b7 from "../../pictures/a3.svg";
 import b8 from "../../pictures/b8.webp";
-import b9 from "../../pictures/b9.webp";
-import b11 from "../../pictures/b11.webp";
+import b19 from "../../pictures/as.svg";
+import b11 from "../../pictures/a2.svg";
 import b14 from "../../pictures/b18.webp";
 import Boglanish2 from './Boglanish2';
 import BizHaqimizda2 from './bizHaqimizda/BizHaqimizda2';
@@ -329,7 +329,7 @@ function RoutesUser() {
                         }}
                     >
                         {driverRout.fromCity ? (
-                            <span style={{ color: '#303383',fontWeight:"600",letterSpacing:"1.5px" }}>{translateCity(driverRout.fromCity)}</span>
+                            <span style={{ color: '#00AFF5',fontWeight:"600",letterSpacing:"1.5px" }}>{translateCity(driverRout.fromCity)}</span>
                         ) : (
                             <span style={{ fontWeight: 'normal' }}>
                                 {language === "1" ? "Qayerdan  " : "Откуда"}
@@ -354,7 +354,7 @@ function RoutesUser() {
                                 }}
                             > 
                              {driverRout.toCity ? (
-                            <span style={{ color: '#303383',fontWeight:"600",letterSpacing:"1.5px" }}>{translateCity(driverRout.toCity)}</span>
+                            <span style={{ color: '#00AFF5',fontWeight:"600",letterSpacing:"1.5px" }}>{translateCity(driverRout.toCity)}</span>
                         ) : (
                             <span style={{ fontWeight: 'normal' }}>
                                 { language === "1" ? "Qayerga" : "Куда"}
@@ -374,7 +374,7 @@ function RoutesUser() {
                     >
 
                     {selectedDate? (
-                            <span style={{ color: '#303383',fontWeight:"600",letterSpacing:"1.5px" }}>{formatDate(selectedDate)}</span>
+                            <span style={{ color: '#00AFF5',fontWeight:"600",letterSpacing:"1.5px" }}>{formatDate(selectedDate)}</span>
                         ) : (
                             <span style={{ fontWeight: 'normal' }}>
                                 { language === "1" ? "Qachon" : "Когда"}
@@ -405,12 +405,12 @@ function RoutesUser() {
                             <h2>{language==="1"?`Yo’nalish bo’yicha qatnovlar `:`Маршруты`} </h2>
                         </div>
                         <div className="days">
-                        <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(day12) === formatDate(today) ? "#303383" : ""),color:(formatDate(day12) === formatDate(today) ? "white" : "")}}>
-                        {formatDate(today)}
+                        <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(day12) === formatDate(today) ? "#00AFF5" : ""),color:(formatDate(day12) === formatDate(today) ? "white" : "")}}>
+                        {formatDate(today)} 
                         </button>
 
-                            <button className='btnDays'  onClick={()=>getRoutesByDay('2')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay1) ? "#303383" : ""),color:(formatDate(day12) === formatDate(nextDay1) ? "white" : "")}}>{formatDate(nextDay1)}</button>
-                            <button className='btnDays'  onClick={()=>getRoutesByDay('3')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay2) ? "#303383" : ""),color:(formatDate(day12) === formatDate(nextDay2) ? "white" : "")}}>{formatDate(nextDay2)}</button>
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('2')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay1) ? "#00AFF5" : ""),color:(formatDate(day12) === formatDate(nextDay1) ? "white" : "")}}>{formatDate(nextDay1)}</button>
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('3')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay2) ? "#00AFF5" : ""),color:(formatDate(day12) === formatDate(nextDay2) ? "white" : "")}}>{formatDate(nextDay2)}</button>
                         </div>
                        </div>
                
@@ -422,7 +422,7 @@ function RoutesUser() {
                     <li className="list-group-item li2">
                                 <div className="l2Child1">
                                     {Array.from({ length: Math.min(item.countSide, 6) }).map((_, index) => (
-                                    <img key={index} src={b9}  alt="image" />
+                                    <img key={index} src={b19}  alt="image" />
                                     ))}
                                 </div>
                                 <div className="li2Child2">
@@ -451,12 +451,12 @@ function RoutesUser() {
                             <h2>{language==="1"?`Yo’nalish bo’yicha qatnovlar `:`Маршруты`} <h3> {isAvailable ? (language === "1" ? "mavjud emas" : "нет в наличии") : ""}</h3></h2>
                         </div>
                         <div className="days">
-                        <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(day12) === formatDate(today) ? "#303383" : ""),color:(formatDate(day12) === formatDate(today) ? "white" : "")}}>
+                        <button className='btnDays' onClick={()=>getRoutesByDay('1')} style={{backgroundColor: (formatDate(day12) === formatDate(today) ? "#00AFF5" : ""),color:(formatDate(day12) === formatDate(today) ? "white" : "")}}>
                         {formatDate(today)}
                         </button>
 
-                            <button className='btnDays'  onClick={()=>getRoutesByDay('2')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay1) ? "#303383" : ""),color:(formatDate(day12) === formatDate(nextDay1) ? "white" : "")}}>{formatDate(nextDay1)}</button>
-                            <button className='btnDays'  onClick={()=>getRoutesByDay('3')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay2) ? "#303383" : ""),color:(formatDate(day12) === formatDate(nextDay2) ? "white" : "")}}>{formatDate(nextDay2)}</button>
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('2')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay1) ? "#00AFF5" : ""),color:(formatDate(day12) === formatDate(nextDay1) ? "white" : "")}}>{formatDate(nextDay1)}</button>
+                            <button className='btnDays'  onClick={()=>getRoutesByDay('3')} style={{backgroundColor: (formatDate(day12) === formatDate(nextDay2) ? "#00AFF5" : ""),color:(formatDate(day12) === formatDate(nextDay2) ? "white" : "")}}>{formatDate(nextDay2)}</button>
                         </div>
                        </div> 
                        <div className='catchRoute'>

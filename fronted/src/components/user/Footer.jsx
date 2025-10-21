@@ -6,6 +6,8 @@ import BizHaqimizdaModal from './bizHaqimizda/BizHaqimizdaModal';
 import Boglanish from './Boglanish';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsModalOpen, setIsModalOpen1 } from '../../redux/slices/CommentSlice';
+import telegram from "../../pictures/a7.svg";
+import instagram from "../../pictures/a8.svg";
 function Footer() {
   const { language } = useContext(LanguageContext);
   const dispatch=useDispatch()
@@ -70,7 +72,21 @@ function Footer() {
         <li  className='list-group-item'  onClick={openModal}>{language==="1"?"Biz Haqimizda":"О нас"}</li>
         <li  className='list-group-item' onClick={openModal1}>{language==="1"?"Bog'lanish":"Связь"}</li>
       </ul>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum <br /> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum <br /> tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros <br /> elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in <br /> eros elementum tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius <br /> enim in eros elementum tristique.</p>
+          <p>Bu platformamiz orqali haydovchi va yo’lovchilarni bir-birlarini tez va oson topishlari mumkin. Bizda <br /> O’zbekiston viloyatlari bo’lab qatnovlar mavjud. Haydovchilarimiz yo’lovchilarni hamda pochtalarni <br /> tashishadi. Yo’lovchilar manzilga yetib borganlaridan so’ng to’lovni amalga oshiradilar. Biz faqatgina <br /> haydovchi va yo’lovchilarni bir-birlarini topishda yordam beramiz xolos, hech qanday majburiyatlarni o’z <br /> bo’ynimizga olmaymiz hurmat bilan ShiftTaxi jamoasi. </p>
+         <div className="d-flex justify-content-between mt-2">
+            <div className="tg">
+            <img src={telegram} alt="" />
+            <p>ShiftTaxi_bot</p>
+            </div>
+            <div className="tg">
+            <img src={telegram} alt="" />
+            <p>Shift_Taxi</p>
+            </div>
+            <div className="tg">
+            <img src={instagram} alt="" />
+            <p>Shift_Taxi</p>
+            </div>
+         </div>
           </div>
             <div className="footerYer">
                 <img src={rasm}  alt="image" style={{objectFit:"contain",width:"100%",height:"100%"}} />

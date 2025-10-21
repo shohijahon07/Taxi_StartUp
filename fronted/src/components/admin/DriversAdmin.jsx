@@ -6,7 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { FaSearch } from "react-icons/fa";
 import "./routesAdmin.css";
 import { message } from 'antd';
-
 function DriversAdmin() {
   const { drivers1  } = useSelector((state) => state.driver); 
   const dispatch = useDispatch();

@@ -22,8 +22,8 @@ public class AdvertisingServiceImpl implements AdvertisingService {
 
     private final UserRepo userRepo;
     private final RestTemplate restTemplate;
-    private final String apiToken = "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
-    private final String fileDirectory = "backend/files/"; // .jar fayl joylashgan joyda
+    private final String apiToken = "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
+    private final String fileDirectory = "files/"; // .jar fayl joylashgan joyda
 
     @Override
     public void saveAdvertising(AdvertsiningDTO advertsiningDTO) {

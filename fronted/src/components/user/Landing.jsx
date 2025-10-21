@@ -1,7 +1,7 @@
 // src/components/user/Landing.jsx
 import React, { useContext, useEffect, useState } from 'react';
 import "./user.css";
-import logo from "../../pictures/Group (1).webp";
+import logo from "../../pictures/ShiftTaxi.svg";
 import { useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../language/LanguageContext';
 import telegram from "../../pictures/telegram.webp";

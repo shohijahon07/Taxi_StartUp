@@ -82,6 +82,19 @@ body{
     line-height: 21px;
     color:#6A859C;
 }
+.tg{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    gap: 10px;
+}
+.tg p{
+    font-family: 'Open Sans';
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 21.46px;
+    color:#000000;
+}
 @media only screen and (min-width: 1070px) and (max-width: 1300px) {
     .foterUl{
         margin-bottom: 40px;

@@ -51,16 +51,12 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-//        return "7516605771:AAFXsTzRzd2aqoUNFX2TdnSlsGQ3yOAAyjk";
-//        return "6833378518:AAGqQa26XmQrKyX0gHDBvM3AD4f_a5cmZgE";
-        return "6964154747:AAH-HTw_4kM2NIjogEacAQWGJAKRToOzmsc";
+        return "8185483053:AAEoGT87Ir8WU2TYFQOKBI3mylSleTd4JP8";
     }
 
     @Override
     public String getBotUsername() {
-//        return "kenjacar_bot";
-//        return "https://t.me/shox_now_bot";
-        return "shohjahong35_bot";
+        return "mytaxiprojects_bot.";
     }
     private String[] driver_data = new String[6];
     private String[] driver_data_path = new String[3];
@@ -85,7 +81,11 @@ public class TaxiProjectBot extends TelegramLongPollingBot {
             Map.entry("Сырдарья", "Sirdaryo"),
             Map.entry("Каракалпакстан", "Qaraqalpog'iston"),
             Map.entry( "Урганч","Urganch"),
-            Map.entry(  "Термиз","Termiz")
+            Map.entry(  "Термиз","Termiz"),
+            Map.entry("Денов" ,"Denov"),
+            Map.entry("Хива","Xiva"),
+            Map.entry("Қўқон ","Qo'qon")
+
 
     );
     Map<String, String> uzToRuTranslations = Map.ofEntries(
@@ -2510,6 +2510,11 @@ else if(data.equals("car")){
         uzbekToRussianCities.put("Samarqand", "Самарканд");
         uzbekToRussianCities.put("Sirdaryo", "Сырдарья");
         uzbekToRussianCities.put("Surxondaryo", "Сурхандарья");
+        uzbekToRussianCities.put("Qaraqalpog'iston", "Каракалпакстан");
+        uzbekToRussianCities.put("Termiz" ,"Термиз");
+        uzbekToRussianCities.put("Denov", "Денов");
+        uzbekToRussianCities.put("Qo'qon", "Қўқон");
+        uzbekToRussianCities.put("Urganch" , "Урганч");
 
         String userLanguage = foundUser.getLanguage();
 
@@ -2573,6 +2578,11 @@ else if(data.equals("car")){
         uzbekToRussianCities.put("Samarqand", "Самарканд");
         uzbekToRussianCities.put("Sirdaryo", "Сырдарья");
         uzbekToRussianCities.put("Surxondaryo", "Сурхандарья");
+        uzbekToRussianCities.put("Qaraqalpog'iston", "Каракалпакстан");
+        uzbekToRussianCities.put("Termiz" ,"Термиз");
+        uzbekToRussianCities.put("Denov", "Денов");
+        uzbekToRussianCities.put("Qo'qon", "Қўқон");
+        uzbekToRussianCities.put("Urganch" , "Урганч");
 
         String userLanguage = foundUser.getLanguage();
 
@@ -2788,10 +2798,10 @@ else if(data.equals("car")){
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         if (user.getLanguage().equals("uz")) {
             button1.setText("🚖 Haydovchi");
-            button1.setUrl("http://192.168.1.16:5174/register?chatId=" + chatId + "&language=uz");
+            button1.setUrl(" http://192.168.0.203:5174/register?chatId=" + chatId + "&language=uz");
         } else {
             button1.setText("🚖 Драйверы");
-            button1.setUrl("http://192.168.1.16:5174/register?chatId=" + chatId + "&language=ru");
+            button1.setUrl(" http://192.168.0.203:5174/register?chatId=" + chatId + "&language=ru");
         }
         button1.setCallbackData("Drivers");
         row1.add(button1);

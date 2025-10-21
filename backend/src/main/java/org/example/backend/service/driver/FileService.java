@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class FileService {
 
-    private final String UPLOAD_DIR = "backend/file/";
+    private final String UPLOAD_DIR = "files/";
     private final long MAX_FILE_SIZE = 1024 * 1024; // 1 MB in bytes
 
     public String saveFile(MultipartFile file) throws IOException {

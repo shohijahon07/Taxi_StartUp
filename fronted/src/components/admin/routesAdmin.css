@@ -168,13 +168,7 @@ justify-content: space-between;
     font-size: 30px;
     font-weight: 500;
 }
-.qidirishHeader {
-    width: 100%;
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    padding-bottom: 10px;
-  }
+
   
   .search-input-wrapper {
     position: relative;
@@ -182,7 +176,13 @@ justify-content: space-between;
     display: flex;
     justify-content: end;
   }
-  
+.qidirishHeader {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    padding-bottom: 10px;
+}
   .qidirishHeader input {
     font-size: 25px;
     width: 300px;

@@ -37,8 +37,8 @@ function Register() {
     const save = async () => {
         if (!validateForm()) {
             showModal(
-                language === 'uz' 
-                    ? "Barcha ma'lumotlarni to'ldiring. Har bir maydonni to'ldirishingiz kerak." 
+                language === 'uz'
+                    ? "Barcha ma'lumotlarni to'ldiring. Har bir maydonni to'ldirishingiz kerak."
                     : "Pojaluysta, zapolnite Vy doljny zapolnit kajdoe pole.",
                 'error'
             );
@@ -46,9 +46,9 @@ function Register() {
         }
 
         showModal(
-            language === 'uz' 
-                ? "Ma'lumotlaringiz tekshirilmoqda. Iltimos kuting, biz o'zimiz Telegram bot orqali xabar yuboramiz." 
-                : "Vasha ma'lumot proveryaetsya. Pojaluysta, pododite, my otpravim soobshchenie cherez Telegram-bot.", 
+            language === 'uz'
+                ? "Ma'lumotlaringiz tekshirilmoqda. Iltimos kuting, biz o'zimiz Telegram bot orqali xabar yuboramiz."
+                : "Vasha ma'lumot proveryaetsya. Pojaluysta, pododite, my otpravim soobshchenie cherez Telegram-bot.",
             'success'
         );
 
@@ -59,8 +59,8 @@ function Register() {
         } catch (error) {
             console.error('Saqlash paytidagi xato:', error);
             showModal(
-                language === 'uz' 
-                    ? `Xatolik yuz berdi: ${error.message}` 
+                language === 'uz'
+                    ? `Xatolik yuz berdi: ${error.message}`
                     : `Proizoshla oshibka: ${error.message}`,
                 'error'
             );
@@ -94,24 +94,24 @@ function Register() {
                 {language === "uz" ? "Ro'yxatdan o'tish uchun ma'lumotlarni kiriting" : "Vvedite sleduyushchuyu informatsiyu dlya registratsii"}
             </h3>
             <div className="body-con">
-                <input 
-                    type="text" 
-                    placeholder={language === "uz" ? "Mashina rusumi" : "Marka mashiny"} 
-                    className='form-control my-2' 
-                    value={form.carType} 
-                    onChange={(e) => dispatch(updateForm({ carType: e.target.value }))} 
+                <input
+                    type="text"
+                    placeholder={language === "uz" ? "Mashina rusumi" : "Marka mashiny"}
+                    className='form-control my-2'
+                    value={form.carType}
+                    onChange={(e) => dispatch(updateForm({ carType: e.target.value }))}
                 />
-                <input 
-                    type="text" 
-                    placeholder={language === "uz" ? "O'zingiz haqingizda yozing" : "Napishite o sebe"} 
-                    className='form-control my-2' 
-                    value={form.about} 
-                    onChange={(e) => dispatch(updateForm({ about: e.target.value }))} 
+                <input
+                    type="text"
+                    placeholder={language === "uz" ? "O'zingiz haqingizda yozing" : "Napishite o sebe"}
+                    className='form-control my-2'
+                    value={form.about}
+                    onChange={(e) => dispatch(updateForm({ about: e.target.value }))}
                 />
-                <select 
-                    className='form-control' 
-                    value={form.count} 
-                    style={{ marginBottom: "10px" }} 
+                <select
+                    className='form-control'
+                    value={form.count}
+                    style={{ marginBottom: "10px" }}
                     onChange={(e) => dispatch(updateForm({ count: e.target.value }))}>
                     <option className='form-control' value={""}>
                         {language === "uz" ? "Tanlang" : "Vyberite"}
@@ -123,14 +123,14 @@ function Register() {
                         {language === "uz" ? "Mikro avtobus" : "Mikroavtobus"}
                     </option>
                 </select>
-                
+
                 {fileLabels.map((label, index) => (
                     <div className="custom-file-upload" key={index}>
-                        <input 
-                            type="file" 
-                            id={`file${index + 1}`} 
-                            accept="image/*" 
-                            onChange={(e) => handleFileChange(e, index)} 
+                        <input
+                            type="file"
+                            id={`file${index + 1}`}
+                            accept="image/*"
+                            onChange={(e) => handleFileChange(e, index)}
                         />
                         <label htmlFor={`file${index + 1}`}>
                             <img src={fileicon} alt="Yuklash belgisi" className="upload-icon" />
@@ -141,17 +141,17 @@ function Register() {
                         </label>
                     </div>
                 ))}
-                
+
                 <button type="primary" className='btn_rg' onClick={save}>
                     {language === "uz" ? "Yuborish" : "Otpravka"}
                 </button>
             </div>
-            
+
             {isModalVisible && (
-                <Modal 
-                    title={language === "uz" ? "Ma'lumot" : "Information"} 
-                    visible={isModalVisible} 
-                    onCancel={handleOk} 
+                <Modal
+                    title={language === "uz" ? "Ma'lumot" : "Information"}
+                    visible={isModalVisible}
+                    onCancel={handleOk}
                     footer={[
                         <Button key="ok" onClick={handleOk}>
                             {language === "uz" ? "OK" : "OK"}
